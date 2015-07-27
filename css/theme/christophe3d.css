@@ -238,6 +238,7 @@ div.twitter-widget {
     h3                  { font-size: 18px; }
     .lead               { font-size: 16px; }
     .navbar-brand img   { max-width: 96px; }
+    .callout img        { margin-left: auto; margin-right: auto; }
 }
 @media(max-width:768px) {
     .navbar             { font-size: 12px; }
@@ -250,6 +251,7 @@ div.twitter-widget {
     h3                  { font-size: 18px; }
     .lead               { font-size: 16px; }
     .navbar-brand img   { max-width: 64px; }
+    .callout img        { margin-left: auto; margin-right: auto; }
 }
 
 
