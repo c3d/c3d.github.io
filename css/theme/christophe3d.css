@@ -620,6 +620,10 @@ i.service-icon {
     width: 256px;
 }
 
+@media(max-width:1400px) {
+    .callout img        { width: 192px; }
+}
+
 .callout-games {
     display: table;
     height: 100%;
