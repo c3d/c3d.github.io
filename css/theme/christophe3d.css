@@ -392,6 +392,7 @@ table.downloads         { width: 480px; margin-left:auto; margin-right:auto; }
 .callout-solutions h1,
 .callout-company h1,
 .callout-contact h1,
+.callout-refs h1,
 .callout-references h1 {
     position: relative;
     top: -40px;
@@ -477,7 +478,7 @@ iframe {
     height: 100%;
     width: 100%;
     position: relative;
-    background: url(../../images/attract.jpg) no-repeat center center fixed; 
+    background: url(../../images/attract.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -497,7 +498,7 @@ iframe {
     width: 120px;
     height: 120px;
     line-height: 275px;
-    vertical-align: middle; 
+    vertical-align: middle;
     text-align: center;
     color: #fff;
     margin: 15px;
@@ -552,7 +553,7 @@ i.service-icon {
     width: 140px;
     height: 140px;
     line-height: 136px;
-    vertical-align: middle; 
+    vertical-align: middle;
     text-align: center;
 }
 
@@ -629,7 +630,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/AlphaWaves-Background.jpg) no-repeat center center fixed; 
+    background: url(../../images/AlphaWaves-Background.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -647,7 +648,7 @@ i.service-icon {
     height: auto;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/Languages.jpg) no-repeat center center fixed; 
+    background: url(../../images/Languages.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -682,7 +683,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/ECUTEST-Background.jpg) no-repeat center center fixed; 
+    background: url(../../images/ECUTEST-Background.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -700,7 +701,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/ComputerProgram.jpg) no-repeat center center fixed; 
+    background: url(../../images/ComputerProgram.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -716,7 +717,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/Physics.jpg) no-repeat center center fixed; 
+    background: url(../../images/Physics.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -733,7 +734,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/Art-Dark.jpg) no-repeat center center fixed; 
+    background: url(../../images/Art-Dark.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -749,7 +750,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/Quill.gif) no-repeat center center fixed; 
+    background: url(../../images/Quill.gif) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -766,7 +767,7 @@ i.service-icon {
     height: 100%;
     width: 100%;
     padding: 100px 0;
-    background: url(../../images/Patents.jpg) no-repeat center center fixed; 
+    background: url(../../images/Patents.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -965,7 +966,7 @@ i.scroll:hover {
 /* Responsive */
 
 @media (max-width: 768px) {
-    
+
     .map {
 	height: 75%;
     }
@@ -1043,7 +1044,7 @@ i.scroll:hover {
     border-image: linear-gradient(to bottom, #036, rgba(0, 30, 60, 0.2)) 1 100%;
     background: linear-gradient(0deg, rgba(240,240,240,0.8), rgba(200,200,200,0.5));
     max-width: 900px;
-    
+
 }
 
 .blogmax .smiley {
