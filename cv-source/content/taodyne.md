@@ -1,48 +1,25 @@
 ---
 id: taodyne
-title: Taodyne Company
+title: Taodyne
 theme: Art & Culture
-years: 2011-2017
+years: 2010-2016
 weight: 8
 related: [xl-tao3d, 3divart]
 videos: []
 links:
-  - label: Company Info
-    url: https://taodyne.com
+  - label: Tao3D
+    url: https://tao3d.sourceforge.net/
 ---
 
-## Real-Time 3D Interactive Software for Business
+## Founder and CEO — real-time 3D presentations
 
-Co-founded Taodyne in 2011 to commercialize Tao3D technology.
+Sophia-Antipolis.
 
-### Products
+- Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)
+- Tao3D Studio / Player for interactive 3D documents
+- Commercial features: stereoscopy, auto-stereoscopy, signed/encrypted documents
+- Technical success but commercial failure
+- Awards: Best elevator pitch and Best technology in TIC (Business Accelerator 06)
+- Most innovative product — Tao3D (DEVCOM 2012)
 
-**Tao3D Studio** (formerly Tao Presentations)
-- Application to create 3D presentations using the Tao3D language
-- Real-time 3D rendering
-- Interactive content creation
-
-**Tao3D Player**
-- Playback application for Tao3D documents
-- Commercial features:
-  - Stereoscopic display support (3D with glasses)
-  - Auto-stereoscopic display support (glasses-free 3D)
-  - Document signing and encryption
-
-### Technology
-
-Both applications share source code and feature the open-source Tao3D language. The commercial versions add enterprise features for secure content delivery and advanced display technologies.
-
-### Market Focus
-
-- Business presentations
-- Trade shows and events
-- Museums and education
-- Scientific visualization
-- Anywhere you need to present complex information in an entertaining and interactive way
-
-### Legacy
-
-Demonstrated that research in extensible languages could produce commercial products with real-world applications in 3D visualization and interactive content.
-
-**Quote:** *"Best technology in TIC"* - Business Accelerator & Most innovative product award - RENUCOM 2012
+**Quote:** *"Christophe is a very innovative and open minded entrepreneur"* — P. Zucchetta

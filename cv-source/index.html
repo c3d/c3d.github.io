@@ -14,7 +14,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
       overflow: hidden;
       background: #000;
       color: #fff;
@@ -107,11 +107,14 @@
       text-align: center;
       pointer-events: none;
       z-index: 3;
+      transition: opacity 0.35s ease;
     }
 
     #title-overlay h1 {
-      font-size: 32px;
-      font-weight: 300;
+      font-family: Orbitron, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       margin: 0;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
@@ -124,153 +127,162 @@
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
-    .star-card {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 24px;
-      width: 500px;
-      max-width: 90vw;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(20px);
+    /* Sci-fi HUD — right deck on desktop, bottom sheet on mobile */
+    #hud {
+      --hud-accent: #40e0ff;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(420px, 42vw);
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      transform: translateX(105%);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 18px;
+    }
+    #hud.open {
+      transform: translateX(0);
       pointer-events: auto;
-      transform-style: preserve-3d;
     }
-
-    .star-card h2 {
-      margin: 0 0 8px 0;
-      font-size: 24px;
-      font-weight: 600;
-      color: #fff;
+    .hud-panel {
+      position: relative;
+      height: calc(100% - 8px);
+      overflow: auto;
+      padding: 22px 20px 28px;
+      background:
+        linear-gradient(180deg, rgba(6,14,28,0.94), rgba(4,8,18,0.92)),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(120, 200, 255, 0.03) 2px,
+          rgba(120, 200, 255, 0.03) 3px
+        );
+      border: 1px solid color-mix(in srgb, var(--hud-accent) 55%, transparent);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.5) inset,
+        0 0 40px color-mix(in srgb, var(--hud-accent) 18%, transparent),
+        -12px 0 40px rgba(0,0,0,0.45);
+      clip-path: polygon(
+        0 14px, 14px 0, calc(100% - 14px) 0, 100% 14px,
+        100% calc(100% - 14px), calc(100% - 14px) 100%,
+        14px 100%, 0 calc(100% - 14px)
+      );
     }
-
-    .star-card .meta {
-      font-size: 14px;
-      color: #aaa;
+    .hud-panel::before,
+    .hud-panel::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--hud-accent);
+      opacity: 0.85;
+    }
+    .hud-panel::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+    .hud-panel::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+    .hud-kicker {
+      font-family: Orbitron, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--hud-accent);
+      margin-bottom: 6px;
+    }
+    .hud-project {
+      font-family: Orbitron, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 0 0 10px;
+      color: #f2f7ff;
+    }
+    .hud-readouts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       margin-bottom: 16px;
     }
-
-    .star-card .theme-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 4px 10px;
-      border-radius: 4px;
+    .hud-chip {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      padding: 8px 10px;
       font-size: 12px;
-      margin-right: 8px;
     }
-
-    .star-card .content {
-      line-height: 1.6;
-      color: #ddd;
+    .hud-chip span {
+      display: block;
+      font-family: Orbitron, sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(180,210,255,0.65);
+      margin-bottom: 3px;
     }
-
-    .star-card h3 {
-      margin: 20px 0 10px 0;
-      font-size: 18px;
-      font-weight: 600;
+    .hud-bullet {
+      font-size: 16px;
+      line-height: 1.55;
+      color: #dce7f8;
+      margin: 0 0 18px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
-    .star-card p {
-      margin: 10px 0;
+    .hud-index {
+      font-family: Orbitron, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: rgba(160,200,255,0.7);
+      margin-bottom: 14px;
     }
-
-    .star-card a {
-      color: #6cf;
-      text-decoration: none;
-    }
-
-    .star-card a:hover {
-      text-decoration: underline;
-    }
-
-    .star-card ul {
-      margin: 10px 0;
-      padding-left: 20px;
-    }
-
-    .star-card li {
-      margin: 5px 0;
-    }
-
-    .star-card .video-container {
+    .hud-video {
       position: relative;
       padding-bottom: 56.25%;
       height: 0;
+      margin: 0 0 12px;
       overflow: hidden;
-      margin: 16px 0;
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
     }
-
-    .star-card .video-container iframe {
+    .hud-video iframe {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
-      border: none;
+      border: 0;
     }
-
-    .star-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin: 16px 0;
+    .hud-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
     }
-
-    .star-card .links {
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .star-card .link-button {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 8px 16px;
-      border-radius: 6px;
-      margin: 4px;
-      color: #fff;
+    .hud-links a {
+      font-family: Orbitron, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       text-decoration: none;
-      font-size: 14px;
-      transition: background 0.2s;
+      color: #041018;
+      background: var(--hud-accent);
+      padding: 8px 12px;
     }
-
-    .star-card .link-button:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .close-button {
+    #hud-close {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: rgba(255, 255, 255, 0.1);
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.35);
       color: #fff;
       font-size: 20px;
-      border-radius: 50%;
       cursor: pointer;
-      line-height: 1;
-      transition: background 0.2s;
+      z-index: 2;
     }
-
-    .close-button:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
+    #hud-close:hover { border-color: var(--hud-accent); color: var(--hud-accent); }
 
     @media (max-width: 768px) {
-      #title-overlay h1 {
-        font-size: 24px;
-      }
-
-      #title-overlay p {
-        font-size: 14px;
-      }
-
+      #title-overlay h1 { font-size: 20px; }
+      #title-overlay p { font-size: 13px; }
       #controls {
         bottom: 10px;
         left: 10px;
@@ -278,14 +290,22 @@
         max-width: none;
         font-size: 12px;
       }
-
-      .star-card {
-        width: 95vw;
-        padding: 16px;
+      #hud {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        height: min(58vh, 520px);
+        transform: translateY(110%);
+        padding: 10px;
       }
-
-      .star-card h2 {
-        font-size: 20px;
+      #hud.open { transform: translateY(0); }
+      .hud-panel {
+        clip-path: polygon(
+          0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px,
+          100% 100%, 0 100%
+        );
       }
     }
 
@@ -405,12 +425,27 @@
 
   <div id="controls">
     <h3>Navigation</h3>
-    <p><span class="control-key">Click</span> a star to explore</p>
+    <p><span class="control-key">Click</span> a CV bullet-star</p>
     <p><span class="control-key">Drag</span> to orbit</p>
     <p><span class="control-key">Scroll</span> to zoom</p>
-    <p><span class="control-key">O</span> Overview mode</p>
-    <p><span class="control-key">ESC</span> Close card</p>
+    <p><span class="control-key">O</span> Overview</p>
+    <p><span class="control-key">ESC</span> Close HUD</p>
   </div>
+
+  <aside id="hud" aria-hidden="true">
+    <div class="hud-panel">
+      <button id="hud-close" type="button" aria-label="Close">×</button>
+      <div class="hud-kicker" data-hud="theme">THEME</div>
+      <h2 class="hud-project" data-hud="project">Project</h2>
+      <div class="hud-index" data-hud="index">NODE 000 / 000</div>
+      <div class="hud-readouts">
+        <div class="hud-chip"><span>Section</span><div data-hud="section">—</div></div>
+        <div class="hud-chip"><span>Years</span><div data-hud="years">—</div></div>
+      </div>
+      <p class="hud-bullet" data-hud="bullet"></p>
+      <div data-hud="media"></div>
+    </div>
+  </aside>
 
   <div id="print-view"></div>
 

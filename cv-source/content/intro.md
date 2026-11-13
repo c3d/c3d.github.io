@@ -2,7 +2,7 @@
 id: intro
 title: Christophe de Dinechin
 theme: Tools & Apps
-years: 1970-Present
+years: 
 weight: 10
 related: []
 videos: []
@@ -11,30 +11,17 @@ links:
     url: https://github.com/c3d
   - label: LinkedIn
     url: https://fr.linkedin.com/in/christophe3d
+  - label: Website
+    url: https://c3d.github.io
 ---
 
 ## Software as a Passion
 
-I'm a French software developer who began with silly video games, keeps inventing crazy programming languages, and loves designing operating systems. I'm also an amateur physics researcher and a tinkerer in strange forms of art.
+Pushing the boundaries by writing highly innovative and differentiating software to make as much of a difference as possible.
 
-### Philosophy
-
-Pushing the boundaries by writing highly innovative and differentiating software to make as much of a difference as I possibly can.
-
-### Education
-
-**MS Computer Science** - École des Mines, Paris (1991)
-
-Native French speaker, fluent in English, some German.
-
-### About the Logo
-
-The smiling lightbulb surrounded by rainbow-colored rays represents the core of my work: bright ideas radiating in all directions, spanning multiple domains and technologies. Each colored ray represents a different area of expertise—from languages to systems, games to physics, art to tools.
-
-### Contact
-
+- French software developer — games, languages, operating systems
+- Amateur physics researcher
+- Tinkerer in strange forms of art
+- MS Computer Science, École des Mines (1991, Paris)
+- Native French, fluent English, some German
 - christophe@dinechin.org
-- http://c3d.github.io
-- 7 av du domaine du Loup, Riou A, 06800 Cagnes sur mer
-
-**Navigate the constellation to explore my career journey. Each glowing star represents a project, grouped into thematic nebulae. The rainbow particles you see throughout the scene echo the radiating rays of the lightbulb—ideas spreading in all directions. Click any star to learn more.**
