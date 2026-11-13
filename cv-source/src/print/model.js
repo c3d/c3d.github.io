@@ -55,6 +55,9 @@ export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3
     qrUrl: 'https://c3d.github.io/cv/',
     logoSrc: '/cv/logo.png',
     qrSrc: '/cv/qr-cv.png',
+    photoWebp: '/cv/photo.webp',
+    photoJpg: '/cv/photo.jpg',
+    showPhoto: true,
     themes,
     skills: themeOrder
   };

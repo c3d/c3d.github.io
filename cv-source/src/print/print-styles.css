@@ -111,9 +111,28 @@ body.print-preview #print-view {
 .pvn-header { position: relative; height: 24mm; background: #050b18; color: #fff; overflow: hidden; }
 .pvn-space { position: absolute; inset: 0; }
 .pvn-starfield { width: 100%; height: 100%; display: block; }
-.pvn-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3.2mm; height: 100%; padding: 0 5mm; }
-.pvn-logo { width: 14mm; height: 14mm; object-fit: contain; }
-.pvn-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 15pt; margin: 0; color: #fff; text-align: left; }
+.pvn-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3mm; height: 100%; padding: 0 4.5mm; }
+.pvn-logo { width: 12mm; height: 12mm; object-fit: contain; flex-shrink: 0; }
+.pvn-header-text { flex: 1; min-width: 0; }
+.pvn-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 13.5pt; margin: 0; color: #fff; text-align: left; }
+.pvn-photo {
+  flex-shrink: 0;
+  width: 16mm;
+  height: 16mm;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 0.45mm rgba(120, 210, 255, 0.95),
+    0 0 3mm rgba(64, 224, 255, 0.55);
+  background: #0a1528;
+}
+.pvn-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  display: block;
+}
 .pvn-sub { margin: 0.6mm 0 0; font-size: 8.5pt; color: rgba(255,255,255,.88); text-align: left; }
 .pvn-keys { margin: 1.2mm 0 0; font-size: 7pt; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(180,220,255,.85); text-align: left; }
 .pvn-body { display: grid; grid-template-columns: 56mm 1fr; gap: 2.8mm; padding: 2.6mm 4mm 3mm; min-height: calc(297mm - 24mm); }
@@ -158,11 +177,33 @@ body.print-preview #print-view {
 .pvo-side {
   background: var(--orbit-navy);
   color: #eef3fa;
-  padding: 4mm 3.5mm 0;
+  padding: 3.5mm 3.5mm 0;
   display: flex;
   flex-direction: column;
-  gap: 2.2mm;
+  gap: 2mm;
   position: relative;
+}
+.pvo-photo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5mm;
+}
+.pvo-photo {
+  width: 18mm;
+  height: 18mm;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 0.5mm var(--orbit-gold),
+    0 0 2.5mm rgba(201, 162, 39, 0.45);
+  background: #06101f;
+}
+.pvo-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 10%;
+  display: block;
 }
 .pvo-block h2 {
   font-family: Orbitron, sans-serif;
