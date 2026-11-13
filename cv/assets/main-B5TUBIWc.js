@@ -3949,8 +3949,10 @@ void main() {
       </header>`;return n.themes.forEach(t=>{e+=`<section class="pvc-theme" style="--theme-color:${t.color}">
         <h2>${t.name}</h2>`,t.projects.forEach(i=>{e+=`<div class="pvc-project"><h3>${i.title}</h3>`,i.years&&(e+=`<span class="pvc-years">${i.years}</span>`),i.bullets.length&&(e+="<ul>",i.bullets.forEach(r=>{e+=`<li>${r}</li>`}),e+="</ul>"),e+="</div>"}),e+="</section>"}),e+=`<footer class="pvc-qr">
       <img src="${n.logoSrc}" alt="" class="pvc-logo-sm">
-      <img src="${n.qrSrc}" alt="QR to interactive CV" class="pvc-qr-img" width="64" height="64">
-      <div><strong>Interactive constellation</strong><br>${n.qrUrl}<br>${n.email}</div>
+      <a class="pvc-qr-link" href="${n.qrUrl}" target="_blank" rel="noopener">
+        <img src="${n.qrSrc}" alt="QR to interactive CV" class="pvc-qr-img" width="64" height="64">
+        <div><strong>Interactive constellation</strong><br>${n.qrUrl}<br>${n.email}</div>
+      </a>
     </footer></div>`,e}},lc={"Languages & Compilers":'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="6"/><ellipse cx="24" cy="24" rx="18" ry="8" transform="rotate(25 24 24)"/><ellipse cx="24" cy="24" rx="18" ry="8" transform="rotate(-35 24 24)"/><circle cx="38" cy="14" r="2.2" fill="currentColor" stroke="none"/></g></svg>',"Systems & Virtualization":'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="18" width="20" height="12" rx="2"/><path d="M18 18v-4h12v4M22 30v4h4v-4"/><circle cx="24" cy="24" r="2.5"/><path d="M8 24h6M34 24h6M24 8v4M24 36v4"/></g></svg>',"Games & 3D":'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6l8 14-3 2 5 12-10-6-10 6 5-12-3-2z"/><path d="M18 40c2-3 4-4 6-4s4 1 6 4"/><path d="M24 22v8"/></g></svg>',Physics:'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="24" cy="24" rx="16" ry="7"/><ellipse cx="24" cy="24" rx="16" ry="7" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="16" ry="7" transform="rotate(120 24 24)"/><circle cx="24" cy="24" r="3" fill="currentColor" stroke="none"/></g></svg>',"Art & Culture":'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 30c6-14 12-20 20-22 2 8-1 16-8 24"/><path d="M28 10c6 2 10 8 12 16"/><circle cx="34" cy="14" r="2.5" fill="currentColor" stroke="none"/><path d="M14 34c4 2 10 3 16 1"/></g></svg>',"Tools & Apps":'<svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8l4 4-8 8-4-4 8-8z"/><path d="M26 20L12 34l-2 6 6-2 14-14"/><circle cx="34" cy="34" r="6"/><path d="M34 30v8M30 34h8"/></g></svg>'},cc=["C++","C","RPL","Lisp","XL","Tao3D","ELFE","Linux","macOS","Windows","SPICE","Emacs","OpenShift","Make"],cg={id:"nebula",label:"Nebula",description:"Colorful constellation one-pager",photo:!0,photoPlacement:"header",render(n){const e=n.keywords.join(" · "),i=n.showPhoto!==!1?`<picture class="pvn-photo">
       <source srcset="${n.photoWebp}" type="image/webp">
       <img src="${n.photoJpg}" alt="${n.name}" width="72" height="72">
@@ -4007,10 +4009,10 @@ void main() {
           <section class="pvn-card"><h2>Tools &amp; technologies</h2>
             <div class="pvn-tags">${cc.map(o=>`<span>${o}</span>`).join("")}</div>
           </section>
-          <section class="pvn-card pvn-qr">
-            <img src="${n.qrSrc}" alt="QR" width="72" height="72">
+          <a class="pvn-card pvn-qr" href="${n.qrUrl}" target="_blank" rel="noopener">
+            <img src="${n.qrSrc}" alt="QR to interactive CV" width="72" height="72">
             <div><p class="pvn-qr-title">Interactive constellation</p><p class="pvn-muted">${n.qrUrl}</p></div>
-          </section>
+          </a>
         </aside>
         <main class="pvn-main">`;return n.themes.forEach(o=>{const a=lc[o.name]||"";s+=`<section class="pvn-theme" style="--theme-color:${o.color}">
         <div class="pvn-bar"><span class="pvn-ico">${a}</span><h2>${o.name}</h2></div>
@@ -4049,10 +4051,10 @@ void main() {
             <li><span>◉</span>${n.website.replace(/^https?:\/\//,"")}</li>
           </ul>
         </section>
-        <section class="pvo-block pvo-qr">
-          <img src="${n.qrSrc}" alt="QR" width="64" height="64">
+        <a class="pvo-block pvo-qr" href="${n.qrUrl}" target="_blank" rel="noopener">
+          <img src="${n.qrSrc}" alt="QR to interactive CV" width="64" height="64">
           <div><strong>Scan the constellation</strong><br>${n.qrUrl}</div>
-        </section>
+        </a>
         <div class="pvo-earth" aria-hidden="true">
           <svg viewBox="0 0 200 90" preserveAspectRatio="xMidYMax slice">
             <defs>

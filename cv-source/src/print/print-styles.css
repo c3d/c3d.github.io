@@ -103,6 +103,7 @@ body.print-preview #print-view {
 .pvc-years { font-size: 10px; color: #556; margin-left: 6px; }
 .pvc-project ul { margin: 1px 0 0; padding-left: 14px; font-size: 10px; line-height: 1.25; }
 .pvc-qr { margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 12px; font-size: 11px; }
+.pvc-qr-link { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
 .pvc-qr-img { width: 64px; height: 64px; border: 1px solid #ccd; }
 .pvc-logo-sm { width: 40px; height: 40px; }
 
@@ -146,7 +147,8 @@ body.print-preview #print-view {
 .pvn-check { flex-shrink: 0; width: 3.2mm; height: 3.2mm; border-radius: 50%; color: #fff; font-size: 5pt; line-height: 3.2mm; text-align: center; margin-top: 0.3mm; }
 .pvn-tags { display: flex; flex-wrap: wrap; gap: 1.2mm; }
 .pvn-tags span { background: #e7eef6; color: #243447; border-radius: 999px; padding: 0.7mm 1.8mm; font-size: 6.2pt; }
-.pvn-qr { display: flex; align-items: center; gap: 2.2mm; }
+.pvn-qr { display: flex; align-items: center; gap: 2.2mm; color: inherit; text-decoration: none; }
+a.pvn-qr:hover { color: inherit; }
 .pvn-qr img { width: 16mm; height: 16mm; border: 0.3mm solid var(--pv-line); background: #fff; }
 .pvn-qr-title { font-family: Orbitron, sans-serif; font-size: 6.5pt; margin: 0 0 0.6mm !important; }
 .pvn-main { display: flex; flex-direction: column; gap: 1.8mm; min-width: 0; }
@@ -236,7 +238,8 @@ body.print-preview #print-view {
   font-size: 6pt;
 }
 .pvo-info span:first-child { color: var(--orbit-gold); width: 3.5mm; text-align: center; flex-shrink: 0; }
-.pvo-qr { display: flex; gap: 2mm; align-items: center; font-size: 6.4pt; }
+.pvo-qr { display: flex; gap: 2mm; align-items: center; font-size: 6.4pt; color: inherit; text-decoration: none; }
+a.pvo-qr:hover { color: inherit; }
 .pvo-qr img { width: 14mm; height: 14mm; background: #fff; border: 0.3mm solid var(--orbit-gold); }
 .pvo-earth { margin-top: auto; margin-left: -3.5mm; margin-right: -3.5mm; }
 .pvo-earth svg { width: 100%; height: 16mm; display: block; }

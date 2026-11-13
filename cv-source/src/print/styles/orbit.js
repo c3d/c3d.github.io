@@ -41,10 +41,10 @@ export const orbitStyle = {
             <li><span>◉</span>${model.website.replace(/^https?:\/\//, '')}</li>
           </ul>
         </section>
-        <section class="pvo-block pvo-qr">
-          <img src="${model.qrSrc}" alt="QR" width="64" height="64">
+        <a class="pvo-block pvo-qr" href="${model.qrUrl}" target="_blank" rel="noopener">
+          <img src="${model.qrSrc}" alt="QR to interactive CV" width="64" height="64">
           <div><strong>Scan the constellation</strong><br>${model.qrUrl}</div>
-        </section>
+        </a>
         <div class="pvo-earth" aria-hidden="true">
           <svg viewBox="0 0 200 90" preserveAspectRatio="xMidYMax slice">
             <defs>
