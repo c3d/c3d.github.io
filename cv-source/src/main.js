@@ -26,7 +26,7 @@ const THEME_POSITIONS = {
   'Systems & Virtualization': { x: 78, y: 30, z: -10 },
   // Spread Games / Art so they no longer sit on top of each other in overview
   'Games & 3D': { x: -70, y: -68, z: -55 },
-  'Physics': { x: -48, y: 58, z: 48 },
+  'Physics': { x: -48, y: 42, z: 48 },
   'Art & Culture': { x: 82, y: -8, z: 68 },
   'Tools & Apps': { x: 8, y: 22, z: -72 }
 };
@@ -117,13 +117,16 @@ let controls = {
   mouseDown: false,
   mouseX: 0,
   mouseY: 0,
-  targetRotationX: 0.28,
-  targetRotationY: 0.42,
-  currentRotationX: 0.28,
-  currentRotationY: 0.42,
-  targetZoom: 170,
-  currentZoom: 170
+  targetRotationX: 0.22,
+  targetRotationY: 0.32,
+  currentRotationX: 0.22,
+  currentRotationY: 0.32,
+  targetZoom: 220,
+  currentZoom: 220,
+  lookAt: new THREE.Vector3(0, -8, 0)
 };
+
+const STAR_PICK_RADIUS_PX = 14;
 
 // ============================================================================
 // Scene
@@ -168,9 +171,57 @@ function updateCameraFromControls() {
   const radius = controls.currentZoom;
   const rx = controls.currentRotationX;
   const ry = controls.currentRotationY;
-  camera.position.x = Math.sin(ry) * Math.cos(rx) * radius;
-  camera.position.z = Math.cos(ry) * Math.cos(rx) * radius;
-  camera.position.y = Math.sin(rx) * radius * 0.5 + 16;
+  const look = controls.lookAt;
+  camera.position.x = look.x + Math.sin(ry) * Math.cos(rx) * radius;
+  camera.position.z = look.z + Math.cos(ry) * Math.cos(rx) * radius;
+  camera.position.y = look.y + Math.sin(rx) * radius * 0.55 + 10;
+}
+
+/**
+ * Fit overview camera to the bounding sphere of all theme clusters
+ * for the current aspect (desktop + portrait), with margin for labels/title.
+ */
+function fitOverviewToClusters() {
+  const box = new THREE.Box3();
+  const nebulaR = 36;
+  Object.values(THEME_POSITIONS).forEach((p) => {
+    box.expandByPoint(new THREE.Vector3(p.x - nebulaR, p.y - nebulaR * 0.65, p.z - nebulaR));
+    box.expandByPoint(new THREE.Vector3(p.x + nebulaR, p.y + nebulaR * 0.75 + 28, p.z + nebulaR));
+  });
+  stars.forEach((s) => box.expandByPoint(s.position));
+  labelSprites.forEach((l) => {
+    const w = new THREE.Vector3();
+    l.getWorldPosition(w);
+    box.expandByPoint(w);
+  });
+
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  // Sphere that covers the AABB (slightly less aggressive than max-axis)
+  const radius = 0.5 * Math.sqrt(size.x * size.x + size.y * size.y + size.z * size.z) * 0.72;
+
+  const isMobile = window.innerWidth < 768;
+  // Slight downward bias only — too much leaves empty bottom + title/Physics clash
+  controls.lookAt.set(center.x * 0.08, center.y - (isMobile ? 2 : 6), center.z * 0.12);
+
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+  const aspect = Math.max(camera.aspect, 0.35);
+  const fitH = radius / Math.sin(vFov / 2);
+  const fitW = radius / Math.sin(Math.atan(Math.tan(vFov / 2) * aspect));
+  let dist = Math.max(fitH, fitW);
+  dist *= isMobile ? 1.36 : 1.28; // room for title + edge labels
+  dist = THREE.MathUtils.clamp(dist, 190, isMobile ? 400 : 360);
+
+  controls.targetZoom = dist;
+  controls.currentZoom = dist;
+  controls.targetRotationX = isMobile ? 0.26 : 0.15;
+  controls.targetRotationY = isMobile ? 0.05 : 0.24;
+  controls.currentRotationX = controls.targetRotationX;
+  controls.currentRotationY = controls.targetRotationY;
+  updateCameraFromControls();
+  camera.lookAt(controls.lookAt);
+  // Keep fog readable at overview distance
+  if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(1.1 / dist, 0.0022, 0.005);
 }
 
 function createSoftSprite(hex, scale, opacity) {
@@ -240,6 +291,8 @@ function createNebulae() {
     themeLabel.scale.set(themeH * themeAspect, themeH, 1);
     themeLabel.userData.isLabel = true;
     themeLabel.userData.kind = 'theme';
+    themeLabel.userData.theme = theme;
+    themeLabel.userData.labelTitle = theme;
     themeLabel.userData.baseOpacity = 1;
     themeLabel.userData.baseScale = themeLabel.scale.clone();
     themeLabel.userData.refDist = 160; // distance where baseScale looks right
@@ -315,6 +368,7 @@ function createStarsFromBullets(projectList) {
         pl.userData.baseScale = pl.scale.clone();
         pl.userData.refDist = 140;
         pl.userData.projectId = project.id;
+        pl.userData.labelTitle = project.title;
         pl.userData.priority = project.weight || 5;
         pl.userData.home = pl.position.clone();
         pl.userData.nudge = new THREE.Vector3();
@@ -453,32 +507,27 @@ function updateLabelVisibility() {
     if (base) {
       const f = dist / ref;
       const clamped = THREE.MathUtils.clamp(f, 0.45, 1.35);
-      // Slightly smaller on mobile so theme plates fit the narrow viewport
-      const m = isMobile ? 0.7 : 1;
+      // Smaller on mobile so theme/project plates fit the narrow viewport
+      const m = isMobile ? 0.58 : 1;
       label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
     }
 
-    // Screen-space: hide labels that clip too far past the viewport (esp. mobile)
+    // Screen-space: hide labels that clip past the viewport (esp. mobile)
     _labelNdc.copy(_labelWorld).project(camera);
     const sx = (_labelNdc.x * 0.5 + 0.5) * w;
     const sy = (-_labelNdc.y * 0.5 + 0.5) * h;
     const behind = _labelNdc.z > 1 || _labelNdc.z < -1;
-    const halfWpx = Math.max(28, (label.scale.x / Math.max(dist, 1)) * (h * 0.32));
-    const halfHpx = Math.max(10, (label.scale.y / Math.max(dist, 1)) * (h * 0.32));
-    const inset = isMobile ? 4 : 2;
+    const halfWpx = Math.max(24, (label.scale.x / Math.max(dist, 1)) * (h * 0.3));
+    const halfHpx = Math.max(10, (label.scale.y / Math.max(dist, 1)) * (h * 0.3));
+    const inset = isMobile ? 8 : 4;
     const overflowL = Math.max(0, inset - (sx - halfWpx));
     const overflowR = Math.max(0, (sx + halfWpx) - (w - inset));
     const overflowT = Math.max(0, inset - (sy - halfHpx));
     const overflowB = Math.max(0, (sy + halfHpx) - (h - inset));
-    // Hide when center is outside, or the plate heavily clips the viewport
-    let offscreen = behind
+    // Hide when center is outside, or any meaningful plate overflow
+    const offscreen = behind
       || sx < inset || sx > w - inset || sy < inset || sy > h - inset
-      || (overflowL + overflowR) > halfWpx * 0.85
-      || (overflowT + overflowB) > halfHpx * 0.85;
-    // Mobile: keep theme plates away from left/right gutters
-    if (isMobile && label.userData.kind === 'theme' && (sx < w * 0.28 || sx > w * 0.72)) {
-      offscreen = true;
-    }
+      || overflowL > 2 || overflowR > 2 || overflowT > 2 || overflowB > 2;
 
     if (offscreen) {
       label.visible = false;
@@ -661,14 +710,8 @@ function flyToStar(star) {
 function enterOverviewMode() {
   closeHUD();
   isFlying = true;
-  controls.targetRotationX = 0.28;
-  controls.targetRotationY = 0.42;
-  controls.targetZoom = 170;
-  controls.currentRotationX = 0.28;
-  controls.currentRotationY = 0.42;
-  controls.currentZoom = 170;
   const startPos = camera.position.clone();
-  updateCameraFromControls();
+  fitOverviewToClusters();
   const endPos = camera.position.clone();
   camera.position.copy(startPos);
   const start = performance.now();
@@ -676,12 +719,133 @@ function enterOverviewMode() {
     const t = Math.min((now - start) / 1000, 1);
     const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     camera.position.lerpVectors(startPos, endPos, e);
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(controls.lookAt);
     if (t < 1) requestAnimationFrame(step);
     else isFlying = false;
   }
   requestAnimationFrame(step);
 }
+
+function firstStarForProject(projectId) {
+  return stars.find((s) => s.project.id === projectId) || null;
+}
+
+function firstStarForTheme(theme) {
+  const list = stars
+    .filter((s) => s.project.theme === theme)
+    .sort((a, b) => (b.project.weight || 0) - (a.project.weight || 0));
+  return list[0] || null;
+}
+
+function expectedHudTitleForLabel(label) {
+  if (label.userData.kind === 'project') {
+    return label.userData.labelTitle
+      || projects.find((p) => p.id === label.userData.projectId)?.title
+      || null;
+  }
+  if (label.userData.kind === 'theme') {
+    return firstStarForTheme(label.userData.theme)?.project?.title || null;
+  }
+  return null;
+}
+
+function openFromLabel(label) {
+  if (!label) return false;
+  let star = null;
+  if (label.userData.kind === 'project' && label.userData.projectId) {
+    star = firstStarForProject(label.userData.projectId);
+  } else if (label.userData.kind === 'theme' && label.userData.theme) {
+    star = firstStarForTheme(label.userData.theme);
+  }
+  if (!star) return false;
+  openHUD(star);
+  return true;
+}
+
+/** Screen-space hit test for visible labels (explicit click targets). */
+function pickLabelAt(clientX, clientY) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const world = new THREE.Vector3();
+  const ndc = new THREE.Vector3();
+  let best = null;
+  let bestScore = Infinity;
+
+  labelSprites.forEach((label) => {
+    if (!label.visible) return;
+    label.getWorldPosition(world);
+    ndc.copy(world).project(camera);
+    if (ndc.z > 1 || ndc.z < -1) return;
+    const sx = (ndc.x * 0.5 + 0.5) * w;
+    const sy = (-ndc.y * 0.5 + 0.5) * h;
+    const dist = world.distanceTo(camera.position);
+    const halfW = Math.max(36, (label.scale.x / Math.max(dist, 1)) * (h * 0.36));
+    const halfH = Math.max(12, (label.scale.y / Math.max(dist, 1)) * (h * 0.36));
+    if (Math.abs(clientX - sx) > halfW || Math.abs(clientY - sy) > halfH) return;
+    const score = dist + Math.hypot(clientX - sx, clientY - sy) * 0.02;
+    if (score < bestScore) {
+      bestScore = score;
+      best = label;
+    }
+  });
+  return best;
+}
+
+/** Tight screen-space star pick — only within STAR_PICK_RADIUS_PX; prefer frontmost. */
+function pickStarAt(clientX, clientY) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const ndc = new THREE.Vector3();
+  let best = null;
+  let bestCamDist = Infinity;
+  let bestScreenD = Infinity;
+
+  stars.forEach((star) => {
+    ndc.copy(star.position).project(camera);
+    if (ndc.z > 1) return;
+    const sx = (ndc.x * 0.5 + 0.5) * w;
+    const sy = (-ndc.y * 0.5 + 0.5) * h;
+    const screenD = Math.hypot(sx - clientX, sy - clientY);
+    if (screenD > STAR_PICK_RADIUS_PX) return;
+    const camDist = star.position.distanceTo(camera.position);
+    if (camDist < bestCamDist - 0.05
+      || (Math.abs(camDist - bestCamDist) <= 0.05 && screenD < bestScreenD)) {
+      best = star;
+      bestCamDist = camDist;
+      bestScreenD = screenD;
+    }
+  });
+  return best;
+}
+
+/**
+ * Scripted check: activate every visible label and assert HUD title matches.
+ * Exposed on window for QA / CI scripts.
+ */
+async function assertLabelClicks() {
+  const results = [];
+  const visible = labelSprites.filter((l) => l.visible);
+  for (const label of visible) {
+    const expected = expectedHudTitleForLabel(label);
+    const opened = openFromLabel(label);
+    await new Promise((r) => setTimeout(r, 80));
+    const got = document.querySelector('[data-hud="project"]')?.textContent || '';
+    const ok = opened && !!expected && got === expected;
+    results.push({
+      kind: label.userData.kind,
+      label: label.userData.labelTitle || label.userData.theme || label.userData.projectId,
+      expected,
+      got,
+      ok
+    });
+  }
+  if (currentStar) closeHUD();
+  const failed = results.filter((r) => !r.ok);
+  return { ok: failed.length === 0, total: results.length, failed, results };
+}
+window.assertLabelClicks = assertLabelClicks;
+window.openFromLabel = openFromLabel;
+window.pickLabelAt = pickLabelAt;
 
 // ============================================================================
 // Interaction
@@ -737,31 +901,21 @@ function setupInteraction() {
 
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
-    controls.targetZoom = Math.max(90, Math.min(320, controls.targetZoom + e.deltaY * 0.07));
+    controls.targetZoom = Math.max(120, Math.min(520, controls.targetZoom + e.deltaY * 0.1));
   }, { passive: false });
 
   container.addEventListener('click', (e) => {
     if (dragDist > 8) return;
-    // Screen-space pick: nearest projected star to the click (works while HUD open)
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const threshold = currentStar ? 42 : 28;
-    let best = null;
-    let bestD = threshold;
-    const ndc = new THREE.Vector3();
-    stars.forEach((star) => {
-      ndc.copy(star.position).project(camera);
-      if (ndc.z > 1) return;
-      const sx = (ndc.x * 0.5 + 0.5) * w;
-      const sy = (-ndc.y * 0.5 + 0.5) * h;
-      const d = Math.hypot(sx - e.clientX, sy - e.clientY);
-      if (d < bestD) {
-        bestD = d;
-        best = star;
-      }
-    });
-    if (best) {
-      openHUD(best);
+    // 1) Labels are explicit targets — never fall through to nearest-star guess
+    const labelHit = pickLabelAt(e.clientX, e.clientY);
+    if (labelHit) {
+      openFromLabel(labelHit);
+      return;
+    }
+    // 2) Stars: only within a small pixel radius; prefer frontmost
+    const starHit = pickStarAt(e.clientX, e.clientY);
+    if (starHit) {
+      openHUD(starHit);
       return;
     }
     // Empty space while HUD open → close
@@ -778,11 +932,18 @@ function setupInteraction() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
+    if (!currentStar && !isFlying) fitOverviewToClusters();
   });
 
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
     e.stopPropagation();
     closeHUD();
+  });
+
+  // Title → printable CV (DOM link above canvas; stop any bubbling just in case)
+  document.querySelector('.title-print-link')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // default navigation to /cv/?print=1
   });
 }
 
@@ -796,7 +957,7 @@ function animate() {
     controls.currentRotationY += (controls.targetRotationY - controls.currentRotationY) * 0.05;
     controls.currentZoom += (controls.targetZoom - controls.currentZoom) * 0.05;
     updateCameraFromControls();
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(controls.lookAt);
   }
 
   nebulaGroups.forEach(({ group, theme, phase }) => {
@@ -871,6 +1032,7 @@ async function init() {
   initScene();
   console.log(`Loaded ${contentData.length} projects from bundled content`);
   createStarsFromBullets(contentData);
+  fitOverviewToClusters();
   setupInteraction();
   generatePrintView(contentData);
   document.getElementById('loading').classList.add('hidden');
