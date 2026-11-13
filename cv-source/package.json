@@ -4,8 +4,9 @@
   "description": "Interactive 3D CV constellation for Christophe de Dinechin",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "process-content": "node scripts/process-content.js",
+    "dev": "npm run process-content && vite",
+    "build": "npm run process-content && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
