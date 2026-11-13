@@ -4,6 +4,7 @@ title: HP-48 Games & HPDS
 theme: Games & 3D
 years: 1989-1993
 weight: 9
+print: 2
 related: [db48x]
 videos: []
 links:

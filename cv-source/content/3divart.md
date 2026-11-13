@@ -3,10 +3,12 @@ id: 3divart
 title: 3DIVART
 theme: Art & Culture
 years: 
-weight: 7
-related: [xl-tao3d, taodyne]
-videos:
-  - GUMqT9W5BG8
+weight: 9
+print: 1
+related: [xl-tao3d, taodyne, firefly]
+videos: []
+images:
+  - /cv/3DIVART.jpg
 links: []
 ---
 
@@ -15,4 +17,3 @@ links: []
 - Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D
 - Synthetic 3D art you can see without glasses on suitable displays
 - Pieces derived from ShaderToy and some original work
-- Related experiment: Firefly — ray-marched gaming with distance-field physics

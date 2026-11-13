@@ -4,9 +4,9 @@ title: XL, Tao3D & ELFE
 theme: Languages & Compilers
 years: 1992-Present
 weight: 9
-related: [taodyne, 3divart]
-videos:
-  - GUMqT9W5BG8
+print: 3
+related: [taodyne, 3divart, firefly, lx]
+videos: []
 links:
   - label: XL
     url: https://github.com/c3d/xl

@@ -30,10 +30,15 @@ export const classicStyle = {
       });
       html += '</section>';
     });
+    if (model.patentsLine) {
+      html += `<p class="pvc-patents">${model.patentsLine}</p>`;
+    }
     html += `<footer class="pvc-qr">
       <img src="${model.logoSrc}" alt="" class="pvc-logo-sm">
-      <img src="${model.qrSrc}" alt="QR to interactive CV" class="pvc-qr-img" width="64" height="64">
-      <div><strong>Interactive constellation</strong><br>${model.qrUrl}<br>${model.email}</div>
+      <a class="pvc-qr-link" href="${model.qrUrl}" target="_blank" rel="noopener">
+        <img src="${model.qrSrc}" alt="QR to interactive CV" class="pvc-qr-img" width="64" height="64">
+        <div><strong>Interactive constellation</strong><br>${model.qrUrl}<br>${model.email}</div>
+      </a>
     </footer></div>`;
     return html;
   }

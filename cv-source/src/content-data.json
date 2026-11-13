@@ -4,16 +4,19 @@
     "title": "3DIVART",
     "theme": "Art & Culture",
     "years": null,
-    "weight": 7,
+    "weight": 9,
+    "print": 1,
     "related": [
       "xl-tao3d",
-      "taodyne"
+      "taodyne",
+      "firefly"
     ],
-    "videos": [
-      "GUMqT9W5BG8"
+    "videos": [],
+    "images": [
+      "/cv/3DIVART.jpg"
     ],
     "links": [],
-    "content": "<h2>3D interactive visual art</h2>\n<ul>\n<li>Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D</li>\n<li>Synthetic 3D art you can see without glasses on suitable displays</li>\n<li>Pieces derived from ShaderToy and some original work</li>\n<li>Related experiment: Firefly — ray-marched gaming with distance-field physics</li>\n</ul>\n",
+    "content": "<h2>3D interactive visual art</h2>\n<ul>\n<li>Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D</li>\n<li>Synthetic 3D art you can see without glasses on suitable displays</li>\n<li>Pieces derived from ShaderToy and some original work</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D",
@@ -26,10 +29,6 @@
       {
         "text": "Pieces derived from ShaderToy and some original work",
         "section": "3D interactive visual art"
-      },
-      {
-        "text": "Related experiment: Firefly — ray-marched gaming with distance-field physics",
-        "section": "3D interactive visual art"
       }
     ]
   },
@@ -39,6 +38,7 @@
     "theme": "Games & 3D",
     "years": "1989-1990",
     "weight": 10,
+    "print": 1,
     "related": [
       "hp48-games"
     ],
@@ -76,16 +76,116 @@
     ]
   },
   {
+    "id": "blogs",
+    "title": "Blogs & Writing",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 6,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "Grenouille Bouillie",
+        "url": "http://grenouille-bouillie.blogspot.fr/"
+      },
+      {
+        "label": "Red Skin Cat",
+        "url": "https://redskincat.wordpress.com/"
+      },
+      {
+        "label": "Taodyne blog",
+        "url": "http://blog.taodyne.com"
+      }
+    ],
+    "content": "<h2>Technical and personal blogs</h2>\n<ul>\n<li>Grenouille Bouillie — tech frustrations and French politics</li>\n<li>Red Skin Cat — personal technical brain dump</li>\n<li>Taodyne blog — Tao3D tutorials, opinions, and product news</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Grenouille Bouillie — tech frustrations and French politics",
+        "section": "Technical and personal blogs"
+      },
+      {
+        "text": "Red Skin Cat — personal technical brain dump",
+        "section": "Technical and personal blogs"
+      },
+      {
+        "text": "Taodyne blog — Tao3D tutorials, opinions, and product news",
+        "section": "Technical and personal blogs"
+      }
+    ]
+  },
+  {
+    "id": "breakout-tao3d",
+    "title": "Breakout in Tao3D",
+    "theme": "Games & 3D",
+    "years": null,
+    "weight": 7,
+    "related": [
+      "taodyne",
+      "xl-tao3d"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Taodyne blog",
+        "url": "http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"
+      }
+    ],
+    "content": "<h2>Demo game under 300 lines of Tao3D</h2>\n<ul>\n<li>Breakout-style demo to show short animated programs to students</li>\n<li>Written in Tao3D to illustrate concise interactive 3D coding</li>\n<li>Not a commercial product — a teaching / demo piece</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Breakout-style demo to show short animated programs to students",
+        "section": "Demo game under 300 lines of Tao3D"
+      },
+      {
+        "text": "Written in Tao3D to illustrate concise interactive 3D coding",
+        "section": "Demo game under 300 lines of Tao3D"
+      },
+      {
+        "text": "Not a commercial product — a teaching / demo piece",
+        "section": "Demo game under 300 lines of Tao3D"
+      }
+    ]
+  },
+  {
+    "id": "capavoit",
+    "title": "CapaVoit",
+    "theme": "Tools & Apps",
+    "years": null,
+    "weight": 7,
+    "related": [
+      "musolver"
+    ],
+    "videos": [],
+    "links": [],
+    "content": "<h2>Subway car capacity planning for Axlog</h2>\n<ul>\n<li>First Mac application, built at Axlog Ingénierie in Paris</li>\n<li>MacDraw-like editor with a built-in numerical solver</li>\n<li>Aimed at capacity planning and rapid prototyping of subway cars</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "First Mac application, built at Axlog Ingénierie in Paris",
+        "section": "Subway car capacity planning for Axlog"
+      },
+      {
+        "text": "MacDraw-like editor with a built-in numerical solver",
+        "section": "Subway car capacity planning for Axlog"
+      },
+      {
+        "text": "Aimed at capacity planning and rapid prototyping of subway cars",
+        "section": "Subway car capacity planning for Axlog"
+      }
+    ]
+  },
+  {
     "id": "db48x",
     "title": "DB48X - Modern RPL Calculator",
     "theme": "Languages & Compilers",
     "years": "2022-Present",
     "weight": 9,
+    "print": 2,
     "related": [
       "hp48-games"
     ],
     "videos": [
-      "WU5Dg1mPkl8"
+      "WU5Dg1mPkl8",
+      "34pPycq8ia8"
     ],
     "links": [
       {
@@ -95,6 +195,14 @@
       {
         "label": "Try it",
         "url": "https://c3d.github.io/db48x/"
+      },
+      {
+        "label": "FOSDEM 2024",
+        "url": "https://www.youtube.com/watch?v=WU5Dg1mPkl8"
+      },
+      {
+        "label": "FOSDEM 2023",
+        "url": "https://www.youtube.com/watch?v=34pPycq8ia8"
       }
     ],
     "content": "<h2>A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)</h2>\n<p>Free software for physical calculators or phone apps.</p>\n<ul>\n<li>Rebuild and improve the HP48-family user experience</li>\n<li>Rich RPL data types and built-in functions with Lisp-level programming power</li>\n<li>Targets SwissMicro DM42 and DM32 (DMCP platform)</li>\n<li>Simulator tested on macOS and Linux</li>\n<li>Long-term ports envisioned for ARM HP50/HP49/HP48Gii and HP Prime G1</li>\n<li>Presented at FOSDEM 2023 with an update in 2024</li>\n</ul>\n",
@@ -126,11 +234,50 @@
     ]
   },
   {
+    "id": "de200c",
+    "title": "HP DE200C MythTV",
+    "theme": "Tools & Apps",
+    "years": null,
+    "weight": 7,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "Blog write-up",
+        "url": "http://grenouille-bouillie.blogspot.fr/2008/12/hp-de200c-digital-entertainment-center.html"
+      },
+      {
+        "label": "VFD driver",
+        "url": "http://repo.or.cz/w/de200vfd.git"
+      }
+    ],
+    "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)",
+        "section": "Home entertainment center from an HP Linux appliance"
+      },
+      {
+        "text": "Converted with MythTV, DVD drive, more RAM, and a TV tuner",
+        "section": "Home entertainment center from an HP Linux appliance"
+      },
+      {
+        "text": "Wrote a client/server driver for the front-panel VFD display",
+        "section": "Home entertainment center from an HP Linux appliance"
+      },
+      {
+        "text": "Linux patches for remote control and front-panel keys",
+        "section": "Home entertainment center from an HP Linux appliance"
+      }
+    ]
+  },
+  {
     "id": "dxo-one",
     "title": "DxO ONE Connected Camera",
     "theme": "Systems & Virtualization",
     "years": "2015-2016",
     "weight": 10,
+    "print": 3,
     "related": [],
     "videos": [],
     "links": [
@@ -156,11 +303,36 @@
     ]
   },
   {
+    "id": "ecu-cartoons",
+    "title": "ECUTEST & HPVM Cartoons",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 6,
+    "related": [
+      "ecutest",
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "content": "<h2>Release cartoons for HP products</h2>\n<ul>\n<li>Cartoon series for HP ECUTEST manufacturing release</li>\n<li>Separate cartoon set for HPVM release humor and milestones</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Cartoon series for HP ECUTEST manufacturing release",
+        "section": "Release cartoons for HP products"
+      },
+      {
+        "text": "Separate cartoon set for HPVM release humor and milestones",
+        "section": "Release cartoons for HP products"
+      }
+    ]
+  },
+  {
     "id": "ecutest",
     "title": "HP ECUTEST Real-Time System",
     "theme": "Systems & Virtualization",
     "years": "1994-1998",
     "weight": 9,
+    "print": 4,
     "related": [],
     "videos": [],
     "links": [],
@@ -194,6 +366,7 @@
     "theme": "Tools & Apps",
     "years": null,
     "weight": 6,
+    "print": 3,
     "related": [],
     "videos": [],
     "links": [
@@ -219,11 +392,52 @@
     ]
   },
   {
+    "id": "firefly",
+    "title": "Firefly",
+    "theme": "Games & 3D",
+    "years": null,
+    "weight": 9,
+    "related": [
+      "xl-tao3d",
+      "3divart",
+      "taodyne"
+    ],
+    "videos": [
+      "GUMqT9W5BG8"
+    ],
+    "links": [
+      {
+        "label": "YouTube",
+        "url": "https://www.youtube.com/watch?v=GUMqT9W5BG8"
+      }
+    ],
+    "content": "<h2>Ray-marched gaming experiment in Tao3D</h2>\n<ul>\n<li>Real-time ray-marching game experiment with distance-field physics</li>\n<li>Collisions computed by the same GLSL distance field as rendering</li>\n<li>Written as a short Tao3D + GLSL experiment (hundreds of lines)</li>\n<li>Intentionally echoes some of the feel of Alpha Waves</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Real-time ray-marching game experiment with distance-field physics",
+        "section": "Ray-marched gaming experiment in Tao3D"
+      },
+      {
+        "text": "Collisions computed by the same GLSL distance field as rendering",
+        "section": "Ray-marched gaming experiment in Tao3D"
+      },
+      {
+        "text": "Written as a short Tao3D + GLSL experiment (hundreds of lines)",
+        "section": "Ray-marched gaming experiment in Tao3D"
+      },
+      {
+        "text": "Intentionally echoes some of the feel of Alpha Waves",
+        "section": "Ray-marched gaming experiment in Tao3D"
+      }
+    ]
+  },
+  {
     "id": "hp48-games",
     "title": "HP-48 Games & HPDS",
     "theme": "Games & 3D",
     "years": "1989-1993",
     "weight": 9,
+    "print": 2,
     "related": [
       "db48x"
     ],
@@ -264,6 +478,7 @@
     "theme": "Languages & Compilers",
     "years": "1998-2000",
     "weight": 10,
+    "print": 1,
     "related": [],
     "videos": [],
     "links": [
@@ -302,6 +517,7 @@
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 10,
+    "print": 1,
     "related": [
       "kata-containers",
       "spice"
@@ -343,9 +559,15 @@
     "theme": "Art & Culture",
     "years": null,
     "weight": 7,
+    "print": 2,
     "related": [],
     "videos": [],
-    "links": [],
+    "links": [
+      {
+        "label": "Amazon FR",
+        "url": "https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X"
+      }
+    ],
     "content": "<h2>Science-fiction novel (French)</h2>\n<ul>\n<li>Started as a student around the same time as Alpha Waves</li>\n<li>Finished after 32 years and published</li>\n<li>Humorous SF autobiography by Antoine Ravelin</li>\n<li>A video game saves humanity with the help of dinosaurs</li>\n<li>English translation tentatively titled &quot;Nin, Binary&quot; (very low priority)</li>\n</ul>\n",
     "bullets": [
       {
@@ -459,11 +681,44 @@
     ]
   },
   {
+    "id": "lx",
+    "title": "LX — Langage Expérimental",
+    "theme": "Languages & Compilers",
+    "years": "1988-1998",
+    "weight": 8,
+    "related": [
+      "xl-tao3d",
+      "mozart-moka"
+    ],
+    "videos": [],
+    "links": [],
+    "content": "<h2>Precursor to XL</h2>\n<ul>\n<li>Started after an Alsys SA Ada internship in 1988</li>\n<li>Experimental language design spanning roughly a decade</li>\n<li>Early compilers targeted MC68000; later generated C for portability</li>\n<li>Rewritten several times as ideas evolved; led into XL</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Started after an Alsys SA Ada internship in 1988",
+        "section": "Precursor to XL"
+      },
+      {
+        "text": "Experimental language design spanning roughly a decade",
+        "section": "Precursor to XL"
+      },
+      {
+        "text": "Early compilers targeted MC68000; later generated C for portability",
+        "section": "Precursor to XL"
+      },
+      {
+        "text": "Rewritten several times as ideas evolved; led into XL",
+        "section": "Precursor to XL"
+      }
+    ]
+  },
+  {
     "id": "make-it-quick",
     "title": "Make-It-Quick",
     "theme": "Tools & Apps",
     "years": null,
     "weight": 7,
+    "print": 1,
     "related": [
       "recorder"
     ],
@@ -495,36 +750,145 @@
     ]
   },
   {
-    "id": "physics-books",
-    "title": "Physics Research & Books",
-    "theme": "Physics",
+    "id": "mozart-moka",
+    "title": "Mozart & Moka",
+    "theme": "Languages & Compilers",
     "years": null,
-    "weight": 8,
-    "related": [],
+    "weight": 9,
+    "related": [
+      "lx",
+      "xl-tao3d"
+    ],
     "videos": [],
     "links": [
       {
-        "label": "A Theory of Incomplete Measurements",
-        "url": "https://c3d.github.io/TIM/"
+        "label": "Mozart",
+        "url": "http://mozart-dev.sourceforge.net"
       }
     ],
-    "content": "<h2>Amateur physics research</h2>\n<ul>\n<li>A Theory of Incomplete Measurements — unifying GR and quantum mechanics</li>\n<li>New relativity principle: do physics with any instrument</li>\n<li>Discrete measurements instead of continuum space-time</li>\n<li>Réunifions la physique — shorter French introduction</li>\n</ul>\n",
+    "content": "<h2>Extensible front-end IL and Java-to-Java compiler</h2>\n<ul>\n<li>Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article</li>\n<li>Experiments that informed later XL / parse-tree design choices</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)",
+        "section": "Extensible front-end IL and Java-to-Java compiler"
+      },
+      {
+        "text": "Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article",
+        "section": "Extensible front-end IL and Java-to-Java compiler"
+      },
+      {
+        "text": "Experiments that informed later XL / parse-tree design choices",
+        "section": "Extensible front-end IL and Java-to-Java compiler"
+      }
+    ]
+  },
+  {
+    "id": "musolver",
+    "title": "µSolver",
+    "theme": "Tools & Apps",
+    "years": "1986-1987",
+    "weight": 7,
+    "related": [
+      "capavoit"
+    ],
+    "videos": [],
+    "links": [],
+    "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "First graphical app — TK!Solver-style system of non-linear equations",
+        "section": "Multi-equation numerical solver on Atari ST"
+      },
+      {
+        "text": "Added complex numbers and stronger graphing vs TK!Solver",
+        "section": "Multi-equation numerical solver on Atari ST"
+      },
+      {
+        "text": "Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping",
+        "section": "Multi-equation numerical solver on Atari ST"
+      }
+    ]
+  },
+  {
+    "id": "patents",
+    "title": "HP Virtualization Patents",
+    "theme": "Systems & Virtualization",
+    "years": "2001-2014",
+    "weight": 9,
+    "print": 5,
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Justia inventor page",
+        "url": "https://patents.justia.com/inventor/christophe-de-dinechin"
+      }
+    ],
+    "content": "<h2>Issued patents (Hewlett-Packard)</h2>\n<ul>\n<li>US 8,694,819 — virtual interval timer adjustment for VMs (with Noel, Ross)</li>\n<li>US 8,505,020 — computer workload migration using processor pooling</li>\n<li>US 8,091,090 — scratch registers for a virtual-machine monitor</li>\n<li>US 7,996,833 — replacing instructions/blocks in guest code</li>\n<li>US 7,765,238 / 7,613,847 / 7,577,944 / 7,478,394 / 7,330,942 / 7,213,125 / 6,895,491 — VM memory, I/O, and instruction virtualization</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "US 8,694,819 — virtual interval timer adjustment for VMs (with Noel, Ross)",
+        "section": "Issued patents (Hewlett-Packard)"
+      },
+      {
+        "text": "US 8,505,020 — computer workload migration using processor pooling",
+        "section": "Issued patents (Hewlett-Packard)"
+      },
+      {
+        "text": "US 8,091,090 — scratch registers for a virtual-machine monitor",
+        "section": "Issued patents (Hewlett-Packard)"
+      },
+      {
+        "text": "US 7,996,833 — replacing instructions/blocks in guest code",
+        "section": "Issued patents (Hewlett-Packard)"
+      },
+      {
+        "text": "US 7,765,238 / 7,613,847 / 7,577,944 / 7,478,394 / 7,330,942 / 7,213,125 / 6,895,491 — VM memory, I/O, and instruction virtualization",
+        "section": "Issued patents (Hewlett-Packard)"
+      }
+    ]
+  },
+  {
+    "id": "physics-books",
+    "title": "A Theory of Incomplete Measurements",
+    "theme": "Physics",
+    "years": null,
+    "weight": 9,
+    "print": 1,
+    "related": [
+      "reunifions",
+      "special-relativity"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "TIM site",
+        "url": "https://c3d.github.io/TIM/"
+      },
+      {
+        "label": "Amazon",
+        "url": "https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M"
+      },
+      {
+        "label": "YouTube playlist",
+        "url": "https://www.youtube.com/playlist?list=PLQQY5qJ7xX-f-3_8-iYzKplcDemASk8NQ"
+      }
+    ],
+    "content": "<h2>Amateur physics research — unifying GR and QM</h2>\n<ul>\n<li>A Theory of Incomplete Measurements — unifying GR and quantum mechanics</li>\n<li>New relativity principle: do physics with any instrument</li>\n<li>Discrete measurements instead of continuum space-time</li>\n</ul>\n",
     "bullets": [
       {
         "text": "A Theory of Incomplete Measurements — unifying GR and quantum mechanics",
-        "section": "Amateur physics research"
+        "section": "Amateur physics research — unifying GR and QM"
       },
       {
         "text": "New relativity principle: do physics with any instrument",
-        "section": "Amateur physics research"
+        "section": "Amateur physics research — unifying GR and QM"
       },
       {
         "text": "Discrete measurements instead of continuum space-time",
-        "section": "Amateur physics research"
-      },
-      {
-        "text": "Réunifions la physique — shorter French introduction",
-        "section": "Amateur physics research"
+        "section": "Amateur physics research — unifying GR and QM"
       }
     ]
   },
@@ -534,6 +898,7 @@
     "theme": "Tools & Apps",
     "years": null,
     "weight": 7,
+    "print": 2,
     "related": [
       "make-it-quick"
     ],
@@ -565,11 +930,131 @@
     ]
   },
   {
+    "id": "reunifions",
+    "title": "Réunifions la physique",
+    "theme": "Physics",
+    "years": null,
+    "weight": 8,
+    "print": 2,
+    "related": [
+      "physics-books"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Amazon FR",
+        "url": "https://www.amazon.fr/dp/B0C5GQTWTQ"
+      }
+    ],
+    "content": "<h2>Shorter French introduction to TIM ideas</h2>\n<ul>\n<li>Gentle French introduction to incomplete-measurement physics</li>\n<li>Companion to A Theory of Incomplete Measurements</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Gentle French introduction to incomplete-measurement physics",
+        "section": "Shorter French introduction to TIM ideas"
+      },
+      {
+        "text": "Companion to A Theory of Incomplete Measurements",
+        "section": "Shorter French introduction to TIM ideas"
+      }
+    ]
+  },
+  {
+    "id": "sonar-thales",
+    "title": "Thales Sonar Serious Game",
+    "theme": "Games & 3D",
+    "years": null,
+    "weight": 9,
+    "related": [
+      "taodyne",
+      "xl-tao3d"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Taodyne blog",
+        "url": "http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d"
+      }
+    ],
+    "content": "<h2>Tao3D serious game for Thales Underwater Systems</h2>\n<ul>\n<li>Interactive presentation of Thales sonar offerings</li>\n<li>Followed by a simulation of sonar operations</li>\n<li>Among the largest applications written with Tao3D</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Interactive presentation of Thales sonar offerings",
+        "section": "Tao3D serious game for Thales Underwater Systems"
+      },
+      {
+        "text": "Followed by a simulation of sonar operations",
+        "section": "Tao3D serious game for Thales Underwater Systems"
+      },
+      {
+        "text": "Among the largest applications written with Tao3D",
+        "section": "Tao3D serious game for Thales Underwater Systems"
+      }
+    ]
+  },
+  {
+    "id": "special-relativity",
+    "title": "Relativity as Perspective",
+    "theme": "Physics",
+    "years": null,
+    "weight": 7,
+    "related": [
+      "physics-books"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Essay",
+        "url": "http://cc3d.free.fr/Relativity/Relat1.html"
+      }
+    ],
+    "content": "<h2>Special relativity as space-time perspective</h2>\n<ul>\n<li>Explains Lorentz transforms as perspective / Wick rotation in space-time</li>\n<li>Written to make relativity intuitive beyond 1905 textbook formulas</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Explains Lorentz transforms as perspective / Wick rotation in space-time",
+        "section": "Special relativity as space-time perspective"
+      },
+      {
+        "text": "Written to make relativity intuitive beyond 1905 textbook formulas",
+        "section": "Special relativity as space-time perspective"
+      }
+    ]
+  },
+  {
+    "id": "spectrum-plus",
+    "title": "Spectrum+",
+    "theme": "Languages & Compilers",
+    "years": null,
+    "weight": 7,
+    "related": [],
+    "videos": [],
+    "links": [],
+    "content": "<h2>BASIC extension for the Sinclair ZX Spectrum</h2>\n<ul>\n<li>First published program — graphic BASIC extensions for the ZX Spectrum</li>\n<li>Windows, ellipses, clipping, flood fill (including 8×8 patterns)</li>\n<li>~3.5KB of Z80 assembly; distributed by Valric-Laurene</li>\n<li>Name collided with Sinclair’s own Spectrum+ computer release</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "First published program — graphic BASIC extensions for the ZX Spectrum",
+        "section": "BASIC extension for the Sinclair ZX Spectrum"
+      },
+      {
+        "text": "Windows, ellipses, clipping, flood fill (including 8×8 patterns)",
+        "section": "BASIC extension for the Sinclair ZX Spectrum"
+      },
+      {
+        "text": "~3.5KB of Z80 assembly; distributed by Valric-Laurene",
+        "section": "BASIC extension for the Sinclair ZX Spectrum"
+      },
+      {
+        "text": "Name collided with Sinclair’s own Spectrum+ computer release",
+        "section": "BASIC extension for the Sinclair ZX Spectrum"
+      }
+    ]
+  },
+  {
     "id": "spice",
     "title": "SPICE Remote Streaming",
     "theme": "Systems & Virtualization",
     "years": "2017-Present",
     "weight": 8,
+    "print": 2,
     "related": [
       "hpvm",
       "kata-containers"
@@ -603,6 +1088,7 @@
     "theme": "Games & 3D",
     "years": "2010-2016",
     "weight": 9,
+    "print": 3,
     "related": [
       "xl-tao3d",
       "3divart"
@@ -648,13 +1134,14 @@
     "theme": "Languages & Compilers",
     "years": "1992-Present",
     "weight": 9,
+    "print": 3,
     "related": [
       "taodyne",
-      "3divart"
+      "3divart",
+      "firefly",
+      "lx"
     ],
-    "videos": [
-      "GUMqT9W5BG8"
-    ],
+    "videos": [],
     "links": [
       {
         "label": "XL",

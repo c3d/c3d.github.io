@@ -78,10 +78,10 @@ export const nebulaStyle = {
           <section class="pvn-card"><h2>Tools &amp; technologies</h2>
             <div class="pvn-tags">${TECH_TAGS.map((t) => `<span>${t}</span>`).join('')}</div>
           </section>
-          <section class="pvn-card pvn-qr">
-            <img src="${model.qrSrc}" alt="QR" width="72" height="72">
+          <a class="pvn-card pvn-qr" href="${model.qrUrl}" target="_blank" rel="noopener">
+            <img src="${model.qrSrc}" alt="QR to interactive CV" width="72" height="72">
             <div><p class="pvn-qr-title">Interactive constellation</p><p class="pvn-muted">${model.qrUrl}</p></div>
-          </section>
+          </a>
         </aside>
         <main class="pvn-main">`;
 
@@ -98,8 +98,12 @@ export const nebulaStyle = {
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });
-      html += `</div><div class="pvn-deco">${icon}</div></div></section>`;
+      html += `</div></div></section>`;
     });
+
+    if (model.patentsLine) {
+      html += `<p class="pvn-patents">${model.patentsLine}</p>`;
+    }
 
     html += '</main></div></div>';
     return html;

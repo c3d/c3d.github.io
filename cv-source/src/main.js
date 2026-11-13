@@ -6,6 +6,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import '@fontsource/orbitron/500.css';
 import '@fontsource/orbitron/700.css';
 import '@fontsource/source-sans-3/400.css';
+import '@fontsource/source-sans-3/500.css';
 import '@fontsource/source-sans-3/600.css';
 import './print/print-styles.css';
 import contentData from './content-data.json';
@@ -286,39 +287,46 @@ const WarpShiftShader = {
   `
 };
 
-const _camPrevPos = new THREE.Vector3();
-const _camVel = new THREE.Vector3();
-let _camSpeed = 0;
-let _camAccel = 0;
+/** Zoom-only Doppler: driven by radial dolly / zoom velocity — not orbit or idle. */
+let _prevLookDist = 0;
+let _prevZoomCtrl = 0;
+let _zoomVelSmoothed = 0;
 let _warpStrengthSmoothed = 0;
-let _camPrevInit = false;
+let _warpCamInit = false;
 
 function updateWarpShift(dt) {
   if (!warpShiftPass) return;
-  if (!_camPrevInit) {
-    _camPrevPos.copy(camera.position);
-    _camPrevInit = true;
+  const lookDist = camera.position.distanceTo(controls.lookAt);
+  const zoomCtrl = controls.currentZoom;
+  if (!_warpCamInit) {
+    _prevLookDist = lookDist;
+    _prevZoomCtrl = zoomCtrl;
+    _warpCamInit = true;
   }
-  const prevSpeed = _camSpeed;
-  _camVel.subVectors(camera.position, _camPrevPos).divideScalar(Math.max(dt, 1e-4));
-  _camSpeed = _camVel.length();
-  _camAccel = (_camSpeed - prevSpeed) / Math.max(dt, 1e-4);
-  _camPrevPos.copy(camera.position);
+  const invDt = 1 / Math.max(dt, 1e-4);
+  // Radial distance change = zoom in/out; pure orbit keeps lookDist ≈ constant
+  const radialVel = (lookDist - _prevLookDist) * invDt;
+  const zoomCtrlVel = (zoomCtrl - _prevZoomCtrl) * invDt;
+  _prevLookDist = lookDist;
+  _prevZoomCtrl = zoomCtrl;
 
+  const zoomVel = Math.max(Math.abs(radialVel), Math.abs(zoomCtrlVel) * 0.85);
   const reduced = prefersReducedMotion();
-  // Lower threshold so fly-to-star jumps reach visible strength
-  const speedN = THREE.MathUtils.clamp(_camSpeed / (reduced ? 180 : 55), 0, 1);
-  let target = reduced ? 0 : Math.pow(speedN, 0.85);
-  if (isFlying && !reduced) target = Math.max(target, 0.55);
-  const ease = 1 - Math.exp(-(reduced ? 3 : 10) * dt);
-  _warpStrengthSmoothed += (target - _warpStrengthSmoothed) * ease;
-  if (_warpStrengthSmoothed < 0.008) _warpStrengthSmoothed = 0;
+  const speedN = THREE.MathUtils.clamp(zoomVel / (reduced ? 140 : 48), 0, 1);
+  let target = reduced ? 0 : Math.pow(speedN, 0.9);
+  // Dead-zone: ignore tiny jitter from orbit smoothing / idle spin
+  if (zoomVel < (reduced ? 8 : 3.5)) target = 0;
 
-  // Optional QA override: window.__forceWarpShift = 0..1
+  const ease = 1 - Math.exp(-(reduced ? 4 : 12) * dt);
+  _zoomVelSmoothed += (zoomVel - _zoomVelSmoothed) * ease;
+  _warpStrengthSmoothed += (target - _warpStrengthSmoothed) * ease;
+  if (_warpStrengthSmoothed < 0.012) _warpStrengthSmoothed = 0;
+
   const forced = typeof window.__forceWarpShift === 'number' ? window.__forceWarpShift : null;
   warpShiftPass.uniforms.strength.value = forced != null ? forced : _warpStrengthSmoothed;
-  // Positive accelSign while speeding up (blue ahead), negative while braking
-  const aSign = THREE.MathUtils.clamp(_camAccel / 40, -1, 1);
+  // Zooming in (distance ↓) → blue ahead; zooming out → red-forward feel
+  const rawSign = -Math.sign(radialVel || zoomCtrlVel);
+  const aSign = rawSign * THREE.MathUtils.clamp(_zoomVelSmoothed / 40, 0, 1);
   const forcedSign = typeof window.__forceWarpAccel === 'number' ? window.__forceWarpAccel : null;
   warpShiftPass.uniforms.accelSign.value = forcedSign != null
     ? forcedSign
@@ -518,23 +526,108 @@ function createSoftSprite(hex, scale, opacity) {
   return sprite;
 }
 
+/** Background starfield: thousands of faint points on a far sphere (parallax via orbit). */
+let starfieldPoints = null;
+let starfieldAccent = null;
+
 function createDistantField() {
-  const colors = [0xff6666, 0xffaa55, 0xffff88, 0x88ff88, 0x88aaff, 0xcc88ff, 0xff88dd];
+  const N = 3200;
+  const positions = new Float32Array(N * 3);
+  const colors = new Float32Array(N * 3);
+  const phases = new Float32Array(N);
+  const sizes = new Float32Array(N);
   const rand = mulberry32(42);
-  const group = new THREE.Group();
-  for (let i = 0; i < 180; i++) {
-    const r = 380 + rand() * 700;
+  for (let i = 0; i < N; i++) {
+    const r = 560 + rand() * 620;
     const theta = rand() * Math.PI * 2;
     const phi = Math.acos(2 * rand() - 1);
-    const sprite = createSoftSprite(colors[i % colors.length], 2.5 + rand() * 4, 0.28);
+    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = r * Math.cos(phi);
+    // Keep below bloom threshold (~0.68) so stars stay subtle
+    const b = 0.22 + rand() * 0.38;
+    const cool = rand() > 0.7;
+    colors[i * 3] = cool ? b * 0.75 : b;
+    colors[i * 3 + 1] = b * (0.85 + rand() * 0.12);
+    colors[i * 3 + 2] = cool ? b * 1.05 : b * 0.9;
+    phases[i] = rand() * Math.PI * 2;
+    sizes[i] = 0.6 + rand() * 1.8;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  const mat = new THREE.PointsMaterial({
+    size: 2.2,
+    sizeAttenuation: true,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85,
+    depthWrite: false,
+    blending: THREE.NormalBlending,
+    fog: false
+  });
+  starfieldPoints = new THREE.Points(geo, mat);
+  starfieldPoints.frustumCulled = false;
+  starfieldPoints.renderOrder = -2;
+  starfieldPoints.userData.kind = 'starfield';
+  starfieldPoints.userData.phases = phases;
+  starfieldPoints.userData.baseColors = Float32Array.from(colors);
+  starfieldPoints.userData.pickable = false;
+  scene.add(starfieldPoints);
+
+  // Sparse soft accents (few, dim) for color without bloom wash
+  const accentColors = [0x6688aa, 0xaa8866, 0x8866aa, 0x66aa88];
+  starfieldAccent = new THREE.Group();
+  starfieldAccent.renderOrder = -1;
+  for (let i = 0; i < 48; i++) {
+    const r = 480 + rand() * 500;
+    const theta = rand() * Math.PI * 2;
+    const phi = Math.acos(2 * rand() - 1);
+    const sprite = createSoftSprite(accentColors[i % accentColors.length], 3 + rand() * 5, 0.12);
     sprite.position.set(
       r * Math.sin(phi) * Math.cos(theta),
       r * Math.sin(phi) * Math.sin(theta),
       r * Math.cos(phi)
     );
-    group.add(sprite);
+    sprite.userData.pickable = false;
+    starfieldAccent.add(sprite);
   }
-  scene.add(group);
+  scene.add(starfieldAccent);
+}
+
+function updateStarfieldTwinkle(t) {
+  if (!starfieldPoints) return;
+  const cols = starfieldPoints.geometry.attributes.color;
+  const phases = starfieldPoints.userData.phases;
+  const base = starfieldPoints.userData.baseColors;
+  // Update a rolling subset each frame for cheap twinkle
+  const n = phases.length;
+  const start = Math.floor(t * 60) % n;
+  const span = Math.min(400, n);
+  for (let k = 0; k < span; k++) {
+    const i = (start + k) % n;
+    const tw = 0.65 + 0.35 * (0.5 + 0.5 * Math.sin(t * 1.7 + phases[i]));
+    const i3 = i * 3;
+    cols.array[i3] = base[i3] * tw;
+    cols.array[i3 + 1] = base[i3 + 1] * tw;
+    cols.array[i3 + 2] = base[i3 + 2] * tw;
+  }
+  cols.needsUpdate = true;
+  // Gentle parallax: counter-shift accents slightly opposite camera orbit
+  if (starfieldAccent) {
+    starfieldAccent.position.set(
+      -camera.position.x * 0.02,
+      -camera.position.y * 0.02,
+      -camera.position.z * 0.02
+    );
+  }
+  if (starfieldPoints) {
+    starfieldPoints.position.set(
+      -camera.position.x * 0.015,
+      -camera.position.y * 0.015,
+      -camera.position.z * 0.015
+    );
+  }
 }
 
 function createNebulae() {
@@ -734,6 +827,7 @@ function createStarsFromBullets(projectList) {
   window.scene = scene;
   window.camera = camera;
   window.controls = controls;
+  window.composer = composer;
   window.fitOverviewToClusters = fitOverviewToClusters;
   Object.defineProperty(window, 'viewLevel', { get: () => viewLevel, configurable: true });
   Object.defineProperty(window, 'focusTheme', { get: () => focusTheme, configurable: true });
@@ -855,14 +949,25 @@ function resolveLabelTargets() {
       if (viewLevel < 2 || (focusTheme && labelTheme !== focusTheme)) {
         opacityTarget = 0;
         wantVisible = false;
-      } else if (dist < 50) {
-        opacityTarget = 0;
-        wantVisible = false;
+      } else if (viewLevel === 2) {
+        // Cluster view: keep item labels visible at typical L2 distances (~40–120)
+        if (dist < 14) {
+          opacityTarget = 0;
+          wantVisible = false;
+        } else {
+          if (dist < 24) opacityTarget *= (dist - 14) / 10;
+          if (dist > 220) opacityTarget *= Math.max(0, 1 - (dist - 220) / 100);
+          if (opacityTarget <= 0.06) wantVisible = false;
+        }
       } else {
-        if (dist < 75) opacityTarget *= (dist - 50) / 25;
-        if (dist > 150) opacityTarget *= Math.max(0, 1 - (dist - 150) / 70);
-        if (viewLevel >= 3 || currentStar) opacityTarget *= 0.18;
-        if (opacityTarget <= 0.06) wantVisible = false;
+        // L3 HUD: dim but keep for context
+        if (dist < 14) {
+          opacityTarget = 0;
+          wantVisible = false;
+        } else {
+          opacityTarget *= 0.22;
+          if (opacityTarget <= 0.06) wantVisible = false;
+        }
       }
     }
 
@@ -890,11 +995,17 @@ function resolveLabelTargets() {
       sx += dx;
       sy += dy;
     } else if (wantVisible) {
+      // Soft offscreen fade — don't hard-kill L2 labels (they must stay clickable)
+      const pad = viewLevel === 2 ? -40 : inset;
       const offscreen = behind
-        || sx < inset || sx > w - inset || sy < inset || sy > h - inset;
+        || sx < pad || sx > w - pad || sy < pad || sy > h - pad;
       if (offscreen) {
-        opacityTarget = 0;
-        wantVisible = false;
+        if (viewLevel === 2 && !behind) {
+          opacityTarget *= 0.35;
+        } else {
+          opacityTarget = 0;
+          wantVisible = false;
+        }
       }
     }
 
@@ -1272,6 +1383,18 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
 
   const media = hud.querySelector('[data-hud="media"]');
   media.innerHTML = '';
+  if (project.images && project.images.length) {
+    project.images.forEach((src) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'hud-image';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = project.title || '';
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+      media.appendChild(wrap);
+    });
+  }
   if (project.videos && project.videos.length) {
     project.videos.forEach((id) => {
       const wrap = document.createElement('div');
@@ -1313,6 +1436,7 @@ function enterClusterView(theme, { fromAuto = false } = {}) {
   }
   focusTheme = theme;
   viewLevel = 2;
+  labelResolveAt = 0; // force project labels to resolve for this cluster
   updateClusterDimming();
   const pose = clusterFocusPose(theme);
   clusterPose = pose;
@@ -1333,6 +1457,8 @@ function enterClusterView(theme, { fromAuto = false } = {}) {
         camera.lookAt(controls.lookAt);
         clusterPose = captureCameraPose();
         preHudPose = clusterPose;
+        labelResolveAt = 0;
+        resolveLabelTargets();
         resolve();
       }
     );
@@ -1724,7 +1850,52 @@ async function assertLabelClicks() {
   const failed = results.filter((r) => !r.ok);
   return { ok: failed.length === 0, total: results.length, failed, results };
 }
+
+/**
+ * Automated semantic-zoom check:
+ * enter cluster → assert item labels visible → click a label → HUD opens for that item.
+ */
+async function assertClusterItemLabels(theme = 'Systems & Virtualization') {
+  if (viewLevel !== 1) await exitClusterView({ animate: false });
+  await enterClusterView(theme);
+  await new Promise((r) => setTimeout(r, 1100));
+  labelResolveAt = 0;
+  resolveLabelTargets();
+  // Let springs catch opacity
+  for (let i = 0; i < 8; i++) {
+    integrateLabelSprings(0.05);
+  }
+  const visible = labelSprites.filter(
+    (l) => l.visible && l.userData.kind === 'project' && l.userData.projectTheme === theme
+  );
+  if (visible.length < 1) {
+    return {
+      ok: false,
+      stage: 'labels-visible',
+      visible: 0,
+      reason: 'no project labels visible at L2'
+    };
+  }
+  const label = visible[0];
+  const expected = label.userData.labelTitle || expectedHudTitleForLabel(label);
+  const opened = openFromLabel(label);
+  await new Promise((r) => setTimeout(r, 250));
+  const got = document.querySelector('[data-hud="project"]')?.textContent || '';
+  const hudOpen = !!document.getElementById('hud')?.classList.contains('open');
+  const ok = opened && hudOpen && !!expected && got === expected && viewLevel === 3;
+  return {
+    ok,
+    stage: ok ? 'hud-open' : 'label-click',
+    visible: visible.length,
+    expected,
+    got,
+    hudOpen,
+    level: viewLevel,
+    titles: visible.map((l) => l.userData.labelTitle)
+  };
+}
 window.assertLabelClicks = assertLabelClicks;
+window.assertClusterItemLabels = assertClusterItemLabels;
 window.openFromLabel = openFromLabel;
 window.pickLabelAt = pickLabelAt;
 
@@ -1882,6 +2053,7 @@ function animate() {
   });
 
   updateLabels(dt);
+  updateStarfieldTwinkle(t);
   updateWarpShift(dt);
   composer.render();
 }
@@ -1914,9 +2086,8 @@ function resolveShowPhoto(style) {
 
 function ensurePrintModel(data) {
   if (!printModelCache) {
+    // Selection is `print:` priority in frontmatter (web-only items omitted).
     printModelCache = buildModelForStyles(data, Object.keys(THEME_COLORS), printColorsMap());
-    // Keep the one-pager to two projects per theme for exact A4 fit
-    printModelCache.themes.forEach((t) => { t.projects = t.projects.slice(0, 2); });
   }
   return printModelCache;
 }

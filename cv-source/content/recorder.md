@@ -4,6 +4,7 @@ title: Recorder
 theme: Tools & Apps
 years: 
 weight: 7
+print: 2
 related: [make-it-quick]
 videos: []
 links:

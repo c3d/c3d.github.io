@@ -4,6 +4,7 @@ title: Alpha Waves / Continuum
 theme: Games & 3D
 years: 1989-1990
 weight: 10
+print: 1
 related: [hp48-games]
 videos:
   - uTrIZNyacUs

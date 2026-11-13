@@ -4,6 +4,7 @@ title: Emacs on Aqua
 theme: Tools & Apps
 years: 
 weight: 6
+print: 3
 related: []
 videos: []
 links:
