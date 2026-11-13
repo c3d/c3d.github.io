@@ -41,13 +41,14 @@ const PRINT_THEME_COLORS = {
 };
 
 /** Wide constellation for landscape. Physics (front-left) ≠ Languages (back-left). */
+/** Desktop layout — slightly inset so bloom + labels clear viewport edges. */
 const THEME_LAYOUT_DESKTOP = {
-  'Physics': { x: -98, y: 52, z: 58 },
-  'Languages & Compilers': { x: -102, y: -8, z: -52 },
-  'Tools & Apps': { x: 4, y: 48, z: -78 },
-  'Systems & Virtualization': { x: 102, y: 46, z: -18 },
-  'Games & 3D': { x: -55, y: -78, z: 8 },
-  'Art & Culture': { x: 98, y: -62, z: 58 }
+  'Physics': { x: -78, y: 40, z: 42 },
+  'Languages & Compilers': { x: -82, y: -4, z: -40 },
+  'Tools & Apps': { x: 2, y: 36, z: -58 },
+  'Systems & Virtualization': { x: 80, y: 34, z: -12 },
+  'Games & 3D': { x: -44, y: -60, z: 6 },
+  'Art & Culture': { x: 76, y: -48, z: 42 }
 };
 
 /** Tall 3×2 for portrait — inset so labels/clusters stay inside the viewport. */
@@ -173,8 +174,9 @@ let warpDeadline = 0;
 let warpVisited = new Set();
 let lastWarpedProjectId = null;
 let warpJumpInProgress = false;
-const IDLE_MS = 30000;
-const WARP_INTERVAL_MS = 30000;
+/** Warp tour timing — configure both in one place. */
+const IDLE_MS = 30000;           // idle delay before entering warp tour
+const WARP_INTERVAL_MS = 10000;  // seconds between jumps (countdown + progress bar)
 
 let controls = {
   mouseDown: false,
@@ -334,6 +336,43 @@ function updateCameraFromControls() {
   camera.position.y = look.y + Math.sin(rx) * radius * 0.55 + 10;
 }
 
+/** Derive spherical control state from the current camera vs an orbit target. */
+function syncControlsFromCamera(lookAt = controls.lookAt) {
+  const look = lookAt.clone();
+  const dx = camera.position.x - look.x;
+  const dy = camera.position.y - look.y - 10;
+  const dz = camera.position.z - look.z;
+  const flat = Math.hypot(dx, dz);
+  // Invert updateCameraFromControls: y = look.y + sin(rx)*r*0.55 + 10
+  // Use flat ≈ r*cos(rx) to recover r, then rx
+  let rx = Math.atan2(dy / 0.55, flat);
+  rx = THREE.MathUtils.clamp(rx, -1.1, 1.1);
+  const cosRx = Math.max(Math.cos(rx), 1e-4);
+  const radius = Math.max(flat / cosRx, 24);
+  const ry = Math.atan2(dx, dz);
+  controls.lookAt.copy(look);
+  controls.currentZoom = radius;
+  controls.targetZoom = radius;
+  controls.currentRotationX = rx;
+  controls.targetRotationX = rx;
+  controls.currentRotationY = ry;
+  controls.targetRotationY = ry;
+}
+
+function applyOrbitSmoothing() {
+  controls.currentRotationX += (controls.targetRotationX - controls.currentRotationX) * 0.05;
+  controls.currentRotationY += (controls.targetRotationY - controls.currentRotationY) * 0.05;
+  controls.currentZoom += (controls.targetZoom - controls.currentZoom) * 0.05;
+  updateCameraFromControls();
+  camera.lookAt(controls.lookAt);
+}
+
+function refreshClusterPoseFromControls() {
+  if (viewLevel !== 2 || !focusTheme) return;
+  clusterPose = captureCameraPose();
+  preHudPose = clusterPose;
+}
+
 /**
  * Swap desktop ↔ portrait theme layouts and move nebulae / stars / labels.
  */
@@ -381,46 +420,89 @@ function applyThemeLayout(forceMobile = null) {
 }
 
 /**
- * Fit overview so clusters fill ~75–85% of the viewport (tight bounds).
+ * Fit overview so all six clusters + theme labels sit fully inside the
+ * viewport with a comfortable margin (desktop + mobile).
  */
 function fitOverviewToClusters() {
   applyThemeLayout();
 
   const isMobile = window.innerWidth < 768;
-  const pad = 22; // nebula glow only — no giant label padding
+  // Nebula glow + bloom halo; theme labels sit ~26 above centers
+  const padX = isMobile ? 28 : 38;
+  const padYLo = isMobile ? 26 : 36;
+  const padYHi = isMobile ? 38 : 46;
+  const padZ = isMobile ? 26 : 36;
   const box = new THREE.Box3();
   Object.values(THEME_POSITIONS).forEach((p) => {
-    box.expandByPoint(new THREE.Vector3(p.x - pad, p.y - pad * 0.7, p.z - pad));
-    box.expandByPoint(new THREE.Vector3(p.x + pad, p.y + pad * 0.85, p.z + pad));
+    box.expandByPoint(new THREE.Vector3(p.x - padX, p.y - padYLo, p.z - padZ));
+    box.expandByPoint(new THREE.Vector3(p.x + padX, p.y + padYHi, p.z + padZ));
   });
 
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
-  const titleBand = isMobile ? 0.12 : 0.10;
-  // Mobile: slightly less fill so edge labels/clusters aren't clipped
-  const fill = isMobile ? 0.70 : 0.82;
-
-  controls.lookAt.set(center.x * 0.05, center.y - size.y * (titleBand * 0.35), center.z * 0.08);
+  // Keep lookAt near true center so corners aren't asymmetrically clipped
+  controls.lookAt.set(center.x * 0.01, center.y * 0.2, center.z * 0.02);
 
   const vFov = THREE.MathUtils.degToRad(camera.fov);
   const aspect = Math.max(camera.aspect, 0.35);
   const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  // Leave margin for bloom halo + labels (mobile layout already inset)
+  const fill = isMobile ? 0.70 : 0.58;
   const halfH = Math.max(size.y, size.z * 0.55) * 0.5;
   const halfW = Math.max(size.x, size.z * 0.45) * 0.5;
   const distV = halfH / Math.tan((vFov * fill) / 2);
   const distH = halfW / Math.tan((hFov * fill) / 2);
   let dist = Math.max(distV, distH);
-  dist = THREE.MathUtils.clamp(dist, isMobile ? 155 : 130, isMobile ? 340 : 280);
+  dist = THREE.MathUtils.clamp(dist, isMobile ? 155 : 190, isMobile ? 340 : 480);
 
   controls.targetZoom = dist;
   controls.currentZoom = dist;
-  controls.targetRotationX = isMobile ? 0.14 : 0.12;
-  controls.targetRotationY = isMobile ? 0.02 : 0.22;
+  controls.targetRotationX = isMobile ? 0.14 : 0.08;
+  controls.targetRotationY = isMobile ? 0.02 : 0.10;
   controls.currentRotationX = controls.targetRotationX;
   controls.currentRotationY = controls.targetRotationY;
   updateCameraFromControls();
   camera.lookAt(controls.lookAt);
-  if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(0.7 / dist, 0.0016, 0.0036);
+
+  // Screen-space guard: zoom out until every theme (+ bloom + label) is inset
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const marginX = isMobile ? 18 : Math.max(48, w * 0.06);
+  const marginY = isMobile ? 28 : Math.max(52, h * 0.08);
+  const bloomPad = isMobile ? 28 : Math.max(42, Math.min(w, h) * 0.055);
+  const ndc = new THREE.Vector3();
+  for (let iter = 0; iter < 12; iter++) {
+    let needsZoom = false;
+    Object.values(THEME_POSITIONS).forEach((p) => {
+      ndc.set(p.x, p.y, p.z).project(camera);
+      const sx = (ndc.x * 0.5 + 0.5) * w;
+      const sy = (-ndc.y * 0.5 + 0.5) * h;
+      const labelHalfW = Math.max(48, (55 / Math.max(controls.currentZoom, 1)) * h * 0.32);
+      const labelHalfH = Math.max(12, (8.4 / Math.max(controls.currentZoom, 1)) * h * 0.32);
+      ndc.set(p.x, p.y + 26, p.z).project(camera);
+      const lsx = (ndc.x * 0.5 + 0.5) * w;
+      const lsy = (-ndc.y * 0.5 + 0.5) * h;
+      if (
+        sx - bloomPad < marginX || sx + bloomPad > w - marginX
+        || sy - bloomPad < marginY || sy + bloomPad > h - marginY
+        || lsx - labelHalfW < marginX * 0.55
+        || lsx + labelHalfW > w - marginX * 0.55
+        || lsy - labelHalfH < marginY * 0.6
+        || lsy + labelHalfH > h - marginY * 0.45
+      ) {
+        needsZoom = true;
+      }
+    });
+    if (!needsZoom) break;
+    dist *= 1.09;
+    dist = Math.min(dist, isMobile ? 360 : 520);
+    controls.targetZoom = dist;
+    controls.currentZoom = dist;
+    updateCameraFromControls();
+    camera.lookAt(controls.lookAt);
+  }
+
+  if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(0.7 / dist, 0.0012, 0.0036);
 }
 
 function createSoftSprite(hex, scale, opacity) {
@@ -556,11 +638,11 @@ function createStarsFromBullets(projectList) {
           opacity: 0.95,
           sizeAttenuation: true
         }));
-        // Stagger label heights by slot to reduce overlap (Taodyne vs HP-48, ECUTEST vs HPVM)
-        const yOff = 20 + slot * 14 - (slot % 2) * 6;
-        const xOff = (slot % 2 === 0 ? -14 : 16) + slot * 3;
-        pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 3) * 3));
-        const pH = 6.8;
+        // Anchor near the project cluster core (L2 — close to own dots)
+        const yOff = 2.8 + (slot % 2) * 1.1;
+        const xOff = (slot % 2 === 0 ? -2.8 : 3.2);
+        pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 2) * 0.8));
+        const pH = 5.2;
         pl.scale.set(pH * pAspect, pH, 1);
         pl.userData.isLabel = true;
         pl.userData.kind = 'project';
@@ -630,6 +712,19 @@ function createStarsFromBullets(projectList) {
           id: `${project.id}__${bi}`
         });
       });
+
+      // Snap project label to sit just above the project's first star
+      const pl = labelSprites.find(
+        (l) => l.userData.kind === 'project' && l.userData.projectId === project.id
+      );
+      const firstStar = stars.find((s) => s.project.id === project.id);
+      if (pl && firstStar) {
+        const side = (slot % 2 === 0) ? -1 : 1;
+        pl.position.copy(firstStar.position).add(new THREE.Vector3(side * 2.4, 3.2, 0.4));
+        pl.userData.home.copy(pl.position);
+        pl.userData.themeOffset = pl.position.clone().sub(themePos);
+        resetLabelSpring(pl);
+      }
     });
   });
 
@@ -638,6 +733,10 @@ function createStarsFromBullets(projectList) {
   window.stars = stars;
   window.scene = scene;
   window.camera = camera;
+  window.controls = controls;
+  window.fitOverviewToClusters = fitOverviewToClusters;
+  Object.defineProperty(window, 'viewLevel', { get: () => viewLevel, configurable: true });
+  Object.defineProperty(window, 'focusTheme', { get: () => focusTheme, configurable: true });
   console.log(`Created ${stars.length} bullet-stars from ${projects.length} projects`);
 }
 
@@ -835,10 +934,12 @@ function resolveLabelTargets() {
         if (Math.abs(dx) >= minX || Math.abs(dy) >= minY) continue;
         const pushY = (minY - Math.abs(dy) + 4) * (dy >= 0 ? 1 : -1 || 1);
         const pushX = (minX - Math.abs(dx) + 2) * 0.25 * (dx >= 0 ? 1 : -1);
-        b.oy += (pushY / h) * b.dist * 0.65;
-        b.ox += (pushX / w) * b.dist * 0.45;
-        b.ox = THREE.MathUtils.clamp(b.ox, -28, 28);
-        b.oy = THREE.MathUtils.clamp(b.oy, -28, 28);
+        // Keep project labels near their dots — soft collision push only
+        const pushScale = b.isTheme ? 0.65 : 0.16;
+        b.oy += (pushY / h) * b.dist * pushScale;
+        b.ox += (pushX / w) * b.dist * (b.isTheme ? 0.45 : 0.14);
+        b.ox = THREE.MathUtils.clamp(b.ox, b.isTheme ? -28 : -5, b.isTheme ? 28 : 5);
+        b.oy = THREE.MathUtils.clamp(b.oy, b.isTheme ? -28 : -4, b.isTheme ? 28 : 5);
         b.sx += pushX;
         b.sy += pushY;
       }
@@ -1046,21 +1147,26 @@ function clusterFocusPose(theme) {
   const isMobile = window.innerWidth < 768;
   const reduced = prefersReducedMotion();
   const dist = reduced ? (isMobile ? 110 : 100) : (isMobile ? 92 : 82);
+  const lookAt = new THREE.Vector3(pos.x, pos.y - 2, pos.z);
+  const rx = isMobile ? 0.14 : 0.12;
+  const ry = isMobile ? 0.06 : 0.18;
+  // Position must match updateCameraFromControls so L2 orbit doesn't jump
+  const position = new THREE.Vector3(
+    lookAt.x + Math.sin(ry) * Math.cos(rx) * dist,
+    lookAt.y + Math.sin(rx) * dist * 0.55 + 10,
+    lookAt.z + Math.cos(ry) * Math.cos(rx) * dist
+  );
   return {
-    position: new THREE.Vector3(
-      pos.x + (isMobile ? 0 : -18),
-      pos.y + (isMobile ? 8 : 10),
-      pos.z + dist
-    ),
-    lookAt: new THREE.Vector3(pos.x, pos.y - 2, pos.z),
+    position,
+    lookAt: lookAt.clone(),
     controls: {
-      targetRotationX: 0.12,
-      targetRotationY: 0.18,
-      currentRotationX: 0.12,
-      currentRotationY: 0.18,
+      targetRotationX: rx,
+      targetRotationY: ry,
+      currentRotationX: rx,
+      currentRotationY: ry,
       targetZoom: dist,
       currentZoom: dist,
-      lookAt: new THREE.Vector3(pos.x, pos.y - 2, pos.z)
+      lookAt: lookAt.clone()
     }
   };
 }
@@ -1113,7 +1219,13 @@ function flyToStar(star) {
     focus.position,
     currentLookPoint(),
     focus.lookAt,
-    duration
+    duration,
+    () => {
+      // Orbit around the focused star while HUD is open
+      syncControlsFromCamera(focus.lookAt);
+      updateCameraFromControls();
+      camera.lookAt(controls.lookAt);
+    }
   );
 }
 
@@ -1131,8 +1243,11 @@ function flyToPose(pose, onDone) {
     duration,
     () => {
       applyPoseControls(pose);
-      camera.position.copy(pose.position);
-      camera.lookAt(pose.controls?.lookAt || pose.lookAt);
+      const look = pose.controls?.lookAt || pose.lookAt;
+      controls.lookAt.copy(look);
+      syncControlsFromCamera(look);
+      updateCameraFromControls();
+      camera.lookAt(controls.lookAt);
       onDone?.();
     }
   );
@@ -1212,6 +1327,12 @@ function enterClusterView(theme, { fromAuto = false } = {}) {
       duration,
       () => {
         applyPoseControls(pose);
+        // Lock orbit target to cluster center; sync angles so drag feels like L1
+        syncControlsFromCamera(pose.lookAt);
+        updateCameraFromControls();
+        camera.lookAt(controls.lookAt);
+        clusterPose = captureCameraPose();
+        preHudPose = clusterPose;
         resolve();
       }
     );
@@ -1632,7 +1753,8 @@ function setupInteraction() {
     dragDist = 0;
   };
   const onMove = (x, y) => {
-    if (!controls.mouseDown || viewLevel >= 3 || currentStar || isFlying) return;
+    // Orbit at L1 / L2 / L3 — only blocked while a camera tween is in flight
+    if (!controls.mouseDown || isFlying) return;
     noteUserActivity();
     const dx = x - controls.mouseX;
     const dy = y - controls.mouseY;
@@ -1643,9 +1765,15 @@ function setupInteraction() {
     controls.mouseY = y;
   };
 
+  const onUp = () => {
+    controls.mouseDown = false;
+    refreshClusterPoseFromControls();
+  };
+
   container.addEventListener('mousedown', (e) => onDown(e.clientX, e.clientY));
   container.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
-  container.addEventListener('mouseup', () => { controls.mouseDown = false; });
+  container.addEventListener('mouseup', onUp);
+  container.addEventListener('mouseleave', onUp);
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: true });
@@ -1655,12 +1783,15 @@ function setupInteraction() {
       onMove(e.touches[0].clientX, e.touches[0].clientY);
     }
   }, { passive: false });
-  container.addEventListener('touchend', () => { controls.mouseDown = false; });
+  container.addEventListener('touchend', onUp);
 
   container.addEventListener('wheel', (e) => {
     noteUserActivity();
     e.preventDefault();
-    controls.targetZoom = Math.max(120, Math.min(520, controls.targetZoom + e.deltaY * 0.1));
+    const zMin = viewLevel >= 2 ? 36 : 120;
+    const zMax = viewLevel >= 2 ? 240 : 520;
+    controls.targetZoom = Math.max(zMin, Math.min(zMax, controls.targetZoom + e.deltaY * 0.1));
+    if (viewLevel === 2) refreshClusterPoseFromControls();
   }, { passive: false });
 
   container.addEventListener('click', (e) => {
@@ -1734,13 +1865,14 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
 
-  if (viewLevel === 1 && !currentStar && !isFlying && !autoMode) {
-    controls.targetRotationY += 0.00025;
-    controls.currentRotationX += (controls.targetRotationX - controls.currentRotationX) * 0.05;
-    controls.currentRotationY += (controls.targetRotationY - controls.currentRotationY) * 0.05;
-    controls.currentZoom += (controls.targetZoom - controls.currentZoom) * 0.05;
-    updateCameraFromControls();
-    camera.lookAt(controls.lookAt);
+  // Apply orbit at L1–L3; idle auto-spin only in overview. Never fight fly tweens.
+  if (!isFlying && !autoMode) {
+    if (viewLevel === 1 && !controls.mouseDown) {
+      controls.targetRotationY += 0.00025;
+    }
+    if (viewLevel >= 1 && viewLevel <= 3) {
+      applyOrbitSmoothing();
+    }
   }
 
   nebulaGroups.forEach(({ group, theme, phase }) => {
