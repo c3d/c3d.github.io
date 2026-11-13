@@ -1,0 +1,36 @@
+name: Build CV Constellation
+
+on:
+  push:
+    branches: [master, cursor/3d-cv-constellation-36d1]
+    paths:
+      - 'cv-source/**'
+      - '.github/workflows/build-cv.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: cv-source/package-lock.json
+      
+      - name: Install dependencies
+        run: cd cv-source && npm ci
+      
+      - name: Build
+        run: cd cv-source && npm run build
+      
+      - name: Deploy to cv/
+        run: |
+          rm -rf cv/*
+          cp -r cv-source/dist/* cv/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cv/
+          git commit -m "Deploy CV constellation [skip ci]" || echo "No changes to deploy"
+          git push || echo "Nothing to push"
