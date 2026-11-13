@@ -6,8 +6,10 @@
   "scripts": {
     "process-content": "node scripts/process-content.js",
     "generate-qr": "node scripts/generate-qr.js",
+    "generate-pdfs": "node scripts/generate-pdfs.mjs",
     "dev": "npm run process-content && npm run generate-qr && vite",
     "build": "npm run process-content && npm run generate-qr && vite build",
+    "build:all": "npm run build && npm run generate-pdfs",
     "preview": "vite preview",
     "test:labels": "node scripts/test-label-clicks.mjs"
   },
