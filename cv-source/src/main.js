@@ -22,12 +22,13 @@ const THEME_COLORS = {
 };
 
 const THEME_POSITIONS = {
-  'Languages & Compilers': { x: -70, y: 28, z: -8 },
-  'Systems & Virtualization': { x: 70, y: 28, z: -8 },
-  'Games & 3D': { x: 0, y: -52, z: -35 },
-  'Physics': { x: -52, y: 55, z: 40 },
-  'Art & Culture': { x: 52, y: -28, z: 40 },
-  'Tools & Apps': { x: 0, y: 18, z: -65 }
+  'Languages & Compilers': { x: -75, y: 32, z: -12 },
+  'Systems & Virtualization': { x: 78, y: 30, z: -10 },
+  // Spread Games / Art so they no longer sit on top of each other in overview
+  'Games & 3D': { x: -70, y: -68, z: -55 },
+  'Physics': { x: -48, y: 58, z: 48 },
+  'Art & Culture': { x: 82, y: -8, z: 68 },
+  'Tools & Apps': { x: 8, y: 22, z: -72 }
 };
 
 function mulberry32(seed) {
@@ -64,16 +65,19 @@ function makeSoftDiscTexture(innerRGB) {
 
 function makeLabelTexture(text, hex, { large = false } = {}) {
   const canvas = document.createElement('canvas');
-  canvas.width = large ? 768 : 640;
-  canvas.height = large ? 120 : 96;
   const ctx = canvas.getContext('2d');
+  const font = large ? '700 44px Orbitron, sans-serif' : '600 34px Orbitron, sans-serif';
+  ctx.font = font;
+  const textW = Math.ceil(ctx.measureText(text).width);
+  const padX = large ? 28 : 36;
+  const padY = large ? 20 : 18;
+  const boxH = large ? 64 : 52;
+  canvas.width = Math.min(1024, Math.max(large ? 420 : 320, textW + padX * 2 + 24));
+  canvas.height = boxH + padY * 2;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // High-contrast plate: near-opaque dark + bright Orbitron text
   ctx.fillStyle = 'rgba(1,6,16,0.88)';
-  const padX = large ? 28 : 40;
-  const padY = large ? 22 : 20;
   const boxW = canvas.width - padX * 2;
-  const boxH = canvas.height - padY * 2;
   ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(padX, padY, boxW, boxH, 10);
   else ctx.rect(padX, padY, boxW, boxH);
@@ -81,13 +85,15 @@ function makeLabelTexture(text, hex, { large = false } = {}) {
   // Accent bar
   ctx.fillStyle = `#${new THREE.Color(hex).getHexString()}`;
   ctx.fillRect(padX, padY, 8, boxH);
-  ctx.font = large ? '700 48px Orbitron, sans-serif' : '600 36px Orbitron, sans-serif';
+  ctx.font = font;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#ffffff';
   ctx.fillText(text, canvas.width / 2 + 4, canvas.height / 2);
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;
+  // Aspect for sprite scale callers
+  tex.userData = { aspect: canvas.width / canvas.height };
   return tex;
 }
 
@@ -102,6 +108,7 @@ let labelSprites = [];
 let nebulaGroups = [];
 let currentStar = null;
 let isFlying = false;
+let flyGeneration = 0;
 let softWhiteDisc;
 const softThemeDiscs = {};
 const clock = new THREE.Clock();
@@ -218,21 +225,27 @@ function createNebulae() {
       group.add(sprite);
     }
 
+    const themeMap = makeLabelTexture(theme, color, { large: true });
+    const themeAspect = themeMap.userData?.aspect || 6.5;
     const themeLabel = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: makeLabelTexture(theme, color, { large: true }),
+      map: themeMap,
       transparent: true,
       depthWrite: false,
       opacity: 1,
       sizeAttenuation: true
     }));
-    themeLabel.position.set(0, 30, 0);
+    themeLabel.position.set(0, 38, 0);
     // World size at ~overview distance; clamped in updateLabelVisibility when close
-    themeLabel.scale.set(58, 9.2, 1);
+    const themeH = 9.2;
+    themeLabel.scale.set(themeH * themeAspect, themeH, 1);
     themeLabel.userData.isLabel = true;
     themeLabel.userData.kind = 'theme';
     themeLabel.userData.baseOpacity = 1;
     themeLabel.userData.baseScale = themeLabel.scale.clone();
     themeLabel.userData.refDist = 160; // distance where baseScale looks right
+    themeLabel.userData.priority = 100;
+    themeLabel.userData.home = themeLabel.position.clone();
+    themeLabel.userData.nudge = new THREE.Vector3();
     group.add(themeLabel);
     labelSprites.push(themeLabel);
 
@@ -263,30 +276,48 @@ function createStarsFromBullets(projectList) {
     const plist = byTheme[theme];
     const themeRand = mulberry32(theme.split('').reduce((a, c) => a + c.charCodeAt(0), 0));
 
+    // Rank projects so high-weight labels get preferred screen slots
+    const ranked = [...plist].sort((a, b) => (b.weight || 0) - (a.weight || 0));
+    const labelSlot = {};
+    ranked.forEach((p, i) => { labelSlot[p.id] = i; });
+
     plist.forEach((project, pi) => {
+      // Spread clusters more so sibling project labels don't stack
+      const slot = labelSlot[project.id] ?? pi;
+      const angle = (slot / Math.max(plist.length, 1)) * Math.PI * 2 + themeRand() * 0.2;
+      const ring = 10 + (slot % 3) * 6;
       const cluster = new THREE.Vector3(
-        themePos.x + (themeRand() - 0.5) * 28,
-        themePos.y + (themeRand() - 0.5) * 20,
-        themePos.z + (themeRand() - 0.5) * 24
+        themePos.x + Math.cos(angle) * ring + (themeRand() - 0.5) * 8,
+        themePos.y + (slot % 2 === 0 ? 6 : -8) + (themeRand() - 0.5) * 6,
+        themePos.z + Math.sin(angle) * ring + (themeRand() - 0.5) * 8
       );
 
       // Project labels for weight >= 9; screen size clamped when camera approaches
       if ((project.weight || 0) >= 9) {
+        const pMap = makeLabelTexture(project.title, color, { large: false });
+        const pAspect = pMap.userData?.aspect || 6;
         const pl = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: makeLabelTexture(project.title, color, { large: false }),
+          map: pMap,
           transparent: true,
           depthWrite: false,
           opacity: 0.95,
           sizeAttenuation: true
         }));
-        pl.position.copy(cluster).add(new THREE.Vector3(0, 8, 0));
-        pl.scale.set(42, 6.8, 1);
+        // Stagger label heights by slot to reduce overlap (Taodyne vs HP-48, ECUTEST vs HPVM)
+        const yOff = 20 + slot * 14 - (slot % 2) * 6;
+        const xOff = (slot % 2 === 0 ? -14 : 16) + slot * 3;
+        pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 3) * 3));
+        const pH = 6.8;
+        pl.scale.set(pH * pAspect, pH, 1);
         pl.userData.isLabel = true;
         pl.userData.kind = 'project';
         pl.userData.baseOpacity = 0.95;
         pl.userData.baseScale = pl.scale.clone();
         pl.userData.refDist = 140;
         pl.userData.projectId = project.id;
+        pl.userData.priority = project.weight || 5;
+        pl.userData.home = pl.position.clone();
+        pl.userData.nudge = new THREE.Vector3();
         scene.add(pl);
         labelSprites.push(pl);
       }
@@ -377,46 +408,136 @@ function createProjectLineages() {
   });
 }
 
+const _labelWorld = new THREE.Vector3();
+const _labelNdc = new THREE.Vector3();
+
 function updateLabelVisibility() {
   const camPos = camera.position;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isMobile = w < 768;
+  const screenMeta = [];
+
   labelSprites.forEach((label) => {
-    // Hide all world labels while HUD is open (prevents giant blurred text behind card)
-    if (currentStar) {
-      label.visible = false;
-      return;
+    // Reset toward home + accumulated collision nudge
+    if (label.userData.home) {
+      const n = label.userData.nudge || new THREE.Vector3();
+      if (label.parent && label.parent !== scene) {
+        // theme labels live in nebula groups — nudge in local space
+        label.position.copy(label.userData.home).add(n);
+      } else {
+        label.position.copy(label.userData.home).add(n);
+      }
     }
 
-    const world = new THREE.Vector3();
-    label.getWorldPosition(world);
-    const dist = world.distanceTo(camPos);
+    label.getWorldPosition(_labelWorld);
+    const dist = _labelWorld.distanceTo(camPos);
 
-    // Too close → hide (would dominate the view / look like huge background text)
+    // Too close → hide (giant blurred text)
     if (dist < 50) {
       label.visible = false;
       return;
     }
 
     let opacity = label.userData.baseOpacity || 0.9;
-    // Soft fade as we approach the hide threshold
     if (dist < 75) opacity *= (dist - 50) / 25;
     if (dist > 260) opacity *= Math.max(0, 1 - (dist - 260) / 120);
     if (label.userData.kind === 'project' && dist > 190) {
       opacity *= Math.max(0.3, 1 - (dist - 190) / 100);
     }
+    // Dim while HUD open (keep stars clickable; avoid giant text behind glass)
+    if (currentStar) opacity *= 0.18;
 
-    // Clamp screen size: grow/shrink with distance so labels never explode near camera
     const base = label.userData.baseScale;
     const ref = label.userData.refDist || 150;
     if (base) {
-      // Keep roughly constant on-screen size, but cap how large they can get when close
       const f = dist / ref;
       const clamped = THREE.MathUtils.clamp(f, 0.45, 1.35);
-      label.scale.set(base.x * clamped, base.y * clamped, 1);
+      // Slightly smaller on mobile so theme plates fit the narrow viewport
+      const m = isMobile ? 0.7 : 1;
+      label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+    }
+
+    // Screen-space: hide labels that clip too far past the viewport (esp. mobile)
+    _labelNdc.copy(_labelWorld).project(camera);
+    const sx = (_labelNdc.x * 0.5 + 0.5) * w;
+    const sy = (-_labelNdc.y * 0.5 + 0.5) * h;
+    const behind = _labelNdc.z > 1 || _labelNdc.z < -1;
+    const halfWpx = Math.max(28, (label.scale.x / Math.max(dist, 1)) * (h * 0.32));
+    const halfHpx = Math.max(10, (label.scale.y / Math.max(dist, 1)) * (h * 0.32));
+    const inset = isMobile ? 4 : 2;
+    const overflowL = Math.max(0, inset - (sx - halfWpx));
+    const overflowR = Math.max(0, (sx + halfWpx) - (w - inset));
+    const overflowT = Math.max(0, inset - (sy - halfHpx));
+    const overflowB = Math.max(0, (sy + halfHpx) - (h - inset));
+    // Hide when center is outside, or the plate heavily clips the viewport
+    let offscreen = behind
+      || sx < inset || sx > w - inset || sy < inset || sy > h - inset
+      || (overflowL + overflowR) > halfWpx * 0.85
+      || (overflowT + overflowB) > halfHpx * 0.85;
+    // Mobile: keep theme plates away from left/right gutters
+    if (isMobile && label.userData.kind === 'theme' && (sx < w * 0.28 || sx > w * 0.72)) {
+      offscreen = true;
+    }
+
+    if (offscreen) {
+      label.visible = false;
+      return;
     }
 
     label.material.opacity = opacity;
-    label.visible = opacity > 0.08;
+    label.visible = opacity > 0.06;
+
+    if (label.visible) {
+      screenMeta.push({
+        label,
+        sx,
+        sy,
+        dist,
+        halfW: Math.max(56, (label.scale.x / Math.max(dist, 1)) * (h * 0.28)),
+        halfH: Math.max(14, (label.scale.y / Math.max(dist, 1)) * (h * 0.28)),
+        priority: label.userData.priority || 1
+      });
+    }
   });
+
+  // Screen-space collision avoidance (2 passes): nudge lower-priority labels apart
+  screenMeta.sort((a, b) => b.priority - a.priority);
+  for (let pass = 0; pass < 2; pass++) {
+    for (let i = 0; i < screenMeta.length; i++) {
+      for (let j = i + 1; j < screenMeta.length; j++) {
+        const a = screenMeta[i];
+        const b = screenMeta[j];
+        const dx = b.sx - a.sx;
+        const dy = b.sy - a.sy;
+        const minX = a.halfW + b.halfW;
+        const minY = a.halfH + b.halfH + 10;
+        if (Math.abs(dx) < minX && Math.abs(dy) < minY) {
+          const pushY = (minY - Math.abs(dy) + 4) * (dy >= 0 ? 1 : -1 || 1);
+          const pushX = (minX - Math.abs(dx) + 2) * 0.25 * (dx >= 0 ? 1 : -1);
+          const worldPushY = (pushY / h) * b.dist * 0.65;
+          const worldPushX = (pushX / w) * b.dist * 0.45;
+          if (!b.label.userData.nudge) b.label.userData.nudge = new THREE.Vector3();
+          b.label.userData.nudge.y = THREE.MathUtils.clamp(
+            (b.label.userData.nudge.y || 0) + worldPushY * 0.5,
+            -28,
+            28
+          );
+          b.label.userData.nudge.x = THREE.MathUtils.clamp(
+            (b.label.userData.nudge.x || 0) + worldPushX * 0.5,
+            -20,
+            20
+          );
+          if (b.label.userData.home) {
+            b.label.position.x = b.label.userData.home.x + b.label.userData.nudge.x;
+            b.label.position.y = b.label.userData.home.y + b.label.userData.nudge.y;
+          }
+          b.sx += pushX;
+          b.sy += pushY;
+        }
+      }
+    }
+  }
 }
 
 function setSceneFocus(focused) {
@@ -504,8 +625,10 @@ function closeHUD() {
   }
 }
 window.closeHUD = closeHUD;
+window.openHUD = openHUD;
 
 function flyToStar(star) {
+  const gen = ++flyGeneration;
   isFlying = true;
   const startPos = camera.position.clone();
   // Bring the bullet-star near screen center, leave room for right HUD on desktop
@@ -515,22 +638,22 @@ function flyToStar(star) {
     4,
     isMobile ? 36 : 32
   ));
-  const startLook = star.position.clone();
-  // approximate current look-at
-  const tmp = new THREE.Vector3(0, 0, 0);
-  const look = tmp.clone();
+  const look = new THREE.Vector3().copy(star.position);
   const endLook = star.position.clone();
+  // Keep current look direction as start by unprojecting center — approx star
+  const startLook = star.position.clone();
   const start = performance.now();
-  const duration = 1100;
+  const duration = 900;
 
   function step(now) {
+    if (gen !== flyGeneration) return; // superseded by a newer fly target
     const t = Math.min((now - start) / duration, 1);
     const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     camera.position.lerpVectors(startPos, endPos, e);
     look.lerpVectors(startLook, endLook, e);
     camera.lookAt(look);
     if (t < 1) requestAnimationFrame(step);
-    else isFlying = false;
+    else if (gen === flyGeneration) isFlying = false;
   }
   requestAnimationFrame(step);
 }
@@ -574,7 +697,7 @@ function setupInteraction() {
   // Expand hit area: use invisible spheres on stars for picking
   stars.forEach((s) => {
     const hit = new THREE.Mesh(
-      new THREE.SphereGeometry(Math.max(1.8, s.size * 0.9), 8, 8),
+      new THREE.SphereGeometry(Math.max(2.6, s.size * 1.15), 8, 8),
       new THREE.MeshBasicMaterial({ visible: false })
     );
     s.mesh.add(hit);
@@ -618,16 +741,31 @@ function setupInteraction() {
   }, { passive: false });
 
   container.addEventListener('click', (e) => {
-    if (dragDist > 8 || isFlying) return;
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(stars.map((s) => s.mesh), true);
-    if (!hits.length) return;
-    let obj = hits[0].object;
-    while (obj && !stars.find((s) => s.mesh === obj)) obj = obj.parent;
-    const star = stars.find((s) => s.mesh === obj);
-    if (star) openHUD(star);
+    if (dragDist > 8) return;
+    // Screen-space pick: nearest projected star to the click (works while HUD open)
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const threshold = currentStar ? 42 : 28;
+    let best = null;
+    let bestD = threshold;
+    const ndc = new THREE.Vector3();
+    stars.forEach((star) => {
+      ndc.copy(star.position).project(camera);
+      if (ndc.z > 1) return;
+      const sx = (ndc.x * 0.5 + 0.5) * w;
+      const sy = (-ndc.y * 0.5 + 0.5) * h;
+      const d = Math.hypot(sx - e.clientX, sy - e.clientY);
+      if (d < bestD) {
+        bestD = d;
+        best = star;
+      }
+    });
+    if (best) {
+      openHUD(best);
+      return;
+    }
+    // Empty space while HUD open → close
+    if (currentStar) closeHUD();
   });
 
   window.addEventListener('keydown', (e) => {
@@ -642,7 +780,10 @@ function setupInteraction() {
     composer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  document.getElementById('hud-close')?.addEventListener('click', closeHUD);
+  document.getElementById('hud-close')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeHUD();
+  });
 }
 
 function animate() {

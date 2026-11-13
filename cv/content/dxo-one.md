@@ -1,9 +1,9 @@
 ---
 id: dxo-one
 title: DxO ONE Connected Camera
-theme: Tools & Apps
+theme: Systems & Virtualization
 years: 2015-2016
-weight: 8
+weight: 10
 related: []
 videos: []
 links:
