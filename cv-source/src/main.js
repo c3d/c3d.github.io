@@ -50,14 +50,14 @@ const THEME_LAYOUT_DESKTOP = {
   'Art & Culture': { x: 98, y: -62, z: 58 }
 };
 
-/** Tall 3×2 for portrait — all six clusters fit without right-edge clip. */
+/** Tall 3×2 for portrait — inset so labels/clusters stay inside the viewport. */
 const THEME_LAYOUT_MOBILE = {
-  'Physics': { x: -42, y: 95, z: 28 },
-  'Languages & Compilers': { x: 42, y: 88, z: -32 },
-  'Tools & Apps': { x: -48, y: 12, z: -48 },
-  'Systems & Virtualization': { x: 48, y: 18, z: 12 },
-  'Games & 3D': { x: -44, y: -82, z: -12 },
-  'Art & Culture': { x: 46, y: -76, z: 42 }
+  'Physics': { x: -28, y: 78, z: 22 },
+  'Languages & Compilers': { x: 28, y: 72, z: -28 },
+  'Tools & Apps': { x: -32, y: 8, z: -40 },
+  'Systems & Virtualization': { x: 30, y: 14, z: 8 },
+  'Games & 3D': { x: -30, y: -70, z: -10 },
+  'Art & Culture': { x: 30, y: -64, z: 34 }
 };
 
 /** Active theme centers (mutated by applyThemeLayout). */
@@ -143,6 +143,11 @@ let currentStar = null;
 let isFlying = false;
 let flyGeneration = 0;
 let preHudPose = null;
+/** Semantic zoom: 1 = overview, 2 = cluster, 3 = HUD detail */
+let viewLevel = 1;
+let focusTheme = null;
+let overviewPose = null;
+let clusterPose = null;
 let softWhiteDisc;
 const softThemeDiscs = {};
 const clock = new THREE.Clock();
@@ -261,18 +266,20 @@ const WarpShiftShader = {
       // accelSign < 0: decelerating → reverse
       float blueW = clamp(0.5 - 0.5 * accelSign * (1.0 - radial) + 0.5 * accelSign * radial, 0.0, 1.0);
       float redW = 1.0 - blueW;
-      float streak = strength * 0.012 * radial;
+      float streak = strength * 0.028 * radial;
       vec2 streakDir = r > 1e-4 ? normalize(dir) : vec2(0.0);
-      vec2 ca = streakDir * strength * 0.004;
+      vec2 ca = streakDir * strength * 0.010;
       vec3 col;
       col.r = texture2D(tDiffuse, uv - streakDir * streak + ca).r;
       col.g = texture2D(tDiffuse, uv - streakDir * streak * 0.55).g;
       col.b = texture2D(tDiffuse, uv + streakDir * streak - ca).b;
       vec3 tinted = col;
-      tinted.r = mix(col.r, col.r * 1.18 + 0.04, redW * strength);
-      tinted.b = mix(col.b, col.b * 1.22 + 0.05, blueW * strength);
-      tinted.g = mix(col.g, col.g * 0.96, strength * 0.35);
-      gl_FragColor = vec4(mix(col, tinted, clamp(strength, 0.0, 1.0)), 1.0);
+      // Stronger but still tasteful Doppler tint
+      tinted.r = mix(col.r, min(col.r * 1.45 + 0.08, 1.0), redW * strength);
+      tinted.b = mix(col.b, min(col.b * 1.55 + 0.10, 1.0), blueW * strength);
+      tinted.g = mix(col.g, col.g * 0.88, strength * 0.55);
+      float mixAmt = clamp(strength * 1.15, 0.0, 1.0);
+      gl_FragColor = vec4(mix(col, tinted, mixAmt), 1.0);
     }
   `
 };
@@ -297,16 +304,23 @@ function updateWarpShift(dt) {
   _camPrevPos.copy(camera.position);
 
   const reduced = prefersReducedMotion();
-  const speedN = THREE.MathUtils.clamp(_camSpeed / (reduced ? 220 : 140), 0, 1);
-  const target = reduced ? 0 : speedN * speedN;
-  const ease = 1 - Math.exp(-(reduced ? 3 : 6) * dt);
+  // Lower threshold so fly-to-star jumps reach visible strength
+  const speedN = THREE.MathUtils.clamp(_camSpeed / (reduced ? 180 : 55), 0, 1);
+  let target = reduced ? 0 : Math.pow(speedN, 0.85);
+  if (isFlying && !reduced) target = Math.max(target, 0.55);
+  const ease = 1 - Math.exp(-(reduced ? 3 : 10) * dt);
   _warpStrengthSmoothed += (target - _warpStrengthSmoothed) * ease;
-  if (_warpStrengthSmoothed < 0.01) _warpStrengthSmoothed = 0;
+  if (_warpStrengthSmoothed < 0.008) _warpStrengthSmoothed = 0;
 
-  warpShiftPass.uniforms.strength.value = _warpStrengthSmoothed;
+  // Optional QA override: window.__forceWarpShift = 0..1
+  const forced = typeof window.__forceWarpShift === 'number' ? window.__forceWarpShift : null;
+  warpShiftPass.uniforms.strength.value = forced != null ? forced : _warpStrengthSmoothed;
   // Positive accelSign while speeding up (blue ahead), negative while braking
-  const aSign = THREE.MathUtils.clamp(_camAccel / 80, -1, 1);
-  warpShiftPass.uniforms.accelSign.value += (aSign - warpShiftPass.uniforms.accelSign.value) * ease;
+  const aSign = THREE.MathUtils.clamp(_camAccel / 40, -1, 1);
+  const forcedSign = typeof window.__forceWarpAccel === 'number' ? window.__forceWarpAccel : null;
+  warpShiftPass.uniforms.accelSign.value = forcedSign != null
+    ? forcedSign
+    : (warpShiftPass.uniforms.accelSign.value + (aSign - warpShiftPass.uniforms.accelSign.value) * ease);
   warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 }
 
@@ -383,7 +397,8 @@ function fitOverviewToClusters() {
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
   const titleBand = isMobile ? 0.12 : 0.10;
-  const fill = isMobile ? 0.78 : 0.82; // target FOV fraction filled by clusters
+  // Mobile: slightly less fill so edge labels/clusters aren't clipped
+  const fill = isMobile ? 0.70 : 0.82;
 
   controls.lookAt.set(center.x * 0.05, center.y - size.y * (titleBand * 0.35), center.z * 0.08);
 
@@ -395,12 +410,12 @@ function fitOverviewToClusters() {
   const distV = halfH / Math.tan((vFov * fill) / 2);
   const distH = halfW / Math.tan((hFov * fill) / 2);
   let dist = Math.max(distV, distH);
-  dist = THREE.MathUtils.clamp(dist, isMobile ? 140 : 130, isMobile ? 320 : 280);
+  dist = THREE.MathUtils.clamp(dist, isMobile ? 155 : 130, isMobile ? 340 : 280);
 
   controls.targetZoom = dist;
   controls.currentZoom = dist;
-  controls.targetRotationX = isMobile ? 0.18 : 0.12;
-  controls.targetRotationY = isMobile ? 0.04 : 0.22;
+  controls.targetRotationX = isMobile ? 0.14 : 0.12;
+  controls.targetRotationY = isMobile ? 0.02 : 0.22;
   controls.currentRotationX = controls.targetRotationX;
   controls.currentRotationY = controls.targetRotationY;
   updateCameraFromControls();
@@ -709,8 +724,8 @@ function resolveLabelTargets() {
     const ref = label.userData.refDist || 150;
     if (base) {
       if (isTheme) {
-        const clamped = THREE.MathUtils.clamp(dist / ref, 0.85, 1.55);
-        const m = isMobile ? 0.72 : 1;
+        const clamped = THREE.MathUtils.clamp(dist / ref, 0.75, 1.25);
+        const m = isMobile ? 0.62 : 0.92;
         label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
       } else {
         const clamped = THREE.MathUtils.clamp(dist / ref, 0.45, 1.35);
@@ -721,16 +736,33 @@ function resolveLabelTargets() {
 
     let opacityTarget = label.userData.baseOpacity || 0.9;
     let wantVisible = true;
+    const labelTheme = label.userData.theme || label.userData.projectTheme;
     if (isTheme) {
-      opacityTarget = currentStar ? 0.14 : 1;
+      // L3 / too close: hide giant theme plates
+      if (viewLevel >= 3 || currentStar || dist < 95) {
+        opacityTarget = 0;
+        wantVisible = false;
+      } else if (viewLevel === 2 && focusTheme && labelTheme !== focusTheme) {
+        // Neighbouring clusters: hide theme titles
+        opacityTarget = 0;
+        wantVisible = false;
+      } else if (dist < 120) {
+        opacityTarget = (dist - 95) / 25;
+      } else {
+        opacityTarget = 1;
+      }
     } else {
-      if (dist < 50) {
+      // Project labels only in cluster view (L2+), for the focused theme
+      if (viewLevel < 2 || (focusTheme && labelTheme !== focusTheme)) {
+        opacityTarget = 0;
+        wantVisible = false;
+      } else if (dist < 50) {
         opacityTarget = 0;
         wantVisible = false;
       } else {
         if (dist < 75) opacityTarget *= (dist - 50) / 25;
         if (dist > 150) opacityTarget *= Math.max(0, 1 - (dist - 150) / 70);
-        if (currentStar) opacityTarget *= 0.18;
+        if (viewLevel >= 3 || currentStar) opacityTarget *= 0.18;
         if (opacityTarget <= 0.06) wantVisible = false;
       }
     }
@@ -741,13 +773,13 @@ function resolveLabelTargets() {
     const behind = _labelNdc.z > 1 || _labelNdc.z < -1;
     const halfWpx = Math.max(24, (label.scale.x / dist) * (h * 0.3));
     const halfHpx = Math.max(10, (label.scale.y / dist) * (h * 0.3));
-    const inset = isMobile ? 10 : 6;
+    const inset = isMobile ? 14 : 6;
 
     let ox = 0;
     let oy = 0;
-    if (isTheme) {
+    if (isTheme && wantVisible) {
       const marginX = inset + halfWpx;
-      const marginY = inset + halfHpx + (isMobile ? 4 : 18);
+      const marginY = inset + halfHpx + (isMobile ? 8 : 18);
       let dx = 0;
       let dy = 0;
       if (behind || sx < marginX) dx = marginX - sx;
@@ -769,10 +801,10 @@ function resolveLabelTargets() {
 
     const spring = label.userData.spring;
     spring.opacityTarget = opacityTarget;
-    spring.wantVisible = isTheme ? true : wantVisible;
+    spring.wantVisible = wantVisible;
     commitLabelTarget(spring, ox, oy, 0);
 
-    if (isTheme || wantVisible) {
+    if (wantVisible) {
       screenMeta.push({
         label,
         spring,
@@ -872,11 +904,7 @@ function integrateLabelSprings(dt) {
     const k = 1 - Math.exp(-OPACITY_LAMBDA * dt);
     spring.opacity += (spring.opacityTarget - spring.opacity) * k;
     label.material.opacity = spring.opacity;
-    if (isTheme) {
-      label.visible = true;
-    } else {
-      label.visible = spring.wantVisible && spring.opacity > 0.04;
-    }
+    label.visible = spring.wantVisible && spring.opacity > 0.04;
   });
 }
 
@@ -923,21 +951,32 @@ async function assertLabelStability({ settleMs = 1200, sampleMs = 2000, maxStd =
 window.assertLabelStability = assertLabelStability;
 window.assertLabelClicks = assertLabelClicks;
 
-function setSceneFocus(focused) {
-  bloomPass.strength = focused ? 0.28 : 0.62;
-  renderer.toneMappingExposure = focused ? 0.68 : 1.34;
+function updateClusterDimming() {
+  const focused = viewLevel >= 3 || !!currentStar;
+  bloomPass.strength = focused ? 0.28 : (viewLevel === 2 ? 0.5 : 0.62);
+  renderer.toneMappingExposure = focused ? 0.68 : (viewLevel === 2 ? 1.22 : 1.34);
+  labelResolveAt = 0;
   const title = document.getElementById('title-overlay');
-  if (title) title.style.opacity = focused ? '0' : '1';
+  if (title) title.style.opacity = focused ? '0' : (viewLevel === 2 ? '0.35' : '1');
   const controlsEl = document.getElementById('controls');
-  if (controlsEl) controlsEl.style.opacity = focused ? '0' : '1';
-  nebulaGroups.forEach(({ group }) => {
+  if (controlsEl) controlsEl.style.opacity = focused ? '0' : (viewLevel === 2 ? '0.4' : '1');
+  nebulaGroups.forEach(({ group, theme }) => {
     group.traverse((obj) => {
       if (obj.isSprite && !obj.userData.isLabel) {
         const base = obj.userData._baseOp ?? 0.12;
-        obj.material.opacity = focused ? base * 0.35 : base;
+        let mul = 1;
+        if (focused) mul = 0.35;
+        else if (viewLevel === 2 && focusTheme && theme !== focusTheme) mul = 0.22;
+        obj.material.opacity = base * mul;
       }
     });
   });
+}
+
+function setSceneFocus(focused) {
+  // Compatibility wrapper — semantic zoom owns focus via updateClusterDimming
+  if (focused) viewLevel = 3;
+  updateClusterDimming();
 }
 
 // ============================================================================
@@ -998,6 +1037,48 @@ function starFocusPose(star) {
   return {
     position: star.position.clone().add(new THREE.Vector3(isMobile ? 0 : -14, 4, dist)),
     lookAt: star.position.clone()
+  };
+}
+
+function clusterFocusPose(theme) {
+  const pos = THEME_POSITIONS[theme];
+  if (!pos) return null;
+  const isMobile = window.innerWidth < 768;
+  const reduced = prefersReducedMotion();
+  const dist = reduced ? (isMobile ? 110 : 100) : (isMobile ? 92 : 82);
+  return {
+    position: new THREE.Vector3(
+      pos.x + (isMobile ? 0 : -18),
+      pos.y + (isMobile ? 8 : 10),
+      pos.z + dist
+    ),
+    lookAt: new THREE.Vector3(pos.x, pos.y - 2, pos.z),
+    controls: {
+      targetRotationX: 0.12,
+      targetRotationY: 0.18,
+      currentRotationX: 0.12,
+      currentRotationY: 0.18,
+      targetZoom: dist,
+      currentZoom: dist,
+      lookAt: new THREE.Vector3(pos.x, pos.y - 2, pos.z)
+    }
+  };
+}
+
+function poseFromVectors(position, lookAt) {
+  return {
+    position: position.clone(),
+    lookAt: lookAt.clone(),
+    fov: camera.fov,
+    controls: {
+      targetRotationX: controls.targetRotationX,
+      targetRotationY: controls.targetRotationY,
+      currentRotationX: controls.currentRotationX,
+      currentRotationY: controls.currentRotationY,
+      targetZoom: controls.targetZoom,
+      currentZoom: controls.currentZoom,
+      lookAt: lookAt.clone()
+    }
   };
 }
 
@@ -1102,10 +1183,87 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   }
 }
 
+function enterClusterView(theme, { fromAuto = false } = {}) {
+  if (!THEME_POSITIONS[theme]) return Promise.resolve();
+  if (viewLevel === 1 && !overviewPose) overviewPose = captureCameraPose();
+  // Closing HUD without leaving cluster
+  if (currentStar) {
+    currentStar = null;
+    const hud = document.getElementById('hud');
+    hud?.classList.remove('open');
+    hud?.setAttribute('aria-hidden', 'true');
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+  focusTheme = theme;
+  viewLevel = 2;
+  updateClusterDimming();
+  const pose = clusterFocusPose(theme);
+  clusterPose = pose;
+  preHudPose = pose; // L3 close returns here
+  const duration = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
+  return new Promise((resolve) => {
+    flyCameraPath(
+      camera.position.clone(),
+      pose.position.clone(),
+      currentLookPoint(),
+      pose.lookAt.clone(),
+      duration,
+      () => {
+        applyPoseControls(pose);
+        resolve();
+      }
+    );
+  });
+}
+
+function exitClusterView({ animate = true } = {}) {
+  if (currentStar) closeHUD({ restoreCamera: false });
+  focusTheme = null;
+  viewLevel = 1;
+  clusterPose = null;
+  preHudPose = null;
+  updateClusterDimming();
+  const pose = overviewPose;
+  overviewPose = null;
+  if (!animate) {
+    if (pose) {
+      applyPoseControls(pose);
+      camera.position.copy(pose.position);
+      camera.lookAt(pose.lookAt);
+    } else {
+      fitOverviewToClusters();
+    }
+    return Promise.resolve();
+  }
+  if (pose) {
+    return new Promise((resolve) => flyToPose(pose, resolve));
+  }
+  return new Promise((resolve) => {
+    const startPos = camera.position.clone();
+    const startLook = currentLookPoint();
+    fitOverviewToClusters();
+    const endPos = camera.position.clone();
+    const endLook = controls.lookAt.clone();
+    camera.position.copy(startPos);
+    const duration = prefersReducedMotion() ? 1600 : 1000;
+    flyCameraPath(startPos, endPos, startLook, endLook, duration, resolve);
+  });
+}
+
 function openHUD(star, { fromAuto = false } = {}) {
-  if (!preHudPose) preHudPose = captureCameraPose();
+  // Ensure we are in the star's cluster before opening detail
+  const theme = star.project?.theme;
+  if (theme && (viewLevel < 2 || focusTheme !== theme)) {
+    enterClusterView(theme, { fromAuto }).then(() => openHUD(star, { fromAuto }));
+    return;
+  }
+  if (!clusterPose) clusterPose = captureCameraPose();
+  preHudPose = clusterPose;
   currentStar = star;
-  setSceneFocus(true);
+  viewLevel = 3;
+  updateClusterDimming();
   populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
   const hud = document.getElementById('hud');
   hud.classList.add('open');
@@ -1124,48 +1282,30 @@ function closeHUD({ restoreCamera = true } = {}) {
     return;
   }
   currentStar = null;
-  setSceneFocus(false);
   const hud = document.getElementById('hud');
   hud.classList.remove('open');
   hud.setAttribute('aria-hidden', 'true');
   if (window.location.hash) {
     history.replaceState(null, '', window.location.pathname + window.location.search);
   }
-  const pose = preHudPose;
+  // Return to cluster view (L2), not overview
+  viewLevel = focusTheme ? 2 : 1;
+  updateClusterDimming();
   if (!restoreCamera) {
     preHudPose = null;
     return;
   }
-  preHudPose = null;
+  const pose = clusterPose || preHudPose;
+  preHudPose = clusterPose;
   if (pose) flyToPose(pose);
 }
 window.closeHUD = closeHUD;
 window.openHUD = openHUD;
+window.enterClusterView = enterClusterView;
+window.exitClusterView = exitClusterView;
 
 function enterOverviewMode() {
-  closeHUD({ restoreCamera: false });
-  isFlying = true;
-  const startPos = camera.position.clone();
-  const startLook = currentLookPoint();
-  fitOverviewToClusters();
-  const endPos = camera.position.clone();
-  const endLook = controls.lookAt.clone();
-  camera.position.copy(startPos);
-  const duration = prefersReducedMotion() ? 1600 : 1000;
-  flyCameraPath(startPos, endPos, startLook, endLook, duration, () => {
-    applyPoseControls({
-      fov: camera.fov,
-      controls: {
-        targetRotationX: controls.targetRotationX,
-        targetRotationY: controls.targetRotationY,
-        currentRotationX: controls.currentRotationX,
-        currentRotationY: controls.currentRotationY,
-        targetZoom: controls.targetZoom,
-        currentZoom: controls.currentZoom,
-        lookAt: controls.lookAt.clone()
-      }
-    });
-  });
+  exitClusterView({ animate: true });
 }
 
 // ============================================================================
@@ -1259,12 +1399,27 @@ function doWarpJump() {
     return;
   }
   warpJumpInProgress = true;
-  openHUD(target, { fromAuto: true });
-  const duration = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
-  setTimeout(() => {
-    warpJumpInProgress = false;
-    if (autoMode) scheduleNextWarp();
-  }, duration + 80);
+  const theme = target.project.theme;
+  const flyMs = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
+  const dwellMs = prefersReducedMotion() ? 2200 : 1400;
+  // Level 2 first, then level 3 item HUD
+  enterClusterView(theme, { fromAuto: true }).then(() => {
+    if (!autoMode) {
+      warpJumpInProgress = false;
+      return;
+    }
+    setTimeout(() => {
+      if (!autoMode) {
+        warpJumpInProgress = false;
+        return;
+      }
+      openHUD(target, { fromAuto: true });
+      setTimeout(() => {
+        warpJumpInProgress = false;
+        if (autoMode) scheduleNextWarp();
+      }, flyMs + 120);
+    }, dwellMs);
+  });
 }
 
 function enterAutoMode() {
@@ -1320,15 +1475,45 @@ function expectedHudTitleForLabel(label) {
 
 function openFromLabel(label) {
   if (!label) return false;
-  let star = null;
-  if (label.userData.kind === 'project' && label.userData.projectId) {
-    star = firstStarForProject(label.userData.projectId);
-  } else if (label.userData.kind === 'theme' && label.userData.theme) {
-    star = firstStarForTheme(label.userData.theme);
+  if (label.userData.kind === 'theme' && label.userData.theme) {
+    // Level 1 → 2: theme titles zoom into the cluster
+    enterClusterView(label.userData.theme);
+    return true;
   }
-  if (!star) return false;
-  openHUD(star);
-  return true;
+  if (label.userData.kind === 'project' && label.userData.projectId) {
+    if (viewLevel < 2) {
+      const theme = label.userData.projectTheme;
+      if (theme) enterClusterView(theme);
+      return true;
+    }
+    const star = firstStarForProject(label.userData.projectId);
+    if (!star) return false;
+    openHUD(star);
+    return true;
+  }
+  return false;
+}
+
+/** Pick a theme cluster by proximity to its center (overview / neighbour click). */
+function pickThemeAt(clientX, clientY) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const ndc = new THREE.Vector3();
+  let best = null;
+  let bestD = viewLevel === 1 ? 78 : 64;
+  Object.keys(THEME_POSITIONS).forEach((theme) => {
+    const p = THEME_POSITIONS[theme];
+    ndc.set(p.x, p.y, p.z).project(camera);
+    if (ndc.z > 1) return;
+    const sx = (ndc.x * 0.5 + 0.5) * w;
+    const sy = (-ndc.y * 0.5 + 0.5) * h;
+    const d = Math.hypot(sx - clientX, sy - clientY);
+    if (d < bestD) {
+      bestD = d;
+      best = theme;
+    }
+  });
+  return best;
 }
 
 /** Screen-space hit test for visible labels (explicit click targets). */
@@ -1393,11 +1578,15 @@ function pickStarAt(clientX, clientY) {
  */
 async function assertLabelClicks() {
   const results = [];
-  const visible = labelSprites.filter((l) => l.visible);
+  // Enter a cluster so project labels are visible, then click them
+  const theme = Object.keys(THEME_POSITIONS)[0];
+  await enterClusterView(theme);
+  await new Promise((r) => setTimeout(r, 1000));
+  const visible = labelSprites.filter((l) => l.visible && l.userData.kind === 'project');
   for (const label of visible) {
     const expected = expectedHudTitleForLabel(label);
     const opened = openFromLabel(label);
-    await new Promise((r) => setTimeout(r, 80));
+    await new Promise((r) => setTimeout(r, 120));
     const got = document.querySelector('[data-hud="project"]')?.textContent || '';
     const ok = opened && !!expected && got === expected;
     results.push({
@@ -1407,8 +1596,10 @@ async function assertLabelClicks() {
       got,
       ok
     });
+    if (currentStar) closeHUD({ restoreCamera: true });
+    await new Promise((r) => setTimeout(r, 200));
   }
-  if (currentStar) closeHUD();
+  await exitClusterView({ animate: false });
   const failed = results.filter((r) => !r.ok);
   return { ok: failed.length === 0, total: results.length, failed, results };
 }
@@ -1441,7 +1632,7 @@ function setupInteraction() {
     dragDist = 0;
   };
   const onMove = (x, y) => {
-    if (!controls.mouseDown || currentStar || isFlying) return;
+    if (!controls.mouseDown || viewLevel >= 3 || currentStar || isFlying) return;
     noteUserActivity();
     const dx = x - controls.mouseX;
     const dy = y - controls.mouseY;
@@ -1480,19 +1671,42 @@ function setupInteraction() {
       openFromLabel(labelHit);
       return;
     }
-    const starHit = pickStarAt(e.clientX, e.clientY);
-    if (starHit) {
-      openHUD(starHit);
+    // L1: click a cluster body → enter that cluster
+    if (viewLevel === 1) {
+      const theme = pickThemeAt(e.clientX, e.clientY);
+      if (theme) {
+        enterClusterView(theme);
+        return;
+      }
+    }
+    // L2 only: individual stars open the HUD
+    if (viewLevel === 2) {
+      const starHit = pickStarAt(e.clientX, e.clientY);
+      if (starHit && starHit.project?.theme === focusTheme) {
+        openHUD(starHit);
+        return;
+      }
+      // Empty space / other cluster → back to overview, or switch cluster
+      const other = pickThemeAt(e.clientX, e.clientY);
+      if (other && other !== focusTheme) {
+        enterClusterView(other);
+        return;
+      }
+      exitClusterView();
       return;
     }
-    if (currentStar) closeHUD();
+    if (viewLevel >= 3 || currentStar) {
+      closeHUD();
+      return;
+    }
   });
 
   window.addEventListener('keydown', (e) => {
     noteUserActivity();
     if (e.key === 'Escape') {
       closePrintStyleMenu();
-      closeHUD();
+      if (viewLevel >= 3 || currentStar) closeHUD();
+      else if (viewLevel === 2) exitClusterView();
     } else if (e.key === 'o' || e.key === 'O') enterOverviewMode();
   });
 
@@ -1502,7 +1716,7 @@ function setupInteraction() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
     if (warpShiftPass) warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-    if (!currentStar && !isFlying) fitOverviewToClusters();
+    if (viewLevel === 1 && !currentStar && !isFlying) fitOverviewToClusters();
   });
 
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
@@ -1520,7 +1734,7 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
 
-  if (!currentStar && !isFlying && !autoMode) {
+  if (viewLevel === 1 && !currentStar && !isFlying && !autoMode) {
     controls.targetRotationY += 0.00025;
     controls.currentRotationX += (controls.targetRotationX - controls.currentRotationX) * 0.05;
     controls.currentRotationY += (controls.targetRotationY - controls.currentRotationY) * 0.05;
@@ -1558,6 +1772,14 @@ function printColorsMap() {
   return map;
 }
 
+function resolveShowPhoto(style) {
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('photo');
+  if (raw === '0' || raw === 'false') return false;
+  if (raw === '1' || raw === 'true') return true;
+  return !!style.photo;
+}
+
 function ensurePrintModel(data) {
   if (!printModelCache) {
     printModelCache = buildModelForStyles(data, Object.keys(THEME_COLORS), printColorsMap());
@@ -1590,8 +1812,9 @@ function applyPrintStyle(styleId, { persist = true } = {}) {
     history.replaceState(null, '', next);
   }
   const printView = document.getElementById('print-view');
-  const model = ensurePrintModel(contentData);
+  const model = { ...ensurePrintModel(contentData), showPhoto: resolveShowPhoto(style) };
   printView.dataset.printStyle = style.id;
+  printView.dataset.photo = model.showPhoto ? '1' : '0';
   printView.innerHTML = renderPrintStyleControls() + style.render(model);
   printView.querySelectorAll('[data-print-style]').forEach((btn) => {
     btn.addEventListener('click', () => applyPrintStyle(btn.dataset.printStyle));

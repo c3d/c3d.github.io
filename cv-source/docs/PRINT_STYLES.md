@@ -19,9 +19,11 @@ cv-source/src/print/
 ## Selecting a style
 
 - URL: `/cv/?print=1&style=orbit`
+- Photo override: `?photo=0` / `?photo=1` (styles declare `photo: true/false` + `photoPlacement`)
 - On-screen segmented control (hidden when printing)
 - Preference remembered in `localStorage` key `c3d-cv-print-style`
 - Long-press / right-click the 3D title for HTML + PDF links
+- Portrait asset: `public/photo.webp` (+ `photo.jpg` fallback), ~600px tall
 
 ## PDFs
 

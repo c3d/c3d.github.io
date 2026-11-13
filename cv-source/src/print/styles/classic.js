@@ -3,6 +3,8 @@ export const classicStyle = {
   id: 'classic',
   label: 'Classic',
   description: 'Compact colored section bars',
+  photo: false,
+  photoPlacement: null,
   render(model) {
     let html = `<div class="pv-classic">
       <header class="pvc-header">

@@ -5,10 +5,20 @@ export const orbitStyle = {
   id: 'orbit',
   label: 'Orbit',
   description: 'Navy & gold deep-space layout',
+  photo: true,
+  photoPlacement: 'sidebar-top',
   render(model) {
     const keywords = model.keywords.join('  |  ');
+    const showPhoto = model.showPhoto !== false;
+    const photo = showPhoto ? `<div class="pvo-photo-wrap">
+      <picture class="pvo-photo">
+        <source srcset="${model.photoWebp}" type="image/webp">
+        <img src="${model.photoJpg}" alt="${model.name}" width="96" height="96">
+      </picture>
+    </div>` : '';
     let html = `<div class="pv-orbit">
       <aside class="pvo-side">
+        ${photo}
         <section class="pvo-block">
           <h2><span class="pvo-mini">◈</span> About</h2>
           <p>${model.aboutPara}</p>

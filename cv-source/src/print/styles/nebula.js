@@ -5,8 +5,15 @@ export const nebulaStyle = {
   id: 'nebula',
   label: 'Nebula',
   description: 'Colorful constellation one-pager',
+  photo: true,
+  photoPlacement: 'header',
   render(model) {
     const keywords = model.keywords.join(' · ');
+    const showPhoto = model.showPhoto !== false;
+    const photo = showPhoto ? `<picture class="pvn-photo">
+      <source srcset="${model.photoWebp}" type="image/webp">
+      <img src="${model.photoJpg}" alt="${model.name}" width="72" height="72">
+    </picture>` : '';
     const stars = Array.from({ length: 28 }, (_, i) => {
       const x = (i * 47 + 13) % 390 + 5;
       const y = (i * 31 + 9) % 100 + 8;
@@ -40,11 +47,12 @@ export const nebulaStyle = {
         </div>
         <div class="pvn-header-inner">
           <img class="pvn-logo" src="${model.logoSrc}" alt="">
-          <div>
+          <div class="pvn-header-text">
             <h1>${model.name}</h1>
             <p class="pvn-sub">${model.subtitle}</p>
             <p class="pvn-keys">${keywords}</p>
           </div>
+          ${photo}
         </div>
       </header>
       <div class="pvn-body">
