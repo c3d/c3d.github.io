@@ -624,32 +624,59 @@ function animate() {
 }
 
 function generatePrintView(data) {
-  // Baseline — full QR in PR B
   const printView = document.getElementById('print-view');
-  let html = '<h1>Christophe de Dinechin</h1><p class="subtitle">Software as a Passion</p>';
+  // Single header (logo + name) — avoids duplicate title with #title-overlay
+  let html = `<div class="print-header">
+    <img class="logo" src="/cv/logo.png" alt="Christophe de Dinechin">
+    <div>
+      <h1>Christophe de Dinechin</h1>
+      <p class="subtitle">Software as a Passion</p>
+    </div>
+  </div>`;
+
   const themes = {};
   data.forEach((item) => {
     const theme = item.theme || 'Other';
     if (!themes[theme]) themes[theme] = [];
     themes[theme].push(item);
   });
-  Object.keys(themes).forEach((theme) => {
+
+  const themeOrder = Object.keys(THEME_COLORS);
+  themeOrder.forEach((theme) => {
+    if (!themes[theme]) return;
+    const color = `#${new THREE.Color(THEME_COLORS[theme]).getHexString()}`;
     themes[theme].sort((a, b) => (b.weight || 0) - (a.weight || 0));
-    html += `<div class="theme-section"><h2>${theme}</h2>`;
-    themes[theme].slice(0, 5).forEach((item) => {
+    html += `<div class="theme-section" style="--theme-color:${color}">`;
+    html += `<h2>${theme}</h2>`;
+    // Top projects per theme (same weight ranking as 3D prominence)
+    themes[theme].slice(0, 4).forEach((item) => {
       html += `<div class="project"><h3>${item.title}</h3>`;
       if (item.years) html += `<div class="years">${item.years}</div>`;
       if (item.bullets?.length) {
         html += '<ul>';
-        item.bullets.slice(0, 5).forEach((b) => { html += `<li>${b.text}</li>`; });
+        item.bullets.slice(0, 4).forEach((b) => { html += `<li>${b.text}</li>`; });
         html += '</ul>';
       }
       html += '</div>';
     });
     html += '</div>';
   });
-  html += `<div class="qr-section"><img src="/cv/logo.png" alt=""><div class="qr-text"><p><strong>https://c3d.github.io/cv/</strong></p></div></div>`;
+
+  html += `<div class="qr-section">
+    <img class="logo-sm" src="/cv/logo.png" alt="Logo">
+    <img class="qr" src="/cv/qr-cv.png" alt="QR code to interactive CV" width="96" height="96">
+    <div class="qr-text">
+      <p><strong>Scan for the interactive constellation</strong></p>
+      <p>https://c3d.github.io/cv/</p>
+      <p>christophe@dinechin.org</p>
+    </div>
+  </div>`;
   printView.innerHTML = html;
+
+  // Dedicated print preview route: /cv/?print=1 or #print
+  if (location.search.includes('print=1') || location.hash === '#print') {
+    document.body.classList.add('print-preview');
+  }
 }
 
 async function init() {

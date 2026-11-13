@@ -311,15 +311,18 @@
 
     @media print {
       body {
-        overflow: visible;
-        background: #fff;
-        color: #000;
+        overflow: visible !important;
+        background: #fff !important;
+        color: #000 !important;
       }
 
       #canvas-container,
       #controls,
-      #ui-overlay {
-        display: none;
+      #ui-overlay,
+      #title-overlay,
+      #loading,
+      #hud {
+        display: none !important;
       }
 
       #print-view {
@@ -329,85 +332,127 @@
 
     #print-view {
       display: none;
-      padding: 40px;
-      max-width: 1200px;
+      padding: 28px 36px;
+      max-width: 900px;
       margin: 0 auto;
+      color: #041018;
+      font-family: "Source Sans 3", sans-serif;
     }
 
-    #print-view h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #000;
-    }
-
-    #print-view .subtitle {
-      text-align: center;
-      font-size: 18px;
-      color: #666;
-      margin-bottom: 30px;
-    }
-
-    #print-view .theme-section {
-      margin-bottom: 30px;
-    }
-
-    #print-view .theme-section h2 {
-      font-size: 20px;
-      color: #000;
-      border-bottom: 2px solid #000;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
-    }
-
-    #print-view .project {
-      margin-bottom: 15px;
-    }
-
-    #print-view .project h3 {
-      font-size: 16px;
-      color: #000;
-      margin-bottom: 5px;
-    }
-
-    #print-view .project .years {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-
-    #print-view .project p {
-      font-size: 14px;
-      color: #333;
-      line-height: 1.4;
-    }
-
-    #print-view .qr-section {
-      text-align: center;
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #ccc;
+    #print-view .print-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 20px;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #041018;
     }
-
-    #print-view .qr-section img {
-      width: 80px;
-      height: 80px;
+    #print-view .print-header img.logo {
+      width: 64px;
+      height: 64px;
     }
-
-    #print-view .qr-section .qr-text {
+    #print-view .print-header h1 {
+      font-family: Orbitron, sans-serif;
+      font-size: 26px;
+      margin: 0;
+      color: #041018;
+      text-align: left;
+    }
+    #print-view .print-header .subtitle {
+      margin: 4px 0 0;
+      font-size: 15px;
+      color: #445;
       text-align: left;
     }
 
-    #print-view .qr-section p {
+    #print-view .theme-section {
+      margin-bottom: 18px;
+      break-inside: avoid;
+    }
+    #print-view .theme-section h2 {
+      font-family: Orbitron, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--theme-color, #246);
+      display: inline-block;
+      padding: 4px 10px;
+      margin: 0 0 10px;
+    }
+    #print-view .project {
+      margin: 0 0 10px 12px;
+      padding-left: 10px;
+      border-left: 3px solid var(--theme-color, #246);
+    }
+    #print-view .project h3 {
       font-size: 14px;
-      color: #666;
-      margin: 5px 0;
+      margin: 0 0 2px;
+      color: #041018;
+    }
+    #print-view .project .years {
+      font-size: 12px;
+      color: #556;
+      margin-bottom: 4px;
+    }
+    #print-view .project ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 12px;
+      color: #223;
+      line-height: 1.35;
+    }
+
+    #print-view .qr-section {
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px solid #ccd;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 18px;
+    }
+    #print-view .qr-section img.qr {
+      width: 96px;
+      height: 96px;
+      border: 1px solid #ccd;
+    }
+    #print-view .qr-section img.logo-sm {
+      width: 56px;
+      height: 56px;
+    }
+    #print-view .qr-section .qr-text {
+      text-align: left;
+      font-size: 13px;
+      color: #334;
+    }
+    #print-view .qr-section .qr-text strong {
+      font-family: Orbitron, sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Screen preview of print layout */
+    body.print-preview #canvas-container,
+    body.print-preview #controls,
+    body.print-preview #ui-overlay,
+    body.print-preview #title-overlay,
+    body.print-preview #loading,
+    body.print-preview #hud {
+      display: none !important;
+    }
+    body.print-preview {
+      overflow: auto;
+      background: #e8ecf2;
+    }
+    body.print-preview #print-view {
+      display: block;
+      background: #fff;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+      margin: 24px auto;
     }
   </style>
-  <script type="module" crossorigin src="/cv/assets/main-6B91Bozm.js"></script>
+  <script type="module" crossorigin src="/cv/assets/main-C5seTu4T.js"></script>
   <link rel="stylesheet" crossorigin href="/cv/assets/main-XiThfW6l.css">
 </head>
 <body>
