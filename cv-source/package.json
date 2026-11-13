@@ -14,7 +14,7 @@
     "marked": "^11.1.0"
   },
   "devDependencies": {
-    "vite": "^5.0.11",
-    "vite-plugin-static-copy": "^1.0.0"
+    "vite": "^8.3.8",
+    "vite-plugin-static-copy": "^4.1.1"
   }
 }
