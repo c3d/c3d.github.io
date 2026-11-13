@@ -263,3 +263,14 @@ cv/
 ## License
 
 Content © Christophe de Dinechin. Code available under MIT license.
+
+
+## Print styles
+
+The printable CV supports multiple pluggable layouts (`nebula`, `orbit`, `classic`).
+
+- Open `/cv/?print=1&style=orbit` (or use the on-screen style toggle)
+- Long-press / right-click the 3D title for HTML views and PDF downloads
+- See [docs/PRINT_STYLES.md](docs/PRINT_STYLES.md) for how to add a style
+- A4 PDFs are generated at build time into `/cv/pdf/<style>.pdf` when Chromium is available
+

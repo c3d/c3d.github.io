@@ -24,6 +24,24 @@ jobs:
       
       - name: Build
         run: cd cv-source && npm run build
+
+      - name: Install Chromium for PDF export
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium || true
+          cd cv-source && npm install --no-save puppeteer-core@23
+
+      - name: Generate A4 PDFs per print style
+        env:
+          CHROME_PATH: /usr/bin/chromium-browser
+        run: |
+          # Fallbacks for Chrome binary location on ubuntu-latest
+          if [ ! -x "$CHROME_PATH" ]; then
+            for c in /usr/bin/chromium /usr/bin/google-chrome-stable /usr/bin/google-chrome; do
+              if [ -x "$c" ]; then export CHROME_PATH="$c"; break; fi
+            done
+          fi
+          cd cv-source && npm run generate-pdfs || echo "PDF generation skipped (no headless browser)"
       
       - name: Deploy to cv/
         run: |

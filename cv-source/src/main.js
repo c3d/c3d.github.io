@@ -1,12 +1,21 @@
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import '@fontsource/orbitron/500.css';
 import '@fontsource/orbitron/700.css';
 import '@fontsource/source-sans-3/400.css';
 import '@fontsource/source-sans-3/600.css';
+import './print/print-styles.css';
 import contentData from './content-data.json';
+import {
+  PRINT_STYLES,
+  PRINT_STYLE_STORAGE_KEY,
+  getPrintStyle,
+  resolvePrintStyleId,
+  buildModelForStyles
+} from './print/registry.js';
 
 // ============================================================================
 // Logo-inspired theme palette
@@ -21,15 +30,39 @@ const THEME_COLORS = {
   'Tools & Apps': 0x40e0ff
 };
 
-const THEME_POSITIONS = {
-  'Languages & Compilers': { x: -75, y: 32, z: -12 },
-  'Systems & Virtualization': { x: 78, y: 30, z: -10 },
-  // Spread Games / Art so they no longer sit on top of each other in overview
-  'Games & 3D': { x: -70, y: -68, z: -55 },
-  'Physics': { x: -48, y: 42, z: 48 },
-  'Art & Culture': { x: 82, y: -8, z: 68 },
-  'Tools & Apps': { x: 8, y: 22, z: -72 }
+/** Darker cousins of THEME_COLORS for print on white paper (same hue family). */
+const PRINT_THEME_COLORS = {
+  'Languages & Compilers': 0x1f5fd0,
+  'Systems & Virtualization': 0xc62838,
+  'Games & 3D': 0x2aa83a,
+  'Physics': 0xd48918,
+  'Art & Culture': 0xc2188a,
+  'Tools & Apps': 0x1496b0
 };
+
+/** Wide constellation for landscape. Physics (front-left) ≠ Languages (back-left). */
+const THEME_LAYOUT_DESKTOP = {
+  'Physics': { x: -98, y: 52, z: 58 },
+  'Languages & Compilers': { x: -102, y: -8, z: -52 },
+  'Tools & Apps': { x: 4, y: 48, z: -78 },
+  'Systems & Virtualization': { x: 102, y: 46, z: -18 },
+  'Games & 3D': { x: -55, y: -78, z: 8 },
+  'Art & Culture': { x: 98, y: -62, z: 58 }
+};
+
+/** Tall 3×2 for portrait — all six clusters fit without right-edge clip. */
+const THEME_LAYOUT_MOBILE = {
+  'Physics': { x: -42, y: 95, z: 28 },
+  'Languages & Compilers': { x: 42, y: 88, z: -32 },
+  'Tools & Apps': { x: -48, y: 12, z: -48 },
+  'Systems & Virtualization': { x: 48, y: 18, z: 12 },
+  'Games & 3D': { x: -44, y: -82, z: -12 },
+  'Art & Culture': { x: 46, y: -76, z: 42 }
+};
+
+/** Active theme centers (mutated by applyThemeLayout). */
+const THEME_POSITIONS = { ...THEME_LAYOUT_DESKTOP };
+let activeLayoutMobile = null;
 
 function mulberry32(seed) {
   return function () {
@@ -101,7 +134,7 @@ function makeLabelTexture(text, hex, { large = false } = {}) {
 // State
 // ============================================================================
 
-let camera, scene, renderer, composer, bloomPass;
+let camera, scene, renderer, composer, bloomPass, warpShiftPass;
 let stars = []; // one per CV bullet
 let projects = [];
 let labelSprites = [];
@@ -109,9 +142,34 @@ let nebulaGroups = [];
 let currentStar = null;
 let isFlying = false;
 let flyGeneration = 0;
+let preHudPose = null;
 let softWhiteDisc;
 const softThemeDiscs = {};
 const clock = new THREE.Clock();
+const FLY_DURATION_MS = 900;
+const prefersReducedMotion = () =>
+  typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// --- Label springs ---
+const LABEL_RESOLVE_MS = 200;
+const LABEL_CAM_MOVE_EPS = 2.8;
+const LABEL_TARGET_DEADZONE = 0.55;
+const SPRING_OMEGA = 6.5;
+const SPRING_ZETA = 0.88;
+const OPACITY_LAMBDA = 9;
+let labelResolveAt = 0;
+const lastResolveCamPos = new THREE.Vector3(1e9, 1e9, 1e9);
+
+// --- Warp tour ---
+let autoMode = false;
+let idleTimer = null;
+let warpCountdownTimer = null;
+let warpDeadline = 0;
+let warpVisited = new Set();
+let lastWarpedProjectId = null;
+let warpJumpInProgress = false;
+const IDLE_MS = 30000;
+const WARP_INTERVAL_MS = 30000;
 
 let controls = {
   mouseDown: false,
@@ -144,27 +202,112 @@ function initScene() {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x03060f);
-  scene.fog = new THREE.FogExp2(0x03060f, 0.0045);
+  scene.fog = new THREE.FogExp2(0x03060f, 0.0032);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  // Mid-ground between PR5 washout and over-dark polish
-  renderer.toneMappingExposure = 1.18;
+  // Vibrant overview without washout
+  renderer.toneMappingExposure = 1.34;
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
   bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0.55, // luminous but not white-saturated
-    0.6,
-    0.72
+    0.62,
+    0.55,
+    0.68
   );
   composer.addPass(bloomPass);
 
+  warpShiftPass = new ShaderPass(WarpShiftShader);
+  warpShiftPass.uniforms.strength.value = 0;
+  warpShiftPass.uniforms.accelSign.value = 0;
+  composer.addPass(warpShiftPass);
+
   createDistantField();
+}
+
+/** Doppler-ish warp shift: blue ahead / red trail, streaks + CA by speed. */
+const WarpShiftShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    strength: { value: 0 },
+    accelSign: { value: 0 },
+    resolution: { value: new THREE.Vector2(1, 1) }
+  },
+  vertexShader: /* glsl */`
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tDiffuse;
+    uniform float strength;
+    uniform float accelSign;
+    uniform vec2 resolution;
+    varying vec2 vUv;
+    void main() {
+      vec2 uv = vUv;
+      vec2 center = vec2(0.5);
+      vec2 dir = uv - center;
+      float r = length(dir);
+      float radial = smoothstep(0.05, 0.75, r);
+      // accelSign > 0: accelerating outward → blue center, red edges
+      // accelSign < 0: decelerating → reverse
+      float blueW = clamp(0.5 - 0.5 * accelSign * (1.0 - radial) + 0.5 * accelSign * radial, 0.0, 1.0);
+      float redW = 1.0 - blueW;
+      float streak = strength * 0.012 * radial;
+      vec2 streakDir = r > 1e-4 ? normalize(dir) : vec2(0.0);
+      vec2 ca = streakDir * strength * 0.004;
+      vec3 col;
+      col.r = texture2D(tDiffuse, uv - streakDir * streak + ca).r;
+      col.g = texture2D(tDiffuse, uv - streakDir * streak * 0.55).g;
+      col.b = texture2D(tDiffuse, uv + streakDir * streak - ca).b;
+      vec3 tinted = col;
+      tinted.r = mix(col.r, col.r * 1.18 + 0.04, redW * strength);
+      tinted.b = mix(col.b, col.b * 1.22 + 0.05, blueW * strength);
+      tinted.g = mix(col.g, col.g * 0.96, strength * 0.35);
+      gl_FragColor = vec4(mix(col, tinted, clamp(strength, 0.0, 1.0)), 1.0);
+    }
+  `
+};
+
+const _camPrevPos = new THREE.Vector3();
+const _camVel = new THREE.Vector3();
+let _camSpeed = 0;
+let _camAccel = 0;
+let _warpStrengthSmoothed = 0;
+let _camPrevInit = false;
+
+function updateWarpShift(dt) {
+  if (!warpShiftPass) return;
+  if (!_camPrevInit) {
+    _camPrevPos.copy(camera.position);
+    _camPrevInit = true;
+  }
+  const prevSpeed = _camSpeed;
+  _camVel.subVectors(camera.position, _camPrevPos).divideScalar(Math.max(dt, 1e-4));
+  _camSpeed = _camVel.length();
+  _camAccel = (_camSpeed - prevSpeed) / Math.max(dt, 1e-4);
+  _camPrevPos.copy(camera.position);
+
+  const reduced = prefersReducedMotion();
+  const speedN = THREE.MathUtils.clamp(_camSpeed / (reduced ? 220 : 140), 0, 1);
+  const target = reduced ? 0 : speedN * speedN;
+  const ease = 1 - Math.exp(-(reduced ? 3 : 6) * dt);
+  _warpStrengthSmoothed += (target - _warpStrengthSmoothed) * ease;
+  if (_warpStrengthSmoothed < 0.01) _warpStrengthSmoothed = 0;
+
+  warpShiftPass.uniforms.strength.value = _warpStrengthSmoothed;
+  // Positive accelSign while speeding up (blue ahead), negative while braking
+  const aSign = THREE.MathUtils.clamp(_camAccel / 80, -1, 1);
+  warpShiftPass.uniforms.accelSign.value += (aSign - warpShiftPass.uniforms.accelSign.value) * ease;
+  warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 }
 
 function updateCameraFromControls() {
@@ -178,50 +321,91 @@ function updateCameraFromControls() {
 }
 
 /**
- * Fit overview camera to the bounding sphere of all theme clusters
- * for the current aspect (desktop + portrait), with margin for labels/title.
+ * Swap desktop ↔ portrait theme layouts and move nebulae / stars / labels.
+ */
+function applyThemeLayout(forceMobile = null) {
+  const isMobile = forceMobile ?? window.innerWidth < 768;
+  if (activeLayoutMobile === isMobile && nebulaGroups.length) return;
+  activeLayoutMobile = isMobile;
+  const layout = isMobile ? THEME_LAYOUT_MOBILE : THEME_LAYOUT_DESKTOP;
+  Object.keys(layout).forEach((theme) => {
+    THEME_POSITIONS[theme] = { ...layout[theme] };
+  });
+
+  nebulaGroups.forEach(({ group, theme }) => {
+    const p = THEME_POSITIONS[theme];
+    if (p) group.position.set(p.x, p.y, p.z);
+  });
+
+  stars.forEach((s) => {
+    const theme = s.project?.theme;
+    const base = THEME_POSITIONS[theme];
+    const off = s.themeOffset;
+    if (!base || !off) return;
+    s.position.set(base.x + off.x, base.y + off.y, base.z + off.z);
+    s.mesh.position.copy(s.position);
+  });
+
+  labelSprites.forEach((label) => {
+    const theme = label.userData.theme || label.userData.projectTheme;
+    const base = THEME_POSITIONS[theme];
+    const off = label.userData.themeOffset;
+    if (!base || !off) return;
+    if (label.userData.kind === 'theme') {
+      label.userData.home.set(off.x, off.y, off.z);
+      label.position.copy(label.userData.home);
+      resetLabelSpring(label);
+      return;
+    }
+    const home = new THREE.Vector3(base.x + off.x, base.y + off.y, base.z + off.z);
+    label.userData.home.copy(home);
+    label.position.copy(home);
+    resetLabelSpring(label);
+  });
+
+  if (stars.length) createProjectLineages();
+}
+
+/**
+ * Fit overview so clusters fill ~75–85% of the viewport (tight bounds).
  */
 function fitOverviewToClusters() {
+  applyThemeLayout();
+
+  const isMobile = window.innerWidth < 768;
+  const pad = 22; // nebula glow only — no giant label padding
   const box = new THREE.Box3();
-  const nebulaR = 36;
   Object.values(THEME_POSITIONS).forEach((p) => {
-    box.expandByPoint(new THREE.Vector3(p.x - nebulaR, p.y - nebulaR * 0.65, p.z - nebulaR));
-    box.expandByPoint(new THREE.Vector3(p.x + nebulaR, p.y + nebulaR * 0.75 + 28, p.z + nebulaR));
-  });
-  stars.forEach((s) => box.expandByPoint(s.position));
-  labelSprites.forEach((l) => {
-    const w = new THREE.Vector3();
-    l.getWorldPosition(w);
-    box.expandByPoint(w);
+    box.expandByPoint(new THREE.Vector3(p.x - pad, p.y - pad * 0.7, p.z - pad));
+    box.expandByPoint(new THREE.Vector3(p.x + pad, p.y + pad * 0.85, p.z + pad));
   });
 
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
-  // Sphere that covers the AABB (slightly less aggressive than max-axis)
-  const radius = 0.5 * Math.sqrt(size.x * size.x + size.y * size.y + size.z * size.z) * 0.72;
+  const titleBand = isMobile ? 0.12 : 0.10;
+  const fill = isMobile ? 0.78 : 0.82; // target FOV fraction filled by clusters
 
-  const isMobile = window.innerWidth < 768;
-  // Slight downward bias only — too much leaves empty bottom + title/Physics clash
-  controls.lookAt.set(center.x * 0.08, center.y - (isMobile ? 2 : 6), center.z * 0.12);
+  controls.lookAt.set(center.x * 0.05, center.y - size.y * (titleBand * 0.35), center.z * 0.08);
 
   const vFov = THREE.MathUtils.degToRad(camera.fov);
   const aspect = Math.max(camera.aspect, 0.35);
-  const fitH = radius / Math.sin(vFov / 2);
-  const fitW = radius / Math.sin(Math.atan(Math.tan(vFov / 2) * aspect));
-  let dist = Math.max(fitH, fitW);
-  dist *= isMobile ? 1.36 : 1.28; // room for title + edge labels
-  dist = THREE.MathUtils.clamp(dist, 190, isMobile ? 400 : 360);
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const halfH = Math.max(size.y, size.z * 0.55) * 0.5;
+  const halfW = Math.max(size.x, size.z * 0.45) * 0.5;
+  const distV = halfH / Math.tan((vFov * fill) / 2);
+  const distH = halfW / Math.tan((hFov * fill) / 2);
+  let dist = Math.max(distV, distH);
+  dist = THREE.MathUtils.clamp(dist, isMobile ? 140 : 130, isMobile ? 320 : 280);
 
   controls.targetZoom = dist;
   controls.currentZoom = dist;
-  controls.targetRotationX = isMobile ? 0.26 : 0.15;
-  controls.targetRotationY = isMobile ? 0.05 : 0.24;
+  controls.targetRotationX = isMobile ? 0.18 : 0.12;
+  controls.targetRotationY = isMobile ? 0.04 : 0.22;
   controls.currentRotationX = controls.targetRotationX;
   controls.currentRotationY = controls.targetRotationY;
   updateCameraFromControls();
   camera.lookAt(controls.lookAt);
-  // Keep fog readable at overview distance
-  if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(1.1 / dist, 0.0022, 0.005);
+  if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(0.7 / dist, 0.0016, 0.0036);
 }
 
 function createSoftSprite(hex, scale, opacity) {
@@ -285,9 +469,9 @@ function createNebulae() {
       opacity: 1,
       sizeAttenuation: true
     }));
-    themeLabel.position.set(0, 38, 0);
+    themeLabel.position.set(0, 26, 0);
     // World size at ~overview distance; clamped in updateLabelVisibility when close
-    const themeH = 9.2;
+    const themeH = 8.4;
     themeLabel.scale.set(themeH * themeAspect, themeH, 1);
     themeLabel.userData.isLabel = true;
     themeLabel.userData.kind = 'theme';
@@ -295,10 +479,11 @@ function createNebulae() {
     themeLabel.userData.labelTitle = theme;
     themeLabel.userData.baseOpacity = 1;
     themeLabel.userData.baseScale = themeLabel.scale.clone();
-    themeLabel.userData.refDist = 160; // distance where baseScale looks right
+    themeLabel.userData.refDist = 170;
     themeLabel.userData.priority = 100;
     themeLabel.userData.home = themeLabel.position.clone();
-    themeLabel.userData.nudge = new THREE.Vector3();
+    themeLabel.userData.themeOffset = themeLabel.position.clone();
+    initLabelSpring(themeLabel);
     group.add(themeLabel);
     labelSprites.push(themeLabel);
 
@@ -368,10 +553,12 @@ function createStarsFromBullets(projectList) {
         pl.userData.baseScale = pl.scale.clone();
         pl.userData.refDist = 140;
         pl.userData.projectId = project.id;
+        pl.userData.projectTheme = theme;
         pl.userData.labelTitle = project.title;
         pl.userData.priority = project.weight || 5;
         pl.userData.home = pl.position.clone();
-        pl.userData.nudge = new THREE.Vector3();
+        pl.userData.themeOffset = pl.position.clone().sub(themePos);
+        initLabelSpring(pl);
         scene.add(pl);
         labelSprites.push(pl);
       }
@@ -420,6 +607,7 @@ function createStarsFromBullets(projectList) {
           mesh: group,
           halo,
           position,
+          themeOffset: position.clone().sub(themePos),
           color,
           size,
           bullet,
@@ -438,8 +626,11 @@ function createStarsFromBullets(projectList) {
   console.log(`Created ${stars.length} bullet-stars from ${projects.length} projects`);
 }
 
+let lineageLines = [];
+
 function createProjectLineages() {
-  // Connect related projects via their cluster centroids (first bullet of each)
+  lineageLines.forEach((line) => scene.remove(line));
+  lineageLines = [];
   const firstByProject = {};
   stars.forEach((s) => {
     if (!firstByProject[s.project.id]) firstByProject[s.project.id] = s;
@@ -451,21 +642,54 @@ function createProjectLineages() {
       if (!other) return;
       const geom = new THREE.BufferGeometry().setFromPoints([star.position, other.position]);
       const mid = new THREE.Color(star.color).lerp(new THREE.Color(other.color), 0.5);
-      scene.add(new THREE.Line(geom, new THREE.LineBasicMaterial({
+      const line = new THREE.Line(geom, new THREE.LineBasicMaterial({
         color: mid,
         transparent: true,
         opacity: 0.22,
         blending: THREE.AdditiveBlending,
         depthWrite: false
-      })));
+      }));
+      scene.add(line);
+      lineageLines.push(line);
     });
   });
 }
 
 const _labelWorld = new THREE.Vector3();
 const _labelNdc = new THREE.Vector3();
+const _springTmp = new THREE.Vector3();
 
-function updateLabelVisibility() {
+function initLabelSpring(label) {
+  if (label.userData.spring) return;
+  label.userData.spring = {
+    offset: new THREE.Vector3(),
+    velocity: new THREE.Vector3(),
+    target: new THREE.Vector3(),
+    committed: new THREE.Vector3(),
+    opacity: label.material.opacity ?? 1,
+    opacityTarget: label.material.opacity ?? 1,
+    wantVisible: true
+  };
+}
+
+function resetLabelSpring(label) {
+  initLabelSpring(label);
+  const s = label.userData.spring;
+  s.offset.set(0, 0, 0);
+  s.velocity.set(0, 0, 0);
+  s.target.set(0, 0, 0);
+  s.committed.set(0, 0, 0);
+}
+
+function commitLabelTarget(spring, tx, ty, tz = 0) {
+  _springTmp.set(tx, ty, tz);
+  if (_springTmp.distanceTo(spring.committed) < LABEL_TARGET_DEADZONE) return;
+  spring.committed.copy(_springTmp);
+  spring.target.copy(_springTmp);
+}
+
+/** Low-rate collision / viewport resolve → spring targets (not applied immediately). */
+function resolveLabelTargets() {
   const camPos = camera.position;
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -473,125 +697,235 @@ function updateLabelVisibility() {
   const screenMeta = [];
 
   labelSprites.forEach((label) => {
-    // Reset toward home + accumulated collision nudge
-    if (label.userData.home) {
-      const n = label.userData.nudge || new THREE.Vector3();
-      if (label.parent && label.parent !== scene) {
-        // theme labels live in nebula groups — nudge in local space
-        label.position.copy(label.userData.home).add(n);
-      } else {
-        label.position.copy(label.userData.home).add(n);
-      }
-    }
+    initLabelSpring(label);
+    const isTheme = label.userData.kind === 'theme';
+    // Measure at home (ignore current spring offset) so targets are stable
+    if (label.userData.home) label.position.copy(label.userData.home);
 
     label.getWorldPosition(_labelWorld);
-    const dist = _labelWorld.distanceTo(camPos);
-
-    // Too close → hide (giant blurred text)
-    if (dist < 50) {
-      label.visible = false;
-      return;
-    }
-
-    let opacity = label.userData.baseOpacity || 0.9;
-    if (dist < 75) opacity *= (dist - 50) / 25;
-    if (dist > 260) opacity *= Math.max(0, 1 - (dist - 260) / 120);
-    if (label.userData.kind === 'project' && dist > 190) {
-      opacity *= Math.max(0.3, 1 - (dist - 190) / 100);
-    }
-    // Dim while HUD open (keep stars clickable; avoid giant text behind glass)
-    if (currentStar) opacity *= 0.18;
+    const dist = Math.max(_labelWorld.distanceTo(camPos), 1);
 
     const base = label.userData.baseScale;
     const ref = label.userData.refDist || 150;
     if (base) {
-      const f = dist / ref;
-      const clamped = THREE.MathUtils.clamp(f, 0.45, 1.35);
-      // Smaller on mobile so theme/project plates fit the narrow viewport
-      const m = isMobile ? 0.58 : 1;
-      label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+      if (isTheme) {
+        const clamped = THREE.MathUtils.clamp(dist / ref, 0.85, 1.55);
+        const m = isMobile ? 0.72 : 1;
+        label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+      } else {
+        const clamped = THREE.MathUtils.clamp(dist / ref, 0.45, 1.35);
+        const m = isMobile ? 0.58 : 1;
+        label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+      }
     }
 
-    // Screen-space: hide labels that clip past the viewport (esp. mobile)
+    let opacityTarget = label.userData.baseOpacity || 0.9;
+    let wantVisible = true;
+    if (isTheme) {
+      opacityTarget = currentStar ? 0.14 : 1;
+    } else {
+      if (dist < 50) {
+        opacityTarget = 0;
+        wantVisible = false;
+      } else {
+        if (dist < 75) opacityTarget *= (dist - 50) / 25;
+        if (dist > 150) opacityTarget *= Math.max(0, 1 - (dist - 150) / 70);
+        if (currentStar) opacityTarget *= 0.18;
+        if (opacityTarget <= 0.06) wantVisible = false;
+      }
+    }
+
     _labelNdc.copy(_labelWorld).project(camera);
-    const sx = (_labelNdc.x * 0.5 + 0.5) * w;
-    const sy = (-_labelNdc.y * 0.5 + 0.5) * h;
+    let sx = (_labelNdc.x * 0.5 + 0.5) * w;
+    let sy = (-_labelNdc.y * 0.5 + 0.5) * h;
     const behind = _labelNdc.z > 1 || _labelNdc.z < -1;
-    const halfWpx = Math.max(24, (label.scale.x / Math.max(dist, 1)) * (h * 0.3));
-    const halfHpx = Math.max(10, (label.scale.y / Math.max(dist, 1)) * (h * 0.3));
-    const inset = isMobile ? 8 : 4;
-    const overflowL = Math.max(0, inset - (sx - halfWpx));
-    const overflowR = Math.max(0, (sx + halfWpx) - (w - inset));
-    const overflowT = Math.max(0, inset - (sy - halfHpx));
-    const overflowB = Math.max(0, (sy + halfHpx) - (h - inset));
-    // Hide when center is outside, or any meaningful plate overflow
-    const offscreen = behind
-      || sx < inset || sx > w - inset || sy < inset || sy > h - inset
-      || overflowL > 2 || overflowR > 2 || overflowT > 2 || overflowB > 2;
+    const halfWpx = Math.max(24, (label.scale.x / dist) * (h * 0.3));
+    const halfHpx = Math.max(10, (label.scale.y / dist) * (h * 0.3));
+    const inset = isMobile ? 10 : 6;
 
-    if (offscreen) {
-      label.visible = false;
-      return;
+    let ox = 0;
+    let oy = 0;
+    if (isTheme) {
+      const marginX = inset + halfWpx;
+      const marginY = inset + halfHpx + (isMobile ? 4 : 18);
+      let dx = 0;
+      let dy = 0;
+      if (behind || sx < marginX) dx = marginX - sx;
+      if (sx > w - marginX) dx = (w - marginX) - sx;
+      if (sy < marginY) dy = marginY - sy;
+      if (sy > h - marginY) dy = (h - marginY) - sy;
+      ox = THREE.MathUtils.clamp((dx / w) * dist * 0.55, -36, 36);
+      oy = THREE.MathUtils.clamp(-(dy / h) * dist * 0.55, -36, 36);
+      sx += dx;
+      sy += dy;
+    } else if (wantVisible) {
+      const offscreen = behind
+        || sx < inset || sx > w - inset || sy < inset || sy > h - inset;
+      if (offscreen) {
+        opacityTarget = 0;
+        wantVisible = false;
+      }
     }
 
-    label.material.opacity = opacity;
-    label.visible = opacity > 0.06;
+    const spring = label.userData.spring;
+    spring.opacityTarget = opacityTarget;
+    spring.wantVisible = isTheme ? true : wantVisible;
+    commitLabelTarget(spring, ox, oy, 0);
 
-    if (label.visible) {
+    if (isTheme || wantVisible) {
       screenMeta.push({
         label,
+        spring,
         sx,
         sy,
         dist,
-        halfW: Math.max(56, (label.scale.x / Math.max(dist, 1)) * (h * 0.28)),
-        halfH: Math.max(14, (label.scale.y / Math.max(dist, 1)) * (h * 0.28)),
-        priority: label.userData.priority || 1
+        halfW: Math.max(isTheme ? 70 : 56, (label.scale.x / dist) * (h * 0.28)),
+        halfH: Math.max(14, (label.scale.y / dist) * (h * 0.28)),
+        priority: label.userData.priority || 1,
+        isTheme,
+        ox,
+        oy
       });
     }
   });
 
-  // Screen-space collision avoidance (2 passes): nudge lower-priority labels apart
   screenMeta.sort((a, b) => b.priority - a.priority);
   for (let pass = 0; pass < 2; pass++) {
     for (let i = 0; i < screenMeta.length; i++) {
       for (let j = i + 1; j < screenMeta.length; j++) {
         const a = screenMeta[i];
         const b = screenMeta[j];
+        if (b.isTheme) continue;
         const dx = b.sx - a.sx;
         const dy = b.sy - a.sy;
         const minX = a.halfW + b.halfW;
         const minY = a.halfH + b.halfH + 10;
-        if (Math.abs(dx) < minX && Math.abs(dy) < minY) {
-          const pushY = (minY - Math.abs(dy) + 4) * (dy >= 0 ? 1 : -1 || 1);
-          const pushX = (minX - Math.abs(dx) + 2) * 0.25 * (dx >= 0 ? 1 : -1);
-          const worldPushY = (pushY / h) * b.dist * 0.65;
-          const worldPushX = (pushX / w) * b.dist * 0.45;
-          if (!b.label.userData.nudge) b.label.userData.nudge = new THREE.Vector3();
-          b.label.userData.nudge.y = THREE.MathUtils.clamp(
-            (b.label.userData.nudge.y || 0) + worldPushY * 0.5,
-            -28,
-            28
-          );
-          b.label.userData.nudge.x = THREE.MathUtils.clamp(
-            (b.label.userData.nudge.x || 0) + worldPushX * 0.5,
-            -20,
-            20
-          );
-          if (b.label.userData.home) {
-            b.label.position.x = b.label.userData.home.x + b.label.userData.nudge.x;
-            b.label.position.y = b.label.userData.home.y + b.label.userData.nudge.y;
-          }
-          b.sx += pushX;
-          b.sy += pushY;
-        }
+        if (Math.abs(dx) >= minX || Math.abs(dy) >= minY) continue;
+        const pushY = (minY - Math.abs(dy) + 4) * (dy >= 0 ? 1 : -1 || 1);
+        const pushX = (minX - Math.abs(dx) + 2) * 0.25 * (dx >= 0 ? 1 : -1);
+        b.oy += (pushY / h) * b.dist * 0.65;
+        b.ox += (pushX / w) * b.dist * 0.45;
+        b.ox = THREE.MathUtils.clamp(b.ox, -28, 28);
+        b.oy = THREE.MathUtils.clamp(b.oy, -28, 28);
+        b.sx += pushX;
+        b.sy += pushY;
       }
     }
   }
+
+  screenMeta.forEach((m) => commitLabelTarget(m.spring, m.ox, m.oy, 0));
+  lastResolveCamPos.copy(camPos);
 }
 
+function integrateLabelSprings(dt) {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isMobile = w < 768;
+  const camPos = camera.position;
+  const omega = SPRING_OMEGA;
+  const zeta = SPRING_ZETA;
+  const damp = 2 * zeta * omega;
+  const stiff = omega * omega;
+
+  labelSprites.forEach((label) => {
+    initLabelSpring(label);
+    const spring = label.userData.spring;
+    const isTheme = label.userData.kind === 'theme';
+
+    // Spring toward committed target (critically / slightly under-damped)
+    const ox = spring.offset.x;
+    const oy = spring.offset.y;
+    const tx = spring.target.x;
+    const ty = spring.target.y;
+    let vx = spring.velocity.x;
+    let vy = spring.velocity.y;
+    const ax = stiff * (tx - ox) - damp * vx;
+    const ay = stiff * (ty - oy) - damp * vy;
+    vx += ax * dt;
+    vy += ay * dt;
+    spring.offset.x = ox + vx * dt;
+    spring.offset.y = oy + vy * dt;
+    spring.velocity.x = vx;
+    spring.velocity.y = vy;
+
+    if (label.userData.home) {
+      label.position.copy(label.userData.home).add(spring.offset);
+    }
+
+    label.getWorldPosition(_labelWorld);
+    const dist = Math.max(_labelWorld.distanceTo(camPos), 1);
+    const base = label.userData.baseScale;
+    const ref = label.userData.refDist || 150;
+    if (base) {
+      if (isTheme) {
+        const clamped = THREE.MathUtils.clamp(dist / ref, 0.85, 1.55);
+        const m = isMobile ? 0.72 : 1;
+        label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+      } else {
+        const clamped = THREE.MathUtils.clamp(dist / ref, 0.45, 1.35);
+        const m = isMobile ? 0.58 : 1;
+        label.scale.set(base.x * clamped * m, base.y * clamped * m, 1);
+      }
+    }
+
+    // Ease opacity
+    const k = 1 - Math.exp(-OPACITY_LAMBDA * dt);
+    spring.opacity += (spring.opacityTarget - spring.opacity) * k;
+    label.material.opacity = spring.opacity;
+    if (isTheme) {
+      label.visible = true;
+    } else {
+      label.visible = spring.wantVisible && spring.opacity > 0.04;
+    }
+  });
+}
+
+function updateLabels(dt) {
+  const now = performance.now();
+  const camMoved = camera.position.distanceToSquared(lastResolveCamPos) > LABEL_CAM_MOVE_EPS * LABEL_CAM_MOVE_EPS;
+  if (now >= labelResolveAt || camMoved) {
+    resolveLabelTargets();
+    labelResolveAt = now + LABEL_RESOLVE_MS;
+  }
+  integrateLabelSprings(dt);
+}
+
+/** Sample label local positions for a few seconds; assert near-zero variance after settle. */
+async function assertLabelStability({ settleMs = 1200, sampleMs = 2000, maxStd = 0.08 } = {}) {
+  await new Promise((r) => setTimeout(r, settleMs));
+  const ids = labelSprites.filter((l) => l.visible).map((l) => l.userData.labelTitle || l.uuid);
+  const series = Object.fromEntries(ids.map((id) => [id, []]));
+  const t0 = performance.now();
+  while (performance.now() - t0 < sampleMs) {
+    labelSprites.forEach((l) => {
+      if (!l.visible) return;
+      const id = l.userData.labelTitle || l.uuid;
+      if (!series[id]) series[id] = [];
+      series[id].push({ x: l.position.x, y: l.position.y, z: l.position.z });
+    });
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  const failed = [];
+  Object.entries(series).forEach(([id, samples]) => {
+    if (samples.length < 8) return;
+    const mean = samples.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y, z: a.z + p.z }), { x: 0, y: 0, z: 0 });
+    mean.x /= samples.length; mean.y /= samples.length; mean.z /= samples.length;
+    let varSum = 0;
+    samples.forEach((p) => {
+      const dx = p.x - mean.x; const dy = p.y - mean.y; const dz = p.z - mean.z;
+      varSum += dx * dx + dy * dy + dz * dz;
+    });
+    const std = Math.sqrt(varSum / samples.length);
+    if (std > maxStd) failed.push({ id, std });
+  });
+  return { ok: failed.length === 0, failed, sampled: Object.keys(series).length, maxStd };
+}
+window.assertLabelStability = assertLabelStability;
+window.assertLabelClicks = assertLabelClicks;
+
 function setSceneFocus(focused) {
-  bloomPass.strength = focused ? 0.25 : 0.55;
-  renderer.toneMappingExposure = focused ? 0.6 : 1.18;
+  bloomPass.strength = focused ? 0.28 : 0.62;
+  renderer.toneMappingExposure = focused ? 0.68 : 1.34;
   const title = document.getElementById('title-overlay');
   if (title) title.style.opacity = focused ? '0' : '1';
   const controlsEl = document.getElementById('controls');
@@ -610,10 +944,120 @@ function setSceneFocus(focused) {
 // Sci-fi HUD (right panel / mobile bottom sheet)
 // ============================================================================
 
-function openHUD(star) {
-  currentStar = star;
-  setSceneFocus(true);
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
+function captureCameraPose() {
+  const lookDir = new THREE.Vector3();
+  camera.getWorldDirection(lookDir);
+  const lookAt = camera.position.clone().add(lookDir.multiplyScalar(controls.currentZoom || 80));
+  return {
+    position: camera.position.clone(),
+    lookAt,
+    quaternion: camera.quaternion.clone(),
+    fov: camera.fov,
+    controls: {
+      targetRotationX: controls.targetRotationX,
+      targetRotationY: controls.targetRotationY,
+      currentRotationX: controls.currentRotationX,
+      currentRotationY: controls.currentRotationY,
+      targetZoom: controls.targetZoom,
+      currentZoom: controls.currentZoom,
+      lookAt: controls.lookAt.clone()
+    }
+  };
+}
+
+function applyPoseControls(pose) {
+  if (!pose?.controls) return;
+  const c = pose.controls;
+  controls.targetRotationX = c.targetRotationX;
+  controls.targetRotationY = c.targetRotationY;
+  controls.currentRotationX = c.currentRotationX;
+  controls.currentRotationY = c.currentRotationY;
+  controls.targetZoom = c.targetZoom;
+  controls.currentZoom = c.currentZoom;
+  controls.lookAt.copy(c.lookAt);
+  if (typeof pose.fov === 'number') {
+    camera.fov = pose.fov;
+    camera.updateProjectionMatrix();
+  }
+}
+
+function currentLookPoint() {
+  const dir = new THREE.Vector3();
+  camera.getWorldDirection(dir);
+  return camera.position.clone().add(dir.multiplyScalar(Math.max(controls.currentZoom * 0.45, 40)));
+}
+
+function starFocusPose(star) {
+  const isMobile = window.innerWidth < 768;
+  const reduced = prefersReducedMotion();
+  const dist = reduced ? (isMobile ? 48 : 42) : (isMobile ? 36 : 32);
+  return {
+    position: star.position.clone().add(new THREE.Vector3(isMobile ? 0 : -14, 4, dist)),
+    lookAt: star.position.clone()
+  };
+}
+
+function flyCameraPath(fromPos, toPos, fromLook, toLook, duration, onDone) {
+  const gen = ++flyGeneration;
+  isFlying = true;
+  const start = performance.now();
+  const look = fromLook.clone();
+  function step(now) {
+    if (gen !== flyGeneration) return;
+    const t = Math.min((now - start) / duration, 1);
+    const e = easeInOutCubic(t);
+    camera.position.lerpVectors(fromPos, toPos, e);
+    look.lerpVectors(fromLook, toLook, e);
+    camera.lookAt(look);
+    if (t < 1) requestAnimationFrame(step);
+    else if (gen === flyGeneration) {
+      camera.position.copy(toPos);
+      camera.lookAt(toLook);
+      isFlying = false;
+      onDone?.();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+function flyToStar(star) {
+  const focus = starFocusPose(star);
+  const duration = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
+  flyCameraPath(
+    camera.position.clone(),
+    focus.position,
+    currentLookPoint(),
+    focus.lookAt,
+    duration
+  );
+}
+
+function flyToPose(pose, onDone) {
+  if (!pose) {
+    onDone?.();
+    return;
+  }
+  const duration = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
+  flyCameraPath(
+    camera.position.clone(),
+    pose.position.clone(),
+    currentLookPoint(),
+    pose.lookAt.clone(),
+    duration,
+    () => {
+      applyPoseControls(pose);
+      camera.position.copy(pose.position);
+      camera.lookAt(pose.controls?.lookAt || pose.lookAt);
+      onDone?.();
+    }
+  );
+}
+
+function populateHUD(star, { allowAutoplay = true } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
   const bullet = star.bullet;
@@ -626,19 +1070,20 @@ function openHUD(star) {
   hud.querySelector('[data-hud="section"]').textContent = bullet.section || 'DATUM';
   hud.querySelector('[data-hud="bullet"]').textContent = bullet.text || '';
 
-  // Index readout
   const idx = stars.indexOf(star);
   hud.querySelector('[data-hud="index"]').textContent =
     `NODE ${String(idx + 1).padStart(3, '0')} / ${String(stars.length).padStart(3, '0')}`;
 
-  // Media / links from parent project
   const media = hud.querySelector('[data-hud="media"]');
   media.innerHTML = '';
   if (project.videos && project.videos.length) {
     project.videos.forEach((id) => {
       const wrap = document.createElement('div');
       wrap.className = 'hud-video';
-      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+      // Auto mode: never autoplay YouTube
+      const extras = allowAutoplay ? '' : '&mute=1';
+      const auto = allowAutoplay ? '' : ''; // keep autoplay off always in embed URL unless user clicks
+      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0${auto}${extras}" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
       media.appendChild(wrap);
     });
   }
@@ -655,15 +1100,29 @@ function openHUD(star) {
     });
     media.appendChild(links);
   }
+}
 
+function openHUD(star, { fromAuto = false } = {}) {
+  if (!preHudPose) preHudPose = captureCameraPose();
+  currentStar = star;
+  setSceneFocus(true);
+  populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
+  const hud = document.getElementById('hud');
   hud.classList.add('open');
   hud.setAttribute('aria-hidden', 'false');
   window.location.hash = star.id;
   flyToStar(star);
+  if (fromAuto || autoMode) {
+    warpVisited.add(star.project.id);
+    lastWarpedProjectId = star.project.id;
+  }
 }
 
-function closeHUD() {
-  if (!currentStar) return;
+function closeHUD({ restoreCamera = true } = {}) {
+  if (!currentStar && !document.getElementById('hud')?.classList.contains('open')) {
+    if (!restoreCamera) preHudPose = null;
+    return;
+  }
   currentStar = null;
   setSceneFocus(false);
   const hud = document.getElementById('hud');
@@ -672,58 +1131,168 @@ function closeHUD() {
   if (window.location.hash) {
     history.replaceState(null, '', window.location.pathname + window.location.search);
   }
+  const pose = preHudPose;
+  if (!restoreCamera) {
+    preHudPose = null;
+    return;
+  }
+  preHudPose = null;
+  if (pose) flyToPose(pose);
 }
 window.closeHUD = closeHUD;
 window.openHUD = openHUD;
 
-function flyToStar(star) {
-  const gen = ++flyGeneration;
-  isFlying = true;
-  const startPos = camera.position.clone();
-  // Bring the bullet-star near screen center, leave room for right HUD on desktop
-  const isMobile = window.innerWidth < 768;
-  const endPos = star.position.clone().add(new THREE.Vector3(
-    isMobile ? 0 : -14,
-    4,
-    isMobile ? 36 : 32
-  ));
-  const look = new THREE.Vector3().copy(star.position);
-  const endLook = star.position.clone();
-  // Keep current look direction as start by unprojecting center — approx star
-  const startLook = star.position.clone();
-  const start = performance.now();
-  const duration = 900;
-
-  function step(now) {
-    if (gen !== flyGeneration) return; // superseded by a newer fly target
-    const t = Math.min((now - start) / duration, 1);
-    const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    camera.position.lerpVectors(startPos, endPos, e);
-    look.lerpVectors(startLook, endLook, e);
-    camera.lookAt(look);
-    if (t < 1) requestAnimationFrame(step);
-    else if (gen === flyGeneration) isFlying = false;
-  }
-  requestAnimationFrame(step);
-}
-
 function enterOverviewMode() {
-  closeHUD();
+  closeHUD({ restoreCamera: false });
   isFlying = true;
   const startPos = camera.position.clone();
+  const startLook = currentLookPoint();
   fitOverviewToClusters();
   const endPos = camera.position.clone();
+  const endLook = controls.lookAt.clone();
   camera.position.copy(startPos);
-  const start = performance.now();
-  function step(now) {
-    const t = Math.min((now - start) / 1000, 1);
-    const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    camera.position.lerpVectors(startPos, endPos, e);
-    camera.lookAt(controls.lookAt);
-    if (t < 1) requestAnimationFrame(step);
-    else isFlying = false;
+  const duration = prefersReducedMotion() ? 1600 : 1000;
+  flyCameraPath(startPos, endPos, startLook, endLook, duration, () => {
+    applyPoseControls({
+      fov: camera.fov,
+      controls: {
+        targetRotationX: controls.targetRotationX,
+        targetRotationY: controls.targetRotationY,
+        currentRotationX: controls.currentRotationX,
+        currentRotationY: controls.currentRotationY,
+        targetZoom: controls.targetZoom,
+        currentZoom: controls.currentZoom,
+        lookAt: controls.lookAt.clone()
+      }
+    });
+  });
+}
+
+// ============================================================================
+// Warp tour (idle auto mode)
+// ============================================================================
+
+function projectStarRepresentatives() {
+  const byId = new Map();
+  stars.forEach((s) => {
+    const id = s.project.id;
+    if (!byId.has(id) || (s.project.weight || 0) > (byId.get(id).project.weight || 0)) {
+      byId.set(id, s);
+    }
+  });
+  return [...byId.values()];
+}
+
+function pickWarpTarget() {
+  const reps = projectStarRepresentatives();
+  if (!reps.length) return null;
+  const current = currentStar || reps.find((s) => s.project.id === lastWarpedProjectId) || null;
+  const relatedIds = new Set(current?.project?.related || []);
+  const related = reps.filter((s) => relatedIds.has(s.project.id) && s.project.id !== current?.project?.id);
+  const unvisitedRelated = related.filter((s) => !warpVisited.has(s.project.id));
+  if (unvisitedRelated.length) return unvisitedRelated[0];
+  if (related.length) {
+    const nonBack = related.filter((s) => s.project.id !== lastWarpedProjectId);
+    return nonBack[0] || related[0];
   }
-  requestAnimationFrame(step);
+  const sameTheme = reps.filter((s) =>
+    s.project.theme === current?.project?.theme && s.project.id !== current?.project?.id
+  );
+  const unvisitedTheme = sameTheme.filter((s) => !warpVisited.has(s.project.id));
+  if (unvisitedTheme.length) return unvisitedTheme[0];
+  if (sameTheme.length) {
+    const nonBack = sameTheme.filter((s) => s.project.id !== lastWarpedProjectId);
+    return nonBack[0] || sameTheme[0];
+  }
+  const unvisited = reps.filter((s) => !warpVisited.has(s.project.id));
+  if (unvisited.length) return unvisited[Math.floor(Math.random() * unvisited.length)];
+  warpVisited.clear();
+  const pool = reps.filter((s) => s.project.id !== lastWarpedProjectId);
+  return pool[Math.floor(Math.random() * pool.length)] || reps[0];
+}
+
+function updateWarpBar() {
+  const bar = document.getElementById('warp-bar');
+  if (!bar) return;
+  if (!autoMode) {
+    bar.hidden = true;
+    bar.setAttribute('aria-hidden', 'true');
+    return;
+  }
+  bar.hidden = false;
+  bar.setAttribute('aria-hidden', 'false');
+  const left = Math.max(0, Math.ceil((warpDeadline - performance.now()) / 1000));
+  const fill = bar.querySelector('[data-warp-fill]');
+  const label = bar.querySelector('[data-warp-label]');
+  const total = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+  const remain = Math.max(0, warpDeadline - performance.now());
+  if (fill) fill.style.transform = `scaleX(${remain / total})`;
+  if (label) label.textContent = `NEXT WARP JUMP IN ${left} SECOND${left === 1 ? '' : 'S'}`;
+}
+
+function clearWarpCountdown() {
+  if (warpCountdownTimer) {
+    clearInterval(warpCountdownTimer);
+    warpCountdownTimer = null;
+  }
+}
+
+function scheduleNextWarp() {
+  clearWarpCountdown();
+  const interval = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+  warpDeadline = performance.now() + interval;
+  updateWarpBar();
+  warpCountdownTimer = setInterval(() => {
+    updateWarpBar();
+    if (performance.now() >= warpDeadline) {
+      clearWarpCountdown();
+      doWarpJump();
+    }
+  }, 200);
+}
+
+function doWarpJump() {
+  if (!autoMode) return;
+  const target = pickWarpTarget();
+  if (!target) {
+    scheduleNextWarp();
+    return;
+  }
+  warpJumpInProgress = true;
+  openHUD(target, { fromAuto: true });
+  const duration = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
+  setTimeout(() => {
+    warpJumpInProgress = false;
+    if (autoMode) scheduleNextWarp();
+  }, duration + 80);
+}
+
+function enterAutoMode() {
+  if (autoMode || document.body.classList.contains('print-preview')) return;
+  autoMode = true;
+  document.body.classList.add('auto-warp');
+  warpVisited = new Set(currentStar ? [currentStar.project.id] : []);
+  lastWarpedProjectId = currentStar?.project?.id || null;
+  if (!currentStar) doWarpJump();
+  else scheduleNextWarp();
+}
+function exitAutoMode() {
+  if (!autoMode) return;
+  autoMode = false;
+  document.body.classList.remove('auto-warp');
+  clearWarpCountdown();
+  updateWarpBar();
+  // Jump in progress may finish; idle timer restarts via noteUserActivity
+}
+window.enterAutoMode = enterAutoMode;
+window.exitAutoMode = exitAutoMode;
+window.doWarpJump = doWarpJump;
+
+function noteUserActivity() {
+  if (autoMode) exitAutoMode();
+  if (idleTimer) clearTimeout(idleTimer);
+  if (document.body.classList.contains('print-preview')) return;
+  idleTimer = setTimeout(() => enterAutoMode(), IDLE_MS);
 }
 
 function firstStarForProject(projectId) {
@@ -853,12 +1422,8 @@ window.pickLabelAt = pickLabelAt;
 
 function setupInteraction() {
   const container = document.getElementById('canvas-container');
-  const raycaster = new THREE.Raycaster();
-  raycaster.params.Points = { threshold: 1.5 };
-  const mouse = new THREE.Vector2();
   let dragDist = 0;
 
-  // Expand hit area: use invisible spheres on stars for picking
   stars.forEach((s) => {
     const hit = new THREE.Mesh(
       new THREE.SphereGeometry(Math.max(2.6, s.size * 1.15), 8, 8),
@@ -869,6 +1434,7 @@ function setupInteraction() {
   });
 
   const onDown = (x, y) => {
+    noteUserActivity();
     controls.mouseDown = true;
     controls.mouseX = x;
     controls.mouseY = y;
@@ -876,6 +1442,7 @@ function setupInteraction() {
   };
   const onMove = (x, y) => {
     if (!controls.mouseDown || currentStar || isFlying) return;
+    noteUserActivity();
     const dx = x - controls.mouseX;
     const dy = y - controls.mouseY;
     dragDist += Math.abs(dx) + Math.abs(dy);
@@ -900,31 +1467,33 @@ function setupInteraction() {
   container.addEventListener('touchend', () => { controls.mouseDown = false; });
 
   container.addEventListener('wheel', (e) => {
+    noteUserActivity();
     e.preventDefault();
     controls.targetZoom = Math.max(120, Math.min(520, controls.targetZoom + e.deltaY * 0.1));
   }, { passive: false });
 
   container.addEventListener('click', (e) => {
+    noteUserActivity();
     if (dragDist > 8) return;
-    // 1) Labels are explicit targets — never fall through to nearest-star guess
     const labelHit = pickLabelAt(e.clientX, e.clientY);
     if (labelHit) {
       openFromLabel(labelHit);
       return;
     }
-    // 2) Stars: only within a small pixel radius; prefer frontmost
     const starHit = pickStarAt(e.clientX, e.clientY);
     if (starHit) {
       openHUD(starHit);
       return;
     }
-    // Empty space while HUD open → close
     if (currentStar) closeHUD();
   });
 
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeHUD();
-    else if (e.key === 'o' || e.key === 'O') enterOverviewMode();
+    noteUserActivity();
+    if (e.key === 'Escape') {
+      closePrintStyleMenu();
+      closeHUD();
+    } else if (e.key === 'o' || e.key === 'O') enterOverviewMode();
   });
 
   window.addEventListener('resize', () => {
@@ -932,26 +1501,26 @@ function setupInteraction() {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
+    if (warpShiftPass) warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
     if (!currentStar && !isFlying) fitOverviewToClusters();
   });
 
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
+    noteUserActivity();
     e.stopPropagation();
     closeHUD();
   });
 
-  // Title → printable CV (DOM link above canvas; stop any bubbling just in case)
-  document.querySelector('.title-print-link')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    // default navigation to /cv/?print=1
-  });
+  setupTitlePrintMenu();
+  noteUserActivity();
 }
 
 function animate() {
   requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
 
-  if (!currentStar && !isFlying) {
+  if (!currentStar && !isFlying && !autoMode) {
     controls.targetRotationY += 0.00025;
     controls.currentRotationX += (controls.targetRotationX - controls.currentRotationX) * 0.05;
     controls.currentRotationY += (controls.targetRotationY - controls.currentRotationY) * 0.05;
@@ -962,69 +1531,174 @@ function animate() {
 
   nebulaGroups.forEach(({ group, theme, phase }) => {
     const base = THEME_POSITIONS[theme];
+    if (!base) return;
     group.position.y = base.y + Math.sin(t * 0.12 + phase) * 1.1;
   });
 
-  updateLabelVisibility();
+  updateLabels(dt);
+  updateWarpShift(dt);
   composer.render();
 }
 
-function generatePrintView(data) {
+
+// ============================================================================
+// Print styles + title popover
+// ============================================================================
+
+let activePrintStyleId = 'nebula';
+let printModelCache = null;
+let titleLongPressTimer = null;
+let titleLongPressFired = false;
+
+function printColorsMap() {
+  const map = {};
+  Object.keys(PRINT_THEME_COLORS).forEach((t) => {
+    map[t] = `#${new THREE.Color(PRINT_THEME_COLORS[t]).getHexString()}`;
+  });
+  return map;
+}
+
+function ensurePrintModel(data) {
+  if (!printModelCache) {
+    printModelCache = buildModelForStyles(data, Object.keys(THEME_COLORS), printColorsMap());
+    // Keep the one-pager to two projects per theme for exact A4 fit
+    printModelCache.themes.forEach((t) => { t.projects = t.projects.slice(0, 2); });
+  }
+  return printModelCache;
+}
+
+function renderPrintStyleControls() {
+  return `<div class="pv-style-bar no-print" role="group" aria-label="Print style">
+    ${PRINT_STYLES.map((s) => `
+      <button type="button" class="pv-style-btn${s.id === activePrintStyleId ? ' active' : ''}"
+        data-print-style="${s.id}" title="${s.description || s.label}">${s.label}</button>`).join('')}
+    <a class="pv-style-pdf" href="/cv/pdf/${activePrintStyleId}.pdf" download>PDF</a>
+  </div>`;
+}
+
+function applyPrintStyle(styleId, { persist = true } = {}) {
+  const style = getPrintStyle(styleId);
+  activePrintStyleId = style.id;
+  if (persist) {
+    try { localStorage.setItem(PRINT_STYLE_STORAGE_KEY, style.id); } catch { /* ignore */ }
+  }
+  const params = new URLSearchParams(location.search);
+  if (!params.has('print')) params.set('print', '1');
+  params.set('style', style.id);
+  const next = `${location.pathname}?${params.toString()}`;
+  if (location.search !== `?${params.toString()}`) {
+    history.replaceState(null, '', next);
+  }
   const printView = document.getElementById('print-view');
-  const about = data.find((d) => d.role === 'about' || d.id === 'intro');
-
-  let html = `<div class="print-header">
-    <img class="logo" src="/cv/logo.png" alt="Christophe de Dinechin">
-    <div>
-      <h1>Christophe de Dinechin</h1>
-      <p class="subtitle">Software as a Passion</p>
-      ${about?.bullets?.[0] ? `<p class="subtitle">${about.bullets[0].text}</p>` : ''}
-    </div>
-  </div>`;
-
-  const themes = {};
-  data.forEach((item) => {
-    if (item.role === 'about' || item.id === 'intro') return;
-    const theme = item.theme || 'Other';
-    if (!THEME_COLORS[theme]) return;
-    if (!themes[theme]) themes[theme] = [];
-    themes[theme].push(item);
+  const model = ensurePrintModel(contentData);
+  printView.dataset.printStyle = style.id;
+  printView.innerHTML = renderPrintStyleControls() + style.render(model);
+  printView.querySelectorAll('[data-print-style]').forEach((btn) => {
+    btn.addEventListener('click', () => applyPrintStyle(btn.dataset.printStyle));
   });
+}
 
-  // Collapsed one-pager: up to 3 projects/theme, 2 bullets each
-  Object.keys(THEME_COLORS).forEach((theme) => {
-    if (!themes[theme]) return;
-    const color = `#${new THREE.Color(THEME_COLORS[theme]).getHexString()}`;
-    themes[theme].sort((a, b) => (b.weight || 0) - (a.weight || 0));
-    html += `<div class="theme-section" style="--theme-color:${color}">`;
-    html += `<h2>${theme}</h2>`;
-    themes[theme].slice(0, 3).forEach((item) => {
-      html += `<div class="project"><h3>${item.title}</h3>`;
-      if (item.years) html += `<div class="years">${item.years}</div>`;
-      if (item.bullets?.length) {
-        html += '<ul>';
-        item.bullets.slice(0, 2).forEach((b) => { html += `<li>${b.text}</li>`; });
-        html += '</ul>';
-      }
-      html += '</div>';
-    });
-    html += '</div>';
-  });
+function generatePrintView(data) {
+  ensurePrintModel(data);
+  const params = new URLSearchParams(location.search);
+  let stored = null;
+  try { stored = localStorage.getItem(PRINT_STYLE_STORAGE_KEY); } catch { /* ignore */ }
+  activePrintStyleId = resolvePrintStyleId({ urlStyle: params.get('style'), stored });
+  applyPrintStyle(activePrintStyleId, { persist: true });
 
-  html += `<div class="qr-section">
-    <img class="logo-sm" src="/cv/logo.png" alt="Logo">
-    <img class="qr" src="/cv/qr-cv.png" alt="QR code to interactive CV" width="96" height="96">
-    <div class="qr-text">
-      <p><strong>Scan for the interactive constellation</strong></p>
-      <p>https://c3d.github.io/cv/</p>
-      <p>christophe@dinechin.org</p>
-    </div>
-  </div>`;
-  printView.innerHTML = html;
-
-  if (location.search.includes('print=1') || location.hash === '#print') {
+  if (params.get('print') === '1' || location.hash === '#print') {
     document.body.classList.add('print-preview');
   }
+}
+
+function closePrintStyleMenu() {
+  const menu = document.getElementById('print-style-menu');
+  if (menu) {
+    menu.hidden = true;
+    menu.setAttribute('aria-hidden', 'true');
+  }
+  document.querySelector('.title-print-link')?.classList.remove('holding');
+}
+
+function openPrintStyleMenu(anchor) {
+  const menu = document.getElementById('print-style-menu');
+  if (!menu) return;
+  const html = `
+    <div class="psm-title">Print &amp; PDF</div>
+    <div class="psm-section">HTML views</div>
+    ${PRINT_STYLES.map((s) => `
+      <a class="psm-item" href="/cv/?print=1&style=${s.id}">
+        <span class="psm-label">${s.label}</span>
+        <span class="psm-desc">${s.description || 'Print view'}</span>
+      </a>`).join('')}
+    <div class="psm-section">PDF downloads</div>
+    ${PRINT_STYLES.map((s) => `
+      <a class="psm-item" href="/cv/pdf/${s.id}.pdf" download>
+        <span class="psm-label">${s.label} PDF</span>
+        <span class="psm-desc">A4 one-pager</span>
+      </a>`).join('')}`;
+  menu.innerHTML = html;
+  menu.hidden = false;
+  menu.setAttribute('aria-hidden', 'false');
+  const rect = anchor.getBoundingClientRect();
+  menu.style.left = `${Math.min(window.innerWidth - 280, Math.max(12, rect.left + rect.width / 2 - 130))}px`;
+  menu.style.top = `${Math.min(window.innerHeight - 20, rect.bottom + 10)}px`;
+}
+
+function setupTitlePrintMenu() {
+  const link = document.querySelector('.title-print-link');
+  if (!link) return;
+  const HOLD_MS = 500;
+
+  const clearHold = () => {
+    if (titleLongPressTimer) {
+      clearTimeout(titleLongPressTimer);
+      titleLongPressTimer = null;
+    }
+    link.classList.remove('holding');
+  };
+
+  const startHold = (e) => {
+    noteUserActivity();
+    titleLongPressFired = false;
+    clearHold();
+    link.classList.add('holding');
+    titleLongPressTimer = setTimeout(() => {
+      titleLongPressFired = true;
+      link.classList.remove('holding');
+      openPrintStyleMenu(link);
+    }, HOLD_MS);
+  };
+
+  link.addEventListener('pointerdown', (e) => {
+    if (e.button === 2) return;
+    startHold(e);
+  });
+  link.addEventListener('pointerup', clearHold);
+  link.addEventListener('pointerleave', clearHold);
+  link.addEventListener('pointercancel', clearHold);
+  link.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (titleLongPressFired) {
+      e.preventDefault();
+      titleLongPressFired = false;
+      return;
+    }
+    // short click → default print view (href)
+  });
+  link.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    clearHold();
+    titleLongPressFired = true;
+    openPrintStyleMenu(link);
+  });
+  document.addEventListener('pointerdown', (e) => {
+    const menu = document.getElementById('print-style-menu');
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || link.contains(e.target)) return;
+    closePrintStyleMenu();
+  });
 }
 
 async function init() {
