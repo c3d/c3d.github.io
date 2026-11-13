@@ -4,6 +4,7 @@ title: A Theory of Incomplete Measurements
 theme: Physics
 years: 
 weight: 9
+print: 1
 related: [reunifions, special-relativity]
 videos: []
 links:

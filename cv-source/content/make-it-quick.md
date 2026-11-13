@@ -4,6 +4,7 @@ title: Make-It-Quick
 theme: Tools & Apps
 years: 
 weight: 7
+print: 1
 related: [recorder]
 videos: []
 links:

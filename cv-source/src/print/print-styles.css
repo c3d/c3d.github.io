@@ -88,21 +88,31 @@ body.print-preview #print-view {
 }
 
 /* ===== Classic ===== */
-.pv-classic { padding: 14px 18px 12px; }
-.pvc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #041018; }
-.pvc-logo { width: 48px; height: 48px; }
-.pvc-header h1 { font-family: Orbitron, sans-serif; font-size: 18px; margin: 0; color: #041018; text-align: left; }
-.pvc-sub { margin: 2px 0 0; font-size: 11px; color: #445; text-align: left; }
-.pvc-theme { margin-bottom: 8px; break-inside: avoid; }
+.pv-classic { padding: 10px 16px 8px; }
+.pvc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 2px solid #041018; }
+.pvc-logo { width: 42px; height: 42px; }
+.pvc-header h1 { font-family: Orbitron, sans-serif; font-size: 17px; margin: 0; color: #041018; text-align: left; }
+.pvc-sub { margin: 1px 0 0; font-size: 10.5px; color: #445; text-align: left; }
+.pvc-theme { margin-bottom: 5px; break-inside: avoid; }
 .pvc-theme h2 {
-  font-family: Orbitron, sans-serif; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
-  color: #fff; background: var(--theme-color, #246); display: inline-block; padding: 2px 7px; margin: 0 0 4px;
+  font-family: Orbitron, sans-serif; font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #fff; background: var(--theme-color, #246); display: inline-block; padding: 2px 7px; margin: 0 0 3px;
 }
-.pvc-project { margin: 0 0 5px 8px; padding-left: 8px; border-left: 2px solid var(--theme-color, #246); }
-.pvc-project h3 { font-size: 11px; margin: 0; display: inline; }
-.pvc-years { font-size: 10px; color: #556; margin-left: 6px; }
-.pvc-project ul { margin: 1px 0 0; padding-left: 14px; font-size: 10px; line-height: 1.25; }
-.pvc-qr { margin-top: 8px; padding-top: 8px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 12px; font-size: 11px; }
+.pvc-project { margin: 0 0 3px 6px; padding-left: 7px; border-left: 2px solid var(--theme-color, #246); }
+.pvc-project h3 { font-size: 12px; margin: 0; display: inline; font-weight: 650; }
+.pvc-years { font-size: 9.5px; color: #556; margin-left: 6px; }
+.pvc-project ul { margin: 1px 0 0; padding-left: 14px; font-size: 11px; font-weight: 500; line-height: 1.22; }
+.pvc-patents {
+  margin: 4px 0 0;
+  padding: 3px 7px;
+  font-size: 9px;
+  font-weight: 500;
+  color: #445;
+  background: #eef2f7;
+  border-radius: 4px;
+  line-height: 1.25;
+}
+.pvc-qr { margin-top: 6px; padding-top: 6px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 10px; font-size: 10.5px; }
 .pvc-qr-link { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
 .pvc-qr-img { width: 64px; height: 64px; border: 1px solid #ccd; }
 .pvc-logo-sm { width: 40px; height: 40px; }
@@ -151,22 +161,38 @@ body.print-preview #print-view {
 a.pvn-qr:hover { color: inherit; }
 .pvn-qr img { width: 16mm; height: 16mm; border: 0.3mm solid var(--pv-line); background: #fff; }
 .pvn-qr-title { font-family: Orbitron, sans-serif; font-size: 6.5pt; margin: 0 0 0.6mm !important; }
-.pvn-main { display: flex; flex-direction: column; gap: 1.8mm; min-width: 0; }
+.pvn-main { display: flex; flex-direction: column; gap: 1.4mm; min-width: 0; }
 .pvn-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvn-bar { display: flex; align-items: center; gap: 2mm; background: var(--theme-color, #246); color: #fff; border-radius: 2mm; padding: 1.4mm 2.4mm; }
-.pvn-ico { display: flex; width: 5mm; height: 5mm; }
+.pvn-bar { display: flex; align-items: center; gap: 2mm; background: var(--theme-color, #246); color: #fff; border-radius: 2mm; padding: 1.2mm 2.2mm; }
+.pvn-ico { display: flex; width: 4.5mm; height: 4.5mm; }
 .pvn-ico svg { width: 100%; height: 100%; color: #fff; }
 .pvn-bar h2 { font-family: Orbitron, sans-serif; font-size: 7.5pt; letter-spacing: 0.07em; text-transform: uppercase; margin: 0; color: #fff; }
-.pvn-theme-body { display: grid; grid-template-columns: 1fr 12mm; gap: 1mm; padding: 1.6mm 0 0.4mm 1mm; }
-.pvn-timeline { position: relative; padding-left: 3.2mm; border-left: 0.45mm solid var(--theme-color, #246); margin-left: 1.4mm; }
-.pvn-project { position: relative; margin: 0 0 1.2mm; }
+/* Full-width timeline — deco icon is a faint watermark, not a gutter */
+.pvn-theme-body { position: relative; display: block; padding: 1.2mm 0 0.2mm 1mm; }
+.pvn-timeline { position: relative; padding-left: 3.2mm; border-left: 0.45mm solid var(--theme-color, #246); margin-left: 1.4mm; padding-right: 0.5mm; }
+.pvn-project { position: relative; margin: 0 0 1mm; }
 .pvn-dot { position: absolute; left: -4.5mm; top: 1.4mm; width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--theme-color, #246); box-shadow: 0 0 0 0.5mm #fff; }
 .pvn-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2mm; }
-.pvn-project h3 { font-size: 8pt; margin: 0; font-weight: 700; text-align: left; }
-.pvn-years { flex-shrink: 0; font-size: 6pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.4mm 1.6mm; white-space: nowrap; }
-.pvn-project ul { margin: 0.6mm 0 0; padding-left: 3.5mm; font-size: 6.6pt; color: #243041; line-height: 1.28; }
-.pvn-deco { display: flex; align-items: center; justify-content: center; color: var(--theme-color, #246); opacity: 0.18; }
-.pvn-deco svg { width: 10mm; height: 10mm; }
+.pvn-project h3 { font-size: 9pt; margin: 0; font-weight: 700; text-align: left; }
+.pvn-years { flex-shrink: 0; font-size: 6.2pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.35mm 1.4mm; white-space: nowrap; }
+.pvn-project ul { margin: 0.5mm 0 0; padding-left: 3.5mm; font-size: 7.6pt; font-weight: 500; color: #243041; line-height: 1.26; }
+.pvn-deco {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--theme-color, #246); opacity: 0.1; pointer-events: none; z-index: 0;
+}
+.pvn-deco svg { width: 7mm; height: 7mm; }
+.pvn-timeline { z-index: 1; }
+.pvn-patents {
+  margin: 1mm 0 0;
+  padding: 1mm 2mm;
+  font-size: 6.4pt;
+  font-weight: 500;
+  color: #445566;
+  background: #eef2f7;
+  border-radius: 1.5mm;
+  line-height: 1.25;
+}
 
 /* ===== Orbit (navy & gold) ===== */
 .pv-orbit {
@@ -252,27 +278,37 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 14.5pt; margin: 0; color: #fff; text-align: left; }
 .pvo-sub { margin: 0.8mm 0 0; font-size: 8.5pt; color: var(--orbit-gold); text-align: left; }
 .pvo-keys { margin: 1.2mm 0 0; font-size: 6.8pt; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(220,230,245,.8); text-align: left; }
-.pvo-main { padding: 2.6mm 4.5mm 3mm; display: flex; flex-direction: column; gap: 2mm; }
+.pvo-main { padding: 2.2mm 4mm 2.5mm; display: flex; flex-direction: column; gap: 1.5mm; }
 .pvo-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvo-theme-head { display: flex; align-items: center; gap: 2.2mm; margin-bottom: 1.4mm; }
+.pvo-theme-head { display: flex; align-items: center; gap: 2mm; margin-bottom: 1.1mm; }
 .pvo-tile {
-  width: 6mm; height: 6mm; background: var(--orbit-navy); border-radius: 1mm;
+  width: 5.5mm; height: 5.5mm; background: var(--orbit-navy); border-radius: 1mm;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.pvo-tile svg { width: 4mm; height: 4mm; color: var(--orbit-gold); }
+.pvo-tile svg { width: 3.6mm; height: 3.6mm; color: var(--orbit-gold); }
 .pvo-theme-head h2 {
   font-family: Orbitron, sans-serif; font-size: 7.5pt; letter-spacing: 0.07em;
   text-transform: uppercase; margin: 0; color: var(--orbit-navy); white-space: nowrap;
 }
 .pvo-rule { flex: 1; height: 0.35mm; background: var(--orbit-gold); opacity: 0.85; }
-.pvo-timeline { position: relative; margin-left: 2.8mm; padding-left: 3.5mm; border-left: 0.4mm solid var(--orbit-gold); }
-.pvo-project { position: relative; margin: 0 0 1.2mm; }
+.pvo-timeline { position: relative; margin-left: 2.4mm; padding-left: 3.2mm; border-left: 0.4mm solid var(--orbit-gold); }
+.pvo-project { position: relative; margin: 0 0 0.95mm; }
 .pvo-dot {
-  position: absolute; left: -4.55mm; top: 1.3mm;
+  position: absolute; left: -4.35mm; top: 1.3mm;
   width: 2.1mm; height: 2.1mm; border-radius: 50%;
   background: var(--orbit-gold); box-shadow: 0 0 0 0.45mm #fff;
 }
 .pvo-head { display: flex; justify-content: space-between; gap: 2mm; align-items: baseline; }
-.pvo-project h3 { margin: 0; font-size: 8pt; color: var(--orbit-navy); font-weight: 700; text-align: left; }
-.pvo-years { font-size: 6pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.4mm 1.6mm; white-space: nowrap; }
-.pvo-project ul { margin: 0.5mm 0 0; padding-left: 3.5mm; font-size: 6.6pt; color: #243041; line-height: 1.28; }
+.pvo-project h3 { margin: 0; font-size: 9pt; color: var(--orbit-navy); font-weight: 700; text-align: left; }
+.pvo-years { font-size: 6.2pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.35mm 1.4mm; white-space: nowrap; }
+.pvo-project ul { margin: 0.4mm 0 0; padding-left: 3.2mm; font-size: 7.6pt; font-weight: 500; color: #243041; line-height: 1.26; }
+.pvo-patents {
+  margin: 0.8mm 0 0;
+  padding: 1mm 2mm;
+  font-size: 6.4pt;
+  font-weight: 500;
+  color: #445566;
+  background: #eef2f7;
+  border-left: 0.6mm solid var(--orbit-gold);
+  line-height: 1.25;
+}

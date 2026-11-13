@@ -118,6 +118,10 @@ export const orbitStyle = {
       html += '</div></section>';
     });
 
+    if (model.patentsLine) {
+      html += `<p class="pvo-patents">${model.patentsLine}</p>`;
+    }
+
     html += '</main></div></div>';
     return html;
   }

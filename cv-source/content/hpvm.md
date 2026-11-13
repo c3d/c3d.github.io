@@ -4,6 +4,7 @@ title: HPVM - Enterprise Virtualization
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 10
+print: 1
 related: [kata-containers, spice]
 videos: []
 links:

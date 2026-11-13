@@ -101,6 +101,10 @@ export const nebulaStyle = {
       html += `</div><div class="pvn-deco">${icon}</div></div></section>`;
     });
 
+    if (model.patentsLine) {
+      html += `<p class="pvn-patents">${model.patentsLine}</p>`;
+    }
+
     html += '</main></div></div>';
     return html;
   }

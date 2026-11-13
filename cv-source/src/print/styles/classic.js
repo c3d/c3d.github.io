@@ -30,6 +30,9 @@ export const classicStyle = {
       });
       html += '</section>';
     });
+    if (model.patentsLine) {
+      html += `<p class="pvc-patents">${model.patentsLine}</p>`;
+    }
     html += `<footer class="pvc-qr">
       <img src="${model.logoSrc}" alt="" class="pvc-logo-sm">
       <a class="pvc-qr-link" href="${model.qrUrl}" target="_blank" rel="noopener">

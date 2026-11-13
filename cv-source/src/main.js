@@ -2085,9 +2085,8 @@ function resolveShowPhoto(style) {
 
 function ensurePrintModel(data) {
   if (!printModelCache) {
+    // Selection is `print:` priority in frontmatter (web-only items omitted).
     printModelCache = buildModelForStyles(data, Object.keys(THEME_COLORS), printColorsMap());
-    // Keep the one-pager to two projects per theme for exact A4 fit
-    printModelCache.themes.forEach((t) => { t.projects = t.projects.slice(0, 2); });
   }
   return printModelCache;
 }

@@ -4,6 +4,7 @@ title: SPICE Remote Streaming
 theme: Systems & Virtualization
 years: 2017-Present
 weight: 8
+print: 2
 related: [hpvm, kata-containers]
 videos: []
 links:

@@ -5,6 +5,7 @@
     "theme": "Art & Culture",
     "years": null,
     "weight": 9,
+    "print": 1,
     "related": [
       "xl-tao3d",
       "taodyne",
@@ -37,6 +38,7 @@
     "theme": "Games & 3D",
     "years": "1989-1990",
     "weight": 10,
+    "print": 1,
     "related": [
       "hp48-games"
     ],
@@ -177,6 +179,7 @@
     "theme": "Languages & Compilers",
     "years": "2022-Present",
     "weight": 9,
+    "print": 2,
     "related": [
       "hp48-games"
     ],
@@ -274,6 +277,7 @@
     "theme": "Systems & Virtualization",
     "years": "2015-2016",
     "weight": 10,
+    "print": 3,
     "related": [],
     "videos": [],
     "links": [
@@ -328,6 +332,7 @@
     "theme": "Systems & Virtualization",
     "years": "1994-1998",
     "weight": 9,
+    "print": 4,
     "related": [],
     "videos": [],
     "links": [],
@@ -361,6 +366,7 @@
     "theme": "Tools & Apps",
     "years": null,
     "weight": 6,
+    "print": 3,
     "related": [],
     "videos": [],
     "links": [
@@ -431,6 +437,7 @@
     "theme": "Games & 3D",
     "years": "1989-1993",
     "weight": 9,
+    "print": 2,
     "related": [
       "db48x"
     ],
@@ -471,6 +478,7 @@
     "theme": "Languages & Compilers",
     "years": "1998-2000",
     "weight": 10,
+    "print": 1,
     "related": [],
     "videos": [],
     "links": [
@@ -509,6 +517,7 @@
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 10,
+    "print": 1,
     "related": [
       "kata-containers",
       "spice"
@@ -550,6 +559,7 @@
     "theme": "Art & Culture",
     "years": null,
     "weight": 7,
+    "print": 2,
     "related": [],
     "videos": [],
     "links": [
@@ -708,6 +718,7 @@
     "theme": "Tools & Apps",
     "years": null,
     "weight": 7,
+    "print": 1,
     "related": [
       "recorder"
     ],
@@ -804,6 +815,7 @@
     "theme": "Systems & Virtualization",
     "years": "2001-2014",
     "weight": 9,
+    "print": 5,
     "related": [
       "hpvm"
     ],
@@ -844,6 +856,7 @@
     "theme": "Physics",
     "years": null,
     "weight": 9,
+    "print": 1,
     "related": [
       "reunifions",
       "special-relativity"
@@ -885,6 +898,7 @@
     "theme": "Tools & Apps",
     "years": null,
     "weight": 7,
+    "print": 2,
     "related": [
       "make-it-quick"
     ],
@@ -921,6 +935,7 @@
     "theme": "Physics",
     "years": null,
     "weight": 8,
+    "print": 2,
     "related": [
       "physics-books"
     ],
@@ -1039,6 +1054,7 @@
     "theme": "Systems & Virtualization",
     "years": "2017-Present",
     "weight": 8,
+    "print": 2,
     "related": [
       "hpvm",
       "kata-containers"
@@ -1072,6 +1088,7 @@
     "theme": "Games & 3D",
     "years": "2010-2016",
     "weight": 9,
+    "print": 3,
     "related": [
       "xl-tao3d",
       "3divart"
@@ -1117,6 +1134,7 @@
     "theme": "Languages & Compilers",
     "years": "1992-Present",
     "weight": 9,
+    "print": 3,
     "related": [
       "taodyne",
       "3divart",

@@ -1,8 +1,16 @@
 /**
  * Shared collapsed-CV data model for all print styles.
  * Only facts from content — no invented location / experience ranges.
+ *
+ * Print selection: items with frontmatter `print: 1..n` (lower = more important).
+ * Items without `print` are web-only and omitted from print styles.
  */
-export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3, maxBullets = 2 } = {}) {
+export function buildPrintModel(data, {
+  themeOrder,
+  printColors,
+  maxProjects = 3,
+  maxBullets = 2
+} = {}) {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
   const aboutLines = (about?.bullets || []).map((b) => b.text);
   const aboutPara = (about?.content || '').match(/<p>([\s\S]*?)<\/p>/)?.[1]?.replace(/<[^>]+>/g, '')
@@ -14,9 +22,17 @@ export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3
   const linkedin = about?.links?.find((l) => /linkedin/i.test(l.label))?.url || null;
   const aboutFacts = aboutLines.filter((t) => !t.includes('@') && !/École|Mines/i.test(t));
 
+  const printRank = (item) => {
+    const v = item.print ?? item.printPriority;
+    return typeof v === 'number' ? v : null;
+  };
+
   const byTheme = {};
   data.forEach((item) => {
     if (item.role === 'about' || item.id === 'intro') return;
+    if (printRank(item) == null) return; // web-only
+    // Patents rendered as a compact footer line, not a full project card
+    if (item.id === 'patents') return;
     const theme = item.theme;
     if (!themeOrder.includes(theme)) return;
     if (!byTheme[theme]) byTheme[theme] = [];
@@ -26,12 +42,12 @@ export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3
   const themes = themeOrder.map((theme) => {
     const projects = (byTheme[theme] || [])
       .slice()
-      .sort((a, b) => (b.weight || 0) - (a.weight || 0))
+      .sort((a, b) => printRank(a) - printRank(b))
       .slice(0, maxProjects)
       .map((p) => ({
         title: p.title,
         years: p.years || '',
-        bullets: (p.bullets || []).slice(0, maxBullets).map((b) => b.text)
+        bullets: (p.bullets || []).slice(0, maxBullets).map((b) => (typeof b === 'string' ? b : b.text))
       }));
     return {
       id: theme,
@@ -40,6 +56,11 @@ export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3
       projects
     };
   }).filter((t) => t.projects.length);
+
+  const patents = data.find((d) => d.id === 'patents' && printRank(d) != null);
+  const patentsLine = patents
+    ? 'Patents (HP virtualization / VMM): USPTO — patents.justia.com/inventor/christophe-de-dinechin'
+    : null;
 
   return {
     name: 'Christophe de Dinechin',
@@ -59,6 +80,7 @@ export function buildPrintModel(data, { themeOrder, printColors, maxProjects = 3
     photoJpg: '/cv/photo.jpg',
     showPhoto: true,
     themes,
-    skills: themeOrder
+    skills: themeOrder,
+    patentsLine
   };
 }
