@@ -1,9 +1,9 @@
 ---
 id: taodyne
 title: Taodyne
-theme: Art & Culture
+theme: Games & 3D
 years: 2010-2016
-weight: 8
+weight: 9
 related: [xl-tao3d, 3divart]
 videos: []
 links:
