@@ -4,6 +4,7 @@ title: Réunifions la physique
 theme: Physics
 years: 
 weight: 8
+print: 2
 related: [physics-books]
 videos: []
 links:

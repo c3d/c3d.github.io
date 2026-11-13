@@ -88,38 +88,55 @@ body.print-preview #print-view {
 }
 
 /* ===== Classic ===== */
-.pv-classic { padding: 10px 16px 8px; }
-.pvc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 2px solid #041018; }
-.pvc-logo { width: 42px; height: 42px; }
-.pvc-header h1 { font-family: Orbitron, sans-serif; font-size: 17px; margin: 0; color: #041018; text-align: left; }
-.pvc-sub { margin: 1px 0 0; font-size: 10.5px; color: #445; text-align: left; }
-.pvc-theme { margin-bottom: 5px; break-inside: avoid; }
-.pvc-theme h2 {
-  font-family: Orbitron, sans-serif; font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase;
-  color: #fff; background: var(--theme-color, #246); display: inline-block; padding: 2px 7px; margin: 0 0 3px;
+.pv-classic {
+  padding: 8px 14px 6px;
+  height: 297mm;
+  max-height: 297mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
-.pvc-project { margin: 0 0 3px 6px; padding-left: 7px; border-left: 2px solid var(--theme-color, #246); }
-.pvc-project h3 { font-size: 12px; margin: 0; display: inline; font-weight: 650; }
-.pvc-years { font-size: 9.5px; color: #556; margin-left: 6px; }
-.pvc-project ul { margin: 1px 0 0; padding-left: 14px; font-size: 11px; font-weight: 500; line-height: 1.22; }
+.pvc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; padding-bottom: 4px; border-bottom: 2px solid #041018; flex-shrink: 0; }
+.pvc-logo { width: 38px; height: 38px; }
+.pvc-header h1 { font-family: Orbitron, sans-serif; font-size: 16px; margin: 0; color: #041018; text-align: left; }
+.pvc-sub { margin: 1px 0 0; font-size: 10px; color: #445; text-align: left; }
+.pvc-theme { margin-bottom: 3px; break-inside: avoid; }
+.pvc-theme h2 {
+  font-family: Orbitron, sans-serif; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #fff; background: var(--theme-color, #246); display: inline-block; padding: 1px 6px; margin: 0 0 2px;
+}
+.pvc-project { margin: 0 0 2px 5px; padding-left: 6px; border-left: 2px solid var(--theme-color, #246); }
+.pvc-project h3 { font-size: 13px; margin: 0; display: inline; font-weight: 650; }
+.pvc-years { font-size: 10px; color: #556; margin-left: 5px; }
+.pvc-project ul { margin: 1px 0 0; padding-left: 13px; font-size: 13.5px; font-weight: 500; line-height: 1.28; }
 .pvc-patents {
-  margin: 4px 0 0;
+  margin-top: auto;
+  margin-bottom: 0;
   padding: 3px 7px;
   font-size: 9px;
   font-weight: 500;
   color: #445;
   background: #eef2f7;
   border-radius: 4px;
-  line-height: 1.25;
+  line-height: 1.2;
 }
-.pvc-qr { margin-top: 6px; padding-top: 6px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 10px; font-size: 10.5px; }
-.pvc-qr-link { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
-.pvc-qr-img { width: 64px; height: 64px; border: 1px solid #ccd; }
-.pvc-logo-sm { width: 40px; height: 40px; }
+.pvc-qr { margin-top: 4px; padding-top: 4px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 8px; font-size: 10px; flex-shrink: 0; }
+.pvc-qr-link { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.pvc-qr-img { width: 52px; height: 52px; border: 1px solid #ccd; }
+.pvc-logo-sm { width: 34px; height: 34px; }
 
 /* ===== Nebula ===== */
-.pv-nebula { width: 210mm; min-height: 297mm; }
-.pvn-header { position: relative; height: 24mm; background: #050b18; color: #fff; overflow: hidden; }
+.pv-nebula {
+  width: 210mm;
+  height: 297mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.pvn-header { position: relative; height: 22mm; flex-shrink: 0; background: #050b18; color: #fff; overflow: hidden; }
 .pvn-space { position: absolute; inset: 0; }
 .pvn-starfield { width: 100%; height: 100%; display: block; }
 .pvn-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3mm; height: 100%; padding: 0 4.5mm; }
@@ -146,14 +163,21 @@ body.print-preview #print-view {
 }
 .pvn-sub { margin: 0.6mm 0 0; font-size: 8.5pt; color: rgba(255,255,255,.88); text-align: left; }
 .pvn-keys { margin: 1.2mm 0 0; font-size: 7pt; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(180,220,255,.85); text-align: left; }
-.pvn-body { display: grid; grid-template-columns: 56mm 1fr; gap: 2.8mm; padding: 2.6mm 4mm 3mm; min-height: calc(297mm - 24mm); }
-.pvn-side { display: flex; flex-direction: column; gap: 2mm; }
-.pvn-card { background: var(--pv-card); border-radius: 2mm; padding: 1.8mm 2.2mm; }
-.pvn-card h2 { font-family: Orbitron, sans-serif; font-size: 7.5pt; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 1.6mm; color: #1a2a40; }
-.pvn-card p { margin: 0 0 1.2mm; font-size: 7.2pt; line-height: 1.3; text-align: left; }
-.pvn-muted { color: var(--pv-muted) !important; font-size: 6.8pt !important; }
+.pvn-body {
+  display: grid;
+  grid-template-columns: 52mm 1fr;
+  gap: 2.4mm;
+  padding: 2.2mm 3.5mm 2.5mm;
+  flex: 1;
+  min-height: 0;
+}
+.pvn-side { display: flex; flex-direction: column; gap: 1.6mm; }
+.pvn-card { background: var(--pv-card); border-radius: 2mm; padding: 1.5mm 2mm; }
+.pvn-card h2 { font-family: Orbitron, sans-serif; font-size: 7.2pt; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 1.2mm; color: #1a2a40; }
+.pvn-card p { margin: 0 0 1mm; font-size: 7pt; line-height: 1.28; text-align: left; }
+.pvn-muted { color: var(--pv-muted) !important; font-size: 6.6pt !important; }
 .pvn-skills, .pvn-info { list-style: none; margin: 0; padding: 0; }
-.pvn-skills li, .pvn-info li { display: flex; gap: 1.6mm; align-items: flex-start; font-size: 6.8pt; line-height: 1.25; margin: 0 0 1.2mm; }
+.pvn-skills li, .pvn-info li { display: flex; gap: 1.4mm; align-items: flex-start; font-size: 6.6pt; line-height: 1.22; margin: 0 0 1mm; }
 .pvn-check { flex-shrink: 0; width: 3.2mm; height: 3.2mm; border-radius: 50%; color: #fff; font-size: 5pt; line-height: 3.2mm; text-align: center; margin-top: 0.3mm; }
 .pvn-tags { display: flex; flex-wrap: wrap; gap: 1.2mm; }
 .pvn-tags span { background: #e7eef6; color: #243447; border-radius: 999px; padding: 0.7mm 1.8mm; font-size: 6.2pt; }
@@ -161,46 +185,43 @@ body.print-preview #print-view {
 a.pvn-qr:hover { color: inherit; }
 .pvn-qr img { width: 16mm; height: 16mm; border: 0.3mm solid var(--pv-line); background: #fff; }
 .pvn-qr-title { font-family: Orbitron, sans-serif; font-size: 6.5pt; margin: 0 0 0.6mm !important; }
-.pvn-main { display: flex; flex-direction: column; gap: 1.4mm; min-width: 0; }
+.pvn-main { display: flex; flex-direction: column; justify-content: space-between; gap: 1.1mm; min-width: 0; }
 .pvn-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvn-bar { display: flex; align-items: center; gap: 2mm; background: var(--theme-color, #246); color: #fff; border-radius: 2mm; padding: 1.2mm 2.2mm; }
-.pvn-ico { display: flex; width: 4.5mm; height: 4.5mm; }
+.pvn-bar { display: flex; align-items: center; gap: 1.8mm; background: var(--theme-color, #246); color: #fff; border-radius: 1.8mm; padding: 1.1mm 2mm; }
+.pvn-ico { display: flex; width: 4.2mm; height: 4.2mm; }
 .pvn-ico svg { width: 100%; height: 100%; color: #fff; }
-.pvn-bar h2 { font-family: Orbitron, sans-serif; font-size: 7.5pt; letter-spacing: 0.07em; text-transform: uppercase; margin: 0; color: #fff; }
-/* Full-width timeline — deco icon is a faint watermark, not a gutter */
-.pvn-theme-body { position: relative; display: block; padding: 1.2mm 0 0.2mm 1mm; }
-.pvn-timeline { position: relative; padding-left: 3.2mm; border-left: 0.45mm solid var(--theme-color, #246); margin-left: 1.4mm; padding-right: 0.5mm; }
-.pvn-project { position: relative; margin: 0 0 1mm; }
-.pvn-dot { position: absolute; left: -4.5mm; top: 1.4mm; width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--theme-color, #246); box-shadow: 0 0 0 0.5mm #fff; }
+.pvn-bar h2 { font-family: Orbitron, sans-serif; font-size: 7.3pt; letter-spacing: 0.07em; text-transform: uppercase; margin: 0; color: #fff; }
+/* Full-width timeline — no decorative gutter */
+.pvn-theme-body { display: block; padding: 1mm 0 0.1mm 0.8mm; }
+.pvn-timeline { position: relative; padding-left: 3mm; border-left: 0.45mm solid var(--theme-color, #246); margin-left: 1.2mm; }
+.pvn-project { position: relative; margin: 0 0 0.85mm; }
+.pvn-dot { position: absolute; left: -4.2mm; top: 1.5mm; width: 2mm; height: 2mm; border-radius: 50%; background: var(--theme-color, #246); box-shadow: 0 0 0 0.45mm #fff; }
 .pvn-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2mm; }
-.pvn-project h3 { font-size: 9pt; margin: 0; font-weight: 700; text-align: left; }
-.pvn-years { flex-shrink: 0; font-size: 6.2pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.35mm 1.4mm; white-space: nowrap; }
-.pvn-project ul { margin: 0.5mm 0 0; padding-left: 3.5mm; font-size: 7.6pt; font-weight: 500; color: #243041; line-height: 1.26; }
-.pvn-deco {
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--theme-color, #246); opacity: 0.1; pointer-events: none; z-index: 0;
-}
-.pvn-deco svg { width: 7mm; height: 7mm; }
-.pvn-timeline { z-index: 1; }
+.pvn-project h3 { font-size: 9.5pt; margin: 0; font-weight: 700; text-align: left; }
+.pvn-years { flex-shrink: 0; font-size: 6.4pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.3mm 1.3mm; white-space: nowrap; }
+.pvn-project ul { margin: 0.45mm 0 0; padding-left: 3.2mm; font-size: 9.5pt; font-weight: 500; color: #243041; line-height: 1.28; }
 .pvn-patents {
-  margin: 1mm 0 0;
-  padding: 1mm 2mm;
-  font-size: 6.4pt;
+  margin: 0.6mm 0 0;
+  padding: 0.9mm 1.8mm;
+  font-size: 6.5pt;
   font-weight: 500;
   color: #445566;
   background: #eef2f7;
-  border-radius: 1.5mm;
-  line-height: 1.25;
+  border-radius: 1.4mm;
+  line-height: 1.22;
+  flex-shrink: 0;
 }
 
 /* ===== Orbit (navy & gold) ===== */
 .pv-orbit {
   display: grid;
-  grid-template-columns: 58mm 1fr;
+  grid-template-columns: 54mm 1fr;
   width: 210mm;
+  height: 297mm;
   min-height: 297mm;
+  max-height: 297mm;
   background: #fff;
+  overflow: hidden;
 }
 .pvo-side {
   background: var(--orbit-navy);
@@ -269,8 +290,8 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-qr img { width: 14mm; height: 14mm; background: #fff; border: 0.3mm solid var(--orbit-gold); }
 .pvo-earth { margin-top: auto; margin-left: -3.5mm; margin-right: -3.5mm; }
 .pvo-earth svg { width: 100%; height: 16mm; display: block; }
-.pvo-right { display: flex; flex-direction: column; min-width: 0; }
-.pvo-header { position: relative; height: 24mm; background: var(--orbit-navy); overflow: hidden; }
+.pvo-right { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.pvo-header { position: relative; height: 22mm; flex-shrink: 0; background: var(--orbit-navy); overflow: hidden; }
 .pvo-header-wave { position: absolute; inset: 0; }
 .pvo-header-wave svg { width: 100%; height: 100%; display: block; }
 .pvo-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3mm; height: 100%; padding: 0 5mm; }
@@ -278,37 +299,38 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 14.5pt; margin: 0; color: #fff; text-align: left; }
 .pvo-sub { margin: 0.8mm 0 0; font-size: 8.5pt; color: var(--orbit-gold); text-align: left; }
 .pvo-keys { margin: 1.2mm 0 0; font-size: 6.8pt; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(220,230,245,.8); text-align: left; }
-.pvo-main { padding: 2.2mm 4mm 2.5mm; display: flex; flex-direction: column; gap: 1.5mm; }
+.pvo-main { padding: 2mm 3.5mm 2.2mm; display: flex; flex-direction: column; justify-content: space-between; gap: 1.1mm; flex: 1; min-height: 0; }
 .pvo-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvo-theme-head { display: flex; align-items: center; gap: 2mm; margin-bottom: 1.1mm; }
+.pvo-theme-head { display: flex; align-items: center; gap: 1.8mm; margin-bottom: 0.9mm; }
 .pvo-tile {
-  width: 5.5mm; height: 5.5mm; background: var(--orbit-navy); border-radius: 1mm;
+  width: 5.2mm; height: 5.2mm; background: var(--orbit-navy); border-radius: 1mm;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.pvo-tile svg { width: 3.6mm; height: 3.6mm; color: var(--orbit-gold); }
+.pvo-tile svg { width: 3.4mm; height: 3.4mm; color: var(--orbit-gold); }
 .pvo-theme-head h2 {
-  font-family: Orbitron, sans-serif; font-size: 7.5pt; letter-spacing: 0.07em;
+  font-family: Orbitron, sans-serif; font-size: 7.3pt; letter-spacing: 0.07em;
   text-transform: uppercase; margin: 0; color: var(--orbit-navy); white-space: nowrap;
 }
 .pvo-rule { flex: 1; height: 0.35mm; background: var(--orbit-gold); opacity: 0.85; }
-.pvo-timeline { position: relative; margin-left: 2.4mm; padding-left: 3.2mm; border-left: 0.4mm solid var(--orbit-gold); }
-.pvo-project { position: relative; margin: 0 0 0.95mm; }
+.pvo-timeline { position: relative; margin-left: 2.2mm; padding-left: 3mm; border-left: 0.4mm solid var(--orbit-gold); }
+.pvo-project { position: relative; margin: 0 0 0.8mm; }
 .pvo-dot {
-  position: absolute; left: -4.35mm; top: 1.3mm;
-  width: 2.1mm; height: 2.1mm; border-radius: 50%;
-  background: var(--orbit-gold); box-shadow: 0 0 0 0.45mm #fff;
+  position: absolute; left: -4.15mm; top: 1.4mm;
+  width: 2mm; height: 2mm; border-radius: 50%;
+  background: var(--orbit-gold); box-shadow: 0 0 0 0.4mm #fff;
 }
 .pvo-head { display: flex; justify-content: space-between; gap: 2mm; align-items: baseline; }
-.pvo-project h3 { margin: 0; font-size: 9pt; color: var(--orbit-navy); font-weight: 700; text-align: left; }
-.pvo-years { font-size: 6.2pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.35mm 1.4mm; white-space: nowrap; }
-.pvo-project ul { margin: 0.4mm 0 0; padding-left: 3.2mm; font-size: 7.6pt; font-weight: 500; color: #243041; line-height: 1.26; }
+.pvo-project h3 { margin: 0; font-size: 9.5pt; color: var(--orbit-navy); font-weight: 700; text-align: left; }
+.pvo-years { font-size: 6.4pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.3mm 1.3mm; white-space: nowrap; }
+.pvo-project ul { margin: 0.4mm 0 0; padding-left: 3mm; font-size: 9.5pt; font-weight: 500; color: #243041; line-height: 1.28; }
 .pvo-patents {
-  margin: 0.8mm 0 0;
-  padding: 1mm 2mm;
-  font-size: 6.4pt;
+  margin: 0.5mm 0 0;
+  padding: 0.9mm 1.8mm;
+  font-size: 6.5pt;
   font-weight: 500;
   color: #445566;
   background: #eef2f7;
   border-left: 0.6mm solid var(--orbit-gold);
-  line-height: 1.25;
+  line-height: 1.22;
+  flex-shrink: 0;
 }

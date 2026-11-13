@@ -4,6 +4,7 @@ title: Informagie
 theme: Art & Culture
 years: 
 weight: 7
+print: 2
 related: []
 videos: []
 links:

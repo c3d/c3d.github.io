@@ -98,7 +98,7 @@ export const nebulaStyle = {
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });
-      html += `</div><div class="pvn-deco">${icon}</div></div></section>`;
+      html += `</div></div></section>`;
     });
 
     if (model.patentsLine) {

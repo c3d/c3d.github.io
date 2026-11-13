@@ -4,6 +4,7 @@ title: 3DIVART
 theme: Art & Culture
 years: 
 weight: 9
+print: 1
 related: [xl-tao3d, taodyne, firefly]
 videos: []
 images:

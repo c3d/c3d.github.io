@@ -8,8 +8,8 @@
 export function buildPrintModel(data, {
   themeOrder,
   printColors,
-  maxProjects = 3,
-  maxBullets = 2
+  maxProjects = 4,
+  maxBullets = 1
 } = {}) {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
   const aboutLines = (about?.bullets || []).map((b) => b.text);

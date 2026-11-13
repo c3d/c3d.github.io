@@ -4,6 +4,7 @@ title: XL, Tao3D & ELFE
 theme: Languages & Compilers
 years: 1992-Present
 weight: 9
+print: 3
 related: [taodyne, 3divart, firefly, lx]
 videos: []
 links:

@@ -4,6 +4,7 @@ title: Taodyne
 theme: Games & 3D
 years: 2010-2016
 weight: 9
+print: 3
 related: [xl-tao3d, 3divart]
 videos: []
 links:

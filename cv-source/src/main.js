@@ -6,6 +6,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import '@fontsource/orbitron/500.css';
 import '@fontsource/orbitron/700.css';
 import '@fontsource/source-sans-3/400.css';
+import '@fontsource/source-sans-3/500.css';
 import '@fontsource/source-sans-3/600.css';
 import './print/print-styles.css';
 import contentData from './content-data.json';
