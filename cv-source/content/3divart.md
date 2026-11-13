@@ -6,6 +6,8 @@ years:
 weight: 9
 related: [xl-tao3d, taodyne, firefly]
 videos: []
+images:
+  - /cv/3DIVART.jpg
 links: []
 ---
 

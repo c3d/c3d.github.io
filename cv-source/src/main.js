@@ -1382,6 +1382,18 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
 
   const media = hud.querySelector('[data-hud="media"]');
   media.innerHTML = '';
+  if (project.images && project.images.length) {
+    project.images.forEach((src) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'hud-image';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = project.title || '';
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+      media.appendChild(wrap);
+    });
+  }
   if (project.videos && project.videos.length) {
     project.videos.forEach((id) => {
       const wrap = document.createElement('div');

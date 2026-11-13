@@ -11,6 +11,9 @@
       "firefly"
     ],
     "videos": [],
+    "images": [
+      "/cv/3DIVART.jpg"
+    ],
     "links": [],
     "content": "<h2>3D interactive visual art</h2>\n<ul>\n<li>Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D</li>\n<li>Synthetic 3D art you can see without glasses on suitable displays</li>\n<li>Pieces derived from ShaderToy and some original work</li>\n</ul>\n",
     "bullets": [
