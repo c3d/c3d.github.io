@@ -7,11 +7,16 @@ weight: 9
 related: [hp48-games]
 videos:
   - WU5Dg1mPkl8
+  - 34pPycq8ia8
 links:
   - label: GitHub
     url: https://github.com/c3d/db48x
   - label: Try it
     url: https://c3d.github.io/db48x/
+  - label: FOSDEM 2024
+    url: https://www.youtube.com/watch?v=WU5Dg1mPkl8
+  - label: FOSDEM 2023
+    url: https://www.youtube.com/watch?v=34pPycq8ia8
 ---
 
 ## A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)

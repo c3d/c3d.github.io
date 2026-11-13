@@ -6,7 +6,9 @@ years:
 weight: 7
 related: []
 videos: []
-links: []
+links:
+  - label: Amazon FR
+    url: https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X
 ---
 
 ## Science-fiction novel (French)
