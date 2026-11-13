@@ -62,24 +62,30 @@ function makeSoftDiscTexture(innerRGB) {
   return tex;
 }
 
-function makeLabelTexture(text, hex) {
+function makeLabelTexture(text, hex, { large = false } = {}) {
   const canvas = document.createElement('canvas');
-  canvas.width = 640;
-  canvas.height = 96;
+  canvas.width = large ? 768 : 640;
+  canvas.height = large ? 120 : 96;
   const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, 640, 96);
-  ctx.fillStyle = 'rgba(4,10,20,0.55)';
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // High-contrast plate: near-opaque dark + bright Orbitron text
+  ctx.fillStyle = 'rgba(1,6,16,0.88)';
+  const padX = large ? 28 : 40;
+  const padY = large ? 22 : 20;
+  const boxW = canvas.width - padX * 2;
+  const boxH = canvas.height - padY * 2;
   ctx.beginPath();
-  ctx.roundRect?.(48, 24, 544, 48, 10);
-  if (!ctx.roundRect) {
-    ctx.rect(48, 24, 544, 48);
-  }
+  if (ctx.roundRect) ctx.roundRect(padX, padY, boxW, boxH, 10);
+  else ctx.rect(padX, padY, boxW, boxH);
   ctx.fill();
-  ctx.font = '600 30px Orbitron, sans-serif';
+  // Accent bar
+  ctx.fillStyle = `#${new THREE.Color(hex).getHexString()}`;
+  ctx.fillRect(padX, padY, 8, boxH);
+  ctx.font = large ? '700 48px Orbitron, sans-serif' : '600 36px Orbitron, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = `#${new THREE.Color(hex).getHexString()}`;
-  ctx.fillText(text, 320, 48);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(text, canvas.width / 2 + 4, canvas.height / 2);
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;
   return tex;
@@ -128,22 +134,23 @@ function initScene() {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x03060f);
-  scene.fog = new THREE.FogExp2(0x03060f, 0.008);
+  scene.fog = new THREE.FogExp2(0x03060f, 0.0045);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.82;
+  // Mid-ground between PR5 washout and over-dark polish
+  renderer.toneMappingExposure = 1.18;
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
   bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0.32,
+    0.55, // luminous but not white-saturated
     0.6,
-    0.85
+    0.72
   );
   composer.addPass(bloomPass);
 
@@ -199,28 +206,33 @@ function createNebulae() {
     const group = new THREE.Group();
     group.position.set(pos.x, pos.y, pos.z);
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 52; i++) {
       const x = (rand() - 0.5) * 44;
       const y = (rand() - 0.5) * 28;
       const z = (rand() - 0.5) * 36;
       const fall = Math.exp(-(x * x + y * y * 1.3 + z * z) / 780);
-      if (fall < 0.12) continue;
-      const sprite = createSoftSprite(color, 7 + fall * 16, 0.045 + fall * 0.1);
+      if (fall < 0.1) continue;
+      const sprite = createSoftSprite(color, 9 + fall * 20, 0.12 + fall * 0.2);
       sprite.position.set(x, y, z);
       sprite.userData._baseOp = sprite.material.opacity;
       group.add(sprite);
     }
 
     const themeLabel = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: makeLabelTexture(theme, color),
+      map: makeLabelTexture(theme, color, { large: true }),
       transparent: true,
       depthWrite: false,
-      opacity: 0.85
+      opacity: 1,
+      sizeAttenuation: true
     }));
     themeLabel.position.set(0, 30, 0);
-    themeLabel.scale.set(46, 7, 1);
+    // World size at ~overview distance; clamped in updateLabelVisibility when close
+    themeLabel.scale.set(58, 9.2, 1);
     themeLabel.userData.isLabel = true;
-    themeLabel.userData.baseOpacity = 0.85;
+    themeLabel.userData.kind = 'theme';
+    themeLabel.userData.baseOpacity = 1;
+    themeLabel.userData.baseScale = themeLabel.scale.clone();
+    themeLabel.userData.refDist = 160; // distance where baseScale looks right
     group.add(themeLabel);
     labelSprites.push(themeLabel);
 
@@ -233,13 +245,14 @@ function createNebulae() {
  * Each Markdown bullet → one star, clustered by project inside its theme nebula.
  */
 function createStarsFromBullets(projectList) {
-  projects = projectList;
+  // Skip "about" intro — it is header/about, not a Tools project cluster
+  projects = projectList.filter((p) => p.role !== 'about' && p.id !== 'intro');
   createNebulae();
 
-  // Group projects by theme for local offsets
   const byTheme = {};
-  projectList.forEach((p) => {
+  projects.forEach((p) => {
     const theme = p.theme || 'Tools & Apps';
+    if (!THEME_POSITIONS[theme]) return; // ignore non-nebula themes
     if (!byTheme[theme]) byTheme[theme] = [];
     byTheme[theme].push(p);
   });
@@ -251,25 +264,29 @@ function createStarsFromBullets(projectList) {
     const themeRand = mulberry32(theme.split('').reduce((a, c) => a + c.charCodeAt(0), 0));
 
     plist.forEach((project, pi) => {
-      // Project cluster center within nebula
       const cluster = new THREE.Vector3(
         themePos.x + (themeRand() - 0.5) * 28,
         themePos.y + (themeRand() - 0.5) * 20,
         themePos.z + (themeRand() - 0.5) * 24
       );
 
-      // Project label only for high-weight projects
-      if ((project.weight || 0) >= 10) {
+      // Project labels for weight >= 9; screen size clamped when camera approaches
+      if ((project.weight || 0) >= 9) {
         const pl = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: makeLabelTexture(project.title, color),
+          map: makeLabelTexture(project.title, color, { large: false }),
           transparent: true,
           depthWrite: false,
-          opacity: 0.8
+          opacity: 0.95,
+          sizeAttenuation: true
         }));
         pl.position.copy(cluster).add(new THREE.Vector3(0, 8, 0));
-        pl.scale.set(34, 5.2, 1);
+        pl.scale.set(42, 6.8, 1);
         pl.userData.isLabel = true;
-        pl.userData.baseOpacity = 0.8;
+        pl.userData.kind = 'project';
+        pl.userData.baseOpacity = 0.95;
+        pl.userData.baseScale = pl.scale.clone();
+        pl.userData.refDist = 140;
+        pl.userData.projectId = project.id;
         scene.add(pl);
         labelSprites.push(pl);
       }
@@ -278,7 +295,6 @@ function createStarsFromBullets(projectList) {
       const n = Math.max(bullets.length, 1);
       bullets.forEach((bullet, bi) => {
         const br = mulberry32(10000 + pi * 97 + bi * 13);
-        // Spread bullets in a small shell around the project cluster
         const angle = (bi / n) * Math.PI * 2 + br() * 0.4;
         const radius = 4 + br() * 7;
         const position = new THREE.Vector3(
@@ -288,7 +304,7 @@ function createStarsFromBullets(projectList) {
         );
 
         const weight = project.weight || 5;
-        const size = 1.1 + (weight / 10) * 1.6;
+        const size = 1.6 + (weight / 10) * 2.2;
 
         const group = new THREE.Group();
         const halo = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -296,10 +312,10 @@ function createStarsFromBullets(projectList) {
           transparent: true,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
-          opacity: 0.8,
+          opacity: 0.92,
           fog: true
         }));
-        halo.scale.set(size * 2.2, size * 2.2, 1);
+        halo.scale.set(size * 2.8, size * 2.8, 1);
         group.add(halo);
 
         const core = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -307,10 +323,10 @@ function createStarsFromBullets(projectList) {
           transparent: true,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
-          opacity: 0.95,
+          opacity: 1,
           fog: true
         }));
-        core.scale.set(size * 0.45, size * 0.45, 1);
+        core.scale.set(size * 0.7, size * 0.7, 1);
         group.add(core);
         group.position.copy(position);
         scene.add(group);
@@ -334,7 +350,7 @@ function createStarsFromBullets(projectList) {
   window.stars = stars;
   window.scene = scene;
   window.camera = camera;
-  console.log(`Created ${stars.length} bullet-stars from ${projectList.length} projects`);
+  console.log(`Created ${stars.length} bullet-stars from ${projects.length} projects`);
 }
 
 function createProjectLineages() {
@@ -364,20 +380,48 @@ function createProjectLineages() {
 function updateLabelVisibility() {
   const camPos = camera.position;
   labelSprites.forEach((label) => {
+    // Hide all world labels while HUD is open (prevents giant blurred text behind card)
+    if (currentStar) {
+      label.visible = false;
+      return;
+    }
+
     const world = new THREE.Vector3();
     label.getWorldPosition(world);
     const dist = world.distanceTo(camPos);
-    let opacity = label.userData.baseOpacity || 0.8;
-    if (dist > 240) opacity *= Math.max(0, 1 - (dist - 240) / 100);
-    if (currentStar) opacity *= 0.2;
+
+    // Too close → hide (would dominate the view / look like huge background text)
+    if (dist < 50) {
+      label.visible = false;
+      return;
+    }
+
+    let opacity = label.userData.baseOpacity || 0.9;
+    // Soft fade as we approach the hide threshold
+    if (dist < 75) opacity *= (dist - 50) / 25;
+    if (dist > 260) opacity *= Math.max(0, 1 - (dist - 260) / 120);
+    if (label.userData.kind === 'project' && dist > 190) {
+      opacity *= Math.max(0.3, 1 - (dist - 190) / 100);
+    }
+
+    // Clamp screen size: grow/shrink with distance so labels never explode near camera
+    const base = label.userData.baseScale;
+    const ref = label.userData.refDist || 150;
+    if (base) {
+      // Keep roughly constant on-screen size, but cap how large they can get when close
+      const f = dist / ref;
+      const clamped = THREE.MathUtils.clamp(f, 0.45, 1.35);
+      label.scale.set(base.x * clamped, base.y * clamped, 1);
+    }
+
     label.material.opacity = opacity;
-    label.visible = opacity > 0.06;
+    label.visible = opacity > 0.08;
   });
 }
 
 function setSceneFocus(focused) {
-  bloomPass.strength = focused ? 0.16 : 0.32;
-  renderer.toneMappingExposure = focused ? 0.45 : 0.82;
+  bloomPass.strength = focused ? 0.25 : 0.55;
+  renderer.toneMappingExposure = focused ? 0.6 : 1.18;
   const title = document.getElementById('title-overlay');
   if (title) title.style.opacity = focused ? '0' : '1';
   const controlsEl = document.getElementById('controls');
@@ -385,8 +429,8 @@ function setSceneFocus(focused) {
   nebulaGroups.forEach(({ group }) => {
     group.traverse((obj) => {
       if (obj.isSprite && !obj.userData.isLabel) {
-        const base = obj.userData._baseOp ?? 0.1;
-        obj.material.opacity = focused ? base * 0.3 : base;
+        const base = obj.userData._baseOp ?? 0.12;
+        obj.material.opacity = focused ? base * 0.35 : base;
       }
     });
   });
@@ -625,36 +669,39 @@ function animate() {
 
 function generatePrintView(data) {
   const printView = document.getElementById('print-view');
-  // Single header (logo + name) — avoids duplicate title with #title-overlay
+  const about = data.find((d) => d.role === 'about' || d.id === 'intro');
+
   let html = `<div class="print-header">
     <img class="logo" src="/cv/logo.png" alt="Christophe de Dinechin">
     <div>
       <h1>Christophe de Dinechin</h1>
       <p class="subtitle">Software as a Passion</p>
+      ${about?.bullets?.[0] ? `<p class="subtitle">${about.bullets[0].text}</p>` : ''}
     </div>
   </div>`;
 
   const themes = {};
   data.forEach((item) => {
+    if (item.role === 'about' || item.id === 'intro') return;
     const theme = item.theme || 'Other';
+    if (!THEME_COLORS[theme]) return;
     if (!themes[theme]) themes[theme] = [];
     themes[theme].push(item);
   });
 
-  const themeOrder = Object.keys(THEME_COLORS);
-  themeOrder.forEach((theme) => {
+  // Collapsed one-pager: up to 3 projects/theme, 2 bullets each
+  Object.keys(THEME_COLORS).forEach((theme) => {
     if (!themes[theme]) return;
     const color = `#${new THREE.Color(THEME_COLORS[theme]).getHexString()}`;
     themes[theme].sort((a, b) => (b.weight || 0) - (a.weight || 0));
     html += `<div class="theme-section" style="--theme-color:${color}">`;
     html += `<h2>${theme}</h2>`;
-    // Top projects per theme (same weight ranking as 3D prominence)
-    themes[theme].slice(0, 4).forEach((item) => {
+    themes[theme].slice(0, 3).forEach((item) => {
       html += `<div class="project"><h3>${item.title}</h3>`;
       if (item.years) html += `<div class="years">${item.years}</div>`;
       if (item.bullets?.length) {
         html += '<ul>';
-        item.bullets.slice(0, 4).forEach((b) => { html += `<li>${b.text}</li>`; });
+        item.bullets.slice(0, 2).forEach((b) => { html += `<li>${b.text}</li>`; });
         html += '</ul>';
       }
       html += '</div>';
@@ -673,7 +720,6 @@ function generatePrintView(data) {
   </div>`;
   printView.innerHTML = html;
 
-  // Dedicated print preview route: /cv/?print=1 or #print
   if (location.search.includes('print=1') || location.hash === '#print') {
     document.body.classList.add('print-preview');
   }

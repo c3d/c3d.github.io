@@ -1,7 +1,8 @@
 ---
 id: intro
 title: Christophe de Dinechin
-theme: Tools & Apps
+theme: About
+role: about
 years: 
 weight: 10
 related: []

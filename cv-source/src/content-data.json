@@ -373,7 +373,8 @@
   {
     "id": "intro",
     "title": "Christophe de Dinechin",
-    "theme": "Tools & Apps",
+    "theme": "About",
+    "role": "about",
     "years": null,
     "weight": 10,
     "related": [],
@@ -599,9 +600,9 @@
   {
     "id": "taodyne",
     "title": "Taodyne",
-    "theme": "Art & Culture",
+    "theme": "Games & 3D",
     "years": "2010-2016",
-    "weight": 8,
+    "weight": 9,
     "related": [
       "xl-tao3d",
       "3divart"
