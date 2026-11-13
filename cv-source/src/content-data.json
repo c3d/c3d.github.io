@@ -1,0 +1,361 @@
+[
+  {
+    "id": "3divart",
+    "title": "3DIVART - 3D Interactive Visual Art",
+    "theme": "Art & Culture",
+    "years": "2014-Present",
+    "weight": 7,
+    "related": [
+      "xl-tao3d",
+      "taodyne"
+    ],
+    "videos": [
+      "GUMqT9W5BG8"
+    ],
+    "links": [
+      {
+        "label": "ShaderToy Inspiration",
+        "url": "https://www.shadertoy.com/"
+      }
+    ],
+    "content": "<h2>Ray-Tracing Meets Auto-Stereoscopy</h2>\n<p>3DIVART is my attempt to adapt ray-tracing and ray-marching shaders from locations such as ShaderToy for use on auto-stereoscopic screens using Tao3D.</p>\n<h3>Result</h3>\n<p>3D interactive visual art—something that you see in 3D, but that is perfectly synthetic. Art that exists only in the mathematics of the rendering algorithms.</p>\n<h3>Techniques</h3>\n<p><strong>Ray-Marching:</strong> Highly detailed rendering technique which can compute:</p>\n<ul>\n<li>Realistic shadows</li>\n<li>Complex lighting</li>\n<li>Scenes with a very large number of visible elements</li>\n<li>Real-time on GPU</li>\n</ul>\n<p><strong>Interactive Elements:</strong> Unlike static shader demos, these pieces are interactive, responding to user input and running in true stereoscopic 3D on specialized displays.</p>\n<h3>Sources</h3>\n<p>Most 3DIVART pieces are obviously derived from work on ShaderToy, but I also started creating a few pieces of my own, exploring the intersection of:</p>\n<ul>\n<li>Mathematical beauty</li>\n<li>Real-time rendering</li>\n<li>Stereoscopic display</li>\n<li>Interactive art</li>\n</ul>\n<h3>Philosophy</h3>\n<p>Exploring strange forms of art at the intersection of technology and visual experience. Creating experiences that can only exist in the digital realm.</p>\n"
+  },
+  {
+    "id": "alpha-waves",
+    "title": "Alpha Waves / Continuum",
+    "theme": "Games & 3D",
+    "years": "1989-1990",
+    "weight": 10,
+    "related": [
+      "hp48-games"
+    ],
+    "videos": [
+      "uTrIZNyacUs"
+    ],
+    "links": [
+      {
+        "label": "Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Alpha_Waves"
+      },
+      {
+        "label": "Blog Story",
+        "url": "http://grenouillebouillie.wordpress.com"
+      },
+      {
+        "label": "Source Code",
+        "url": "https://github.com/c3d/alpha-waves"
+      }
+    ],
+    "content": "<h2>First 3D Platform Game Ever</h2>\n<p>Alpha-Waves was the first 3D platform game ever created. I started working on it in 1988, and it was published by Infogrames in 1990.</p>\n<h3>Gameplay</h3>\n<p>A puzzle/labyrinth game where you jumped from platform to platform to reach doors giving access to the next room.</p>\n<h3>Innovation</h3>\n<p>In my opinion, the first truly immersive 3D game, combining:</p>\n<ul>\n<li>True 6-axis 3D movement</li>\n<li>Physics engine (primitive but effective)</li>\n<li>Interaction with a large number of objects</li>\n<li>Fully 3D environment</li>\n</ul>\n<h3>Genesis &amp; Technology</h3>\n<p>Its genesis, technology, and references to games of the same era are all documented on my blog. I published the source code for archeologists interested in obsolete technologies.</p>\n<h3>Recognition</h3>\n<p>Tamaracade published a really good video on the topic, and it&#39;s documented on Wikipedia as a milestone in gaming history.</p>\n<h3>Modern Port</h3>\n<p>At some point between jobs, I rewrote Alpha Waves in C to play it on modern machines. The new job caught up before I could finish the port, but the project is available on SourceForge.</p>\n<p><strong>Quote:</strong> <em>&quot;Playing the game was a surreal experience. I was remembering it all today.&quot;</em> - Anonymous player review</p>\n<p><strong>Quote:</strong> <em>&quot;Christophe is an open minded entrepreneur&quot;</em> - P. Zucchetta on the Continuum project</p>\n"
+  },
+  {
+    "id": "db48x",
+    "title": "DB48X - Modern RPL Calculator",
+    "theme": "Languages & Compilers",
+    "years": "2020-Present",
+    "weight": 9,
+    "related": [
+      "hp48-games"
+    ],
+    "videos": [
+      "WU5Dg1mPkl8"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/c3d/db48x"
+      },
+      {
+        "label": "Try it",
+        "url": "https://c3d.github.io/db48x/"
+      },
+      {
+        "label": "FOSDEM 2024 Talk",
+        "url": "https://fosdem.org/2024/schedule/event/fosdem-2024-3423-db48x/"
+      }
+    ],
+    "content": "<h2>A Modern Implementation of Reverse Polish Lisp</h2>\n<p>The DB48X project intends to rebuild and improve the user experience of the HP48 family of calculators, notably their &quot;Reverse Polish Lisp&quot; (RPL) language with its rich set of data types and built-in functions, and Lisp-level programming power.</p>\n<h3>Target Platforms</h3>\n<p>The project presently targets the SwissMicro DM42 and DM32 calculators, leveraging their built-in software platform known as DMCP. There is also a simulator tested on macOS and Linux.</p>\n<h3>Long-term Vision</h3>\n<p>Port DB48X to various physical calculator platforms:</p>\n<ul>\n<li>ARM-based HP50 and related machines (HP49, HP48Gii)</li>\n<li>HP Prime (at least the G1 model)</li>\n<li>Other calculator platforms</li>\n</ul>\n<h3>Presentation</h3>\n<p>This project was presented at FOSDEM in 2023 and an update was given in 2024, showcasing the modern approach to calculator programming.</p>\n<h3>Heritage</h3>\n<p>Building on decades of calculator programming experience, from the original HPDS development system to this modern reimplementation of RPL.</p>\n"
+  },
+  {
+    "id": "dxo-one",
+    "title": "DxO ONE Connected Camera",
+    "theme": "Tools & Apps",
+    "years": "2015-2016",
+    "weight": 8,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "Product Info",
+        "url": "https://www.dxo.com/"
+      }
+    ],
+    "content": "<h2>Ultra-Compact High-Quality Camera</h2>\n<p>Designed the firmware and software quality for a highly capable connected camera at DxO Labs in Paris.</p>\n<h3>Technical Challenge</h3>\n<p>The DxO ONE was a dual-core ARM + 88-bit real-time system, combining:</p>\n<ul>\n<li>High-end image sensor and optics</li>\n<li>Real-time image processing</li>\n<li>iOS connectivity</li>\n<li>Compact form factor</li>\n</ul>\n<h3>Software Architecture</h3>\n<p>Responsible for:</p>\n<ul>\n<li>Firmware quality and architecture</li>\n<li>Real-time image processing pipeline</li>\n<li>iOS app integration</li>\n<li>System-level optimization</li>\n</ul>\n<h3>Innovation</h3>\n<p>Ultra-compact camera that could attach directly to iPhone while maintaining DSLR-level image quality, thanks to DxO&#39;s renowned image processing expertise.</p>\n"
+  },
+  {
+    "id": "ecutest",
+    "title": "HP ECUTEST Real-Time System",
+    "theme": "Systems & Virtualization",
+    "years": "1994-1998",
+    "weight": 9,
+    "related": [],
+    "videos": [],
+    "links": [],
+    "content": "<h2>Real-Time Automotive Testing</h2>\n<p>HP ECUTEST was a real-time test system for car electronics, particularly engine control units (ECU).</p>\n<h3>Capabilities</h3>\n<ul>\n<li>Generated or monitored several hundred signals (~400 typical)</li>\n<li>Wide variety of analog and digital devices</li>\n<li>Sub-millisecond closed loop (250µs in some configurations)</li>\n<li>Continuous data logging with multiple time bases</li>\n<li>Some based on time, some based on engine rotation</li>\n</ul>\n<h3>Operating System Design</h3>\n<p>The ECUTEST operating system featured:</p>\n<ul>\n<li><strong>Heterogeneous multiprocessing</strong>: x86 Windows PC + real-time boards</li>\n<li><strong>Real-time boards</strong>: 68040 running pSOS or PA-RISC with HP-RT</li>\n<li><strong>Distributed device driver model</strong>:<ul>\n<li>Configuration by controlling PC</li>\n<li>Real-time measurements on 68040/PA-RISC</li>\n<li>Disk I/O for data logging on PC</li>\n</ul>\n</li>\n<li>VME or VXI devices with their own CPUs (68040 or 68332)</li>\n</ul>\n<h3>Hardware-Agnostic Binary Translator</h3>\n<p>Included a unique feature: customers could specify equations computed every cycle, independent of the underlying hardware architecture.</p>\n<h3>Scale Evolution</h3>\n<p><strong>ECUTEST Lite:</strong> Half the size of the original (which was refrigerator-sized), most of the testing capabilities, using VME instead of the more expensive VXI.</p>\n<p><strong>Manufacturing Release:</strong> A major milestone celebrated with team cartoons capturing the journey of wild optimism, tight hardware fits, union workers at demos, ever-changing product structure, and the memorable &quot;Yes, it&#39;s a bit slow to start&quot; moment when we went to lunch waiting for the software to launch!</p>\n"
+  },
+  {
+    "id": "emacs-aqua",
+    "title": "Emacs on Aqua",
+    "theme": "Tools & Apps",
+    "years": "2000-2010",
+    "weight": 6,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "SourceForge",
+        "url": "https://sourceforge.net/projects/emacs-on-aqua/"
+      }
+    ],
+    "content": "<h2>First Graphical Emacs on macOS</h2>\n<p>When Apple released macOS with only a text-only version of Emacs (working only in Terminal app), I was disappointed.</p>\n<h3>Taking Initiative</h3>\n<p>I waited a couple of months, thinking someone else would fix this. But it didn&#39;t happen. So I:</p>\n<ul>\n<li>Took an old NeXT port</li>\n<li>Adapted it to the Aqua graphical interface</li>\n<li>Added macOS-only niceties like transparent windows</li>\n<li>Published it on SourceForge</li>\n</ul>\n<h3>Impact</h3>\n<p>This port provided the first graphical Emacs experience on macOS Aqua, filling an important gap for Mac-using developers who relied on Emacs.</p>\n<h3>Legacy</h3>\n<p>By the time Emacs 23 was out, there were several forks and alternative implementations. Soon, maintaining a separate branch became unnecessary, since the primary version had integrated native graphical support for macOS.</p>\n<p>This port is now obsolete, but it served its purpose: getting Emacs users productive on the new macOS platform while the official port caught up.</p>\n<h3>Philosophy</h3>\n<p>An example of: &quot;If nobody else will fix it, maybe I should.&quot;</p>\n"
+  },
+  {
+    "id": "hp48-games",
+    "title": "HP-48 Calculator Games & HPDS",
+    "theme": "Games & 3D",
+    "years": "1989-1993",
+    "weight": 9,
+    "related": [
+      "db48x"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "HPCalc.org",
+        "url": "https://www.hpcalc.org/"
+      }
+    ],
+    "content": "<h2>Viral Games &amp; Development System</h2>\n<p>Created HPDS (HP Development System) and several viral games for HP-48 calculators.</p>\n<h3>HPDS - HP Development System</h3>\n<p>Evolution from SATAS (assembler for HP-28C, HP-28S, HP-48SX) into a complete development system for HP calculators. Used to create numerous programs and games.</p>\n<h3>PacMan for HP48 - First Viral Calculator Game</h3>\n<p><strong>Innovation:</strong> First use of HP48 hardware scroll</p>\n<p>Released initially as an assembly-only program with HPDS 1.0, later converted to HP-48 library with HPDS 2.0 in 1991. According to Paul Courbis, this was the first game to use the hardware scroll of the HP-48 calculator, making the game very fluid.</p>\n<p><strong>Viral Spread:</strong> Being one of the very first games for the HP-48, PacMan quickly became popular, taking advantage of the HP48&#39;s built-in infrared networking to spread virally—hopping from machine to machine, spreading to other countries including the United States. I received letters from all over the world.</p>\n<h3>Tetris for HP48 - Tutorial Game</h3>\n<p>Demo game for HPDS written in 1991. A simple Tetris clone intended primarily as a tutorial and demo for what could be done with a cross-development tool for HP48.</p>\n<h3>Lemmings for HP48 - Pushing the Envelope</h3>\n<p><strong>Ambition:</strong> Version 3.0 of HPDS included a clone of Lemmings, complete with an editor to create new levels. Source code dated from 1993.</p>\n<p><strong>Technical Challenge:</strong> Pushed the limits of the calculator in memory and in the number of lemmings animated on screen with a meager 2MHz 4-bit CPU.</p>\n<h3>Space Invaders - The Game I Never Wrote</h3>\n<p>Someone wrote a Space Invaders game and put my name in the credits! A friend said &quot;Your Space Invaders is really not as good as your other games.&quot; I had never written it. I&#39;m still hoping it was a kind of homage to my other games. I never knew who the real author was.</p>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> - P. Courbis on viral calculator games</p>\n"
+  },
+  {
+    "id": "hpcpp",
+    "title": "HP aC++ Compiler & C++ ABI",
+    "theme": "Languages & Compilers",
+    "years": "1998-2001",
+    "weight": 10,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "C++ ABI Documentation",
+        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      },
+      {
+        "label": "Exception Handling Article",
+        "url": "https://www.computer.org/csdl/magazine/co/2000/12/ry046/13rRUygBwht"
+      }
+    ],
+    "content": "<h2>Industry-Wide C++ Standard Implementation</h2>\n<p>At Hewlett-Packard&#39;s Compiler and Languages Lab in Cupertino, California, I made fundamental contributions to C++ compiler technology that are still used today.</p>\n<h3>HP aC++ Compiler Work</h3>\n<p>Working on the aC++ compiler (from Taligent codebase):</p>\n<ul>\n<li>Templates implementation and optimization</li>\n<li>Performance improvements</li>\n<li>Run-time library development</li>\n<li>Precompiled headers</li>\n<li>Exception handling</li>\n<li>Represented HP at C++ standards committee</li>\n</ul>\n<h3>Revolutionary Exception Handling</h3>\n<p>Traditional exception handling was hostile to optimizations—a real problem for processors like Itanium where compiler optimizations were essential for performance.</p>\n<p>Implemented a new approach designed by brilliant HP minds that:</p>\n<ul>\n<li>Allowed aggressive compiler optimizations</li>\n<li>Maintained full C++ exception semantics</li>\n<li>Became the standard approach in modern compilers</li>\n<li>Documented in an IEEE article</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> - Mark Mitchell</p>\n<h3>C++ ABI - Defining the Standard</h3>\n<p>Working with Cary Coutant, Daveed Vandevoorde, and engineers from many companies, we created the first common C++ ABI (Application Binary Interface) for Itanium.</p>\n<p><strong>Impact:</strong> Though called the &quot;Itanium C++ ABI,&quot; it was quickly adopted by GCC and other compilers for many platforms. It remains the standard to this day for new C++ revisions.</p>\n<h3>First Native Itanium Compilers</h3>\n<p>Built the first native Itanium C and C++ compilers, coordinating work of 16 different teams with 16 different ways of writing makefiles. HP&#39;s original plan was to run PA-RISC cross compilers in a PA-RISC emulator!</p>\n"
+  },
+  {
+    "id": "hpvm",
+    "title": "HPVM - Enterprise Virtualization",
+    "theme": "Systems & Virtualization",
+    "years": "2000-2010",
+    "weight": 10,
+    "related": [
+      "kata-containers",
+      "spice"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "HPVM on Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
+      }
+    ],
+    "content": "<h2>Enterprise-Grade Virtualization for Itanium</h2>\n<p>HP Integrity Virtual Machines (HPVM) is a virtualization solution for Itanium-based servers. This was the longest project of my professional life (10 years) and the most complex—an enterprise-grade virtualization solution for Itanium processors.</p>\n<h3>Early Days</h3>\n<p>Started the project in late 2000 with the early help of two HP system software gurus:</p>\n<ul>\n<li><strong>Todd Kjos</strong></li>\n<li><strong>Jonathan Ross</strong></li>\n</ul>\n<p>The three of us got the software to boot 4-way HP-UX guests. Then we got a much larger team of remarkably bright people, mostly former Tru64 and OpenVMS wizards.</p>\n<h3>Technical Contributions</h3>\n<p>I contributed to many facets of the product:</p>\n<ul>\n<li>Low-level interrupt handlers</li>\n<li>Binary translation</li>\n<li>Memory management</li>\n<li>Interrupt handling and emulation</li>\n<li>Context switching (called &quot;transmogrification&quot; or Xmog - a Calvin and Hobbes reference)</li>\n<li>Networking and disk I/O</li>\n<li>Debugging tools</li>\n<li>Scheduling and scalability</li>\n<li>Testing</li>\n<li>User-space management tools</li>\n</ul>\n<h3>Advanced Features</h3>\n<p>HPVM offered capabilities that are just starting to show up in open-source tools:</p>\n<ul>\n<li>Para-virtualized I/Os</li>\n<li>On-line guest migration</li>\n<li>On-line addition/removal of devices, RAM, and CPUs</li>\n<li>Cluster integration</li>\n<li>Remarkable I/O capabilities inherited from HP-UX</li>\n</ul>\n<h3>Team Excellence</h3>\n<p>The team consisted of remarkably bright people, some who had been working on operating systems like TOPS-10, TOPS-20, or OpenVMS long before I knew what a calculator was. Special mention to:</p>\n<ul>\n<li><strong>Karen Noel</strong> - On-line guest migration, OpenVMS support, attempted to improve my OpenVMS and English skills</li>\n<li><strong>Scott Rhine</strong> - Scheduling work that gave HPVM excellent scalability</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of their top visionaries&quot;</em> - Dale Morris</p>\n"
+  },
+  {
+    "id": "informagie",
+    "title": "Informagie - Science Fiction Novel",
+    "theme": "Art & Culture",
+    "years": "1988-2020",
+    "weight": 7,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "Buy the Book",
+        "url": "https://www.amazon.fr/Informagie-Christophe-Dinechin/dp/B08XXXX"
+      }
+    ],
+    "content": "<h2>A 32-Year Writing Journey</h2>\n<p>Informagie is a novel I started writing as a student, around the same time I was developing Alpha Waves. I finished it after 32 years and published it.</p>\n<h3>Story</h3>\n<p>A humorous science-fiction auto-biography by Antoine Ravelin, explaining how a video game saves humanity with the help of dinosaurs.</p>\n<h3>Features</h3>\n<ul>\n<li>Unionized green mice</li>\n<li>A robotic vacuum cleaner that can tell you if the woman of your life is a cyborg</li>\n<li>A psychopath antivirus gone allergic</li>\n<li>A chlorophyl-based Internet where spam occupies the vast majority of Canada&#39;s forests</li>\n</ul>\n<h3>Language</h3>\n<p>Written in French. Working on an English translation, tentatively named &quot;Nin, Binary,&quot; but this is super-low priority in the grand scheme of things.</p>\n<h3>Philosophy</h3>\n<p>This kind of thing makes me laugh. I hope it will make you laugh too.</p>\n"
+  },
+  {
+    "id": "intro",
+    "title": "Christophe de Dinechin",
+    "theme": "Tools & Apps",
+    "years": "1970-Present",
+    "weight": 10,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/c3d"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://fr.linkedin.com/in/christophe3d"
+      }
+    ],
+    "content": "<h2>Software as a Passion</h2>\n<p>I&#39;m a French software developer who began with silly video games, keeps inventing crazy programming languages, and loves designing operating systems. I&#39;m also an amateur physics researcher and a tinkerer in strange forms of art.</p>\n<h3>Philosophy</h3>\n<p>Pushing the boundaries by writing highly innovative and differentiating software to make as much of a difference as I possibly can.</p>\n<h3>Education</h3>\n<p><strong>MS Computer Science</strong> - École des Mines, Paris (1991)</p>\n<p>Native French speaker, fluent in English, some German.</p>\n<h3>About the Logo</h3>\n<p>The smiling lightbulb surrounded by rainbow-colored rays represents the core of my work: bright ideas radiating in all directions, spanning multiple domains and technologies. Each colored ray represents a different area of expertise—from languages to systems, games to physics, art to tools.</p>\n<h3>Contact</h3>\n<ul>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n<li><a href=\"http://c3d.github.io\">http://c3d.github.io</a></li>\n<li>7 av du domaine du Loup, Riou A, 06800 Cagnes sur mer</li>\n</ul>\n<p><strong>Navigate the constellation to explore my career journey. Each glowing star represents a project, grouped into thematic nebulae. The rainbow particles you see throughout the scene echo the radiating rays of the lightbulb—ideas spreading in all directions. Click any star to learn more.</strong></p>\n"
+  },
+  {
+    "id": "kata-containers",
+    "title": "Kata & Confidential Containers",
+    "theme": "Systems & Virtualization",
+    "years": "2017-Present",
+    "weight": 9,
+    "related": [
+      "hpvm",
+      "spice"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Red Hat Blog",
+        "url": "https://redhat.com"
+      },
+      {
+        "label": "Kata Containers",
+        "url": "https://katacontainers.io/"
+      }
+    ],
+    "content": "<h2>Sandboxed &amp; Confidential Containers</h2>\n<p>Working at Red Hat on next-generation container security and virtualization technologies.</p>\n<h3>Containers in Virtual Machines</h3>\n<p>Project owner for Openshift Sandboxed Containers and confidential containers, combining:</p>\n<ul>\n<li>Container orchestration (Kubernetes/OpenShift)</li>\n<li>Hardware virtualization for security boundaries</li>\n<li>Confidential computing technologies</li>\n</ul>\n<h3>Leveraging Virtualization Expertise</h3>\n<p>Building on decades of virtualization experience from HPVM, now applying that knowledge to:</p>\n<ul>\n<li>Modern container workloads</li>\n<li>Security isolation</li>\n<li>Confidential computing</li>\n<li>Cloud-native architectures</li>\n</ul>\n<h3>Smart Streaming</h3>\n<p>Implemented smart streaming in the SPICE remote viewer (Cyrix). Contributed to improving the quality of virtualization and remote visualization offerings.</p>\n"
+  },
+  {
+    "id": "make-it-quick",
+    "title": "Make-It-Quick Build System",
+    "theme": "Tools & Apps",
+    "years": "2015-Present",
+    "weight": 7,
+    "related": [
+      "recorder"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/c3d/make-it-quick"
+      }
+    ],
+    "content": "<h2>A Quick Way to Write Makefiles</h2>\n<p>Make-It-Quick is a simple build system designed to make it easy to build C or C++ programs without lengthy makefiles or the complexity of tools like automake or cmake.</p>\n<h3>Features</h3>\n<p><strong>Simple &amp; Readable:</strong></p>\n<ul>\n<li>Very short and readable makefiles</li>\n<li>Offering all the most useful features</li>\n<li>Compact size (~500 lines of active makefile code)</li>\n</ul>\n<p><strong>Fast:</strong> Since short makefiles with few rules are quickly parsed.</p>\n<p><strong>Automatic Features:</strong></p>\n<ul>\n<li>Incremental project configuration</li>\n<li>Generates <code>config.h</code> file</li>\n<li>Detailed build command logging in log files</li>\n<li>Single-pass generation of header-file dependencies</li>\n</ul>\n<p><strong>Built-in Capabilities:</strong></p>\n<ul>\n<li>Product testing with <code>make test</code></li>\n<li>Product installation with <code>make install</code></li>\n<li>Compact, colorized progress report</li>\n<li>Summary of errors and warnings at end of build</li>\n<li>Colorization of error and warning messages</li>\n</ul>\n<p><strong>Flexible Build Modes:</strong></p>\n<ul>\n<li>Rules to build various targets (optimized, debug, release, profile)</li>\n<li>Rule modifiers for common build options (e.g., <code>v-debug</code> for verbose debug)</li>\n<li>Personal preferences easily defined with environment variables</li>\n</ul>\n<p><strong>Developer-Friendly:</strong></p>\n<ul>\n<li>Built-in help (<code>make help</code>)</li>\n<li>Pure make, allowing standard Makefile syntax and features</li>\n<li>Supports parallel builds</li>\n<li>Supports separate libraries to accelerate builds</li>\n</ul>\n<p><strong>Portable:</strong> Tested on Linux, macOS, and Windows platforms.</p>\n<h3>Philosophy</h3>\n<p>Well suited for relatively small programs, though it has been used for at least one much larger program. The goal is simplicity without sacrificing power.</p>\n"
+  },
+  {
+    "id": "physics-books",
+    "title": "Physics Research & Books",
+    "theme": "Physics",
+    "years": "2010-Present",
+    "weight": 8,
+    "related": [],
+    "videos": [],
+    "links": [
+      {
+        "label": "Theory of Incomplete Measurements",
+        "url": "http://theoryofincompletemeasurements.com"
+      },
+      {
+        "label": "Réunifions la Physique (French)",
+        "url": "http://reunions-la-physique.com"
+      }
+    ],
+    "content": "<h2>Unifying General Relativity and Quantum Mechanics</h2>\n<p>As an amateur physicist, I&#39;ve long been very interested in quantum mechanics and relativity.</p>\n<h3>Theory of Incomplete Measurements</h3>\n<p>A long-sought and improbable solution to the problem of unifying quantum mechanics and general relativity.</p>\n<p><strong>Core Principle:</strong> A new principle of relativity suggesting we should be able to do physics using any instrument, including a broken voltmeter or watching through foggy glasses.</p>\n<p><strong>New Mathematics:</strong> We must learn a new way to do physics:</p>\n<ul>\n<li>Without equations or real numbers</li>\n<li>No continuum, no space, no time</li>\n<li>Only discrete measurements of space and time</li>\n<li>Measurements not all equivalent to one another</li>\n<li>New changes of reference frame for non-linear or irreversible conversions</li>\n</ul>\n<p><strong>Probavectors:</strong> Digital pictures record the probability of detecting photons and predict the probability for a screen to emit them—the functional equivalent of a wave function, but in discrete form.</p>\n<p><strong>560 pages</strong> - Available for free download or purchase</p>\n<h3>Réunifions la Physique (Let&#39;s Reunify Physics)</h3>\n<p>A short, easy-to-read essay describing the theory of incomplete measurements in French.</p>\n<p><strong>Content:</strong></p>\n<ul>\n<li>Insights on rationale and history behind the theory</li>\n<li>How it differs from quantum mechanics and relativity</li>\n<li>Where it makes different predictions</li>\n<li>Where these predictions happen to be exact</li>\n</ul>\n<p><strong>250 pages</strong> - Available for free download or purchase</p>\n<h3>Philosophy</h3>\n<p>Delusional enough to believe that I found how to unify general relativity and quantum mechanics. Whether that&#39;s true or not, the journey of exploring these ideas has been fascinating.</p>\n<p><strong>Related Work:</strong> Also published thoughts on special relativity as &quot;a matter of perspective,&quot; understanding that special relativity is just regular laws of perspective in a space-time where you need to put a minus sign in the Pythagorean theorem.</p>\n"
+  },
+  {
+    "id": "recorder",
+    "title": "Recorder - Flight Recorder",
+    "theme": "Tools & Apps",
+    "years": "2017-Present",
+    "weight": 7,
+    "related": [
+      "make-it-quick"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/c3d/recorder"
+      }
+    ],
+    "content": "<h2>A Lock-Free Flight Recorder for C/C++</h2>\n<p>A lock-free, real-time flight recorder for your C or C++ programs.</p>\n<h3>Features</h3>\n<p><strong>Continuous Recording:</strong> Records information about your program continuously while it&#39;s running using simple printf-like statements.</p>\n<p><strong>Smart Classification:</strong> Classify recorded data in different categories to preserve both:</p>\n<ul>\n<li>Old important events</li>\n<li>Recent, rapidly-firing events</li>\n</ul>\n<p><strong>On-Demand Dumping:</strong> Dump recorded data on demand, notably in response to signals or from debugger.</p>\n<p><strong>Selective Tracing:</strong> Trace specific categories of records (print them as they happen).</p>\n<p><strong>Real-Time Visualization:</strong> Export specific data to shared memory channels for external visualization. Includes a simple Qt5.9-based visualization tool showing content of data channels in real-time.</p>\n<h3>Use Cases</h3>\n<p>Perfect for debugging complex, time-sensitive systems where traditional debugging would alter timing behavior:</p>\n<ul>\n<li>Real-time systems</li>\n<li>High-performance servers</li>\n<li>Embedded systems</li>\n<li>Multithreaded applications</li>\n<li>Race condition debugging</li>\n</ul>\n<h3>Philosophy</h3>\n<p>Like an aircraft flight recorder, it&#39;s always running, capturing everything, so when something goes wrong, you have the data you need to understand what happened.</p>\n"
+  },
+  {
+    "id": "spice",
+    "title": "SPICE Remote Streaming",
+    "theme": "Systems & Virtualization",
+    "years": "2017-Present",
+    "weight": 8,
+    "related": [
+      "hpvm",
+      "kata-containers"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "SPICE Project",
+        "url": "https://www.spice-space.org/"
+      }
+    ],
+    "content": "<h2>Remote Visualization &amp; Streaming</h2>\n<p>Part of the Spice team at Red Hat, focusing on remote visualization which is essential to Red Hat&#39;s virtualization offering.</p>\n<h3>Smart Streaming in SPICE</h3>\n<p>Implemented smart streaming in the SPICE remote viewer (Cyrix), a highly capable connected camera. Enhanced the dual-core ARM + 88-bit real-time system for remote display capabilities.</p>\n<h3>Remote Display Protocol</h3>\n<p>SPICE (Simple Protocol for Independent Computing Environments) provides remote access to virtual machines with:</p>\n<ul>\n<li>High-quality graphics streaming</li>\n<li>Multi-monitor support</li>\n<li>Audio redirection</li>\n<li>USB redirection</li>\n<li>Optimized for LAN and WAN</li>\n</ul>\n<h3>Convergence of Interests</h3>\n<p>Two of my primary centers of interest converge:</p>\n<ul>\n<li>Virtualization (from HPVM background)</li>\n<li>3D graphics and visualization (from Tao3D and games background)</li>\n</ul>\n"
+  },
+  {
+    "id": "taodyne",
+    "title": "Taodyne Company",
+    "theme": "Art & Culture",
+    "years": "2011-2017",
+    "weight": 8,
+    "related": [
+      "xl-tao3d",
+      "3divart"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Company Info",
+        "url": "https://taodyne.com"
+      }
+    ],
+    "content": "<h2>Real-Time 3D Interactive Software for Business</h2>\n<p>Co-founded Taodyne in 2011 to commercialize Tao3D technology.</p>\n<h3>Products</h3>\n<p><strong>Tao3D Studio</strong> (formerly Tao Presentations)</p>\n<ul>\n<li>Application to create 3D presentations using the Tao3D language</li>\n<li>Real-time 3D rendering</li>\n<li>Interactive content creation</li>\n</ul>\n<p><strong>Tao3D Player</strong></p>\n<ul>\n<li>Playback application for Tao3D documents</li>\n<li>Commercial features:<ul>\n<li>Stereoscopic display support (3D with glasses)</li>\n<li>Auto-stereoscopic display support (glasses-free 3D)</li>\n<li>Document signing and encryption</li>\n</ul>\n</li>\n</ul>\n<h3>Technology</h3>\n<p>Both applications share source code and feature the open-source Tao3D language. The commercial versions add enterprise features for secure content delivery and advanced display technologies.</p>\n<h3>Market Focus</h3>\n<ul>\n<li>Business presentations</li>\n<li>Trade shows and events</li>\n<li>Museums and education</li>\n<li>Scientific visualization</li>\n<li>Anywhere you need to present complex information in an entertaining and interactive way</li>\n</ul>\n<h3>Legacy</h3>\n<p>Demonstrated that research in extensible languages could produce commercial products with real-world applications in 3D visualization and interactive content.</p>\n<p><strong>Quote:</strong> <em>&quot;Best technology in TIC&quot;</em> - Business Accelerator &amp; Most innovative product award - RENUCOM 2012</p>\n"
+  },
+  {
+    "id": "xl-tao3d",
+    "title": "XL, Tao3D & ELFE",
+    "theme": "Languages & Compilers",
+    "years": "1988-Present",
+    "weight": 9,
+    "related": [
+      "taodyne",
+      "3divart"
+    ],
+    "videos": [
+      "GUMqT9W5BG8"
+    ],
+    "links": [
+      {
+        "label": "XL on GitHub",
+        "url": "https://github.com/c3d/xl"
+      },
+      {
+        "label": "Tao3D",
+        "url": "https://tao3d.sourceforge.net/"
+      },
+      {
+        "label": "ELFE",
+        "url": "https://github.com/c3d/elfe"
+      }
+    ],
+    "content": "<h2>An Extensible Language Journey</h2>\n<p>A 30+ year research project in programming language design, evolving through multiple iterations to create truly extensible languages.</p>\n<h3>LX - Language Expérimental (1988-1998)</h3>\n<p>Started during a training period at Alsys SA (Ada compilers), leading to reflections about what I liked and didn&#39;t like in Ada. Features included:</p>\n<ul>\n<li>User-accessible representation for the parse tree</li>\n<li>Basic garbage collection</li>\n<li>Advanced generics (similar to C++ templates)</li>\n</ul>\n<h3>XL - From Experimental to Extensible</h3>\n<p>Following discussions with brilliant engineers like Daveed Vandevoorde, the focus changed from &quot;experimental&quot; to &quot;extensible&quot;. Key evolution:</p>\n<ul>\n<li><strong>XL</strong> - Advanced generics, still syntax-directed</li>\n<li><strong>XL2</strong> - Complete rewrite with simplified parse tree (8 node types), bootstrapped compiler</li>\n<li><strong>XLR</strong> - Extensible Language Runtime, designed as back-end for XL2, became elegant standalone</li>\n</ul>\n<h3>Tao3D - 3D Interactive Programming</h3>\n<p>A programming language for interactive 3D derived from XLR, making it easy to create great visualizations and animations quickly. Powerful enough to present complex information entertainingly.</p>\n<p>Features:</p>\n<ul>\n<li>Real-time 3D rendering</li>\n<li>Very short code for complex animations</li>\n<li>Used for talks, trade shows, museums, education</li>\n<li>Commercial version by Taodyne added stereoscopy support</li>\n</ul>\n<h3>ELFE - Extensible Language for Everyday</h3>\n<p>The most recent evolution: a simple, small language for everyday programming, specifically tuned for IoT device configuration and control. First language to incorporate a type system based on tree shapes.</p>\n<p>In many ways, ELFE is the best implementation of XL to date.</p>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> - Raphaël Manfredi on Tao3D</p>\n"
+  }
+]
