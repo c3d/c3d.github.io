@@ -10,6 +10,11 @@
     "description": "C and C++ languages, ABIs, and toolchains"
   },
   {
+    "id": "asm",
+    "name": "Asm",
+    "description": "Assembly language and low-level machine code"
+  },
+  {
     "id": "compilers",
     "name": "Compilers",
     "description": "Language design, compilers, ABIs, and extensible languages"
@@ -101,8 +106,8 @@
   },
   {
     "id": "opensource",
-    "name": "Open source",
-    "description": "Free and open-source projects and communities"
+    "name": "FOSS / Open source",
+    "description": "Free and open-source software and communities"
   },
   {
     "id": "ui",

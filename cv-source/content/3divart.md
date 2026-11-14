@@ -1,7 +1,7 @@
 ---
 id: 3divart
 title: 3DIVART
-theme: Communication Skills
+theme: Communications
 years: 2015
 weight: 9
 print: 1

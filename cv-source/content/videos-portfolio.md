@@ -1,7 +1,7 @@
 ---
 id: videos-portfolio
 title: Videos
-theme: Communication Skills
+theme: Communications
 years: 2008-Present
 weight: 6
 related:
