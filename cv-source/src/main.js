@@ -1446,6 +1446,8 @@ function syncLabelScreenPosition(projectId) {
   label.userData.lastSx = sx;
   label.userData.lastSy = sy;
   el.style.transform = `translate3d(${sx}px, ${sy}px, 0) translate(-50%, calc(-100% - 6px))`;
+  el.style.opacity = '';
+  el.style.visibility = '';
   return el;
 }
 
@@ -1750,14 +1752,40 @@ function applyHudTimingCss(hud) {
   hud.style.setProperty('--hud-blink-count', String(HUD_TIMING.blinkCount));
 }
 
-function clearHudStageClasses(hud) {
+function clearHudInlineAnimStyles(hud) {
   if (!hud) return;
-  hud.classList.remove(...HUD_STAGE_CLASSES);
   const panel = hud.querySelector('.hud-panel');
   if (panel) {
     panel.style.clipPath = '';
+    panel.style.transition = '';
     panel.style.removeProperty('--hud-clip-ms');
   }
+  const titleBar = hud.querySelector('.hud-title-bar');
+  if (titleBar) {
+    titleBar.style.opacity = '';
+    titleBar.style.transition = '';
+  }
+  hud.querySelectorAll(
+    '[data-hud="theme"], [data-hud="section"], [data-hud="years"], .hud-index, .hud-topics, [data-hud="media"], .hud-bullet, .hud-connected'
+  ).forEach((el) => {
+    el.style.opacity = '';
+    el.style.transition = '';
+  });
+  // Chip open is class/transform driven — never leave width clamps from experiments.
+  hud.querySelectorAll('.hud-chip').forEach((el) => {
+    el.style.width = '';
+    el.style.maxWidth = '';
+    el.style.flexBasis = '';
+    el.style.transform = '';
+    el.style.opacity = '';
+    el.style.transition = '';
+  });
+}
+
+function clearHudStageClasses(hud) {
+  if (!hud) return;
+  hud.classList.remove(...HUD_STAGE_CLASSES);
+  clearHudInlineAnimStyles(hud);
 }
 
 function panelClipInsets(panel, titleBar, mode) {
@@ -2236,6 +2264,8 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   if (!stillHudGen(gen)) return;
 
   hud.classList.add('hud-body-in', 'hud-ready');
+  // Layout is final; drop any open-path inline overrides (clip / title opacity).
+  clearHudInlineAnimStyles(hud);
   await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
 }
 
@@ -2267,9 +2297,16 @@ async function runHudCloseContinuity() {
     clearHudStageClasses(hud);
     hud?.classList.remove('open');
     hud?.setAttribute('aria-hidden', 'true');
-    labelEl?.classList.remove('ms-label-hud-open');
-    [themeEl, sectionEl, yearsEl, ...bodyBits].forEach((el) => {
-      if (el) el.style.opacity = '';
+    if (labelEl) {
+      labelEl.classList.remove('ms-label-hud-open');
+      labelEl.style.opacity = '';
+      labelEl.style.visibility = '';
+      // transform stays owned by updateLabels (live projection)
+    }
+    [themeEl, sectionEl, yearsEl, titleBar, ...bodyBits].forEach((el) => {
+      if (!el) return;
+      el.style.opacity = '';
+      el.style.transition = '';
     });
   };
 
@@ -2278,7 +2315,7 @@ async function runHudCloseContinuity() {
     return;
   }
 
-  // Reverse 6: blink+fade teletyped body / chip / theme text
+  // Reverse 6: blink+fade teletyped body / chip / theme text (title stays readable)
   await blinkFadeHudText([...bodyBits, sectionEl, yearsEl, themeEl], gen);
   if (!stillHudGen(gen)) return;
   hud.classList.remove('hud-body-in', 'hud-ready');
@@ -2291,50 +2328,66 @@ async function runHudCloseContinuity() {
   await waitMs(HUD_TIMING.chipOverlapMs);
   if (!stillHudGen(gen)) return;
 
-  // Measure title band while fully open, then clip from full → stages.
-  const titleBand = panelClipInsets(panel, titleBar, 'title');
   hud.classList.add('hud-clipping');
+  // Keep clip fully open while vertical grids collapse so the title bar is never
+  // sliced by a stale inset (title moves when .hud-above goes 1fr → 0fr).
   setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { immediate: true, ms: HUD_TIMING.downMs });
 
-  // Reverse 4: collapse downward (hide below)
+  // Reverse 4: collapse downward (hide below) — remeasure after settle
+  let band = panelClipInsets(panel, titleBar, 'title');
   hud.classList.remove('hud-stage-down', 'hud-expanded');
   setPanelClip(panel, {
     top: 0,
     right: 0,
-    bottom: titleBand.bottom,
+    bottom: band.bottom,
     left: 0
   }, { ms: HUD_TIMING.downMs });
   await waitMs(HUD_TIMING.downMs);
   if (!stillHudGen(gen)) return;
-
-  // Reverse 3: collapse upward
-  hud.classList.remove('hud-stage-up');
+  band = panelClipInsets(panel, titleBar, 'title');
   setPanelClip(panel, {
-    top: titleBand.top,
+    top: 0,
     right: 0,
-    bottom: titleBand.bottom,
+    bottom: Math.max(0, band.bottom),
     left: 0
-  }, { ms: HUD_TIMING.upMs });
+  }, { immediate: true });
+
+  // Reverse 3: collapse upward. Open bottom clip first so the moving title
+  // cannot be cut; tighten to a fresh title band after the grid settles.
+  setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { immediate: true, ms: HUD_TIMING.upMs });
+  hud.classList.remove('hud-stage-up');
   await waitMs(HUD_TIMING.upMs);
   if (!stillHudGen(gen)) return;
+  void panel.offsetWidth;
+  band = panelClipInsets(panel, titleBar, 'title');
 
-  // Reverse 2: collapse laterally into title width
+  // Reverse 2: clip to the live title band (lateral + vertical frame)
   hud.classList.remove('hud-stage-wide');
   hud.classList.add('hud-stage-title');
-  setPanelClip(panel, titleBand, { ms: HUD_TIMING.lateralMs });
+  setPanelClip(panel, band, { ms: HUD_TIMING.lateralMs });
   await waitMs(HUD_TIMING.lateralMs);
   if (!stillHudGen(gen)) return;
 
-  // Reverse 1: title returns to mini-HUD label
+  // Reverse 1: title returns to mini-HUD label at its CURRENT projected position
+  syncLabelScreenPosition(projectId);
+  void labelEl.offsetWidth;
   const to = labelEl.getBoundingClientRect();
   const from = titleBar.getBoundingClientRect();
+  if (to.width < 2 || to.height < 2) {
+    // Label not laid out — snap rather than FLIP to a degenerate rect
+    snapClose();
+    return;
+  }
+
   hud.classList.add('hud-flying');
   const fly = document.createElement('div');
   fly.id = 'hud-fly-label';
   fly.classList.add('hud-fly-as-title');
   fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
   fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
-  fly.querySelector('.ms-label-text').textContent = star.project?.title || '';
+  // Prefer the live mini-label text so the FLIP lands on the same string/style
+  const miniText = labelEl.querySelector('.ms-label-text')?.textContent || star.project?.title || '';
+  fly.querySelector('.ms-label-text').textContent = miniText;
   document.body.appendChild(fly);
   fly.style.left = `${from.left}px`;
   fly.style.top = `${from.top}px`;
@@ -2346,6 +2399,10 @@ async function runHudCloseContinuity() {
   if (!stillHudGen(gen)) return;
 
   removeHudFlyLabel();
+  // Reveal the real mini-label in its normal projected slot (no leftover inline)
+  labelEl.classList.remove('ms-label-hud-open');
+  labelEl.style.opacity = '';
+  labelEl.style.visibility = '';
   snapClose();
 }
 
