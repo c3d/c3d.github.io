@@ -122,7 +122,7 @@ function researchPrintProjects() {
       title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
       years: '',
       bullets: [
-        `${PATENT_COUNT} granted US patents (HP and Red Hat, virtualization and confidential computing), ${PATENT_PENDING} pending applications including split host/tenant cluster credentials — ${deepLink(PATENT_LIST_URL, 'Google Patents (de Dinechin / Dupont de Dinechin)')}`
+        `${PATENT_COUNT} granted ${deepLink(PATENT_LIST_URL, 'US patents')}, ${PATENT_PENDING} pending`
       ]
     },
     {
