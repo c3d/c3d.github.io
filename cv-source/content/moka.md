@@ -5,9 +5,8 @@ theme: Languages & Compilers
 years: null
 weight: 8
 related:
+  - xl
   - mozart
-  - xl-tao3d
-  - lx
 videos: []
 links:
   - label: Moka

@@ -6,9 +6,7 @@ years: null
 weight: 9
 print: 1
 related:
-  - xl-tao3d
-  - taodyne
-  - firefly
+  - tao3d
 videos: []
 images:
   - /cv/3DIVART.jpg

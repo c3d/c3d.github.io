@@ -7,7 +7,7 @@ weight: 9
 related:
   - moka
   - lx
-  - xl-tao3d
+  - xl
 videos: []
 links:
   - label: Mozart
