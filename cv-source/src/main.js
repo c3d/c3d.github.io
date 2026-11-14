@@ -139,7 +139,8 @@ function createLabelAnchor({ text, hex, kind, parent }) {
   anchor.visible = false;
   // Sprite-compat shim used by older QA helpers
   anchor.material = { opacity: 0 };
-  anchor.scale = new THREE.Vector3(1, 1, 1);
+  // Object3D.scale is read-only in modern Three.js — mutate in place
+  anchor.scale.set(1, 1, 1);
   el.addEventListener('pointerdown', (e) => {
     e.stopPropagation();
     noteUserActivity();
@@ -2040,6 +2041,7 @@ function resolveShowPhoto(style) {
 
 function ensurePrintModel(data) {
   if (!printModelCache) {
+    if (!data) throw new Error('Print model requires content data on first call');
     // Selection is `print:` priority in frontmatter (web-only items omitted).
     printModelCache = buildModelForStyles(data, Object.keys(THEME_COLORS), printColorsMap());
   }
@@ -2069,7 +2071,8 @@ function applyPrintStyle(styleId, { persist = true } = {}) {
     history.replaceState(null, '', next);
   }
   const printView = document.getElementById('print-view');
-  const model = { ...ensurePrintModel(contentData), showPhoto: resolveShowPhoto(style) };
+  // Use cached print model (populated by generatePrintView); do not reference init's local contentData
+  const model = { ...ensurePrintModel(), showPhoto: resolveShowPhoto(style) };
   printView.dataset.printStyle = style.id;
   printView.dataset.photo = model.showPhoto ? '1' : '0';
   printView.innerHTML = renderPrintStyleControls() + style.render(model);
