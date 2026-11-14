@@ -2422,6 +2422,7 @@
     "theme": "Systems & Virtualization",
     "years": 2019,
     "weight": 8,
+    "print": 4,
     "related": [
       "kata-containers",
       "confidential-containers",
@@ -2574,6 +2575,7 @@
     "theme": "Games & 3D",
     "years": "2010-2016",
     "weight": 9,
+    "print": 4,
     "related": [
       "tao3d",
       "xl",
