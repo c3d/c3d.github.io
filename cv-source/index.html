@@ -308,6 +308,128 @@
       opacity: 0.28;
       filter: saturate(0.55);
     }
+    .ms-label.ms-label-search-miss.is-visible {
+      opacity: 0.22;
+      filter: saturate(0.4);
+    }
+    .ms-label.ms-label-search-match.is-visible {
+      border-color: color-mix(in srgb, var(--ms-accent) 95%, white);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--ms-accent) 55%, transparent);
+      animation: ms-search-breathe 2s ease-in-out infinite;
+    }
+    @keyframes ms-search-breathe {
+      0%, 100% { filter: brightness(1); opacity: 0.92; }
+      50% { filter: brightness(1.25); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ms-label.ms-label-search-match.is-visible {
+        animation: none;
+      }
+    }
+
+    /* Type-to-search HUD */
+    #search-hud {
+      position: fixed;
+      left: 50%;
+      top: 18%;
+      transform: translateX(-50%);
+      z-index: 28;
+      pointer-events: none;
+      width: min(440px, calc(100vw - 28px));
+    }
+    #search-hud[hidden] { display: none !important; }
+    .search-hud-panel {
+      pointer-events: auto;
+      padding: 16px 18px 14px;
+      border: 1px solid rgba(64, 224, 255, 0.5);
+      background:
+        linear-gradient(165deg, rgba(14, 32, 58, 0.9), rgba(4, 10, 22, 0.84));
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      box-shadow: 0 0 28px rgba(64, 224, 255, 0.22), inset 0 0 24px rgba(64, 224, 255, 0.06);
+      clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+      color: #e8f4ff;
+    }
+    .search-hud-kicker {
+      font-family: Orbitron, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #40e0ff;
+      margin: 0 0 8px;
+    }
+    .search-hud-query {
+      font-family: Orbitron, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      min-height: 1.2em;
+      word-break: break-word;
+      color: #f2f9ff;
+    }
+    .search-hud-query:empty::after {
+      content: '…';
+      opacity: 0.35;
+    }
+    .search-hud-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      caret-color: transparent;
+    }
+    .search-hud-meta {
+      margin: 10px 0 0;
+      font-size: 12px;
+      opacity: 0.75;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .search-hud-hint {
+      margin: 6px 0 0;
+      font-family: Orbitron, sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(160, 210, 255, 0.55);
+    }
+    #search-fab {
+      display: none;
+      position: fixed;
+      right: max(14px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 26;
+      width: 46px;
+      height: 46px;
+      border: 1px solid rgba(64, 224, 255, 0.55);
+      background: rgba(8, 18, 36, 0.82);
+      color: #9eecff;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 0 16px rgba(64, 224, 255, 0.2);
+      cursor: pointer;
+      pointer-events: auto;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    #search-fab svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #search-fab:hover,
+    #search-fab:focus-visible {
+      border-color: #40e0ff;
+      color: #40e0ff;
+      outline: none;
+    }
 
     #topic-filter-bar {
       position: fixed;
@@ -650,6 +772,24 @@
           100% 100%, 0 100%
         );
       }
+      #search-fab { display: inline-flex; }
+      #search-hud { top: 12%; }
+      .search-hud-input {
+        position: static;
+        width: 100%;
+        height: auto;
+        opacity: 1;
+        margin-top: 8px;
+        padding: 10px 12px;
+        border: 1px solid rgba(64, 224, 255, 0.35);
+        background: rgba(0, 0, 0, 0.35);
+        color: #f2f9ff;
+        font-family: Orbitron, sans-serif;
+        font-size: 18px;
+        letter-spacing: 0.04em;
+        caret-color: #40e0ff;
+      }
+      .search-hud-query { display: none; }
     }
 
     @media print {
@@ -799,6 +939,7 @@
     <p><span class="control-key">Click</span> a CV bullet-star</p>
     <p><span class="control-key">Drag</span> to orbit</p>
     <p><span class="control-key">Scroll</span> to zoom</p>
+    <p><span class="control-key">Type</span> Search</p>
     <p><span class="control-key">O</span> Overview</p>
     <p><span class="control-key">ESC</span> Close HUD</p>
   </div>
@@ -832,6 +973,25 @@
   </div>
 
   <div id="print-style-menu" hidden aria-hidden="true" role="menu"></div>
+
+  <div id="search-hud" hidden aria-hidden="true" role="search">
+    <div class="search-hud-panel">
+      <p class="search-hud-kicker">Searching…</p>
+      <div class="search-hud-query" data-search-query></div>
+      <input id="search-input" class="search-hud-input" type="search" enterkeyhint="search"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             aria-label="Search constellation" />
+      <p class="search-hud-meta" data-search-meta></p>
+      <p class="search-hud-hint">Enter · best match · Esc clears · Backspace edits</p>
+    </div>
+  </div>
+
+  <button id="search-fab" type="button" aria-label="Search constellation" title="Search">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M20 20l-3.5-3.5"></path>
+    </svg>
+  </button>
 
   <script type="module" src="/src/main.js"></script>
 </body>
