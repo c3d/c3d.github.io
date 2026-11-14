@@ -55,7 +55,7 @@ Your project description in Markdown format.
   - `Games & 3D`
   - `Research`
   - `Tools & Apps`
-  - `Communication Skills`
+  - `Communications`
 - **years**: Time period (e.g., "2020-Present", "1989-1990")
 - **weight**: Importance 1-10, affects star size and prominence
 - **related**: Array of related project IDs for connection lines

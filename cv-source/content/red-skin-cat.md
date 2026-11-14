@@ -1,7 +1,7 @@
 ---
 id: red-skin-cat
 title: 'Blog: Red Skin Cat'
-theme: Communication Skills
+theme: Communications
 years: 2017-Present
 weight: 6
 related:

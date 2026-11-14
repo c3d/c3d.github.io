@@ -143,9 +143,17 @@ function researchPrintProjects() {
   ];
 }
 
-/** Curated Communication Skills print projects. */
+/** Curated Communications print projects. */
 function communicationPrintProjects() {
   return [
+    {
+      id: null,
+      title: 'Free and Open Source Software (FOSS)',
+      years: '',
+      bullets: [
+        `Publishing free software since 1999. Linux user since 1998 (MkLinux). Kernel developer. ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
+      ]
+    },
     {
       id: 'informagie',
       title: 'Books',
@@ -251,7 +259,7 @@ export function buildPrintModel(data, {
     // Patents rendered inside curated Research section, not as a Systems card
     if (item.id === 'patents') return;
     // Research / Communication use curated print projects below
-    if (item.theme === 'Research' || item.theme === 'Communication Skills') return;
+    if (item.theme === 'Research' || item.theme === 'Communications') return;
     const theme = item.theme;
     if (!themeOrder.includes(theme)) return;
     if (!byTheme[theme]) byTheme[theme] = [];
@@ -262,7 +270,7 @@ export function buildPrintModel(data, {
     let projects;
     if (theme === 'Research') {
       projects = researchPrintProjects();
-    } else if (theme === 'Communication Skills') {
+    } else if (theme === 'Communications') {
       projects = communicationPrintProjects();
     } else {
       projects = (byTheme[theme] || [])

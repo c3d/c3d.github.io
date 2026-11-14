@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-injectors
 title: 'Cartoon: Customers know best'
-theme: Communication Skills
+theme: Communications
 years: 1994-1998
 weight: 3
 satelliteOf: ecu-cartoons

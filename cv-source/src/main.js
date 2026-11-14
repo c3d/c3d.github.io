@@ -38,14 +38,14 @@ async function loadContentData() {
 // ============================================================================
 
 /* Object key order = print section order:
- * Systems → Languages → Tools → Games → Research → Communication. */
+ * Systems → Languages → Tools → Games → Research → Communications. */
 const THEME_COLORS = {
   'Systems & Virtualization': 0xff4a5a,
   'Languages & Compilers': 0x4a90ff,
   'Tools & Apps': 0x40e0ff,
   'Games & 3D': 0x5dff6a,
   Research: 0xffb040,
-  'Communication Skills': 0xff5ad6
+  Communications: 0xff5ad6
 };
 
 /** Darker cousins of THEME_COLORS for print on white paper (same hue family). */
@@ -55,7 +55,7 @@ const PRINT_THEME_COLORS = {
   'Tools & Apps': 0x1496b0,
   'Games & 3D': 0x2aa83a,
   Research: 0xd48918,
-  'Communication Skills': 0xc2188a
+  Communications: 0xc2188a
 };
 
 /** Hexagonal ring for every aspect ratio — fitOverviewToClusters scales/fits the
@@ -66,7 +66,7 @@ const THEME_LAYOUT_RING = {
   'Tools & Apps': { x: 2, y: 36, z: -58 },
   'Systems & Virtualization': { x: 132, y: -2, z: -12 },
   'Games & 3D': { x: -44, y: -60, z: 6 },
-  'Communication Skills': { x: 76, y: -48, z: 42 }
+  Communications: { x: 76, y: -48, z: 42 }
 };
 
 /** @deprecated alias — kept so older call sites / docs still resolve */
@@ -180,7 +180,7 @@ const CLUSTER_BY_SLUG = Object.fromEntries(
   Object.entries(THEME_CLUSTER_SLUGS).map(([theme, slug]) => [slug, theme])
 );
 /* Legacy deep-link slugs from former cluster names. */
-CLUSTER_BY_SLUG.art = 'Communication Skills';
+CLUSTER_BY_SLUG.art = 'Communications';
 CLUSTER_BY_SLUG.physics = 'Research';
 /** Type-to-search: query string while the Searching… HUD is open. */
 let searchQuery = '';

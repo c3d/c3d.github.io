@@ -1,7 +1,7 @@
 ---
 id: informagie
 title: Informagie
-theme: Communication Skills
+theme: Communications
 years: 2019
 weight: 7
 print: 2

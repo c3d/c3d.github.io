@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoons
 title: Cartoons for ECUTEST Release
-theme: Communication Skills
+theme: Communications
 years: 1994-1998
 weight: 6
 related:

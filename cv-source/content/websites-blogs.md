@@ -1,7 +1,7 @@
 ---
 id: websites-blogs
 title: Web sites and blogs
-theme: Communication Skills
+theme: Communications
 years: 2003-Present
 weight: 6
 related:
