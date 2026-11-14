@@ -744,42 +744,42 @@
     "topics": [
       "writing"
     ],
-    "content": "<h2>Cartoons for ECUTEST Release</h2>\n<ul>\n<li><a href=\"#ecu-cartoon-dontcare\">Cartoon: Marketing needs not care</a></li>\n<li><a href=\"#ecu-cartoon-fuses\">Cartoon: Software that blows</a></li>\n<li><a href=\"#ecu-cartoon-injectors\">Cartoon: Customers know best</a></li>\n<li><a href=\"#ecu-cartoon-itfits\">Cartoon: Tight fit</a></li>\n<li><a href=\"#ecu-cartoon-notools\">Cartoon: Union worker</a></li>\n<li><a href=\"#ecu-cartoon-optimist\">Cartoon: Wild optimism</a></li>\n<li><a href=\"#ecu-cartoon-processes\">Cartoon: Processes</a></li>\n<li><a href=\"#ecu-cartoon-venturi\">Cartoon: Yes, it&#39;s a bit slow to start</a></li>\n<li><a href=\"#ecu-cartoon-yesterdays\">Cartoon: Ever changing product structure</a></li>\n</ul>\n",
+    "content": "<h2>Cartoons for ECUTEST Release</h2>\n<ul>\n<li><a href=\"#ecu-cartoon-dontcare\">Marketing needs not care</a></li>\n<li><a href=\"#ecu-cartoon-fuses\">Software that blows</a></li>\n<li><a href=\"#ecu-cartoon-injectors\">Customers know best</a></li>\n<li><a href=\"#ecu-cartoon-itfits\">Tight fit</a></li>\n<li><a href=\"#ecu-cartoon-notools\">Union worker</a></li>\n<li><a href=\"#ecu-cartoon-optimist\">Wild optimism</a></li>\n<li><a href=\"#ecu-cartoon-processes\">Processes</a></li>\n<li><a href=\"#ecu-cartoon-venturi\">Yes, it&#39;s a bit slow to start</a></li>\n<li><a href=\"#ecu-cartoon-yesterdays\">Ever changing product structure</a></li>\n</ul>\n",
     "bullets": [
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-dontcare\">Cartoon: Marketing needs not care</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-dontcare\">Marketing needs not care</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-fuses\">Cartoon: Software that blows</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-fuses\">Software that blows</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-injectors\">Cartoon: Customers know best</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-injectors\">Customers know best</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-itfits\">Cartoon: Tight fit</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-itfits\">Tight fit</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-notools\">Cartoon: Union worker</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-notools\">Union worker</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-optimist\">Cartoon: Wild optimism</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-optimist\">Wild optimism</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-processes\">Cartoon: Processes</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-processes\">Processes</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-venturi\">Cartoon: Yes, it's a bit slow to start</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-venturi\">Yes, it's a bit slow to start</a>",
         "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-yesterdays\">Cartoon: Ever changing product structure</a>",
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-yesterdays\">Ever changing product structure</a>",
         "section": "Cartoons for ECUTEST Release"
       }
     ]
