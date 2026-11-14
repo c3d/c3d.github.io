@@ -465,7 +465,9 @@
     "related": [
       "db48x"
     ],
-    "videos": [],
+    "videos": [
+      "-Cnh_fIN55I"
+    ],
     "links": [
       {
         "label": "HPCalc.org",
@@ -473,7 +475,7 @@
       }
     ],
     "images": [
-      "/cv/media/hp48-games.png"
+      "/cv/media/hp48-games.jpg"
     ],
     "content": "<h2>Viral calculator games and a development system</h2>\n<ul>\n<li>HPDS — HP Development System for HP calculators (from earlier SATAS)</li>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n",
     "bullets": [
@@ -812,7 +814,7 @@
       }
     ],
     "images": [
-      "/cv/media/mozart-moka.gif"
+      "/cv/media/mozart-moka.jpg"
     ],
     "content": "<h2>Extensible front-end IL and Java-to-Java compiler</h2>\n<ul>\n<li>Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article</li>\n<li>Experiments that informed later XL / parse-tree design choices</li>\n</ul>\n",
     "bullets": [

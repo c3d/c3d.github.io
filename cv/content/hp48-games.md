@@ -7,12 +7,13 @@ weight: 9
 print: 2
 related:
   - db48x
-videos: []
+videos:
+  - '-Cnh_fIN55I'
 links:
   - label: HPCalc.org
     url: 'https://www.hpcalc.org/'
 images:
-  - /cv/media/hp48-games.png
+  - /cv/media/hp48-games.jpg
 ---
 ## Viral calculator games and a development system
 

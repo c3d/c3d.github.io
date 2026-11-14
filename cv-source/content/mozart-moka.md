@@ -12,7 +12,7 @@ links:
   - label: Mozart
     url: 'http://mozart-dev.sourceforge.net'
 images:
-  - /cv/media/mozart-moka.gif
+  - /cv/media/mozart-moka.jpg
 ---
 ## Extensible front-end IL and Java-to-Java compiler
 
