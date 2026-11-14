@@ -1,6 +1,6 @@
 ---
 id: fosdem-db48x
-title: FOSDEM talks — DB48X
+title: FOSDEM talks — DB48x
 theme: Research
 years: 2023-2024
 weight: 7
@@ -24,4 +24,4 @@ topics:
 
 ## Conference talks
 
-- FOSDEM 2023 and 2024 talks on DB48X / modern RPL
+- FOSDEM 2023 and 2024 talks on DB48x / modern RPL
