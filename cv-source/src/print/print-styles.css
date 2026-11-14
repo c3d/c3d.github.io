@@ -266,21 +266,22 @@ a.pv-deep-on-dark {
 a.pvn-qr:hover { color: inherit; }
 .pvn-qr img { width: 16mm; height: 16mm; border: 0.3mm solid var(--pv-line); background: #fff; }
 .pvn-qr-title { font-family: Orbitron, sans-serif; font-size: 6.5pt; margin: 0 0 0.6mm !important; }
-.pvn-main { display: flex; flex-direction: column; justify-content: space-between; gap: 1.1mm; min-width: 0; }
+.pvn-main { display: flex; flex-direction: column; justify-content: space-between; gap: 0.7mm; min-width: 0; min-height: 0; flex: 1; }
 .pvn-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvn-bar { display: flex; align-items: center; gap: 1.8mm; background: var(--theme-color, #246); color: #fff; border-radius: 1.8mm; padding: 1.1mm 2mm; }
+.pvn-bar { display: flex; align-items: center; gap: 1.8mm; background: var(--theme-color, #246); color: #fff; border-radius: 1.8mm; padding: 0.9mm 2mm; }
 .pvn-ico { display: flex; width: 4.2mm; height: 4.2mm; }
 .pvn-ico svg { width: 100%; height: 100%; color: #fff; }
-.pvn-bar h2 { font-family: Orbitron, sans-serif; font-size: 7.3pt; letter-spacing: 0.07em; text-transform: uppercase; margin: 0; color: #fff; }
+.pvn-bar h2 { font-family: Orbitron, sans-serif; font-size: 7pt; letter-spacing: 0.07em; text-transform: uppercase; margin: 0; color: #fff; }
 /* Full-width timeline — no decorative gutter */
-.pvn-theme-body { display: block; padding: 1mm 0 0.1mm 0.8mm; }
+.pvn-theme-body { display: block; padding: 0.7mm 0 0.05mm 0.8mm; }
 .pvn-timeline { position: relative; padding-left: 3mm; border-left: 0.45mm solid var(--theme-color, #246); margin-left: 1.2mm; }
-.pvn-project { position: relative; margin: 0 0 0.85mm; }
+.pvn-project { position: relative; margin: 0 0 0.55mm; }
 .pvn-dot { position: absolute; left: -4.2mm; top: 1.5mm; width: 2mm; height: 2mm; border-radius: 50%; background: var(--theme-color, #246); box-shadow: 0 0 0 0.45mm #fff; }
 .pvn-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2mm; }
-.pvn-project h3 { font-size: 9.5pt; margin: 0; font-weight: 700; text-align: left; }
-.pvn-years { flex-shrink: 0; font-size: 6.4pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.3mm 1.3mm; white-space: nowrap; }
-.pvn-project ul { margin: 0.45mm 0 0; padding-left: 3.2mm; font-size: 9.5pt; font-weight: 500; color: #243041; line-height: 1.28; }
+.pvn-project h3 { font-size: 9pt; margin: 0; font-weight: 700; text-align: left; }
+.pvn-project h3 a.pv-deep { font-weight: inherit; }
+.pvn-years { flex-shrink: 0; font-size: 6pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.2mm 1.1mm; white-space: nowrap; }
+.pvn-project ul { margin: 0.3mm 0 0; padding-left: 3.2mm; font-size: 8.8pt; font-weight: 500; color: #243041; line-height: 1.22; }
 .pvn-patents {
   margin: 0.6mm 0 0;
   padding: 0.9mm 1.8mm;
@@ -383,7 +384,8 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 14.5pt; margin: 0; color: #fff; text-align: left; }
 .pvo-sub { margin: 0.8mm 0 0; font-size: 8.5pt; color: var(--orbit-gold); text-align: left; }
 .pvo-keys { margin: 1.2mm 0 0; font-size: 6.8pt; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(220,230,245,.8); text-align: left; }
-.pvo-main { padding: 2mm 3.5mm 2.2mm; display: flex; flex-direction: column; justify-content: space-between; gap: 1.1mm; flex: 1; min-height: 0; }
+.pvo-main { padding: 2mm 3.5mm 2.2mm; display: flex; flex-direction: column; justify-content: space-between; gap: 0.7mm; flex: 1; min-height: 0; }
+.pvo-project h3 a.pv-deep { font-weight: inherit; }
 .pvo-theme { break-inside: avoid; page-break-inside: avoid; }
 .pvo-theme-head { display: flex; align-items: center; gap: 1.8mm; margin-bottom: 0.9mm; }
 .pvo-tile {

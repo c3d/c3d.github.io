@@ -56,3 +56,14 @@ export function clusterHref(themeName) {
   const slug = THEME_CLUSTER_SLUGS[themeName] || themeName;
   return `https://c3d.github.io/cv/?cluster=${encodeURIComponent(slug)}`;
 }
+
+/** Deep link that opens a constellation entry HUD (`#<projectId>`). */
+export function entryHref(projectId) {
+  return `https://c3d.github.io/cv/#${encodeURIComponent(projectId)}`;
+}
+
+/** Print project title → unobtrusive deep link to its constellation node. */
+export function entryTitleLink(projectId, title) {
+  if (!projectId) return title;
+  return `<a class="pv-deep" href="${entryHref(projectId)}">${title}</a>`;
+}

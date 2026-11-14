@@ -1,4 +1,4 @@
-import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref } from '../icons.js';
+import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref, entryTitleLink } from '../icons.js';
 
 /** Nebula: colorful theme bars, light sidebar cards, deep-space header. */
 export const nebulaStyle = {
@@ -99,7 +99,7 @@ export const nebulaStyle = {
       theme.projects.forEach((p) => {
         html += `<article class="pvn-project">
           <div class="pvn-dot"></div>
-          <div class="pvn-head"><h3>${p.title}</h3>${p.years ? `<span class="pvn-years">${p.years}</span>` : ''}</div>
+          <div class="pvn-head"><h3>${entryTitleLink(p.id, p.title)}</h3>${p.years ? `<span class="pvn-years">${p.years}</span>` : ''}</div>
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });

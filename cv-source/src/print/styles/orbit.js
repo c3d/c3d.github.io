@@ -1,4 +1,4 @@
-import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref } from '../icons.js';
+import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref, entryTitleLink } from '../icons.js';
 
 /** Orbit: deep-space navy & gold monochrome elegance. */
 export const orbitStyle = {
@@ -116,7 +116,7 @@ export const orbitStyle = {
       theme.projects.forEach((p) => {
         html += `<article class="pvo-project">
           <div class="pvo-dot"></div>
-          <div class="pvo-head"><h3>${p.title}</h3>${p.years ? `<span class="pvo-years">${p.years}</span>` : ''}</div>
+          <div class="pvo-head"><h3>${entryTitleLink(p.id, p.title)}</h3>${p.years ? `<span class="pvo-years">${p.years}</span>` : ''}</div>
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });

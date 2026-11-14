@@ -24,6 +24,7 @@ function deepLink(href, label) {
 function researchPrintProjects() {
   return [
     {
+      id: 'wiess-exception-handling',
       title: 'Computer science research',
       years: '',
       bullets: [
@@ -31,6 +32,7 @@ function researchPrintProjects() {
       ]
     },
     {
+      id: 'patents',
       title: `${PATENT_COUNT} patents awarded`,
       years: '',
       bullets: [
@@ -38,6 +40,7 @@ function researchPrintProjects() {
       ]
     },
     {
+      id: 'physics-books',
       title: 'Physics research',
       years: '',
       bullets: [
@@ -51,6 +54,7 @@ function researchPrintProjects() {
 function communicationPrintProjects() {
   return [
     {
+      id: 'informagie',
       title: 'Books',
       years: '',
       bullets: [
@@ -58,6 +62,7 @@ function communicationPrintProjects() {
       ]
     },
     {
+      id: 'fosdem-db48x',
       title: 'Conferences',
       years: '',
       bullets: [
@@ -65,6 +70,7 @@ function communicationPrintProjects() {
       ]
     },
     {
+      id: 'taodyne',
       title: 'Taodyne',
       years: '2010-2016',
       bullets: [
@@ -136,6 +142,7 @@ export function buildPrintModel(data, {
             const wiess = deepLink('https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf', 'WIESS');
             const abi = deepLink('https://itanium-cxx-abi.github.io/cxx-abi/', 'C++ ABI');
             return {
+              id: p.id,
               title: p.title,
               years: p.years || '',
               bullets: [
@@ -146,6 +153,7 @@ export function buildPrintModel(data, {
             };
           }
           return {
+            id: p.id,
             title: p.title,
             years: p.years || '',
             bullets: (p.bullets || []).slice(0, maxBullets).map((b) => (typeof b === 'string' ? b : b.text))

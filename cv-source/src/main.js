@@ -1304,13 +1304,25 @@ function setActiveTopic(topicId, { pushUrl = true } = {}) {
     const params = new URLSearchParams(location.search);
     if (activeTopicId) params.set('topic', activeTopicId);
     else params.delete('topic');
-    // keep print/cluster params
+    // keep print params; cluster is session-only (cleared on user navigation)
     const q = params.toString();
     const url = `${location.pathname}${q ? `?${q}` : ''}${location.hash || ''}`;
     history.pushState({ topic: activeTopicId }, '', url);
   }
 }
 window.setActiveTopic = setActiveTopic;
+
+/** Drop ?cluster= so a sticky deep-link cluster cannot override later clicks. */
+function clearClusterQueryParam() {
+  const params = new URLSearchParams(location.search);
+  if (!params.has('cluster')) return false;
+  params.delete('cluster');
+  const q = params.toString();
+  const url = `${location.pathname}${q ? `?${q}` : ''}${location.hash || ''}`;
+  history.replaceState(null, '', url);
+  return true;
+}
+window.clearClusterQueryParam = clearClusterQueryParam;
 
 function updateTopicIndicator() {
   let bar = document.getElementById('topic-filter-bar');
@@ -2494,8 +2506,10 @@ async function runHudCloseContinuity() {
   snapClose();
 }
 
-function enterClusterView(theme, { fromAuto = false } = {}) {
+function enterClusterView(theme, { fromAuto = false, fromDeepLink = false } = {}) {
   if (!THEME_POSITIONS[theme]) return Promise.resolve();
+  // User navigation drops sticky ?cluster=; initial deep-link keeps it until then.
+  if (!fromDeepLink && !fromAuto) clearClusterQueryParam();
   if (viewLevel === 1 && !overviewPose) overviewPose = captureCameraPose();
   // Closing HUD without leaving cluster (instant — cluster fly owns motion)
   if (currentStar) {
@@ -2578,6 +2592,8 @@ function exitClusterView({ animate = true } = {}) {
 }
 
 function openHUD(star, { fromAuto = false } = {}) {
+  // Selecting a node always clears sticky ?cluster= so it cannot re-force focus.
+  if (!fromAuto) clearClusterQueryParam();
   // Ensure we are in the star's cluster before opening detail
   const theme = star.project?.theme;
   if (theme && (viewLevel < 2 || focusTheme !== theme)) {
@@ -3105,10 +3121,10 @@ function setupInteraction() {
         return;
       }
     }
-    // L2 only: individual stars open the HUD
+    // L2: individual stars open the HUD (including stars from another cluster)
     if (viewLevel === 2) {
       const starHit = pickStarAt(e.clientX, e.clientY);
-      if (starHit && starHit.project?.theme === focusTheme) {
+      if (starHit) {
         openHUD(starHit);
         return;
       }
@@ -3118,6 +3134,7 @@ function setupInteraction() {
         enterClusterView(other);
         return;
       }
+      clearClusterQueryParam();
       exitClusterView();
       return;
     }
@@ -3277,18 +3294,21 @@ function renderPrintStyleControls() {
   </div>`;
 }
 
-function applyPrintStyle(styleId, { persist = true } = {}) {
+function applyPrintStyle(styleId, { persist = true, updateUrl = false } = {}) {
   const style = getPrintStyle(styleId);
   activePrintStyleId = style.id;
   if (persist) {
     try { localStorage.setItem(PRINT_STYLE_STORAGE_KEY, style.id); } catch { /* ignore */ }
   }
-  const params = new URLSearchParams(location.search);
-  if (!params.has('print')) params.set('print', '1');
-  params.set('style', style.id);
-  const next = `${location.pathname}?${params.toString()}`;
-  if (location.search !== `?${params.toString()}`) {
-    history.replaceState(null, '', next);
+  // Only rewrite the URL in print mode. Constellation boot must not inject
+  // print=1/style or strip entry deep-link hashes needed by ?cluster= / #id.
+  if (updateUrl) {
+    const params = new URLSearchParams(location.search);
+    if (!params.has('print')) params.set('print', '1');
+    params.set('style', style.id);
+    const next = `${location.pathname}?${params.toString()}${location.hash || ''}`;
+    const cur = `${location.pathname}${location.search}${location.hash || ''}`;
+    if (cur !== next) history.replaceState(null, '', next);
   }
   const printView = document.getElementById('print-view');
   // Use cached print model (populated by generatePrintView); do not reference init's local contentData
@@ -3297,7 +3317,7 @@ function applyPrintStyle(styleId, { persist = true } = {}) {
   printView.dataset.photo = model.showPhoto ? '1' : '0';
   printView.innerHTML = renderPrintStyleControls() + style.render(model);
   printView.querySelectorAll('[data-print-style]').forEach((btn) => {
-    btn.addEventListener('click', () => applyPrintStyle(btn.dataset.printStyle));
+    btn.addEventListener('click', () => applyPrintStyle(btn.dataset.printStyle, { updateUrl: true }));
   });
 }
 
@@ -3307,9 +3327,10 @@ function generatePrintView(data) {
   let stored = null;
   try { stored = localStorage.getItem(PRINT_STYLE_STORAGE_KEY); } catch { /* ignore */ }
   activePrintStyleId = resolvePrintStyleId({ urlStyle: params.get('style'), stored });
-  applyPrintStyle(activePrintStyleId, { persist: true });
+  const inPrint = params.get('print') === '1' || location.hash === '#print';
+  applyPrintStyle(activePrintStyleId, { persist: true, updateUrl: inPrint });
 
-  if (params.get('print') === '1' || location.hash === '#print') {
+  if (inPrint) {
     document.body.classList.add('print-preview');
   }
 }
@@ -3422,15 +3443,27 @@ async function initPrintOnly(contentData) {
   document.getElementById('loading')?.classList.add('hidden');
 }
 
+function entryStarFromHash() {
+  const raw = window.location.hash.slice(1);
+  if (!raw || raw === 'print') return null;
+  const id = decodeURIComponent(raw);
+  return stars.find((s) => s.id === id) || firstStarForProject(id) || null;
+}
+
 function applyDeepLinkFromUrl({ pushUrl = false } = {}) {
   const params = new URLSearchParams(location.search);
   const topic = params.get('topic');
   const cluster = params.get('cluster');
   setActiveTopic(topic, { pushUrl });
+  // Per-entry deep link (`#hpvm`) wins over `?cluster=` on load.
+  if (entryStarFromHash()) {
+    clearClusterQueryParam();
+    return;
+  }
   if (cluster && CLUSTER_BY_SLUG[cluster]) {
     const theme = CLUSTER_BY_SLUG[cluster];
-    // Defer until stars/labels exist
-    setTimeout(() => enterClusterView(theme), 120);
+    // Defer until stars/labels exist; mark as deep-link so ?cluster= stays until user navigates
+    setTimeout(() => enterClusterView(theme, { fromDeepLink: true }), 120);
   }
 }
 
@@ -3461,11 +3494,21 @@ async function init() {
   }
   setTimeout(refit, 400);
 
-  if (window.location.hash) {
-    const id = decodeURIComponent(window.location.hash.slice(1));
-    const star = stars.find((s) => s.id === id);
-    if (star) setTimeout(() => openHUD(star), 500);
+  function openFromHash({ delayMs = 0 } = {}) {
+    const star = entryStarFromHash();
+    if (!star) return false;
+    // Entry deep links clear sticky cluster focus.
+    clearClusterQueryParam();
+    const go = () => openHUD(star);
+    if (delayMs > 0) setTimeout(go, delayMs);
+    else go();
+    return true;
   }
+  // Initial deep link (print PDFs use `#<projectId>`); brief delay lets the first frame settle.
+  openFromHash({ delayMs: 500 });
+  window.addEventListener('hashchange', () => {
+    if (!isPrintMode()) openFromHash({ delayMs: 0 });
+  });
 
   animate();
 }
