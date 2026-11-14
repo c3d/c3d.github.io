@@ -4,7 +4,7 @@ title: DB48x - Modern RPL Calculator
 theme: Languages & Compilers
 years: 2022-Present
 weight: 9
-print: 5
+print: 3
 related:
   - hp48-games
   - hpds
@@ -49,6 +49,7 @@ topics:
 Free software for physical calculators or phone apps.
 
 - A modern rebuild of high-end HP-48 and HP-50 calculators, firmware for low-power ARM SoC
+- Very sensitive to power management on low-power ARM
 - Ships as firmware for real hardware calculators including SwissMicros DM32 and DM42 with low-power ARM SoC
 - DM32: [ARM Cortex-M33](https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m33) ([STM32U575](https://www.st.com/en/microcontrollers-microprocessors/stm32u575.html)); DM42: [ARM Cortex-M4](https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m4) ([STM32L476](https://www.st.com/en/microcontrollers-microprocessors/stm32l476zg.html))
 - Rich RPL data types and built-in functions with Lisp-level programming power
