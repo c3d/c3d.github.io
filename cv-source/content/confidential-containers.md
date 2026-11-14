@@ -34,6 +34,8 @@ links:
     url: 'https://www.youtube.com/watch?v=ww6EiDsCRz4'
   - label: 'KVM Forum 2023: Chains of trust'
     url: 'https://www.youtube.com/watch?v=53kf4LY5YdM'
+  - label: 'DevConf.US 2021: Confidential containers — distrusting your VM host'
+    url: 'https://devconfus2021.sched.com/event/lkiO/confidential-containers-distrusting-your-vm-host'
   - label: 'DevConf.CZ 2022: Confidential computing with Kata'
     url: 'https://devconfcz2022.sched.com/event/siGQ/confidential-computing-with-kata-containers'
   - label: 'DevConf.CZ 2023: Chains of trust'

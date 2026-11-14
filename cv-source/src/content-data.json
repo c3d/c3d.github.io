@@ -219,6 +219,10 @@
         "url": "https://www.youtube.com/watch?v=53kf4LY5YdM"
       },
       {
+        "label": "DevConf.US 2021: Confidential containers — distrusting your VM host",
+        "url": "https://devconfus2021.sched.com/event/lkiO/confidential-containers-distrusting-your-vm-host"
+      },
+      {
         "label": "DevConf.CZ 2022: Confidential computing with Kata",
         "url": "https://devconfcz2022.sched.com/event/siGQ/confidential-computing-with-kata-containers"
       },
@@ -2089,10 +2093,12 @@
     "featured": true,
     "print": 2,
     "related": [
-      "make-it-quick"
+      "make-it-quick",
+      "spice"
     ],
     "videos": [
-      "kEnQY1zFa0Y"
+      "kEnQY1zFa0Y",
+      "kpy4SqpunoY"
     ],
     "links": [
       {
@@ -2102,6 +2108,10 @@
       {
         "label": "Presentation video",
         "url": "https://www.youtube.com/watch?v=kEnQY1zFa0Y"
+      },
+      {
+        "label": "DevConf.CZ 2019: SPICE smart streaming (shows recorder in use)",
+        "url": "https://youtu.be/kpy4SqpunoY"
       }
     ],
     "images": [
@@ -2113,7 +2123,7 @@
       "validation",
       "performance"
     ],
-    "content": "<h2>Lock-free flight recorder for C and C++</h2>\n<ul>\n<li>Continuous recording with printf-like statements for performance and debug traces</li>\n<li>Inexpensive enough to leave on (README: &lt; 0.1 µs / record on a modern PC)</li>\n<li>Classify events to keep both old important and recent rapid events</li>\n<li>Dump on demand (signals / debugger)</li>\n<li>Trace categories live; export channels for visualization</li>\n</ul>\n",
+    "content": "<h2>Lock-free flight recorder for C and C++</h2>\n<ul>\n<li>Continuous recording with printf-like statements for performance and debug traces</li>\n<li>Inexpensive enough to leave on (README: &lt; 0.1 µs / record on a modern PC)</li>\n<li>Classify events to keep both old important and recent rapid events</li>\n<li>Dump on demand (signals / debugger)</li>\n<li>Trace categories live; export channels for visualization</li>\n<li>Shown in use in the <a href=\"https://youtu.be/kpy4SqpunoY\">DevConf.CZ 2019 SPICE smart streaming</a> talk</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Continuous recording with printf-like statements for performance and debug traces",
@@ -2133,6 +2143,10 @@
       },
       {
         "text": "Trace categories live; export channels for visualization",
+        "section": "Lock-free flight recorder for C and C++"
+      },
+      {
+        "text": "Shown in use in the <a class=\"pv-deep\" href=\"https://youtu.be/kpy4SqpunoY\" target=\"_blank\" rel=\"noopener noreferrer\">DevConf.CZ 2019 SPICE smart streaming</a> talk",
         "section": "Lock-free flight recorder for C and C++"
       }
     ]
