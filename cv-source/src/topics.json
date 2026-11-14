@@ -1,5 +1,10 @@
 [
   {
+    "id": "---",
+    "name": "---",
+    "description": "---"
+  },
+  {
     "id": "cpp",
     "name": "C++",
     "description": "C and C++ languages, ABIs, and toolchains"
@@ -60,6 +65,11 @@
     "description": "Interactive 3D, shaders, ray-marching, and OpenGL-class graphics"
   },
   {
+    "id": "ai",
+    "name": "AI",
+    "description": "Artificial intelligence, language models, and intelligent systems"
+  },
+  {
     "id": "games",
     "name": "Games",
     "description": "Games, demos, and playful interactive software"
@@ -68,6 +78,21 @@
     "id": "physics",
     "name": "Physics",
     "description": "Physics research, essays, and popularization"
+  },
+  {
+    "id": "research",
+    "name": "Research",
+    "description": "Computer science and physics research"
+  },
+  {
+    "id": "books",
+    "name": "Books",
+    "description": "Published books and longer-form writing"
+  },
+  {
+    "id": "conferences",
+    "name": "Conferences",
+    "description": "Conference talks and peer-reviewed presentations"
   },
   {
     "id": "writing",
@@ -118,5 +143,35 @@
     "id": "multimedia",
     "name": "Multimedia",
     "description": "Home entertainment, MythTV, and media appliances"
+  },
+  {
+    "id": "soc",
+    "name": "SoC",
+    "description": "System-on-Chip platforms and microcontroller SoCs"
+  },
+  {
+    "id": "firmware",
+    "name": "Firmware",
+    "description": "Firmware and low-level platform software"
+  },
+  {
+    "id": "system",
+    "name": "System",
+    "description": "System software spanning hosts, guests, and test platforms"
+  },
+  {
+    "id": "validation",
+    "name": "Validation",
+    "description": "System validation, automated test suites, and bring-up checks"
+  },
+  {
+    "id": "performance",
+    "name": "Performance",
+    "description": "Performance measurement, tracing, and efficiency tooling"
+  },
+  {
+    "id": "pre-silicon",
+    "name": "Pre-silicon",
+    "description": "Software bring-up on simulators before silicon / hardware"
   }
 ]

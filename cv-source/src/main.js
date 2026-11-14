@@ -36,30 +36,31 @@ async function loadContentData() {
 // Logo-inspired theme palette
 // ============================================================================
 
-/* Object key order = print section order (Tools right after Systems). */
+/* Object key order = print section order:
+ * Systems → Languages → Tools → Games → Research → Communication. */
 const THEME_COLORS = {
-  'Languages & Compilers': 0x4a90ff,
   'Systems & Virtualization': 0xff4a5a,
+  'Languages & Compilers': 0x4a90ff,
   'Tools & Apps': 0x40e0ff,
   'Games & 3D': 0x5dff6a,
-  'Physics': 0xffb040,
+  Research: 0xffb040,
   'Communication Skills': 0xff5ad6
 };
 
 /** Darker cousins of THEME_COLORS for print on white paper (same hue family). */
 const PRINT_THEME_COLORS = {
-  'Languages & Compilers': 0x1f5fd0,
   'Systems & Virtualization': 0xc62838,
+  'Languages & Compilers': 0x1f5fd0,
   'Tools & Apps': 0x1496b0,
   'Games & 3D': 0x2aa83a,
-  'Physics': 0xd48918,
+  Research: 0xd48918,
   'Communication Skills': 0xc2188a
 };
 
 /** Hexagonal ring for every aspect ratio — fitOverviewToClusters scales/fits the
  * camera instead of switching to a portrait 3×2 column layout. */
 const THEME_LAYOUT_RING = {
-  'Physics': { x: -78, y: 40, z: 42 },
+  Research: { x: -78, y: 40, z: 42 },
   'Languages & Compilers': { x: -132, y: -6, z: -40 },
   'Tools & Apps': { x: 2, y: 36, z: -58 },
   'Systems & Virtualization': { x: 132, y: -2, z: -12 },
@@ -177,8 +178,9 @@ const TOPICS_BY_ID = Object.fromEntries(topicsRegistry.map((t) => [t.id, t]));
 const CLUSTER_BY_SLUG = Object.fromEntries(
   Object.entries(THEME_CLUSTER_SLUGS).map(([theme, slug]) => [slug, theme])
 );
-/* Legacy deep-link slug from the former "Art & Culture" cluster name. */
+/* Legacy deep-link slugs from former cluster names. */
 CLUSTER_BY_SLUG.art = 'Communication Skills';
+CLUSTER_BY_SLUG.physics = 'Research';
 /** Type-to-search: query string while the Searching… HUD is open. */
 let searchQuery = '';
 let searchActive = false;
@@ -2032,8 +2034,13 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   hud.style.setProperty('--hud-accent', themeColor);
   hud.querySelector('[data-hud="theme"]').textContent = project.theme || '';
   hud.querySelector('[data-hud="project"]').textContent = project.title || '';
-  hud.querySelector('[data-hud="years"]').textContent = project.years || '—';
-  hud.querySelector('[data-hud="section"]').textContent = bullet.section || 'DATUM';
+  // Section / Years may contain markdown links — render like the body (visible text + real <a>).
+  const yearsRaw = project.years || '—';
+  const sectionRaw = bullet.section || 'DATUM';
+  const yearsEl = hud.querySelector('[data-hud="years"]');
+  const sectionEl = hud.querySelector('[data-hud="section"]');
+  yearsEl.innerHTML = marked.parseInline(String(yearsRaw), { async: false });
+  sectionEl.innerHTML = marked.parseInline(String(sectionRaw), { async: false });
   // Prefer full project HTML so teletype walks rendered text nodes (links/formatting survive).
   // Fall back to the clicked bullet for sparse items.
   const bulletEl = hud.querySelector('[data-hud="bullet"]');
@@ -2219,12 +2226,13 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   });
 
   // Hide teletype targets until their stage; keep labels for chip chrome.
-  const themeText = themeEl?.textContent || '';
-  const sectionText = sectionEl?.textContent || '';
-  const yearsText = yearsEl?.textContent || '';
-  if (themeEl) themeEl.textContent = '';
-  if (sectionEl) sectionEl.textContent = '';
-  if (yearsEl) yearsEl.textContent = '';
+  // Preserve HTML so Section/Years markdown links survive the clear/restore cycle.
+  const themeHtml = themeEl?.innerHTML || '';
+  const sectionHtml = sectionEl?.innerHTML || '';
+  const yearsHtml = yearsEl?.innerHTML || '';
+  if (themeEl) themeEl.innerHTML = '';
+  if (sectionEl) sectionEl.innerHTML = '';
+  if (yearsEl) yearsEl.innerHTML = '';
 
   labelEl.classList.add('ms-label-hud-open');
   labelEl.classList.remove('is-visible');
@@ -2277,7 +2285,7 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
     bottom: titleBand.bottom,
     left: 0
   }, { ms: HUD_TIMING.upMs });
-  if (themeEl) themeEl.textContent = themeText;
+  if (themeEl) themeEl.innerHTML = themeHtml;
   const themePromise = startHudTeletype(themeEl, { cps: HUD_TIMING.themeTeletypeCps });
   await waitMs(HUD_TIMING.upMs);
   if (!stillHudGen(gen)) return;
@@ -2301,9 +2309,9 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   await waitMs(HUD_TIMING.chipOverlapMs);
   if (!stillHudGen(gen)) return;
 
-  // 6) Teletype Section / Years contents, then description/media as today
-  if (sectionEl) sectionEl.textContent = sectionText;
-  if (yearsEl) yearsEl.textContent = yearsText;
+  // 6) Teletype Section / Years (HTML restored — teletype types visible link text only)
+  if (sectionEl) sectionEl.innerHTML = sectionHtml;
+  if (yearsEl) yearsEl.innerHTML = yearsHtml;
   await startHudTeletype(sectionEl, { cps: HUD_TIMING.chipTeletypeCps });
   if (!stillHudGen(gen)) return;
   await startHudTeletype(yearsEl, { cps: HUD_TIMING.chipTeletypeCps });

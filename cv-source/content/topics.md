@@ -23,8 +23,12 @@ comes only from each item’s real CV / homepage text.
 | linux | Linux | Linux systems, drivers, and open platforms |
 | macos | macOS | macOS / Aqua / NeXT desktop software |
 | graphics3d | 3D / GLSL | Interactive 3D, shaders, ray-marching, and OpenGL-class graphics |
+| ai | AI | Artificial intelligence, language models, and intelligent systems |
 | games | Games | Games, demos, and playful interactive software |
 | physics | Physics | Physics research, essays, and popularization |
+| research | Research | Computer science and physics research |
+| books | Books | Published books and longer-form writing |
+| conferences | Conferences | Conference talks and peer-reviewed presentations |
 | writing | Writing | Books, novels, blogs, and technical writing |
 | opensource | Open source | Free and open-source projects and communities |
 | ui | UI / UX | User interfaces, editors, and interactive UX |

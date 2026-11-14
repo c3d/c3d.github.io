@@ -1,7 +1,7 @@
 ---
 id: physics-books
 title: A Theory of Incomplete Measurements
-theme: Physics
+theme: Research
 years: null
 weight: 9
 print: 1
@@ -22,6 +22,8 @@ images:
 topics:
   - physics
   - writing
+  - research
+  - books
 ---
 ## Amateur physics research — unifying GR and QM
 

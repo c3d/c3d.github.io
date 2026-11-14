@@ -27,7 +27,7 @@ topics:
 
 Cupertino, Hewlett-Packard California Language Lab (CLL).
 
-- Wrote the first native Itanium C++ compiler before silicon; ran it on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux) (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries
+- Wrote the first native Itanium C++ compiler, pre-silicon testing on [ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux), overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the [Aries PA-RISC to Itanium dynamic translator](https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm)
 - Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)
 - Did the compiler bring-up on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux) before silicon existed (a second HP simulator also modelled performance details)
 - HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator

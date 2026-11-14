@@ -200,12 +200,22 @@
     "theme": "Languages & Compilers",
     "years": "2022-Present",
     "weight": 7,
-    "print": 2,
     "related": [
-      "db48x"
+      "db48x",
+      "recorder"
     ],
-    "videos": [],
+    "videos": [
+      "jPoXadNIdUM"
+    ],
     "links": [
+      {
+        "label": "DB48x tests with Flight Recorder tracing memory usage",
+        "url": "https://www.youtube.com/watch?v=jPoXadNIdUM"
+      },
+      {
+        "label": "DB48X v0.6.2+ Full Test Suite Run",
+        "url": "https://www.youtube.com/watch?v=aHW2GcX5S6o"
+      },
       {
         "label": "tests.cc",
         "url": "https://github.com/c3d/db48x/blob/stable/src/tests.cc"
@@ -225,10 +235,10 @@
       "opensource",
       "arm"
     ],
-    "content": "<h2>Built-in automated test suite for DB48X</h2>\n<p>Keystroke-driven validation inside the DB48X simulator (F12 / <code>-Tall</code>).</p>\n<ul>\n<li>Built-in simulator suite in src/tests.cc / src/tests.h (3 412 named step checks; F12 / -Tall)</li>\n<li>~20 370 lines of suite code on the db48x <code>stable</code> branch tip used for this CV update</li>\n<li>Run from the Qt simulator with F12 or <code>-Tall</code> (see SIMULATOR.md / BUILD.md)</li>\n</ul>\n",
+    "content": "<h2>Built-in automated test suite for DB48X</h2>\n<p>Keystroke-driven validation inside the DB48X simulator (F12 / <code>-Tall</code>).</p>\n<ul>\n<li>Built-in simulator test suite covering more than 8000 individual tests</li>\n<li>~20 370 lines of suite code on the db48x <code>stable</code> branch tip used for this CV update</li>\n<li>Run from the Qt simulator with F12 or <code>-Tall</code> (see SIMULATOR.md / BUILD.md)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Built-in simulator suite in src/tests.cc / src/tests.h (3 412 named step checks; F12 / -Tall)",
+        "text": "Built-in simulator test suite covering more than 8000 individual tests",
         "section": "Built-in automated test suite for DB48X"
       },
       {
@@ -859,6 +869,44 @@
     ]
   },
   {
+    "id": "fosdem-db48x",
+    "title": "FOSDEM talks — DB48X",
+    "theme": "Research",
+    "years": "2023-2024",
+    "weight": 7,
+    "print": 2,
+    "related": [
+      "db48x"
+    ],
+    "videos": [
+      "WU5Dg1mPkl8",
+      "34pPycq8ia8"
+    ],
+    "links": [
+      {
+        "label": "FOSDEM 2024",
+        "url": "https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/"
+      },
+      {
+        "label": "FOSDEM 2023",
+        "url": "https://fosdem.org/2023/schedule/event/reversepolishlisp/"
+      }
+    ],
+    "topics": [
+      "research",
+      "conferences",
+      "calculators",
+      "opensource"
+    ],
+    "content": "<h2>Conference talks</h2>\n<ul>\n<li>FOSDEM 2023 and 2024 talks on DB48X / modern RPL</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "FOSDEM 2023 and 2024 talks on DB48X / modern RPL",
+        "section": "Conference talks"
+      }
+    ]
+  },
+  {
     "id": "grenouille-bouillie",
     "title": "Grenouille Bouillie",
     "theme": "Communication Skills",
@@ -986,10 +1034,10 @@
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL).</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon; ran it on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries</li>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Did the compiler bring-up on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL).</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler, pre-silicon testing on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">ski</a>, overriding HP&#39;s plans to ship a PA-RISC to Itanium cross-compiler running in the <a href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\">Aries PA-RISC to Itanium dynamic translator</a></li>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Did the compiler bring-up on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
-        "text": "Wrote the first native Itanium C++ compiler before silicon; ran it on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries",
+        "text": "Wrote the first native Itanium C++ compiler, pre-silicon testing on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">ski</a>, overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the <a class=\"pv-deep\" href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Aries PA-RISC to Itanium dynamic translator</a>",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -1285,7 +1333,8 @@
     ],
     "topics": [
       "writing",
-      "games"
+      "games",
+      "books"
     ],
     "content": "<h2>Science-fiction novel (French)</h2>\n<ul>\n<li>Started as a student around the same time as Alpha Waves</li>\n<li>Finished after 32 years and published</li>\n<li>Humorous SF autobiography by Antoine Ravelin</li>\n<li>A video game saves humanity with the help of dinosaurs</li>\n<li>English translation tentatively titled &quot;Nin, Binary&quot; (very low priority)</li>\n</ul>\n",
     "bullets": [
@@ -1334,18 +1383,14 @@
         "url": "https://c3d.github.io"
       }
     ],
-    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly innovative and differentiating software to make as much of a difference as possible.</p>\n<ul>\n<li>French software developer — games, languages, operating systems</li>\n<li>Amateur physics researcher</li>\n<li>Tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
+    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly innovative and differentiating software that makes a real difference.</p>\n<ul>\n<li>French software developer — operating systems, languages, games</li>\n<li>Amateur physics researcher and tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
     "bullets": [
       {
-        "text": "French software developer — games, languages, operating systems",
+        "text": "French software developer — operating systems, languages, games",
         "section": "Software as a Passion"
       },
       {
-        "text": "Amateur physics researcher",
-        "section": "Software as a Passion"
-      },
-      {
-        "text": "Tinkerer in strange forms of art",
+        "text": "Amateur physics researcher and tinkerer in strange forms of art",
         "section": "Software as a Passion"
       },
       {
@@ -1758,7 +1803,7 @@
   {
     "id": "physics-books",
     "title": "A Theory of Incomplete Measurements",
-    "theme": "Physics",
+    "theme": "Research",
     "years": null,
     "weight": 9,
     "print": 1,
@@ -1786,7 +1831,9 @@
     ],
     "topics": [
       "physics",
-      "writing"
+      "writing",
+      "research",
+      "books"
     ],
     "content": "<h2>Amateur physics research — unifying GR and QM</h2>\n<ul>\n<li>A Theory of Incomplete Measurements — unifying GR and quantum mechanics</li>\n<li>New relativity principle: do physics with any instrument</li>\n<li>Discrete measurements instead of continuum space-time</li>\n</ul>\n",
     "bullets": [
@@ -1912,7 +1959,7 @@
   {
     "id": "reunifions",
     "title": "Réunifions la physique",
-    "theme": "Physics",
+    "theme": "Research",
     "years": null,
     "weight": 8,
     "print": 2,
@@ -1931,7 +1978,9 @@
     ],
     "topics": [
       "physics",
-      "writing"
+      "writing",
+      "research",
+      "books"
     ],
     "content": "<h2>Shorter French introduction to TIM ideas</h2>\n<ul>\n<li>Gentle French introduction to incomplete-measurement physics</li>\n<li>Companion to A Theory of Incomplete Measurements</li>\n</ul>\n",
     "bullets": [
@@ -1990,7 +2039,7 @@
   {
     "id": "special-relativity",
     "title": "Relativity as Perspective",
-    "theme": "Physics",
+    "theme": "Research",
     "years": null,
     "weight": 7,
     "related": [
@@ -2008,7 +2057,8 @@
     ],
     "topics": [
       "physics",
-      "writing"
+      "writing",
+      "research"
     ],
     "content": "<h2>Special relativity as space-time perspective</h2>\n<ul>\n<li>Explains Lorentz transforms as perspective / Wick rotation in space-time</li>\n<li>Written to make relativity intuitive beyond 1905 textbook formulas</li>\n</ul>\n",
     "bullets": [
@@ -2259,15 +2309,47 @@
   {
     "id": "topics-registry",
     "role": "meta",
-    "content": "<h1>Skills &amp; technologies topics</h1>\n<p>Canonical topic ids used in item frontmatter (<code>topics:</code>) and deep links\n<code>https://c3d.github.io/cv/?topic=&lt;id&gt;</code>. Descriptions are short; membership\ncomes only from each item’s real CV / homepage text.</p>\n<table>\n<thead>\n<tr>\n<th>id</th>\n<th>Name</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody><tr>\n<td>cpp</td>\n<td>C++</td>\n<td>C and C++ languages, ABIs, and toolchains</td>\n</tr>\n<tr>\n<td>compilers</td>\n<td>Compilers</td>\n<td>Language design, compilers, ABIs, and extensible languages</td>\n</tr>\n<tr>\n<td>virtualization</td>\n<td>Virtualization</td>\n<td>Hypervisors, guests, and virtual machine platforms</td>\n</tr>\n<tr>\n<td>containers</td>\n<td>Containers</td>\n<td>Container runtimes and confidential containers</td>\n</tr>\n<tr>\n<td>realtime</td>\n<td>Real-time</td>\n<td>Hard and soft real-time systems and closed-loop control</td>\n</tr>\n<tr>\n<td>embedded</td>\n<td>Embedded</td>\n<td>Embedded boards, appliances, and constrained devices</td>\n</tr>\n<tr>\n<td>arm</td>\n<td>ARM</td>\n<td>ARM CPUs, ISPs, and calculator platforms</td>\n</tr>\n<tr>\n<td>calculators</td>\n<td>Calculators</td>\n<td>HP calculator software, RPL, and related hardware</td>\n</tr>\n<tr>\n<td>lisp</td>\n<td>Lisp / RPL</td>\n<td>Lisp-family and Reverse Polish Lisp programming</td>\n</tr>\n<tr>\n<td>linux</td>\n<td>Linux</td>\n<td>Linux systems, drivers, and open platforms</td>\n</tr>\n<tr>\n<td>macos</td>\n<td>macOS</td>\n<td>macOS / Aqua / NeXT desktop software</td>\n</tr>\n<tr>\n<td>graphics3d</td>\n<td>3D / GLSL</td>\n<td>Interactive 3D, shaders, ray-marching, and OpenGL-class graphics</td>\n</tr>\n<tr>\n<td>games</td>\n<td>Games</td>\n<td>Games, demos, and playful interactive software</td>\n</tr>\n<tr>\n<td>physics</td>\n<td>Physics</td>\n<td>Physics research, essays, and popularization</td>\n</tr>\n<tr>\n<td>writing</td>\n<td>Writing</td>\n<td>Books, novels, blogs, and technical writing</td>\n</tr>\n<tr>\n<td>opensource</td>\n<td>Open source</td>\n<td>Free and open-source projects and communities</td>\n</tr>\n<tr>\n<td>ui</td>\n<td>UI / UX</td>\n<td>User interfaces, editors, and interactive UX</td>\n</tr>\n<tr>\n<td>networking</td>\n<td>Networking</td>\n<td>Remote display, streaming, and network protocols</td>\n</tr>\n<tr>\n<td>imaging</td>\n<td>Imaging</td>\n<td>Cameras, imaging pipelines, and visual capture</td>\n</tr>\n<tr>\n<td>build-systems</td>\n<td>Build systems</td>\n<td>Make-based and lightweight build tooling</td>\n</tr>\n<tr>\n<td>emacs</td>\n<td>Emacs</td>\n<td>Emacs ports and editing environments</td>\n</tr>\n<tr>\n<td>patents</td>\n<td>Patents</td>\n<td>Patented inventions and prior art disclosure</td>\n</tr>\n<tr>\n<td>education</td>\n<td>Education</td>\n<td>Teaching demos, tutorials, and student-facing tools</td>\n</tr>\n<tr>\n<td>multimedia</td>\n<td>Multimedia</td>\n<td>Home entertainment, MythTV, and media appliances</td>\n</tr>\n<tr>\n<td>soc</td>\n<td>SoC</td>\n<td>System-on-Chip platforms and microcontroller SoCs</td>\n</tr>\n<tr>\n<td>firmware</td>\n<td>Firmware</td>\n<td>Firmware and low-level platform software</td>\n</tr>\n<tr>\n<td>system</td>\n<td>System</td>\n<td>System software spanning hosts, guests, and test platforms</td>\n</tr>\n<tr>\n<td>validation</td>\n<td>Validation</td>\n<td>System validation, automated test suites, and bring-up checks</td>\n</tr>\n<tr>\n<td>performance</td>\n<td>Performance</td>\n<td>Performance measurement, tracing, and efficiency tooling</td>\n</tr>\n<tr>\n<td>pre-silicon</td>\n<td>Pre-silicon</td>\n<td>Software bring-up on simulators before silicon / hardware</td>\n</tr>\n</tbody></table>\n",
+    "content": "<h1>Skills &amp; technologies topics</h1>\n<p>Canonical topic ids used in item frontmatter (<code>topics:</code>) and deep links\n<code>https://c3d.github.io/cv/?topic=&lt;id&gt;</code>. Descriptions are short; membership\ncomes only from each item’s real CV / homepage text.</p>\n<table>\n<thead>\n<tr>\n<th>id</th>\n<th>Name</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody><tr>\n<td>cpp</td>\n<td>C++</td>\n<td>C and C++ languages, ABIs, and toolchains</td>\n</tr>\n<tr>\n<td>compilers</td>\n<td>Compilers</td>\n<td>Language design, compilers, ABIs, and extensible languages</td>\n</tr>\n<tr>\n<td>virtualization</td>\n<td>Virtualization</td>\n<td>Hypervisors, guests, and virtual machine platforms</td>\n</tr>\n<tr>\n<td>containers</td>\n<td>Containers</td>\n<td>Container runtimes and confidential containers</td>\n</tr>\n<tr>\n<td>realtime</td>\n<td>Real-time</td>\n<td>Hard and soft real-time systems and closed-loop control</td>\n</tr>\n<tr>\n<td>embedded</td>\n<td>Embedded</td>\n<td>Embedded boards, appliances, and constrained devices</td>\n</tr>\n<tr>\n<td>arm</td>\n<td>ARM</td>\n<td>ARM CPUs, ISPs, and calculator platforms</td>\n</tr>\n<tr>\n<td>calculators</td>\n<td>Calculators</td>\n<td>HP calculator software, RPL, and related hardware</td>\n</tr>\n<tr>\n<td>lisp</td>\n<td>Lisp / RPL</td>\n<td>Lisp-family and Reverse Polish Lisp programming</td>\n</tr>\n<tr>\n<td>linux</td>\n<td>Linux</td>\n<td>Linux systems, drivers, and open platforms</td>\n</tr>\n<tr>\n<td>macos</td>\n<td>macOS</td>\n<td>macOS / Aqua / NeXT desktop software</td>\n</tr>\n<tr>\n<td>graphics3d</td>\n<td>3D / GLSL</td>\n<td>Interactive 3D, shaders, ray-marching, and OpenGL-class graphics</td>\n</tr>\n<tr>\n<td>ai</td>\n<td>AI</td>\n<td>Artificial intelligence, language models, and intelligent systems</td>\n</tr>\n<tr>\n<td>games</td>\n<td>Games</td>\n<td>Games, demos, and playful interactive software</td>\n</tr>\n<tr>\n<td>physics</td>\n<td>Physics</td>\n<td>Physics research, essays, and popularization</td>\n</tr>\n<tr>\n<td>research</td>\n<td>Research</td>\n<td>Computer science and physics research</td>\n</tr>\n<tr>\n<td>books</td>\n<td>Books</td>\n<td>Published books and longer-form writing</td>\n</tr>\n<tr>\n<td>conferences</td>\n<td>Conferences</td>\n<td>Conference talks and peer-reviewed presentations</td>\n</tr>\n<tr>\n<td>writing</td>\n<td>Writing</td>\n<td>Books, novels, blogs, and technical writing</td>\n</tr>\n<tr>\n<td>opensource</td>\n<td>Open source</td>\n<td>Free and open-source projects and communities</td>\n</tr>\n<tr>\n<td>ui</td>\n<td>UI / UX</td>\n<td>User interfaces, editors, and interactive UX</td>\n</tr>\n<tr>\n<td>networking</td>\n<td>Networking</td>\n<td>Remote display, streaming, and network protocols</td>\n</tr>\n<tr>\n<td>imaging</td>\n<td>Imaging</td>\n<td>Cameras, imaging pipelines, and visual capture</td>\n</tr>\n<tr>\n<td>build-systems</td>\n<td>Build systems</td>\n<td>Make-based and lightweight build tooling</td>\n</tr>\n<tr>\n<td>emacs</td>\n<td>Emacs</td>\n<td>Emacs ports and editing environments</td>\n</tr>\n<tr>\n<td>patents</td>\n<td>Patents</td>\n<td>Patented inventions and prior art disclosure</td>\n</tr>\n<tr>\n<td>education</td>\n<td>Education</td>\n<td>Teaching demos, tutorials, and student-facing tools</td>\n</tr>\n<tr>\n<td>multimedia</td>\n<td>Multimedia</td>\n<td>Home entertainment, MythTV, and media appliances</td>\n</tr>\n<tr>\n<td>soc</td>\n<td>SoC</td>\n<td>System-on-Chip platforms and microcontroller SoCs</td>\n</tr>\n<tr>\n<td>firmware</td>\n<td>Firmware</td>\n<td>Firmware and low-level platform software</td>\n</tr>\n<tr>\n<td>system</td>\n<td>System</td>\n<td>System software spanning hosts, guests, and test platforms</td>\n</tr>\n<tr>\n<td>validation</td>\n<td>Validation</td>\n<td>System validation, automated test suites, and bring-up checks</td>\n</tr>\n<tr>\n<td>performance</td>\n<td>Performance</td>\n<td>Performance measurement, tracing, and efficiency tooling</td>\n</tr>\n<tr>\n<td>pre-silicon</td>\n<td>Pre-silicon</td>\n<td>Software bring-up on simulators before silicon / hardware</td>\n</tr>\n</tbody></table>\n",
     "bullets": [
       {
         "text": "Canonical topic ids used in item frontmatter (`topics:`) and deep links `https://c3d.github.io/cv/?topic=<id>`.",
         "section": null
       },
       {
-        "text": "| id | Name | Description | | --- | --- | --- | | cpp | C++ | C and C++ languages, ABIs, and toolchains | | compilers | Compilers | Language design, compilers, ABIs, and extensible languages | | virtualization | Virtualization | Hypervisors, guests, and virtual machine platforms | | containers | Containers | Container runtimes and confidential containers | | realtime | Real-time | Hard and soft real-time systems and closed-loop control | | embedded | Embedded | Embedded boards, appliances, and constrained devices | | arm | ARM | ARM CPUs, ISPs, and calculator platforms | | calculators | Calculators | HP calculator software, RPL, and related hardware | | lisp | Lisp / RPL | Lisp-family and Reverse Polish Lisp programming | | linux | Linux | Linux systems, drivers, and open platforms | | macos | macOS | macOS / Aqua / NeXT desktop software | | graphics3d | 3D / GLSL | Interactive 3D, shaders, ray-marching, and OpenGL-class graphics | | games | Games | Games, demos, and playful interactive software | | physics | Physics | Physics research, essays, and popularization | | writing | Writing | Books, novels, blogs, and technical writing | | opensource | Open source | Free and open-source projects and communities | | ui | UI / UX | User interfaces, editors, and interactive UX | | networking | Networking | Remote display, streaming, and network protocols | | imaging | Imaging | Cameras, imaging pipelines, and visual capture | | build-systems | Build systems | Make-based and lightweight build tooling | | emacs | Emacs | Emacs ports and editing environments | | patents | Patents | Patented inventions and prior art disclosure | | education | Education | Teaching demos, tutorials, and student-facing tools | | multimedia | Multimedia | Home entertainment, MythTV, and media appliances | | soc | SoC | System-on-Chip platforms and microcontroller SoCs | | firmware | Firmware | Firmware and low-level platform software | | system | System | System software spanning hosts, guests, and test platforms | | validation | Validation | System validation, automated test suites, and bring-up checks | | performance | Performance | Performance measurement, tracing, and efficiency tooling | | pre-silicon | Pre-silicon | Software bring-up on simulators before silicon / hardware |",
+        "text": "| id | Name | Description | | --- | --- | --- | | cpp | C++ | C and C++ languages, ABIs, and toolchains | | compilers | Compilers | Language design, compilers, ABIs, and extensible languages | | virtualization | Virtualization | Hypervisors, guests, and virtual machine platforms | | containers | Containers | Container runtimes and confidential containers | | realtime | Real-time | Hard and soft real-time systems and closed-loop control | | embedded | Embedded | Embedded boards, appliances, and constrained devices | | arm | ARM | ARM CPUs, ISPs, and calculator platforms | | calculators | Calculators | HP calculator software, RPL, and related hardware | | lisp | Lisp / RPL | Lisp-family and Reverse Polish Lisp programming | | linux | Linux | Linux systems, drivers, and open platforms | | macos | macOS | macOS / Aqua / NeXT desktop software | | graphics3d | 3D / GLSL | Interactive 3D, shaders, ray-marching, and OpenGL-class graphics | | ai | AI | Artificial intelligence, language models, and intelligent systems | | games | Games | Games, demos, and playful interactive software | | physics | Physics | Physics research, essays, and popularization | | research | Research | Computer science and physics research | | books | Books | Published books and longer-form writing | | conferences | Conferences | Conference talks and peer-reviewed presentations | | writing | Writing | Books, novels, blogs, and technical writing | | opensource | Open source | Free and open-source projects and communities | | ui | UI / UX | User interfaces, editors, and interactive UX | | networking | Networking | Remote display, streaming, and network protocols | | imaging | Imaging | Cameras, imaging pipelines, and visual capture | | build-systems | Build systems | Make-based and lightweight build tooling | | emacs | Emacs | Emacs ports and editing environments | | patents | Patents | Patented inventions and prior art disclosure | | education | Education | Teaching demos, tutorials, and student-facing tools | | multimedia | Multimedia | Home entertainment, MythTV, and media appliances | | soc | SoC | System-on-Chip platforms and microcontroller SoCs | | firmware | Firmware | Firmware and low-level platform software | | system | System | System software spanning hosts, guests, and test platforms | | validation | Validation | System validation, automated test suites, and bring-up checks | | performance | Performance | Performance measurement, tracing, and efficiency tooling | | pre-silicon | Pre-silicon | Software bring-up on simulators before silicon / hardware |",
         "section": null
+      }
+    ]
+  },
+  {
+    "id": "wiess-exception-handling",
+    "title": "WIESS — C++ exception handling on Itanium",
+    "theme": "Research",
+    "years": "2000",
+    "weight": 8,
+    "print": 1,
+    "related": [
+      "hpcpp",
+      "itanium-cxx-abi"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "WIESS 2000 paper (PDF)",
+        "url": "https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf"
+      }
+    ],
+    "topics": [
+      "research",
+      "conferences",
+      "cpp",
+      "compilers"
+    ],
+    "content": "<h2>Published computer science research</h2>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "WIESS 2000 / USENIX paper on C++ exception handling for Itanium",
+        "section": "Published computer science research"
       }
     ]
   },
