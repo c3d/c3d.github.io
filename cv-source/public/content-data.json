@@ -198,7 +198,6 @@
     "theme": "Systems & Virtualization",
     "years": "2021-Present",
     "weight": 8,
-    "print": 3,
     "related": [
       "kata-containers",
       "hpvm",
@@ -293,7 +292,7 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>Confidential Containers and attestation</h2>\n<p>Attestation (main track FOSDEM talk); restoring feature/performance parity (guest image pull, host/tenant API)</p>\n<ul>\n<li>Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview</li>\n<li>Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023</li>\n<li>Co-inventor of <a href=\"https://patents.google.com/patent/US12321473B2/en\">US12321473B2</a> (on-demand encrypted container image download)</li>\n<li>Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)</li>\n</ul>\n",
+    "content": "<h2>Confidential Containers and attestation</h2>\n<p>Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API</p>\n<ul>\n<li>Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview</li>\n<li>Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023</li>\n<li>Co-inventor of <a href=\"https://patents.google.com/patent/US12321473B2/en\">US12321473B2</a> (on-demand encrypted container image download)</li>\n<li>Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview",
@@ -1768,7 +1767,7 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions, HyperShift support</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
+    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020",

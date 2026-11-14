@@ -38,7 +38,7 @@ topics:
 ---
 ## Kata Containers / OpenShift Sandboxed Containers
 
-From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions, HyperShift support
+Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift
 
 - Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020
 - Later talks on Kata footprint and adoption (DevConf.CZ 2021)

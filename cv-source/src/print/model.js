@@ -44,14 +44,15 @@ const PRINT_COPY = {
     ]
   },
   'kata-containers': {
-    title: 'Kata Containers / OpenShift Sandboxed Containers',
+    title: 'Kata Containers / OpenShift Sandboxed Containers / Confidential Containers',
     bullets: [
-      'From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions, HyperShift support'
+      'Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift',
+      'Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API'
     ]
   },
   'confidential-containers': {
     bullets: [
-      'Attestation (main track FOSDEM talk); restoring feature/performance parity (guest image pull, host/tenant API)'
+      'Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API'
     ]
   },
   'dxo-one': {

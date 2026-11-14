@@ -4,7 +4,6 @@ title: Confidential Containers (CoCo)
 theme: Systems & Virtualization
 years: 2021-Present
 weight: 8
-print: 3
 related:
   - kata-containers
   - hpvm
@@ -63,7 +62,7 @@ topics:
 ---
 ## Confidential Containers and attestation
 
-Attestation (main track FOSDEM talk); restoring feature/performance parity (guest image pull, host/tenant API)
+Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API
 
 - Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview
 - Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023
