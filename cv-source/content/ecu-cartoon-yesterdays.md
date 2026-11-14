@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-yesterdays
 title: Ever changing product structure
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

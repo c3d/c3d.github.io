@@ -26,7 +26,12 @@ function extractBullets(markdown) {
     }
     const bullet = line.match(/^[-*+]\s+(.+)/);
     if (bullet) {
-      const text = bullet[1].replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      // Keep [label](url) as HTML anchors so print + HUD bullet fallbacks stay clickable.
+      let text = bullet[1].replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      text = text.replace(
+        /\[([^\]]+)\]\(([^)]+)\)/g,
+        '<a class="pv-deep" href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+      );
       if (text) bullets.push({ text, section });
     }
   }

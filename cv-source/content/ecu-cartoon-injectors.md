@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-injectors
 title: Customers know best
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

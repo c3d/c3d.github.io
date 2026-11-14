@@ -1,0 +1,59 @@
+{
+  "classic": {
+    "themes": [
+      "Languages & Compilers",
+      "Systems & Virtualization",
+      "Tools & Apps",
+      "Games & 3D",
+      "Physics",
+      "Communication Skills"
+    ],
+    "orderOk": true,
+    "hasComm": true,
+    "hasArt": false,
+    "hasNative": false,
+    "hasAries": false,
+    "hasPresilicon": true,
+    "overflow": false,
+    "scrollH": 1270,
+    "clientH": 1270
+  },
+  "nebula": {
+    "themes": [
+      "Languages & Compilers",
+      "Systems & Virtualization",
+      "Tools & Apps",
+      "Games & 3D",
+      "Physics",
+      "Communication Skills"
+    ],
+    "orderOk": true,
+    "hasComm": true,
+    "hasArt": false,
+    "hasNative": false,
+    "hasAries": true,
+    "hasPresilicon": true,
+    "overflow": false,
+    "scrollH": 1270,
+    "clientH": 1270
+  },
+  "orbit": {
+    "themes": [
+      "Languages & Compilers",
+      "Systems & Virtualization",
+      "Tools & Apps",
+      "Games & 3D",
+      "Physics",
+      "Communication Skills"
+    ],
+    "orderOk": true,
+    "hasComm": true,
+    "hasArt": false,
+    "hasNative": false,
+    "hasAries": true,
+    "hasPresilicon": true,
+    "overflow": false,
+    "scrollH": 1270,
+    "clientH": 1270
+  }
+}

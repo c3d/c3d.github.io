@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-venturi
 title: Yes, it's a bit slow to start
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

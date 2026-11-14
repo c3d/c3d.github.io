@@ -1,7 +1,7 @@
 ---
 id: 3divart
 title: 3DIVART
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 9
 print: 1
