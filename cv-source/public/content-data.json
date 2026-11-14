@@ -2748,7 +2748,7 @@
   },
   {
     "id": "wiess-exception-handling",
-    "title": "WIESS — C++ exception handling on Itanium",
+    "title": "Computer science research",
     "theme": "Research",
     "years": "2000",
     "weight": 8,
@@ -2765,6 +2765,14 @@
       {
         "label": "Itanium C++ ABI",
         "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      },
+      {
+        "label": "CCS 2024: Crossing Shifted Moats",
+        "url": "https://doi.org/10.1145/3658644.3670352"
+      },
+      {
+        "label": "FOSDEM 2024",
+        "url": "https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/"
       }
     ],
     "topics": [
@@ -2773,7 +2781,7 @@
       "cpp",
       "compilers"
     ],
-    "content": "<h2>Published computer science research</h2>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></li>\n</ul>\n",
+    "content": "<h2>Published computer science research</h2>\n<p>Published research on <a href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\">compilers</a>, <a href=\"https://doi.org/10.1145/3658644.3670352\">confidential computing</a>, <a href=\"https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/\">embedded systems</a>.</p>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a class=\"pv-deep\" href=\"https://itanium-cxx-abi.github.io/cxx-abi/\" target=\"_blank\" rel=\"noopener noreferrer\">Itanium C++ ABI</a>",

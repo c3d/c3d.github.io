@@ -8,14 +8,9 @@
  */
 
 const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
-const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
-/** Both inventor name forms; verified not to match other Dinechin inventors. */
-const PATENT_LIST_URL =
-  'https://patents.google.com/?inventor=Christophe+de+Dinechin&inventor=Christophe+Marie+Francois+Dupont+de+Dinechin';
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
-const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
@@ -151,24 +146,7 @@ function researchPrintProjects() {
       title: 'Computer science research',
       years: '',
       bullets: [
-        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(CCS_2024_URL, 'CCS 2024')} confidential computing; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48x`
-      ]
-    },
-    {
-      id: 'patents',
-      title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
-      titleHref: PATENT_LIST_URL,
-      years: '',
-      bullets: [
-        'Covering virtualization, enterprise computing, confidential computing'
-      ]
-    },
-    {
-      id: 'physics-books',
-      title: 'Physics research',
-      years: '',
-      bullets: [
-        `A Theory of Incomplete Measurements — unifying GR and QM (${deepLink(TIM_URL, 'TIM')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')})`
+        `Published research on ${deepLink(WIESS_URL, 'compilers')}, ${deepLink(CCS_2024_URL, 'confidential computing')}, ${deepLink(FOSDEM_2024_URL, 'embedded systems')}`
       ]
     }
   ];
