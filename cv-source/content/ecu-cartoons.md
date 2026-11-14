@@ -1,6 +1,6 @@
 ---
 id: ecu-cartoons
-title: 'Cartoon: ECUTEST Cartoons'
+title: Cartoons for ECUTEST Release
 theme: Communication Skills
 years: 1994-1998
 weight: 6
@@ -17,12 +17,17 @@ related:
   - ecu-cartoon-yesterdays
 videos: []
 links: []
-images:
-  - /cv/media/ecu-cartoons.jpg
 topics:
   - writing
 ---
-## Release cartoons for HP ECUTEST
+## Cartoons for ECUTEST Release
 
-- Cartoon series for the HP ECUTEST manufacturing release
-- Each panel is its own satellite star around this hub
+- [Cartoon: Marketing needs not care](#ecu-cartoon-dontcare)
+- [Cartoon: Software that blows](#ecu-cartoon-fuses)
+- [Cartoon: Customers know best](#ecu-cartoon-injectors)
+- [Cartoon: Tight fit](#ecu-cartoon-itfits)
+- [Cartoon: Union worker](#ecu-cartoon-notools)
+- [Cartoon: Wild optimism](#ecu-cartoon-optimist)
+- [Cartoon: Processes](#ecu-cartoon-processes)
+- [Cartoon: Yes, it's a bit slow to start](#ecu-cartoon-venturi)
+- [Cartoon: Ever changing product structure](#ecu-cartoon-yesterdays)
