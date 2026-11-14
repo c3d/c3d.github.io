@@ -1223,7 +1223,7 @@ function setupTypeToSearch() {
   window.commitSearchBestMatch = commitSearchBestMatch;
   input?.addEventListener('keydown', (e) => {
     // Handled in bubble phase below too; stop overview/other globals when focused
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' || e.key === 'Delete') {
       e.preventDefault();
       e.stopPropagation();
       closeSearchHud();
@@ -2336,12 +2336,25 @@ function setupInteraction() {
     }
 
     if (!inEditable && !inSearchInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      if (e.key === 'Backspace' && searchActive) {
+      // Search open: Backspace edits; Delete/Esc clear (Esc handled above).
+      // Search closed (empty buffer): Backspace / Delete → Overview (O is a search letter).
+      if (e.key === 'Backspace') {
         e.preventDefault();
         noteUserActivity();
-        const next = searchQuery.slice(0, -1);
-        if (!next) closeSearchHud();
-        else setSearchQuery(next);
+        if (searchActive) {
+          const next = searchQuery.slice(0, -1);
+          if (!next) closeSearchHud();
+          else setSearchQuery(next);
+        } else {
+          enterOverviewMode();
+        }
+        return;
+      }
+      if (e.key === 'Delete') {
+        e.preventDefault();
+        noteUserActivity();
+        if (searchActive) closeSearchHud();
+        else enterOverviewMode();
         return;
       }
       if (e.key === 'Enter' && searchActive) {
@@ -2350,17 +2363,11 @@ function setupInteraction() {
         commitSearchBestMatch();
         return;
       }
+      // No single-letter command shortcuts — printable keys always type-to-search.
       if (e.key.length === 1 && !/[\u0000-\u001f\u007f]/.test(e.key)) {
-        const ch = e.key;
-        // Bare O still opens overview when search is closed; once searching, O is a query char.
-        if (!searchActive && (ch === 'o' || ch === 'O')) {
-          noteUserActivity();
-          enterOverviewMode();
-          return;
-        }
         e.preventDefault();
         noteUserActivity();
-        setSearchQuery(searchQuery + ch);
+        setSearchQuery(searchQuery + e.key);
         return;
       }
     }
