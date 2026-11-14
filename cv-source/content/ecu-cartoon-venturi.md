@@ -1,6 +1,6 @@
 ---
 id: ecu-cartoon-venturi
-title: Yes, it's a bit slow to start
+title: 'Cartoon: Yes, it''s a bit slow to start'
 theme: Communication Skills
 years: 1994-1998
 weight: 3

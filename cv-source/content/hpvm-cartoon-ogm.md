@@ -1,6 +1,6 @@
 ---
 id: hpvm-cartoon-ogm
-title: What does OGM stand for?
+title: 'Cartoon: What does OGM stand for?'
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 3

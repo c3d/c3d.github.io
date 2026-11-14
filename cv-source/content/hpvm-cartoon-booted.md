@@ -1,6 +1,6 @@
 ---
 id: hpvm-cartoon-booted
-title: First boot, first burp
+title: 'Cartoon: First boot, first burp'
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 3

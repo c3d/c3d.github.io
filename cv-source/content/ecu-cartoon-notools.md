@@ -1,6 +1,6 @@
 ---
 id: ecu-cartoon-notools
-title: Union worker
+title: 'Cartoon: Union worker'
 theme: Communication Skills
 years: 1994-1998
 weight: 3

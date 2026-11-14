@@ -507,7 +507,7 @@
   },
   {
     "id": "ecu-cartoon-dontcare",
-    "title": "Marketing needs not care",
+    "title": "Cartoon: Marketing needs not care",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -531,7 +531,7 @@
   },
   {
     "id": "ecu-cartoon-fuses",
-    "title": "Software that blows",
+    "title": "Cartoon: Software that blows",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -555,7 +555,7 @@
   },
   {
     "id": "ecu-cartoon-injectors",
-    "title": "Customers know best",
+    "title": "Cartoon: Customers know best",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -579,7 +579,7 @@
   },
   {
     "id": "ecu-cartoon-itfits",
-    "title": "Tight fit",
+    "title": "Cartoon: Tight fit",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -603,7 +603,7 @@
   },
   {
     "id": "ecu-cartoon-notools",
-    "title": "Union worker",
+    "title": "Cartoon: Union worker",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -627,7 +627,7 @@
   },
   {
     "id": "ecu-cartoon-optimist",
-    "title": "Wild optimism",
+    "title": "Cartoon: Wild optimism",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -651,7 +651,7 @@
   },
   {
     "id": "ecu-cartoon-processes",
-    "title": "Processes",
+    "title": "Cartoon: Processes",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -675,7 +675,7 @@
   },
   {
     "id": "ecu-cartoon-venturi",
-    "title": "Yes, it's a bit slow to start",
+    "title": "Cartoon: Yes, it's a bit slow to start",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -699,7 +699,7 @@
   },
   {
     "id": "ecu-cartoon-yesterdays",
-    "title": "Ever changing product structure",
+    "title": "Cartoon: Ever changing product structure",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 3,
@@ -723,7 +723,7 @@
   },
   {
     "id": "ecu-cartoons",
-    "title": "ECUTEST Cartoons",
+    "title": "Cartoon: ECUTEST Cartoons",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 6,
@@ -982,7 +982,7 @@
   },
   {
     "id": "grenouille-bouillie",
-    "title": "Grenouille Bouillie",
+    "title": "Blog: Grenouille Bouillie",
     "theme": "Communication Skills",
     "years": "2003-Present",
     "weight": 6,
@@ -1213,7 +1213,7 @@
   },
   {
     "id": "hpvm-cartoon-booted",
-    "title": "First boot, first burp",
+    "title": "Cartoon: First boot, first burp",
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 3,
@@ -1236,7 +1236,7 @@
   },
   {
     "id": "hpvm-cartoon-ogm",
-    "title": "What does OGM stand for?",
+    "title": "Cartoon: What does OGM stand for?",
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 3,
@@ -1259,7 +1259,7 @@
   },
   {
     "id": "hpvm-cartoon-stress",
-    "title": "Stress testing",
+    "title": "Cartoon: Stress testing",
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 3,
@@ -1282,7 +1282,7 @@
   },
   {
     "id": "hpvm-cartoon-virtualdenise",
-    "title": "High availability management",
+    "title": "Cartoon: High availability management",
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 3,
@@ -1983,7 +1983,7 @@
   },
   {
     "id": "red-skin-cat",
-    "title": "Red Skin Cat",
+    "title": "Blog: Red Skin Cat",
     "theme": "Communication Skills",
     "years": "2017-Present",
     "weight": 6,
@@ -2423,10 +2423,14 @@
       "writing",
       "conferences"
     ],
-    "content": "<h2>Videos</h2>\n<ul>\n<li>Sample: DB48X playlist; Theory of Incomplete Measurements channel</li>\n</ul>\n",
+    "content": "<h2>Videos</h2>\n<ul>\n<li>I have been using videos to share my work for more than 15 years</li>\n<li>DB48X calculator demos and tutorials, Theory of Incomplete Measurements physics explainers, Tao3D presentations, and conference talks (including FOSDEM)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Sample: DB48X playlist; Theory of Incomplete Measurements channel",
+        "text": "I have been using videos to share my work for more than 15 years",
+        "section": "Videos"
+      },
+      {
+        "text": "DB48X calculator demos and tutorials, Theory of Incomplete Measurements physics explainers, Tao3D presentations, and conference talks (including FOSDEM)",
         "section": "Videos"
       }
     ]

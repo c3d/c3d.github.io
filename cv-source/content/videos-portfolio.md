@@ -19,4 +19,5 @@ topics:
 ---
 ## Videos
 
-- Sample: DB48X playlist; Theory of Incomplete Measurements channel
+- I have been using videos to share my work for more than 15 years
+- DB48X calculator demos and tutorials, Theory of Incomplete Measurements physics explainers, Tao3D presentations, and conference talks (including FOSDEM)

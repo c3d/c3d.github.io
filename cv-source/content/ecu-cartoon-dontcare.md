@@ -1,6 +1,6 @@
 ---
 id: ecu-cartoon-dontcare
-title: Marketing needs not care
+title: 'Cartoon: Marketing needs not care'
 theme: Communication Skills
 years: 1994-1998
 weight: 3

@@ -1,6 +1,6 @@
 ---
 id: hpvm-cartoon-stress
-title: Stress testing
+title: 'Cartoon: Stress testing'
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 3

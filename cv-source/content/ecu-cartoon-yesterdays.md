@@ -1,6 +1,6 @@
 ---
 id: ecu-cartoon-yesterdays
-title: Ever changing product structure
+title: 'Cartoon: Ever changing product structure'
 theme: Communication Skills
 years: 1994-1998
 weight: 3
