@@ -11,7 +11,7 @@ videos: []
 links:
   - label: HPVM on Wikipedia
     url: 'https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines'
-  - label: Ski
+  - label: Ski simulator
     url: 'https://github.com/linux-ia64/ski/tree/hp-sim-for-linux'
 topics:
   - pre-silicon

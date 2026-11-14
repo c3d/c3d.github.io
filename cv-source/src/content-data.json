@@ -972,7 +972,7 @@
         "url": "http://www.hp.com/go/aCC"
       },
       {
-        "label": "Ski",
+        "label": "Ski simulator",
         "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
@@ -1179,7 +1179,7 @@
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
       },
       {
-        "label": "Ski",
+        "label": "Ski simulator",
         "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
@@ -1220,7 +1220,7 @@
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
       },
       {
-        "label": "Ski",
+        "label": "Ski simulator",
         "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
@@ -1233,14 +1233,14 @@
       "system",
       "pre-silicon"
     ],
-    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early boot entirely on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Firmware-level VMM / platform software for Integrity servers</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
+    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Early HPVM boot entirely on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> (pre-silicon); later A-step silicon bring-up</li>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Firmware-level VMM / platform software for Integrity servers</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
     "bullets": [
       {
-        "text": "Started the HP Integrity Virtual Machines project in late 2000",
+        "text": "Early HPVM boot entirely on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> (pre-silicon); later A-step silicon bring-up",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Early boot entirely on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry",
+        "text": "Started the HP Integrity Virtual Machines project in late 2000",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
@@ -1428,7 +1428,7 @@
         "url": "http://www.hp.com/go/aCC"
       },
       {
-        "label": "Ski",
+        "label": "Ski simulator",
         "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],

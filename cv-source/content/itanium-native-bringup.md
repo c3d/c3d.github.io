@@ -12,7 +12,7 @@ videos: []
 links:
   - label: aC++
     url: 'http://www.hp.com/go/aCC'
-  - label: Ski
+  - label: Ski simulator
     url: 'https://github.com/linux-ia64/ski/tree/hp-sim-for-linux'
 topics:
   - pre-silicon
