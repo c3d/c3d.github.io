@@ -1,6 +1,6 @@
 ---
 id: ecutest
-title: HP ECUTEST Real Time Test System for car electronics
+title: HP ECUTEST Real-time Test System for car electronics
 theme: Systems & Virtualization
 years: 1994-1998
 weight: 9
@@ -22,10 +22,9 @@ topics:
 
 Lyon.
 
-- Tech lead, team of 12
+- From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.
+- Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)
 - Designed HP ECUTEST for engine control unit testing and system validation
-- RTICL (Real-Time Instrument Control Library): a comprehensive set of portable real-time device drivers for VXI, VME and SCPI devices — no operation was blocking; time domains varied hugely (some drivers took seconds to configure, others worked in the microsecond range)
-- Sub-millisecond closed loop (250µs in some configurations)
 - Hundreds of analog/digital signals in a typical setup
 - Heterogeneous multiprocessing (Windows PC + real-time boards)
 - Hardware-agnostic binary translator for per-cycle equations

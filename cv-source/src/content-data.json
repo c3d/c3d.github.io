@@ -921,7 +921,7 @@
   },
   {
     "id": "ecutest",
-    "title": "HP ECUTEST Real Time Test System for car electronics",
+    "title": "HP ECUTEST Real-time Test System for car electronics",
     "theme": "Systems & Virtualization",
     "years": "1994-1998",
     "weight": 9,
@@ -941,22 +941,18 @@
       "system",
       "validation"
     ],
-    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>Tech lead, team of 12</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>RTICL (Real-Time Instrument Control Library): a comprehensive set of portable real-time device drivers for VXI, VME and SCPI devices — no operation was blocking; time domains varied hugely (some drivers took seconds to configure, others worked in the microsecond range)</li>\n<li>Sub-millisecond closed loop (250µs in some configurations)</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
+    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.</li>\n<li>Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Tech lead, team of 12",
+        "text": "From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.",
+        "section": "Real-time test system for car electronics"
+      },
+      {
+        "text": "Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)",
         "section": "Real-time test system for car electronics"
       },
       {
         "text": "Designed HP ECUTEST for engine control unit testing and system validation",
-        "section": "Real-time test system for car electronics"
-      },
-      {
-        "text": "RTICL (Real-Time Instrument Control Library): a comprehensive set of portable real-time device drivers for VXI, VME and SCPI devices — no operation was blocking; time domains varied hugely (some drivers took seconds to configure, others worked in the microsecond range)",
-        "section": "Real-time test system for car electronics"
-      },
-      {
-        "text": "Sub-millisecond closed loop (250µs in some configurations)",
         "section": "Real-time test system for car electronics"
       },
       {
@@ -2503,7 +2499,6 @@
     "years": "2010-Present",
     "weight": 9,
     "featured": true,
-    "print": 3,
     "related": [
       "xl",
       "elfe",

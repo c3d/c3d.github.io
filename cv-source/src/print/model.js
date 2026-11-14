@@ -32,9 +32,10 @@ function deepLink(href, label) {
 /** Print-only title/bullet copy (constellation entries keep their full detail). */
 const PRINT_COPY = {
   ecutest: {
-    title: 'HP ECUTEST Real Time Test System for car electronics',
+    title: 'HP ECUTEST Real-time Test System for car electronics',
     bullets: [
-      'Tech lead (team of 12); ECU real-time testing; RTICL portable drivers for VXI/VME/SCPI'
+      'From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.',
+      'Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)'
     ]
   },
   spice: {
