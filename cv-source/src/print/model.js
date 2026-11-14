@@ -41,7 +41,19 @@ const PRINT_COPY = {
     ]
   },
   spice: {
-    bullets: ['Bring the SPICE remote-access application to the modern 3D and video desktop']
+    bullets: [
+      'SPICE smart streaming: adaptive H.264 remote desktop (DevConf.CZ / SophiaConf 2019)'
+    ]
+  },
+  'kata-containers': {
+    bullets: [
+      'Brought Kata to Fedora/Red Hat packaging (Fedora 31, Oct 2019 RPMs); became OpenShift Sandboxed Containers'
+    ]
+  },
+  'confidential-containers': {
+    bullets: [
+      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split (US12321473B2, CCS 2024)'
+    ]
   },
   'dxo-one': {
     bullets: ['A tiny, but high-quality camera for photographers. Dual-core ARM + ISP, RTOS + Linux']

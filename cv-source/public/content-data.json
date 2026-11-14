@@ -166,21 +166,89 @@
   },
   {
     "id": "confidential-containers",
-    "title": "Confidential Containers",
+    "title": "Confidential Containers (CoCo)",
     "theme": "Systems & Virtualization",
-    "years": "2017-Present",
+    "years": "2021-Present",
     "weight": 8,
+    "print": 3,
     "related": [
       "kata-containers",
       "hpvm",
       "spice",
       "patents"
     ],
-    "videos": [],
+    "videos": [
+      "3UoChFEH6jQ",
+      "ww6EiDsCRz4",
+      "53kf4LY5YdM",
+      "E1NpnyVl_Go",
+      "lOi6XjBRtqg",
+      "G0SwSWKGyuM"
+    ],
     "links": [
       {
-        "label": "Kata Containers",
-        "url": "https://katacontainers.io/"
+        "label": "Confidential Containers",
+        "url": "https://confidentialcontainers.org/"
+      },
+      {
+        "label": "Attestation blog series (hub)",
+        "url": "https://www.redhat.com/en/blog/learn-about-confidential-computing-attestation"
+      },
+      {
+        "label": "What is the Confidential Containers project?",
+        "url": "https://www.redhat.com/en/blog/what-confidential-containers-project"
+      },
+      {
+        "label": "FOSDEM 2024 (Janson): Proving that Cloud Sysadmins Cannot Read your Data!",
+        "url": "https://archive.fosdem.org/2024/schedule/event/fosdem-2024-1991-proving-that-cloud-sysadmins-cannot-read-your-data-/"
+      },
+      {
+        "label": "FOSDEM 2024 video",
+        "url": "https://video.fosdem.org/2024/janson/fosdem-2024-1991-proving-that-cloud-sysadmins-cannot-read-your-data-.mp4"
+      },
+      {
+        "label": "KVM Forum 2022: Five Big Problems",
+        "url": "https://www.youtube.com/watch?v=3UoChFEH6jQ"
+      },
+      {
+        "label": "KVM Forum 2021: Don't Peek Into my Container!",
+        "url": "https://www.youtube.com/watch?v=ww6EiDsCRz4"
+      },
+      {
+        "label": "KVM Forum 2023: Chains of trust",
+        "url": "https://www.youtube.com/watch?v=53kf4LY5YdM"
+      },
+      {
+        "label": "DevConf.CZ 2022: Confidential computing with Kata",
+        "url": "https://devconfcz2022.sched.com/event/siGQ/confidential-computing-with-kata-containers"
+      },
+      {
+        "label": "DevConf.CZ 2023: Chains of trust",
+        "url": "https://youtu.be/E1NpnyVl_Go"
+      },
+      {
+        "label": "DevConf.CZ 2023: From host to workload",
+        "url": "https://youtu.be/lOi6XjBRtqg"
+      },
+      {
+        "label": "DevConf.CZ 2023: CoCo workshop",
+        "url": "https://devconfcz2023.sched.com/event/1MYoy/confidential-containers-coco-workshop"
+      },
+      {
+        "label": "SophiaConf 2022: Confidential containers",
+        "url": "https://www.youtube.com/watch?v=G0SwSWKGyuM"
+      },
+      {
+        "label": "Azur Tech Winter 2023",
+        "url": "https://www.telecom-valley.fr/azurtechwinter-2023/"
+      },
+      {
+        "label": "Patent US12321473B2 (on-demand encrypted image download)",
+        "url": "https://patents.google.com/patent/US12321473B2/en"
+      },
+      {
+        "label": "CCS 2024: Crossing Shifted Moats",
+        "url": "https://doi.org/10.1145/3658644.3670352"
       }
     ],
     "images": [
@@ -188,19 +256,36 @@
     ],
     "topics": [
       "containers",
+      "confidential-computing",
       "virtualization",
       "opensource",
       "linux"
     ],
-    "content": "<h2>Confidential containers</h2>\n<ul>\n<li>Work on confidential containers alongside OpenShift Sandboxed Containers / Kata</li>\n<li>Builds on VM-isolated container runtimes for stronger isolation and trust boundaries</li>\n</ul>\n",
+    "content": "<h2>Confidential Containers and attestation</h2>\n<p>Focused on attestation for Confidential Containers (CoCo): wrote the Red Hat attestation blog series, and identified two major flaws in the original CoCo design — incremental / in-guest image download and the split host/tenant API — with proposed solutions.</p>\n<ul>\n<li>Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview</li>\n<li>FOSDEM 2024 main-stage (Janson) talk: “Proving that Cloud Sysadmins Cannot Read your Data!” — attestation for confidential VMs, containers, and clusters (not a keynote)</li>\n<li>Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023</li>\n<li>Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021</li>\n<li>Co-inventor of <a href=\"https://patents.google.com/patent/US12321473B2/en\">US12321473B2</a> (on-demand encrypted container image download)</li>\n<li>Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Work on confidential containers alongside OpenShift Sandboxed Containers / Kata",
-        "section": "Confidential containers"
+        "text": "Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview",
+        "section": "Confidential Containers and attestation"
       },
       {
-        "text": "Builds on VM-isolated container runtimes for stronger isolation and trust boundaries",
-        "section": "Confidential containers"
+        "text": "FOSDEM 2024 main-stage (Janson) talk: “Proving that Cloud Sysadmins Cannot Read your Data!” — attestation for confidential VMs, containers, and clusters (not a keynote)",
+        "section": "Confidential Containers and attestation"
+      },
+      {
+        "text": "Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023",
+        "section": "Confidential Containers and attestation"
+      },
+      {
+        "text": "Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021",
+        "section": "Confidential Containers and attestation"
+      },
+      {
+        "text": "Co-inventor of <a class=\"pv-deep\" href=\"https://patents.google.com/patent/US12321473B2/en\" target=\"_blank\" rel=\"noopener noreferrer\">US12321473B2</a> (on-demand encrypted container image download)",
+        "section": "Confidential Containers and attestation"
+      },
+      {
+        "text": "Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)",
+        "section": "Confidential Containers and attestation"
       }
     ]
   },
@@ -1533,19 +1618,47 @@
     "id": "kata-containers",
     "title": "Kata Containers",
     "theme": "Systems & Virtualization",
-    "years": "2017-Present",
+    "years": "2019-Present",
     "weight": 9,
+    "print": 2,
     "related": [
       "confidential-containers",
       "hpvm",
       "spice",
       "patents"
     ],
-    "videos": [],
+    "videos": [
+      "SK4Tk9rv3H0",
+      "bRcF2GoVhZk"
+    ],
     "links": [
       {
         "label": "Kata Containers",
         "url": "https://katacontainers.io/"
+      },
+      {
+        "label": "Fedora review (kata-runtime)",
+        "url": "https://bugzilla.redhat.com/show_bug.cgi?id=1761451"
+      },
+      {
+        "label": "OpenShift sandboxed containers",
+        "url": "https://docs.redhat.com/en/documentation/openshift_container_platform/4.8/html/sandboxed_containers_support_for_openshift/understanding-sandboxed-containers"
+      },
+      {
+        "label": "DevConf.CZ 2020: Kata and qemu-mini",
+        "url": "https://youtu.be/SK4Tk9rv3H0"
+      },
+      {
+        "label": "DevConf.CZ 2021: Honey, I shrunk the pods",
+        "url": "https://youtu.be/bRcF2GoVhZk"
+      },
+      {
+        "label": "DevConf.CZ 2021: Kata Containers will impact you",
+        "url": "http://devconfcz2021.sched.com/event/gmJb/kata-containers-will-impact-you-yes-you"
+      },
+      {
+        "label": "SophiaConf 2020",
+        "url": "https://www.telecom-valley.fr/29-30-juin-2020-sophiaconf-100-numerique/"
       }
     ],
     "images": [
@@ -1557,18 +1670,18 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>OpenShift Sandboxed Containers</h2>\n<ul>\n<li>Project owner for OpenShift Sandboxed Containers</li>\n<li>Combines Kubernetes/OpenShift orchestration with VM isolation</li>\n<li>Responsible for virtualization release quality in RHEL 8 (career systems track)</li>\n</ul>\n",
+    "content": "<h2>OpenShift Sandboxed Containers</h2>\n<p>Brought Kata Containers into the Red Hat stack and created the first RPMs and packaging (Fedora 31, October 2019), which became OpenShift Sandboxed Containers.</p>\n<ul>\n<li>Packaged Kata for Fedora as five RPMs (<code>kata-runtime</code>, <code>kata-osbuilder</code> / agent, <code>kata-proxy</code>, <code>kata-shim</code>, <code>kata-ksm-throttler</code>); <code>kata-runtime</code> 1.8.2 landed in Fedora 31 stable on 31 October 2019</li>\n<li>Presented packaging and a size-optimized QEMU (“qemu-mini”) at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Project owner for OpenShift Sandboxed Containers",
+        "text": "Packaged Kata for Fedora as five RPMs (`kata-runtime`, `kata-osbuilder` / agent, `kata-proxy`, `kata-shim`, `kata-ksm-throttler`); `kata-runtime` 1.8.2 landed in Fedora 31 stable on 31 October 2019",
         "section": "OpenShift Sandboxed Containers"
       },
       {
-        "text": "Combines Kubernetes/OpenShift orchestration with VM isolation",
+        "text": "Presented packaging and a size-optimized QEMU (“qemu-mini”) at DevConf.CZ 2020 and SophiaConf 2020",
         "section": "OpenShift Sandboxed Containers"
       },
       {
-        "text": "Responsible for virtualization release quality in RHEL 8 (career systems track)",
+        "text": "Later talks on Kata footprint and adoption (DevConf.CZ 2021)",
         "section": "OpenShift Sandboxed Containers"
       }
     ]
@@ -2228,19 +2341,31 @@
     "id": "spice",
     "title": "SPICE Remote Streaming",
     "theme": "Systems & Virtualization",
-    "years": "2017-Present",
+    "years": 2019,
     "weight": 8,
     "print": 4,
     "related": [
       "kata-containers",
       "confidential-containers",
-      "red-skin-cat"
+      "red-skin-cat",
+      "make-it-quick",
+      "recorder"
     ],
-    "videos": [],
+    "videos": [
+      "kpy4SqpunoY"
+    ],
     "links": [
       {
         "label": "SPICE",
         "url": "https://www.spice-space.org/"
+      },
+      {
+        "label": "DevConf.CZ 2019: SPICE smart streaming",
+        "url": "https://youtu.be/kpy4SqpunoY"
+      },
+      {
+        "label": "SophiaConf 2019: SPICE Smart Streaming",
+        "url": "https://www.telecom-valley.fr/sophiaconf-2019-speakers/"
       }
     ],
     "images": [
@@ -2252,18 +2377,14 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>Remote visualization for virtualization</h2>\n<ul>\n<li>Part of the Spice team at Red Hat</li>\n<li>Implemented smart streaming in the SPICE remote viewer</li>\n<li>Remote visualization essential to Red Hat&#39;s virtualization offering</li>\n</ul>\n",
+    "content": "<h2>Remote visualization for virtualization</h2>\n<p>Smart streaming for the SPICE remote desktop protocol: adaptive H.264 whole-desktop streaming with a client-to-server metrics control loop.</p>\n<ul>\n<li>“SPICE smart streaming,” DevConf.CZ 2019 (video) and SophiaConf 2019</li>\n<li>Dynamic video quality for remote virtual machines</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Part of the Spice team at Red Hat",
+        "text": "“SPICE smart streaming,” DevConf.CZ 2019 (video) and SophiaConf 2019",
         "section": "Remote visualization for virtualization"
       },
       {
-        "text": "Implemented smart streaming in the SPICE remote viewer",
-        "section": "Remote visualization for virtualization"
-      },
-      {
-        "text": "Remote visualization essential to Red Hat's virtualization offering",
+        "text": "Dynamic video quality for remote virtual machines",
         "section": "Remote visualization for virtualization"
       }
     ]
