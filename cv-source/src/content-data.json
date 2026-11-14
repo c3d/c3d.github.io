@@ -1795,7 +1795,7 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
+    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions, HyperShift support</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020",

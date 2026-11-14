@@ -45,7 +45,7 @@ const PRINT_COPY = {
   'kata-containers': {
     title: 'Kata Containers / OpenShift Sandboxed Containers',
     bullets: [
-      'From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions'
+      'From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions, HyperShift support'
     ]
   },
   'confidential-containers': {
