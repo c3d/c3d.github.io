@@ -17,6 +17,10 @@ links:
     url: 'https://tao3d.sourceforge.net/'
 images:
   - /cv/media/tao3d.png
+topics:
+  - compilers
+  - graphics3d
+  - opensource
 ---
 ## Language for interactive 3D
 

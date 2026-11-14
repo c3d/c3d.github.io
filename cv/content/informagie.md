@@ -12,6 +12,9 @@ links:
     url: 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X'
 images:
   - /cv/media/informagie.png
+topics:
+  - writing
+  - games
 ---
 ## Science-fiction novel (French)
 

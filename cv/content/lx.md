@@ -12,6 +12,9 @@ videos: []
 links: []
 images:
   - /cv/media/lx.png
+topics:
+  - compilers
+  - opensource
 ---
 ## Precursor to XL
 

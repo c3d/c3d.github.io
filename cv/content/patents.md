@@ -13,6 +13,9 @@ links:
     url: 'https://patents.justia.com/inventor/christophe-de-dinechin'
 images:
   - /cv/media/patents.jpg
+topics:
+  - patents
+  - virtualization
 ---
 ## Issued patents (Hewlett-Packard)
 

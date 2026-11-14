@@ -14,6 +14,11 @@ links:
     url: 'https://katacontainers.io/'
 images:
   - /cv/media/kata-containers.png
+topics:
+  - containers
+  - virtualization
+  - opensource
+  - linux
 ---
 ## OpenShift Sandboxed Containers
 

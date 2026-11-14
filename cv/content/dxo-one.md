@@ -20,6 +20,11 @@ images:
       licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/'
       via: Wikimedia Commons
       viaUrl: 'https://commons.wikimedia.org/wiki/File:DxO_ONE_connected_to_iPhone_6.jpg'
+topics:
+  - embedded
+  - arm
+  - realtime
+  - imaging
 ---
 ## Software quality for a diminutive connected camera
 

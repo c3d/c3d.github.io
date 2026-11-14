@@ -2,14 +2,21 @@
 id: firefly
 title: Firefly
 theme: Games & 3D
-years: 
+years: null
 weight: 9
-related: [tao3d, 3divart, taodyne]
+related:
+  - tao3d
+  - 3divart
+  - taodyne
 videos:
   - GUMqT9W5BG8
 links:
   - label: YouTube
-    url: https://www.youtube.com/watch?v=GUMqT9W5BG8
+    url: 'https://www.youtube.com/watch?v=GUMqT9W5BG8'
+topics:
+  - games
+  - graphics3d
+  - realtime
 ---
 
 ## Ray-marched gaming experiment in Tao3D

@@ -14,6 +14,8 @@ links:
     url: 'https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines'
 images:
   - /cv/media/hpvm.jpg
+topics:
+  - virtualization
 ---
 ## Enterprise-grade virtualization for high-end Itanium servers
 

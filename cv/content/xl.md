@@ -17,6 +17,9 @@ links:
     url: 'https://github.com/c3d/xl'
 images:
   - /cv/media/xl.png
+topics:
+  - compilers
+  - opensource
 ---
 ## Extensible language designed to evolve
 

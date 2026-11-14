@@ -16,6 +16,9 @@ links:
     url: 'http://christophe.dinechin.org'
 images:
   - /cv/media/red-skin-cat.png
+topics:
+  - writing
+  - opensource
 ---
 ## Christophe's brain dump
 

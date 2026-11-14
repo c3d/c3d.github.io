@@ -19,6 +19,8 @@ videos: []
 links: []
 images:
   - /cv/media/ecu-cartoons.jpg
+topics:
+  - writing
 ---
 ## Release cartoons for HP ECUTEST
 

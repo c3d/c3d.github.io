@@ -14,6 +14,11 @@ links:
     url: 'https://katacontainers.io/'
 images:
   - /cv/media/confidential-containers.png
+topics:
+  - containers
+  - virtualization
+  - opensource
+  - linux
 ---
 ## Confidential containers
 

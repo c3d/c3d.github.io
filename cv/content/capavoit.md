@@ -10,6 +10,9 @@ videos: []
 links: []
 images:
   - /cv/media/capavoit.jpg
+topics:
+  - ui
+  - macos
 ---
 ## Subway car capacity planning for Axlog
 

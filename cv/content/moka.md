@@ -13,6 +13,9 @@ links:
     url: 'http://mozart-dev.sourceforge.net'
 images:
   - /cv/media/moka.png
+topics:
+  - compilers
+  - opensource
 ---
 ## Java-to-Java extensible compiler
 

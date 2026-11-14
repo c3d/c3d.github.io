@@ -11,6 +11,9 @@ videos: []
 images:
   - /cv/3DIVART.jpg
 links: []
+topics:
+  - graphics3d
+  - opensource
 ---
 ## 3D interactive visual art
 
