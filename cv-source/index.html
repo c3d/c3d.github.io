@@ -909,7 +909,7 @@
         right: 0;
         left: 0;
         width: 100%;
-        height: min(58vh, 520px);
+        height: min(62vh, 560px);
         padding: 10px;
       }
       .hud-panel {
@@ -921,6 +921,110 @@
       .hud-project {
         font-size: 16px;
         padding: 9px 36px 9px 10px;
+      }
+      /* Bottom-docked HUD: two columns — info chips | media (contain). */
+      .hud-below-inner {
+        display: grid;
+        grid-template-columns: minmax(132px, 0.9fr) minmax(0, 1.35fr);
+        grid-template-areas:
+          "index index"
+          "readouts media"
+          "topics topics"
+          "bullet bullet"
+          "connected connected";
+        column-gap: 12px;
+        row-gap: 10px;
+        align-content: start;
+        align-items: stretch;
+      }
+      .hud-index {
+        grid-area: index;
+        margin-bottom: 0;
+      }
+      .hud-readouts {
+        grid-area: readouts;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 0;
+        align-content: start;
+        align-self: start;
+      }
+      .hud-topics {
+        grid-area: topics;
+        margin: 0;
+      }
+      .hud-bullet {
+        grid-area: bullet;
+        margin: 0;
+      }
+      .hud-connected {
+        grid-area: connected;
+        margin-top: 0;
+      }
+      [data-hud="media"] {
+        grid-area: media;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 0;
+        min-height: 0;
+        max-height: min(36vh, 280px);
+        align-self: stretch;
+      }
+      [data-hud="media"] .hud-image {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+      [data-hud="media"] .hud-image img {
+        flex: 1 1 auto;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: contain;
+        object-position: center;
+      }
+      [data-hud="media"] .hud-image-credit {
+        flex: 0 0 auto;
+      }
+      [data-hud="media"] .hud-video {
+        flex: 1 1 auto;
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0 auto;
+        padding-bottom: 0;
+        aspect-ratio: 16 / 9;
+      }
+      [data-hud="media"] .hud-video.hud-video-vertical {
+        width: auto;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        aspect-ratio: 9 / 16;
+        margin: 0 auto;
+      }
+      [data-hud="media"] .hud-video iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+      [data-hud="media"] .hud-links {
+        flex: 0 0 auto;
+        width: 100%;
+        margin-top: 0;
+        justify-content: center;
       }
       #search-fab { display: inline-flex; }
       #search-hud { top: 12%; }
@@ -938,6 +1042,26 @@
         font-size: 16px;
         letter-spacing: 0.04em;
         caret-color: #40e0ff;
+      }
+    }
+
+    /* Very narrow portrait: stack again so chips + media remain readable. */
+    @media (max-width: 430px) {
+      .hud-below-inner {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "index"
+          "readouts"
+          "media"
+          "topics"
+          "bullet"
+          "connected";
+      }
+      .hud-readouts {
+        grid-template-columns: 1fr 1fr;
+      }
+      [data-hud="media"] {
+        max-height: min(32vh, 240px);
       }
     }
 
