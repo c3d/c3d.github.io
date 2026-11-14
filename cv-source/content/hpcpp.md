@@ -4,6 +4,7 @@ title: HP aC++ Compiler
 theme: Languages & Compilers
 years: 1998-2000
 weight: 10
+featured: true
 print: 1
 related:
   - wiess-exception-handling

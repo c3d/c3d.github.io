@@ -4,6 +4,7 @@ title: Tao3D
 theme: Languages & Compilers
 years: 2010-Present
 weight: 9
+featured: true
 print: 3
 related:
   - xl
