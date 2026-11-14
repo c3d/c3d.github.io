@@ -199,7 +199,7 @@
     "theme": "Systems & Virtualization",
     "years": "2021-Present",
     "weight": 8,
-    "print": 4,
+    "print": 3,
     "related": [
       "kata-containers",
       "hpvm",
@@ -596,7 +596,7 @@
     "theme": "Systems & Virtualization",
     "years": "2015-2016",
     "weight": 10,
-    "print": 3,
+    "print": 4,
     "related": [
       "make-it-quick",
       "recorder",
@@ -1741,7 +1741,7 @@
   },
   {
     "id": "kata-containers",
-    "title": "Kata Containers",
+    "title": "Kata Containers / OpenShift Sandboxed Containers",
     "theme": "Systems & Virtualization",
     "years": "2019-Present",
     "weight": 9,
@@ -1795,27 +1795,15 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>OpenShift Sandboxed Containers</h2>\n<p>Brought Kata Containers into the Red Hat stack and created the first RPMs and packaging (Fedora 31, October 2019), which became OpenShift Sandboxed Containers. Still in a lead role on OpenShift Sandboxed Containers; currently working on integration with HyperShift.</p>\n<ul>\n<li>Packaged Kata for Fedora as five RPMs (<code>kata-runtime</code>, <code>kata-osbuilder</code> / agent, <code>kata-proxy</code>, <code>kata-shim</code>, <code>kata-ksm-throttler</code>); <code>kata-runtime</code> 1.8.2 landed in Fedora 31 stable on 31 October 2019</li>\n<li>Transferred RPM management to other engineers, but re-took the Fedora packaging for a while during the transition from the Go runtime to the Rust runtime</li>\n<li>Created “qemu-mini”: a QEMU build where everything optional is demand-loaded instead of built in, to shrink the payload for Kata Containers (stock QEMU was too big)</li>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
+    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Packaged Kata for Fedora as five RPMs (`kata-runtime`, `kata-osbuilder` / agent, `kata-proxy`, `kata-shim`, `kata-ksm-throttler`); `kata-runtime` 1.8.2 landed in Fedora 31 stable on 31 October 2019",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
-        "text": "Transferred RPM management to other engineers, but re-took the Fedora packaging for a while during the transition from the Go runtime to the Rust runtime",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
-        "text": "Created “qemu-mini”: a QEMU build where everything optional is demand-loaded instead of built in, to shrink the payload for Kata Containers (stock QEMU was too big)",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
         "text": "Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020",
-        "section": "OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers"
       },
       {
         "text": "Later talks on Kata footprint and adoption (DevConf.CZ 2021)",
-        "section": "OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers"
       }
     ]
   },

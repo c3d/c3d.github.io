@@ -4,7 +4,7 @@ title: Confidential Containers (CoCo)
 theme: Systems & Virtualization
 years: 2021-Present
 weight: 8
-print: 4
+print: 3
 related:
   - kata-containers
   - hpvm

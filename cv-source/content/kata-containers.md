@@ -1,6 +1,6 @@
 ---
 id: kata-containers
-title: Kata Containers
+title: Kata Containers / OpenShift Sandboxed Containers
 theme: Systems & Virtualization
 years: 2019-Present
 weight: 9
@@ -36,12 +36,9 @@ topics:
   - opensource
   - linux
 ---
-## OpenShift Sandboxed Containers
+## Kata Containers / OpenShift Sandboxed Containers
 
-Brought Kata Containers into the Red Hat stack and created the first RPMs and packaging (Fedora 31, October 2019), which became OpenShift Sandboxed Containers. Still in a lead role on OpenShift Sandboxed Containers; currently working on integration with HyperShift.
+From Fedora RPMs to full Red Hat product: qemu-mini (modular qemu), scalability, Go to Rust transitions
 
-- Packaged Kata for Fedora as five RPMs (`kata-runtime`, `kata-osbuilder` / agent, `kata-proxy`, `kata-shim`, `kata-ksm-throttler`); `kata-runtime` 1.8.2 landed in Fedora 31 stable on 31 October 2019
-- Transferred RPM management to other engineers, but re-took the Fedora packaging for a while during the transition from the Go runtime to the Rust runtime
-- Created “qemu-mini”: a QEMU build where everything optional is demand-loaded instead of built in, to shrink the payload for Kata Containers (stock QEMU was too big)
 - Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020
 - Later talks on Kata footprint and adoption (DevConf.CZ 2021)
