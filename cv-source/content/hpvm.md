@@ -4,6 +4,7 @@ title: HPVM - Enterprise-grade Itanium virtualization
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 10
+featured: true
 print: 1
 related:
   - kata-containers

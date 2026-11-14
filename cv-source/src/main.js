@@ -221,6 +221,18 @@ let controls = {
 };
 
 const STAR_PICK_RADIUS_PX = 14;
+/** Featured stars (`featured: true` or explicit `scale`) render larger; default 1.5×. */
+const FEATURED_STAR_SCALE = 1.5;
+
+/** Per-entry visual scale from content front-matter (`scale` or `featured`). */
+function projectVisualScale(project) {
+  const raw = project?.scale;
+  if (raw != null && Number.isFinite(Number(raw))) {
+    return Math.max(0.5, Math.min(3, Number(raw)));
+  }
+  if (project?.featured) return FEATURED_STAR_SCALE;
+  return 1;
+}
 
 // ============================================================================
 // Scene
@@ -763,6 +775,8 @@ function addProjectStarCluster({
   pi = 0,
   satellite = false
 }) {
+  const visualScale = projectVisualScale(project);
+
   // Every project gets an L2 mini-HUD label (fixed screen size)
   {
     const pl = createLabelAnchor({ text: project.title, hex: color, kind: 'project', parent: scene });
@@ -771,11 +785,18 @@ function addProjectStarCluster({
     pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 2) * 0.8));
     pl.userData.projectId = project.id;
     pl.userData.projectTheme = theme;
-    pl.userData.priority = satellite ? Math.min(project.weight || 3, 3) : (project.weight || 5);
+    // Featured entries keep a slight priority bump so labels stay preferred.
+    const basePri = satellite ? Math.min(project.weight || 3, 3) : (project.weight || 5);
+    pl.userData.priority = visualScale > 1 ? basePri + 2 : basePri;
     pl.userData.satelliteOf = project.satelliteOf || null;
+    pl.userData.visualScale = visualScale;
     pl.userData.home = pl.position.clone();
     pl.userData.themeOffset = pl.position.clone().sub(themePos);
-    pl.userData.screenOffset = { x: slot % 2 === 0 ? -10 : 10, y: -14 };
+    // Nudge featured labels up a few px so they clear the larger glow.
+    pl.userData.screenOffset = {
+      x: slot % 2 === 0 ? -10 : 10,
+      y: visualScale > 1 ? -18 : -14
+    };
   }
 
   const bullets = project.bullets || [];
@@ -792,9 +813,10 @@ function addProjectStarCluster({
     );
 
     const weight = project.weight || (satellite ? 3 : 5);
-    const size = satellite
+    const baseSize = satellite
       ? 0.85 + (Math.min(weight, 4) / 10) * 1.1
       : 1.6 + (weight / 10) * 2.2;
+    const size = baseSize * visualScale;
     const haloOpacity = satellite ? 0.55 : 0.92;
 
     const group = new THREE.Group();
@@ -829,6 +851,8 @@ function addProjectStarCluster({
       themeOffset: position.clone().sub(themePos),
       color,
       size,
+      visualScale,
+      pickRadiusPx: STAR_PICK_RADIUS_PX * visualScale,
       bullet,
       project,
       id: `${project.id}__${bi}`,
@@ -843,8 +867,10 @@ function addProjectStarCluster({
   const firstStar = stars.find((s) => s.project.id === project.id);
   if (pl && firstStar) {
     const side = (slot % 2 === 0) ? -1 : 1;
-    const lift = satellite ? 2.0 : 3.2;
-    pl.position.copy(firstStar.position).add(new THREE.Vector3(side * (satellite ? 1.5 : 2.4), lift, 0.4));
+    // Lift/side offset grow with visual scale so labels clear the larger glow.
+    const lift = (satellite ? 2.0 : 3.2) * visualScale;
+    const sideDist = (satellite ? 1.5 : 2.4) * Math.sqrt(visualScale);
+    pl.position.copy(firstStar.position).add(new THREE.Vector3(side * sideDist, lift, 0.4));
     pl.userData.home.copy(pl.position);
     pl.userData.themeOffset = pl.position.clone().sub(themePos);
   }
@@ -2943,7 +2969,8 @@ function pickStarAt(clientX, clientY) {
     const sx = (ndc.x * 0.5 + 0.5) * w;
     const sy = (-ndc.y * 0.5 + 0.5) * h;
     const screenD = Math.hypot(sx - clientX, sy - clientY);
-    if (screenD > STAR_PICK_RADIUS_PX) return;
+    const pickR = star.pickRadiusPx || STAR_PICK_RADIUS_PX;
+    if (screenD > pickR) return;
     const camDist = star.position.distanceTo(camera.position);
     if (camDist < bestCamDist - 0.05
       || (Math.abs(camDist - bestCamDist) <= 0.05 && screenD < bestScreenD)) {
