@@ -1611,12 +1611,46 @@ function flyToPose(pose, onDone) {
   );
 }
 
-/** HUD continuity: FLIP mini-label → title, expand body, teletype description. */
+/**
+ * HUD open/close choreography timings (one place).
+ * Open stages ≈ flip+lateral+up+down+chips ≈ 1.1–1.4s before body teletype.
+ */
+const HUD_TIMING = Object.freeze({
+  flipMs: 280,
+  lateralMs: 220,
+  upMs: 200,
+  downMs: 220,
+  chipMs: 160,
+  chipOverlapMs: 70, // years starts before section finishes
+  themeTeletypeCps: 58,
+  chipTeletypeCps: 70,
+  bodyTeletypeCps: 90,
+  remanenceMs: 1100,
+  blinkCount: 3,
+  blinkPeriodMs: 70,
+  fadeMs: 140,
+  bodyFadeMs: 180
+});
+/** @deprecated aliases used by older call sites */
+const HUD_FLIP_MS = HUD_TIMING.flipMs;
+const HUD_EXPAND_MS = HUD_TIMING.downMs;
+const HUD_TELETYPE_CPS = HUD_TIMING.bodyTeletypeCps;
+
 let hudAnimGen = 0;
 let hudTeletype = null;
-const HUD_FLIP_MS = 420;
-const HUD_EXPAND_MS = 420;
-const HUD_TELETYPE_CPS = 90;
+const HUD_STAGE_CLASSES = [
+  'hud-flying',
+  'hud-clipping',
+  'hud-stage-title',
+  'hud-stage-wide',
+  'hud-stage-up',
+  'hud-stage-down',
+  'hud-expanded',
+  'hud-chip-section',
+  'hud-chip-years',
+  'hud-body-in',
+  'hud-ready'
+];
 
 function findProjectLabelEl(projectId) {
   const label = labelSprites.find(
@@ -1627,6 +1661,62 @@ function findProjectLabelEl(projectId) {
 
 function removeHudFlyLabel() {
   document.getElementById('hud-fly-label')?.remove();
+}
+
+function applyHudTimingCss(hud) {
+  if (!hud) return;
+  hud.style.setProperty('--hud-clip-ms', `${HUD_TIMING.lateralMs}ms`);
+  hud.style.setProperty('--hud-up-ms', `${HUD_TIMING.upMs}ms`);
+  hud.style.setProperty('--hud-down-ms', `${HUD_TIMING.downMs}ms`);
+  hud.style.setProperty('--hud-chip-ms', `${HUD_TIMING.chipMs}ms`);
+  hud.style.setProperty('--hud-remanence-ms', `${HUD_TIMING.remanenceMs}ms`);
+  hud.style.setProperty('--hud-blink-period', `${HUD_TIMING.blinkPeriodMs}ms`);
+  hud.style.setProperty('--hud-blink-count', String(HUD_TIMING.blinkCount));
+}
+
+function clearHudStageClasses(hud) {
+  if (!hud) return;
+  hud.classList.remove(...HUD_STAGE_CLASSES);
+  const panel = hud.querySelector('.hud-panel');
+  if (panel) {
+    panel.style.clipPath = '';
+    panel.style.removeProperty('--hud-clip-ms');
+  }
+}
+
+function panelClipInsets(panel, titleBar, mode) {
+  const pr = panel.getBoundingClientRect();
+  const tr = titleBar.getBoundingClientRect();
+  const pad = 2;
+  const titleTop = Math.max(0, tr.top - pr.top - pad);
+  const titleLeft = Math.max(0, tr.left - pr.left - pad);
+  const titleRight = Math.max(0, pr.right - tr.right - pad);
+  const titleBottom = Math.max(0, pr.bottom - tr.bottom - pad);
+  if (mode === 'title') {
+    return { top: titleTop, right: titleRight, bottom: titleBottom, left: titleLeft };
+  }
+  if (mode === 'wide') {
+    return { top: titleTop, right: 0, bottom: titleBottom, left: 0 };
+  }
+  if (mode === 'up') {
+    return { top: 0, right: 0, bottom: titleBottom, left: 0 };
+  }
+  return { top: 0, right: 0, bottom: 0, left: 0 };
+}
+
+function setPanelClip(panel, insets, { ms, immediate = false } = {}) {
+  if (!panel) return;
+  if (ms != null) panel.style.setProperty('--hud-clip-ms', `${ms}ms`);
+  const next = `inset(${insets.top}px ${insets.right}px ${insets.bottom}px ${insets.left}px)`;
+  if (immediate) {
+    const prev = panel.style.transition;
+    panel.style.transition = 'none';
+    panel.style.clipPath = next;
+    void panel.offsetWidth;
+    panel.style.transition = prev || '';
+    return;
+  }
+  panel.style.clipPath = next;
 }
 
 function stopHudTeletype({ finish = false } = {}) {
@@ -1670,7 +1760,7 @@ function prepareTeletypeChars(root) {
   return chars;
 }
 
-function startHudTeletype(root, { cps = HUD_TELETYPE_CPS } = {}) {
+function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
   stopHudTeletype();
   if (!root) return Promise.resolve();
   if (prefersReducedMotion()) {
@@ -1709,10 +1799,8 @@ function startHudTeletype(root, { cps = HUD_TELETYPE_CPS } = {}) {
       const span = chars[i++];
       span.style.visibility = 'visible';
       span.classList.add('hud-tt-fresh');
-      // Phosphor remanence: bright briefly, then decay to normal
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => span.classList.remove('hud-tt-fresh'));
-      });
+      // High phosphor remanence — keep bright, then decay
+      setTimeout(() => span.classList.remove('hud-tt-fresh'), HUD_TIMING.remanenceMs);
       cursor.remove();
       span.after(cursor);
     }, interval);
@@ -1722,7 +1810,36 @@ function startHudTeletype(root, { cps = HUD_TELETYPE_CPS } = {}) {
   });
 }
 
-function animateFlipRect(el, from, to, { duration = HUD_FLIP_MS, growTitle = false } = {}) {
+async function blinkFadeHudText(roots, gen) {
+  const list = (Array.isArray(roots) ? roots : [roots]).filter(Boolean);
+  if (!list.length) return;
+  if (prefersReducedMotion()) {
+    list.forEach((el) => {
+      el.style.opacity = '0';
+    });
+    return;
+  }
+  for (let i = 0; i < HUD_TIMING.blinkCount; i++) {
+    if (gen !== hudAnimGen) return;
+    list.forEach((el) => {
+      el.style.opacity = '0';
+    });
+    await waitMs(HUD_TIMING.blinkPeriodMs);
+    if (gen !== hudAnimGen) return;
+    list.forEach((el) => {
+      el.style.opacity = '1';
+    });
+    await waitMs(HUD_TIMING.blinkPeriodMs);
+  }
+  if (gen !== hudAnimGen) return;
+  list.forEach((el) => {
+    el.style.transition = `opacity ${HUD_TIMING.fadeMs}ms ease`;
+    el.style.opacity = '0';
+  });
+  await waitMs(HUD_TIMING.fadeMs);
+}
+
+function animateFlipRect(el, from, to, { duration = HUD_TIMING.flipMs, growTitle = false } = {}) {
   return new Promise((resolve) => {
     if (!el || prefersReducedMotion()) {
       resolve();
@@ -1754,6 +1871,10 @@ function animateFlipRect(el, from, to, { duration = HUD_FLIP_MS, growTitle = fal
 
 function waitMs(ms) {
   return new Promise((r) => setTimeout(r, prefersReducedMotion() ? 0 : ms));
+}
+
+function stillHudGen(gen) {
+  return gen === hudAnimGen;
 }
 
 function populateHUD(star, { allowAutoplay = true } = {}) {
@@ -1899,33 +2020,56 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
 async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   const gen = ++hudAnimGen;
   const hud = document.getElementById('hud');
+  const panel = hud?.querySelector('.hud-panel');
   const projectId = star.project?.id;
   const labelEl = findProjectLabelEl(projectId);
-  const titleBar = hud.querySelector('.hud-title-bar');
+  const titleBar = hud?.querySelector('.hud-title-bar');
+  const themeEl = hud?.querySelector('[data-hud="theme"]');
+  const sectionEl = hud?.querySelector('[data-hud="section"]');
+  const yearsEl = hud?.querySelector('[data-hud="years"]');
 
   stopHudTeletype();
   removeHudFlyLabel();
-  hud.classList.remove('hud-expanded', 'hud-flying', 'hud-ready');
+  clearHudStageClasses(hud);
+  applyHudTimingCss(hud);
 
   populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
 
-  if (prefersReducedMotion() || !labelEl || !titleBar) {
-    hud.classList.add('open', 'hud-expanded', 'hud-ready');
+  const snapOpen = async () => {
+    clearHudStageClasses(hud);
+    hud.classList.add('open', 'hud-expanded', 'hud-chip-section', 'hud-chip-years', 'hud-body-in', 'hud-ready');
     hud.setAttribute('aria-hidden', 'false');
     if (labelEl) labelEl.classList.add('ms-label-hud-open');
-    const bulletEl = hud.querySelector('[data-hud="bullet"]');
-    if (!prefersReducedMotion()) await startHudTeletype(bulletEl);
+    if (!prefersReducedMotion()) {
+      await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
+    }
+  };
+
+  if (prefersReducedMotion() || !labelEl || !titleBar || !panel) {
+    await snapOpen();
     return;
   }
+
+  // Hide teletype targets until their stage; keep labels for chip chrome.
+  const themeText = themeEl?.textContent || '';
+  const sectionText = sectionEl?.textContent || '';
+  const yearsText = yearsEl?.textContent || '';
+  if (themeEl) themeEl.textContent = '';
+  if (sectionEl) sectionEl.textContent = '';
+  if (yearsEl) yearsEl.textContent = '';
 
   const from = labelEl.getBoundingClientRect();
   labelEl.classList.add('ms-label-hud-open');
   labelEl.classList.remove('is-visible');
 
-  hud.classList.add('open', 'hud-flying');
+  // 1) Title flies to final title slot
+  hud.classList.add('open', 'hud-flying', 'hud-clipping', 'hud-stage-title');
   hud.setAttribute('aria-hidden', 'false');
-  const to = titleBar.getBoundingClientRect();
+  // Force layout with above/below collapsed so title rect is stable
+  void panel.offsetWidth;
+  setPanelClip(panel, panelClipInsets(panel, titleBar, 'title'), { immediate: true, ms: HUD_TIMING.lateralMs });
 
+  const to = titleBar.getBoundingClientRect();
   const fly = document.createElement('div');
   fly.id = 'hud-fly-label';
   fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
@@ -1937,44 +2081,160 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   fly.style.width = `${from.width}px`;
   fly.style.height = `${from.height}px`;
 
-  await animateFlipRect(fly, from, to, { duration: HUD_FLIP_MS, growTitle: true });
-  if (gen !== hudAnimGen) return;
+  await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs, growTitle: true });
+  if (!stillHudGen(gen)) return;
 
   removeHudFlyLabel();
   hud.classList.remove('hud-flying');
-  hud.classList.add('hud-expanded');
-  await waitMs(HUD_EXPAND_MS);
-  if (gen !== hudAnimGen) return;
+  titleBar.style.opacity = '1';
 
-  hud.classList.add('hud-ready');
-  await startHudTeletype(hud.querySelector('[data-hud="bullet"]'));
+  // Freeze title-band insets before vertical expansion shifts the title bar.
+  const titleBand = panelClipInsets(panel, titleBar, 'title');
+
+  // 2) Outer frame expands laterally to full width
+  hud.classList.add('hud-stage-wide');
+  setPanelClip(panel, {
+    top: titleBand.top,
+    right: 0,
+    bottom: titleBand.bottom,
+    left: 0
+  }, { ms: HUD_TIMING.lateralMs });
+  await waitMs(HUD_TIMING.lateralMs);
+  if (!stillHudGen(gen)) return;
+
+  // 3) Expand upward + teletype cluster/area name
+  hud.classList.add('hud-stage-up');
+  setPanelClip(panel, {
+    top: 0,
+    right: 0,
+    bottom: titleBand.bottom,
+    left: 0
+  }, { ms: HUD_TIMING.upMs });
+  if (themeEl) themeEl.textContent = themeText;
+  const themePromise = startHudTeletype(themeEl, { cps: HUD_TIMING.themeTeletypeCps });
+  await waitMs(HUD_TIMING.upMs);
+  if (!stillHudGen(gen)) return;
+  await themePromise;
+  if (!stillHudGen(gen)) return;
+
+  // 4) Expand downward to full height
+  hud.classList.add('hud-stage-down', 'hud-expanded');
+  setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { ms: HUD_TIMING.downMs });
+  await waitMs(HUD_TIMING.downMs);
+  if (!stillHudGen(gen)) return;
+  // Restore chamfered clip once fully open
+  panel.style.clipPath = '';
+  hud.classList.remove('hud-clipping', 'hud-stage-title', 'hud-stage-wide');
+
+  // 5) Section then Years boxes extend right (overlap)
+  hud.classList.add('hud-chip-section');
+  await waitMs(Math.max(0, HUD_TIMING.chipMs - HUD_TIMING.chipOverlapMs));
+  if (!stillHudGen(gen)) return;
+  hud.classList.add('hud-chip-years');
+  await waitMs(HUD_TIMING.chipOverlapMs);
+  if (!stillHudGen(gen)) return;
+
+  // 6) Teletype Section / Years contents, then description/media as today
+  if (sectionEl) sectionEl.textContent = sectionText;
+  if (yearsEl) yearsEl.textContent = yearsText;
+  await startHudTeletype(sectionEl, { cps: HUD_TIMING.chipTeletypeCps });
+  if (!stillHudGen(gen)) return;
+  await startHudTeletype(yearsEl, { cps: HUD_TIMING.chipTeletypeCps });
+  if (!stillHudGen(gen)) return;
+
+  hud.classList.add('hud-body-in', 'hud-ready');
+  await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
 }
 
 async function runHudCloseContinuity() {
   const gen = ++hudAnimGen;
   const hud = document.getElementById('hud');
+  const panel = hud?.querySelector('.hud-panel');
   const star = currentStar;
   const projectId = star?.project?.id;
   const labelEl = projectId ? findProjectLabelEl(projectId) : null;
   const titleBar = hud?.querySelector('.hud-title-bar');
+  const themeEl = hud?.querySelector('[data-hud="theme"]');
+  const sectionEl = hud?.querySelector('[data-hud="section"]');
+  const yearsEl = hud?.querySelector('[data-hud="years"]');
+  const bulletEl = hud?.querySelector('[data-hud="bullet"]');
+  const bodyBits = [
+    hud?.querySelector('.hud-index'),
+    hud?.querySelector('.hud-topics'),
+    hud?.querySelector('[data-hud="media"]'),
+    bulletEl,
+    hud?.querySelector('.hud-connected')
+  ].filter(Boolean);
 
   stopHudTeletype({ finish: true });
   removeHudFlyLabel();
+  applyHudTimingCss(hud);
 
-  if (!hud || prefersReducedMotion() || !star || !labelEl || !titleBar) {
-    hud?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
+  const snapClose = () => {
+    clearHudStageClasses(hud);
+    hud?.classList.remove('open');
     hud?.setAttribute('aria-hidden', 'true');
     labelEl?.classList.remove('ms-label-hud-open');
+    [themeEl, sectionEl, yearsEl, ...bodyBits].forEach((el) => {
+      if (el) el.style.opacity = '';
+    });
+  };
+
+  if (!hud || prefersReducedMotion() || !star || !labelEl || !titleBar || !panel) {
+    snapClose();
     return;
   }
 
-  hud.classList.remove('hud-ready', 'hud-expanded');
-  await waitMs(HUD_EXPAND_MS * 0.85);
-  if (gen !== hudAnimGen) return;
+  // Reverse 6: blink+fade teletyped body / chip / theme text
+  await blinkFadeHudText([...bodyBits, sectionEl, yearsEl, themeEl], gen);
+  if (!stillHudGen(gen)) return;
+  hud.classList.remove('hud-body-in', 'hud-ready');
 
+  // Reverse 5: years then section collapse horizontally
+  hud.classList.remove('hud-chip-years');
+  await waitMs(Math.max(0, HUD_TIMING.chipMs - HUD_TIMING.chipOverlapMs));
+  if (!stillHudGen(gen)) return;
+  hud.classList.remove('hud-chip-section');
+  await waitMs(HUD_TIMING.chipOverlapMs);
+  if (!stillHudGen(gen)) return;
+
+  // Measure title band while fully open, then clip from full → stages.
+  const titleBand = panelClipInsets(panel, titleBar, 'title');
+  hud.classList.add('hud-clipping');
+  setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { immediate: true, ms: HUD_TIMING.downMs });
+
+  // Reverse 4: collapse downward (hide below)
+  hud.classList.remove('hud-stage-down', 'hud-expanded');
+  setPanelClip(panel, {
+    top: 0,
+    right: 0,
+    bottom: titleBand.bottom,
+    left: 0
+  }, { ms: HUD_TIMING.downMs });
+  await waitMs(HUD_TIMING.downMs);
+  if (!stillHudGen(gen)) return;
+
+  // Reverse 3: collapse upward
+  hud.classList.remove('hud-stage-up');
+  setPanelClip(panel, {
+    top: titleBand.top,
+    right: 0,
+    bottom: titleBand.bottom,
+    left: 0
+  }, { ms: HUD_TIMING.upMs });
+  await waitMs(HUD_TIMING.upMs);
+  if (!stillHudGen(gen)) return;
+
+  // Reverse 2: collapse laterally into title width
+  hud.classList.remove('hud-stage-wide');
+  hud.classList.add('hud-stage-title');
+  setPanelClip(panel, titleBand, { ms: HUD_TIMING.lateralMs });
+  await waitMs(HUD_TIMING.lateralMs);
+  if (!stillHudGen(gen)) return;
+
+  // Reverse 1: title returns to mini-HUD label
   const to = labelEl.getBoundingClientRect();
   const from = titleBar.getBoundingClientRect();
-
   hud.classList.add('hud-flying');
   const fly = document.createElement('div');
   fly.id = 'hud-fly-label';
@@ -1989,13 +2249,11 @@ async function runHudCloseContinuity() {
   fly.style.height = `${from.height}px`;
   fly.style.maxWidth = 'none';
 
-  await animateFlipRect(fly, from, to, { duration: HUD_FLIP_MS });
-  if (gen !== hudAnimGen) return;
+  await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs });
+  if (!stillHudGen(gen)) return;
 
   removeHudFlyLabel();
-  hud.classList.remove('open', 'hud-flying', 'hud-expanded', 'hud-ready');
-  hud.setAttribute('aria-hidden', 'true');
-  labelEl.classList.remove('ms-label-hud-open');
+  snapClose();
 }
 
 function enterClusterView(theme, { fromAuto = false } = {}) {
@@ -2009,7 +2267,8 @@ function enterClusterView(theme, { fromAuto = false } = {}) {
     findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
     currentStar = null;
     const hud = document.getElementById('hud');
-    hud?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
+    clearHudStageClasses(hud);
+    hud?.classList.remove('open');
     hud?.setAttribute('aria-hidden', 'true');
     if (window.location.hash) {
       history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -2087,13 +2346,19 @@ function openHUD(star, { fromAuto = false } = {}) {
     enterClusterView(theme, { fromAuto }).then(() => openHUD(star, { fromAuto }));
     return;
   }
-  // Switching nodes: snap previous HUD closed without reverse FLIP
+  // Switching nodes: abort in-flight choreography and snap previous HUD closed
   if (currentStar && currentStar !== star) {
     hudAnimGen += 1;
     stopHudTeletype({ finish: true });
     removeHudFlyLabel();
     findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
-    document.getElementById('hud')?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
+    const prevHud = document.getElementById('hud');
+    clearHudStageClasses(prevHud);
+    prevHud?.classList.remove('open');
+    prevHud?.setAttribute('aria-hidden', 'true');
+    prevHud?.querySelectorAll('[data-hud], .hud-index, .hud-topics, .hud-connected').forEach((el) => {
+      el.style.opacity = '';
+    });
   }
   if (!clusterPose) clusterPose = captureCameraPose();
   preHudPose = clusterPose;
