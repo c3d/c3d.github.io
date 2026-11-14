@@ -17,9 +17,6 @@ const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
 const DEVCONF_2023_URL =
   'https://devconfcz2023.sched.com/event/1MYgS/confidential-computing-from-host-to-workload';
-const DEVCONF_SPICE_URL = 'https://devconfcz2019.sched.com/event/JclE/spice-smart-streaming';
-const DEVCONF_KATA_URL =
-  'https://devconfcz2020a.sched.com/event/YOnz/kata-containers-and-qemu-mini-in-fedora';
 const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
@@ -69,6 +66,12 @@ const PRINT_COPY = {
   xlr8: {
     bullets: [
       'XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support'
+    ]
+  },
+  db48x: {
+    title: 'DB48X - Modern RPL Calculator',
+    bullets: [
+      'Best scientific calculator today, a modern rebuild of high-end HP-48 and HP-50 calculators'
     ]
   },
   'make-it-quick': {
@@ -149,7 +152,7 @@ function communicationPrintProjects() {
       title: 'Conferences and papers',
       years: '',
       bullets: [
-        `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions), FOSDEM (${deepLink(DEVCONF_SPICE_URL, 'SPICE')}, ${deepLink(DEVCONF_KATA_URL, 'Kata')}, ${deepLink(FOSDEM_2023_URL, 'DB48x')}), ${deepLink(DEVCONF_2023_URL, 'DevConf')}`
+        `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions), ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (SPICE, Kata, DB48x), ${deepLink(DEVCONF_2023_URL, 'DevConf')}`
       ]
     },
     {
@@ -208,7 +211,7 @@ function applyPrintCopy(project) {
 export function buildPrintModel(data, {
   themeOrder,
   printColors,
-  maxProjects = 4,
+  maxProjects = 5,
   maxBullets = 1
 } = {}) {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
