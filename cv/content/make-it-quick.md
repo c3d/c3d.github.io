@@ -7,6 +7,7 @@ weight: 7
 print: 1
 related:
   - recorder
+  - hpcpp
 videos: []
 links:
   - label: GitHub

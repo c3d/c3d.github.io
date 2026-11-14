@@ -15,6 +15,7 @@ images:
 topics:
   - writing
   - games
+  - books
 ---
 ## Science-fiction novel (French)
 

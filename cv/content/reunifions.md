@@ -1,7 +1,7 @@
 ---
 id: reunifions
 title: Réunifions la physique
-theme: Physics
+theme: Research
 years: null
 weight: 8
 print: 2
@@ -16,6 +16,8 @@ images:
 topics:
   - physics
   - writing
+  - research
+  - books
 ---
 ## Shorter French introduction to TIM ideas
 
