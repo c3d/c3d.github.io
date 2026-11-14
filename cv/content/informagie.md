@@ -11,7 +11,7 @@ links:
   - label: Amazon FR
     url: 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X'
 images:
-  - /cv/media/informagie.jpg
+  - /cv/media/informagie.png
 ---
 ## Science-fiction novel (French)
 
