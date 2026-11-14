@@ -52,7 +52,7 @@ const PRINT_COPY = {
   },
   'confidential-containers': {
     bullets: [
-      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split (US12321473B2, CCS 2024)'
+      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split; Agent Sandbox for AI (encrypted GPU + GPU attestation)'
     ]
   },
   'dxo-one': {
@@ -169,11 +169,19 @@ function communicationPrintProjects() {
       ]
     },
     {
+      id: 'ai',
+      title: 'Artificial Intelligence',
+      years: '',
+      bullets: [
+        'Hands-on with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+      ]
+    },
+    {
       id: 'informagie',
       title: 'Books',
       years: '',
       bullets: [
-        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}`
+        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}; AI: ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
       ]
     },
     {
