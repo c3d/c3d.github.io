@@ -582,12 +582,14 @@
       opacity: 1;
       visibility: visible;
     }
-    /* Media focus: HUD shrinks to the media only (≤95vw/95vh); chrome fully gone. */
+    /* Media focus: decorated HUD panel at 95vw×95vh; media fills ~95% of its inner area.
+       Chromium darkens iframes under backdrop-filter ancestors — drop blur here and
+       force full-opacity media (no filter / blend / overlay). */
     #hud-media-focus-backdrop {
       position: fixed;
       inset: 0;
       z-index: 34;
-      background: rgba(2, 6, 16, 0.62);
+      background: rgba(2, 6, 16, 0.55);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -622,60 +624,42 @@
       max-width: 95vw;
       max-height: 95vh;
       z-index: 36;
-      padding: 0 !important;
-      gap: 0 !important;
+      padding: 14px;
+      gap: 8px;
       pointer-events: none;
       overflow: visible;
     }
     #hud.hud-media-focus.open {
       pointer-events: none;
     }
-    /* Keep only a small × overlay — chrome row itself is collapsed. */
     #hud.hud-media-focus .hud-chrome {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      margin: 0;
-      padding: 0;
-      overflow: visible;
+      flex: 0 0 auto;
+      position: relative;
+      height: 34px;
       z-index: 5;
       pointer-events: none;
     }
     #hud.hud-media-focus #hud-close {
-      top: 8px;
-      right: 8px;
-      width: 32px;
-      height: 32px;
       pointer-events: auto;
       opacity: 1;
       visibility: visible;
-      background: rgba(0, 0, 0, 0.55);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
     }
+    /* Keep the normal sci-fi frame (border, glow, chamfer, corner ticks).
+       Use an opaque fill and no backdrop-filter — blur on ancestors makes
+       YouTube iframes look washed/dark in Chromium. */
     #hud.hud-media-focus .hud-panel {
       pointer-events: auto;
-      height: 100%;
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 0;
       width: 100%;
-      padding: 0 !important;
-      margin: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      background: transparent !important;
-      background-image: none !important;
+      padding: 18px;
+      background-color: rgba(4, 10, 22, 0.96);
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
-      clip-path: none !important;
       overflow: hidden;
     }
-    #hud.hud-media-focus .hud-panel::before,
-    #hud.hud-media-focus .hud-panel::after {
-      display: none !important;
-      content: none !important;
-    }
-    /* Fully remove non-media chrome (not just fade). */
+    /* Hide non-media content; keep the panel chrome. */
     #hud.hud-media-focus .hud-above,
     #hud.hud-media-focus .hud-title-bar,
     #hud.hud-media-focus .hud-index,
@@ -721,18 +705,25 @@
       justify-content: center;
       margin: 0;
       padding: 0;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+      isolation: isolate;
     }
     #hud.hud-media-focus .hud-image,
     #hud.hud-media-focus .hud-video {
       margin: 0 !important;
-      border: none !important;
       max-width: 100%;
       max-height: 100%;
       background: #000;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
     }
     #hud.hud-media-focus .hud-image {
       width: auto;
       height: auto;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     #hud.hud-media-focus .hud-image img {
       max-width: 100%;
@@ -740,6 +731,9 @@
       width: auto;
       height: auto;
       object-fit: contain;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
     }
     #hud.hud-media-focus .hud-video {
       width: var(--hud-focus-media-w, 100%);
@@ -747,12 +741,20 @@
       max-width: 100%;
       max-height: 100%;
       aspect-ratio: auto;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     #hud.hud-media-focus .hud-video.hud-video-vertical {
       width: var(--hud-focus-media-w, 100%);
       height: var(--hud-focus-media-h, auto);
       aspect-ratio: auto;
       max-height: 100%;
+    }
+    #hud.hud-media-focus .hud-video iframe {
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+      /* Promote out of any residual filtered stacking context */
+      transform: translateZ(0);
     }
     #hud.hud-media-focus .hud-image:not(.hud-media-focus-active),
     #hud.hud-media-focus .hud-video:not(.hud-media-focus-active) {
@@ -860,6 +862,12 @@
     }
     #hud.open .hud-panel {
       pointer-events: auto;
+    }
+    /* iframe under backdrop-filter composites dark in Chromium — opaque fill when video present. */
+    .hud-panel:has(.hud-video iframe) {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background-color: rgba(4, 10, 22, 0.94);
     }
     #hud.hud-clipping .hud-panel {
       /* JS drives inset() during staged open/close; overrides chamfer polygon. */
@@ -1230,8 +1238,10 @@
       margin: 0 0 12px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(0, 0, 0, 0.35);
+      /* Solid black — translucent plate + panel backdrop-filter darkens YT iframes. */
+      background: #000;
       cursor: zoom-in;
+      isolation: isolate;
     }
     .hud-video.hud-video-vertical {
       /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
@@ -1249,6 +1259,9 @@
       width: 100%;
       height: 100%;
       border: 0;
+      opacity: 1;
+      filter: none;
+      mix-blend-mode: normal;
     }
     .hud-links {
       display: flex;
