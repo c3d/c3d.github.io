@@ -27,11 +27,14 @@ function extractBullets(markdown) {
     const bullet = line.match(/^[-*+]\s+(.+)/);
     if (bullet) {
       // Keep [label](url) as HTML anchors so print + HUD bullet fallbacks stay clickable.
+      // Hash hrefs are in-app constellation deep links — no target=_blank.
       let text = bullet[1].replace(/\*\*/g, '').replace(/\*/g, '').trim();
-      text = text.replace(
-        /\[([^\]]+)\]\(([^)]+)\)/g,
-        '<a class="pv-deep" href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-      );
+      text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
+        if (String(href).startsWith('#')) {
+          return `<a class="hud-deep" href="${href}">${label}</a>`;
+        }
+        return `<a class="pv-deep" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+      });
       if (text) bullets.push({ text, section });
     }
   }
