@@ -110,8 +110,9 @@ const PRINT_COPY = {
     ]
   },
   'emacs-aqua': {
+    title: 'Emacs on Aqua',
     bullets: [
-      'First graphical port of Emacs on macOS (at the time still called Rhapsody), first Emacs with transparent windows'
+      'Graphical port of Emacs on macOS Rhapsody, first Emacs with transparent windows'
     ]
   },
   de200c: {
