@@ -7,7 +7,8 @@ weight: 9
 related:
   - taodyne
   - xl-tao3d
-videos: []
+videos:
+  - Ts7uoqeK720
 links:
   - label: Taodyne blog
     url: 'http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d'

@@ -3811,7 +3811,7 @@ void main() {
 <li>Red Skin Cat — personal technical brain dump</li>
 <li>Taodyne blog — Tao3D tutorials, opinions, and product news</li>
 </ul>
-`,bullets:[{text:"Grenouille Bouillie — tech frustrations and French politics",section:"Technical and personal blogs"},{text:"Red Skin Cat — personal technical brain dump",section:"Technical and personal blogs"},{text:"Taodyne blog — Tao3D tutorials, opinions, and product news",section:"Technical and personal blogs"}]},{id:"breakout-tao3d",title:"Breakout in Tao3D",theme:"Games & 3D",years:null,weight:7,related:["taodyne","xl-tao3d"],videos:[],links:[{label:"Taodyne blog",url:"http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"}],images:["/cv/media/breakout-tao3d.jpg"],content:`<h2>Demo game under 300 lines of Tao3D</h2>
+`,bullets:[{text:"Grenouille Bouillie — tech frustrations and French politics",section:"Technical and personal blogs"},{text:"Red Skin Cat — personal technical brain dump",section:"Technical and personal blogs"},{text:"Taodyne blog — Tao3D tutorials, opinions, and product news",section:"Technical and personal blogs"}]},{id:"breakout-tao3d",title:"Breakout in Tao3D",theme:"Games & 3D",years:null,weight:7,related:["taodyne","xl-tao3d"],videos:[],links:[{label:"Taodyne blog",url:"http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"}],images:["/cv/media/breakout-tao3d.png"],content:`<h2>Demo game under 300 lines of Tao3D</h2>
 <ul>
 <li>Breakout-style demo to show short animated programs to students</li>
 <li>Written in Tao3D to illustrate concise interactive 3D coding</li>
@@ -3979,7 +3979,7 @@ void main() {
 <li>Gentle French introduction to incomplete-measurement physics</li>
 <li>Companion to A Theory of Incomplete Measurements</li>
 </ul>
-`,bullets:[{text:"Gentle French introduction to incomplete-measurement physics",section:"Shorter French introduction to TIM ideas"},{text:"Companion to A Theory of Incomplete Measurements",section:"Shorter French introduction to TIM ideas"}]},{id:"sonar-thales",title:"Thales Sonar Serious Game",theme:"Games & 3D",years:null,weight:9,related:["taodyne","xl-tao3d"],videos:[],links:[{label:"Taodyne blog",url:"http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d"}],images:["/cv/media/sonar-thales.jpg"],content:`<h2>Tao3D serious game for Thales Underwater Systems</h2>
+`,bullets:[{text:"Gentle French introduction to incomplete-measurement physics",section:"Shorter French introduction to TIM ideas"},{text:"Companion to A Theory of Incomplete Measurements",section:"Shorter French introduction to TIM ideas"}]},{id:"sonar-thales",title:"Thales Sonar Serious Game",theme:"Games & 3D",years:null,weight:9,related:["taodyne","xl-tao3d"],videos:["Ts7uoqeK720"],links:[{label:"Taodyne blog",url:"http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d"}],images:["/cv/media/sonar-thales.jpg"],content:`<h2>Tao3D serious game for Thales Underwater Systems</h2>
 <ul>
 <li>Interactive presentation of Thales sonar offerings</li>
 <li>Followed by a simulation of sonar operations</li>
@@ -4003,7 +4003,7 @@ void main() {
 <li>Implemented smart streaming in the SPICE remote viewer</li>
 <li>Remote visualization essential to Red Hat&#39;s virtualization offering</li>
 </ul>
-`,bullets:[{text:"Part of the Spice team at Red Hat",section:"Remote visualization for virtualization"},{text:"Implemented smart streaming in the SPICE remote viewer",section:"Remote visualization for virtualization"},{text:"Remote visualization essential to Red Hat's virtualization offering",section:"Remote visualization for virtualization"}]},{id:"taodyne",title:"Taodyne",theme:"Games & 3D",years:"2010-2016",weight:9,print:3,related:["xl-tao3d","3divart"],videos:[],links:[{label:"Tao3D",url:"https://tao3d.sourceforge.net/"}],images:["/cv/media/taodyne.png"],content:`<h2>Founder and CEO — real-time 3D presentations</h2>
+`,bullets:[{text:"Part of the Spice team at Red Hat",section:"Remote visualization for virtualization"},{text:"Implemented smart streaming in the SPICE remote viewer",section:"Remote visualization for virtualization"},{text:"Remote visualization essential to Red Hat's virtualization offering",section:"Remote visualization for virtualization"}]},{id:"taodyne",title:"Taodyne",theme:"Games & 3D",years:"2010-2016",weight:9,print:3,related:["xl-tao3d","3divart"],videos:[],links:[{label:"Tao3D",url:"https://tao3d.sourceforge.net/"}],images:["/cv/media/taodyne.jpg"],content:`<h2>Founder and CEO — real-time 3D presentations</h2>
 <p>Sophia-Antipolis.</p>
 <ul>
 <li>Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)</li>

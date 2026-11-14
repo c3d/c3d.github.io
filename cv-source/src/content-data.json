@@ -134,7 +134,7 @@
       }
     ],
     "images": [
-      "/cv/media/breakout-tao3d.jpg"
+      "/cv/media/breakout-tao3d.png"
     ],
     "content": "<h2>Demo game under 300 lines of Tao3D</h2>\n<ul>\n<li>Breakout-style demo to show short animated programs to students</li>\n<li>Written in Tao3D to illustrate concise interactive 3D coding</li>\n<li>Not a commercial product — a teaching / demo piece</li>\n</ul>\n",
     "bullets": [
@@ -1028,7 +1028,9 @@
       "taodyne",
       "xl-tao3d"
     ],
-    "videos": [],
+    "videos": [
+      "Ts7uoqeK720"
+    ],
     "links": [
       {
         "label": "Taodyne blog",
@@ -1173,7 +1175,7 @@
       }
     ],
     "images": [
-      "/cv/media/taodyne.png"
+      "/cv/media/taodyne.jpg"
     ],
     "content": "<h2>Founder and CEO — real-time 3D presentations</h2>\n<p>Sophia-Antipolis.</p>\n<ul>\n<li>Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)</li>\n<li>Tao3D Studio / Player for interactive 3D documents</li>\n<li>Commercial features: stereoscopy, auto-stereoscopy, signed/encrypted documents</li>\n<li>Technical success but commercial failure</li>\n<li>Awards: Best elevator pitch and Best technology in TIC (Business Accelerator 06)</li>\n<li>Most innovative product — Tao3D (DEVCOM 2012)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Christophe is a very innovative and open minded entrepreneur&quot;</em> — P. Zucchetta</p>\n",
     "bullets": [
