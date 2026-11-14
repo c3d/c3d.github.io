@@ -369,8 +369,10 @@ a.pvn-qr:hover { color: inherit; }
   display: flex;
   align-items: center;
   gap: 1.3mm;
+  width: 100%;
 }
-.pvo-mini { color: var(--orbit-gold); }
+.pvo-block h2 .pvo-heading-label { flex: 0 0 auto; white-space: nowrap; }
+.pvo-mini { flex: 0 0 auto; color: var(--orbit-gold); }
 .pvo-block p { margin: 0 0 0.8mm; font-size: 10.5pt; line-height: 1.22; text-align: left; color: #e8eef8; }
 .pvo-muted { color: #9eb0c8 !important; font-size: 9.9pt !important; }
 .pvo-skills, .pvo-info { list-style: none; margin: 0; padding: 0; }
@@ -409,7 +411,13 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-main { padding: 1.5mm 3mm 1.6mm; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4mm; flex: 1; min-height: 0; }
 .pvo-project h3 a.pv-deep { font-weight: inherit; }
 .pvo-theme { break-inside: avoid; page-break-inside: avoid; }
-.pvo-theme-head { display: flex; align-items: center; gap: 1.4mm; margin-bottom: 0.55mm; }
+.pvo-theme-head {
+  display: flex;
+  align-items: center;
+  gap: 1.4mm;
+  width: 100%;
+  margin-bottom: 0.55mm;
+}
 .pvo-tile {
   width: 4.6mm; height: 4.6mm; background: var(--orbit-navy); border-radius: 1mm;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -418,8 +426,18 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-theme-head h2 {
   font-family: Orbitron, sans-serif; font-size: 6.6pt; letter-spacing: 0.07em;
   text-transform: uppercase; margin: 0; color: var(--orbit-navy); white-space: nowrap;
+  flex: 0 0 auto;
 }
-.pvo-rule { flex: 1; height: 0.3mm; background: var(--orbit-gold); opacity: 0.85; }
+/* Theme title deep-link: gold rule is the section decoration, not a title underline */
+.pvo-theme-head h2 a.pv-deep { border-bottom: none; }
+.pvo-rule {
+  flex: 1 1 0%;
+  min-width: 0;
+  align-self: center;
+  height: 0.3mm;
+  background: var(--orbit-gold);
+  opacity: 0.85;
+}
 .pvo-timeline { position: relative; margin-left: 1.8mm; padding-left: 2.5mm; border-left: 0.35mm solid var(--orbit-gold); }
 .pvo-project { position: relative; margin: 0 0 0.45mm; }
 .pvo-dot {
