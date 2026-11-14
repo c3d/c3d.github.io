@@ -350,26 +350,26 @@
       clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
       color: #e8f4ff;
     }
-    .search-hud-kicker {
-      font-family: Orbitron, sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #40e0ff;
-      margin: 0 0 8px;
-    }
     .search-hud-query {
       font-family: Orbitron, sans-serif;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      min-height: 1.2em;
+      letter-spacing: 0.03em;
+      line-height: 1.35;
+      min-height: 1.35em;
       word-break: break-word;
       color: #f2f9ff;
+      margin: 0;
     }
-    .search-hud-query:empty::after {
-      content: '…';
-      opacity: 0.35;
+    .search-hud-query .search-hud-prefix,
+    .search-hud-query .search-hud-suffix {
+      color: #40e0ff;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+    .search-hud-query .search-hud-typed {
+      color: #f2f9ff;
+      font-weight: 700;
     }
     .search-hud-input {
       position: absolute;
@@ -779,17 +779,16 @@
         width: 100%;
         height: auto;
         opacity: 1;
-        margin-top: 8px;
+        margin-top: 10px;
         padding: 10px 12px;
         border: 1px solid rgba(64, 224, 255, 0.35);
         background: rgba(0, 0, 0, 0.35);
         color: #f2f9ff;
         font-family: Orbitron, sans-serif;
-        font-size: 18px;
+        font-size: 16px;
         letter-spacing: 0.04em;
         caret-color: #40e0ff;
       }
-      .search-hud-query { display: none; }
     }
 
     @media print {
@@ -976,8 +975,7 @@
 
   <div id="search-hud" hidden aria-hidden="true" role="search">
     <div class="search-hud-panel">
-      <p class="search-hud-kicker">Searching…</p>
-      <div class="search-hud-query" data-search-query></div>
+      <p class="search-hud-query" data-search-query aria-live="polite"><span class="search-hud-prefix">Searching '</span><span class="search-hud-typed" data-search-typed></span><span class="search-hud-suffix">'…</span></p>
       <input id="search-input" class="search-hud-input" type="search" enterkeyhint="search"
              autocomplete="off" autocorrect="off" spellcheck="false"
              aria-label="Search constellation" />

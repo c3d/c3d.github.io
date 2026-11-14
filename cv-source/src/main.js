@@ -1125,7 +1125,7 @@ function isEditableTarget(el) {
 
 function updateSearchHud() {
   const hud = document.getElementById('search-hud');
-  const qEl = hud?.querySelector('[data-search-query]');
+  const typedEl = hud?.querySelector('[data-search-typed]');
   const meta = hud?.querySelector('[data-search-meta]');
   const input = document.getElementById('search-input');
   if (!hud) return;
@@ -1136,7 +1136,8 @@ function updateSearchHud() {
   }
   hud.hidden = false;
   hud.setAttribute('aria-hidden', 'false');
-  if (qEl) qEl.textContent = searchQuery;
+  // Exact live copy: Searching 'typed text here'…
+  if (typedEl) typedEl.textContent = searchQuery;
   if (input && input !== document.activeElement) input.value = searchQuery;
   const q = foldText(searchQuery.trim());
   const n = q ? searchMatchIds.size : 0;
