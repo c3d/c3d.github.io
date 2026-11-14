@@ -1409,11 +1409,25 @@ function resolveLabelTargets() {
   labelResolveAt = performance.now() + 250;
 }
 
+function rectsOverlap(a, b, pad = 0) {
+  return !(
+    a.right < b.left - pad
+    || a.left > b.right + pad
+    || a.bottom < b.top - pad
+    || a.top > b.bottom + pad
+  );
+}
+
 /** Project world anchors → pixel-snapped HTML mini-HUD labels. */
 function updateLabels(_dt) {
   const w = window.innerWidth;
   const h = window.innerHeight;
   const camPos = camera.position;
+  const hudEl = document.getElementById('hud');
+  const hudOpen = !!currentStar && !!hudEl?.classList.contains('open');
+  // Bottom-docked HUD (narrow) sits over the constellation; desktop uses a right rail.
+  const narrowHud = w <= 768;
+  const hudRect = hudOpen ? hudEl.getBoundingClientRect() : null;
 
   labelSprites.forEach((label) => {
     const el = label.userData.el;
@@ -1442,6 +1456,9 @@ function updateLabels(_dt) {
       } else {
         el.classList.remove('ms-label-hud-open');
       }
+      // Narrow: hide all project mini-labels while HUD is open so they cannot
+      // show through the translucent panel and cover cartoon titles / media.
+      if (wantVisible && hudOpen && narrowHud) wantVisible = false;
     }
 
     _labelNdc.copy(_labelWorld).project(camera);
@@ -1463,6 +1480,17 @@ function updateLabels(_dt) {
       label.userData.lastSy = sy;
     }
     el.style.transform = `translate3d(${sx}px, ${sy}px, 0) translate(-50%, calc(-100% - 6px))`;
+
+    // Desktop rail: hide any project label that projects over the open HUD glass.
+    if (wantVisible && hudOpen && !narrowHud && !isTheme && hudRect) {
+      const approx = {
+        left: sx - 120,
+        right: sx + 120,
+        top: sy - 36,
+        bottom: sy + 4
+      };
+      if (rectsOverlap(approx, hudRect, 8)) wantVisible = false;
+    }
 
     if (!wantVisible) {
       el.classList.remove('is-visible');
