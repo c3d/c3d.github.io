@@ -37,7 +37,7 @@ const PRINT_COPY = {
   ecutest: {
     title: 'HP ECUTEST Real Time Test System for car electronics',
     bullets: [
-      'Engine control unit (ECU) real-time testing and validation, 400 analog and digital I/O signals, "The Matrix" for ECUs'
+      'Engine control unit (ECU) real-time testing and validation, 400 analog and digital I/O signals'
     ]
   },
   spice: {
