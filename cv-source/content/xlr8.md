@@ -17,6 +17,8 @@ links:
     url: 'https://llvm.org'
   - label: Lua
     url: 'https://www.lua.org'
+  - label: Python
+    url: 'https://www.python.org'
   - label: RISC-V
     url: 'https://riscv.org'
 topics:
