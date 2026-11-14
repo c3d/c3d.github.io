@@ -221,6 +221,69 @@ let controls = {
   lookAt: new THREE.Vector3(0, -8, 0)
 };
 
+/** Keyboard navigation — velocity with accel while held, damp on release. */
+const KEY_NAV = Object.freeze({
+  orbitAccel: 2.4,   // rad/s²
+  orbitMax: 1.35,    // rad/s
+  orbitDamp: 5.5,    // 1/s
+  dollyAccel: 220,   // zoom units/s²
+  dollyMax: 140,
+  dollyDamp: 5.5,
+  hudScrollAccel: 4200, // px/s²
+  hudScrollMax: 1400,
+  hudScrollDamp: 7,
+  hudPageAccel: 5200,
+  hudPageMax: 1800
+});
+const keyNav = {
+  left: false,
+  right: false,
+  up: false,
+  down: false,
+  pageUp: false,
+  pageDown: false,
+  velRotX: 0,
+  velRotY: 0,
+  velZoom: 0,
+  hudVelY: 0,
+  hudVelX: 0
+};
+
+function clearKeyNavHeld() {
+  keyNav.left = keyNav.right = keyNav.up = keyNav.down = false;
+  keyNav.pageUp = keyNav.pageDown = false;
+}
+
+function isHudOpen() {
+  const hud = document.getElementById('hud');
+  return !!(hud?.classList.contains('open') && (viewLevel >= 3 || currentStar));
+}
+
+/** Skip nav when typing or when a YouTube iframe / form control has focus. */
+function isKeyboardNavBlocked(target) {
+  if (isEditableTarget(target)) return true;
+  if (target?.id === 'search-input') return true;
+  const ae = document.activeElement;
+  if (!ae || ae === document.body) return false;
+  const tag = (ae.tagName || '').toLowerCase();
+  if (tag === 'iframe' || tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+  if (ae.isContentEditable) return true;
+  if (ae.closest?.('.hud-video, [data-hud="media"] iframe')) return true;
+  return false;
+}
+
+function approachVel(vel, target, accel, dt) {
+  if (vel < target) return Math.min(target, vel + accel * dt);
+  if (vel > target) return Math.max(target, vel - accel * dt);
+  return vel;
+}
+
+function dampVel(vel, damp, dt) {
+  const f = Math.exp(-damp * dt);
+  const next = vel * f;
+  return Math.abs(next) < 1e-4 ? 0 : next;
+}
+
 const STAR_PICK_RADIUS_PX = 14;
 /** Featured stars (`featured: true` or explicit `scale`) render larger; default 1.5×. */
 const FEATURED_STAR_SCALE = 1.5;
@@ -3247,6 +3310,124 @@ function pickStarAt(clientX, clientY) {
   return best;
 }
 
+/** Enter key: open the node whose projection is closest to the viewport center. */
+function pickStarNearestScreenCenter() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const cx = w * 0.5;
+  const cy = h * 0.5;
+  const ndc = new THREE.Vector3();
+  let best = null;
+  let bestScore = Infinity;
+  const maxD = Math.min(w, h) * 0.48;
+
+  stars.forEach((star) => {
+    ndc.copy(star.position).project(camera);
+    if (ndc.z > 1 || ndc.z < -1) return;
+    const sx = (ndc.x * 0.5 + 0.5) * w;
+    const sy = (-ndc.y * 0.5 + 0.5) * h;
+    let score = Math.hypot(sx - cx, sy - cy);
+    if (score > maxD) return;
+    // Prefer the focused cluster when in L2.
+    if (viewLevel === 2 && focusTheme && star.project?.theme !== focusTheme) score += maxD;
+    if (score < bestScore) {
+      bestScore = score;
+      best = star;
+    }
+  });
+  return best;
+}
+
+function zoomOutOneLevel() {
+  if (isHudOpen() || viewLevel >= 3 || currentStar) {
+    closeHUD();
+    return;
+  }
+  if (viewLevel === 2) {
+    clearClusterQueryParam();
+    exitClusterView();
+  }
+  // L1 overview: already zoomed out — no-op.
+}
+
+function updateKeyboardNav(dt) {
+  if (dt <= 0) return;
+  const hudOpen = isHudOpen();
+
+  if (hudOpen) {
+    // Decelerate unused orbit/dolly velocities so release feels clean after close.
+    keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+    keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+    keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+
+    const below = document.querySelector('#hud .hud-below-inner');
+    if (!below) return;
+    const canScrollX = below.scrollWidth > below.clientWidth + 4;
+    // Left/Right: horizontal when content overflows; otherwise same axis as Up/Down
+    // (smooth vertical scroll — documented in the PR).
+    let wantY = (keyNav.down ? 1 : 0) + (keyNav.up ? -1 : 0);
+    let wantX = 0;
+    if (canScrollX) {
+      wantX = (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+    } else {
+      wantY += (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+    }
+    const yMax = canScrollX || !(keyNav.left || keyNav.right)
+      ? KEY_NAV.hudScrollMax
+      : KEY_NAV.hudPageMax;
+    const yAccel = yMax === KEY_NAV.hudPageMax ? KEY_NAV.hudPageAccel : KEY_NAV.hudScrollAccel;
+    if (wantY) keyNav.hudVelY = approachVel(keyNav.hudVelY, wantY * yMax, yAccel, dt);
+    else keyNav.hudVelY = dampVel(keyNav.hudVelY, KEY_NAV.hudScrollDamp, dt);
+    if (wantX) keyNav.hudVelX = approachVel(keyNav.hudVelX, wantX * KEY_NAV.hudScrollMax, KEY_NAV.hudScrollAccel, dt);
+    else keyNav.hudVelX = dampVel(keyNav.hudVelX, KEY_NAV.hudScrollDamp, dt);
+
+    if (keyNav.hudVelY) below.scrollTop += keyNav.hudVelY * dt;
+    if (keyNav.hudVelX) below.scrollLeft += keyNav.hudVelX * dt;
+    return;
+  }
+
+  keyNav.hudVelX = dampVel(keyNav.hudVelX, KEY_NAV.hudScrollDamp, dt);
+  keyNav.hudVelY = dampVel(keyNav.hudVelY, KEY_NAV.hudScrollDamp, dt);
+
+  if (isFlying || autoMode) {
+    keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+    keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+    keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+    return;
+  }
+
+  const wantX = (keyNav.down ? 1 : 0) + (keyNav.up ? -1 : 0);
+  const wantY = (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+  // Page Up = dolly in (smaller radius); Page Down = dolly out.
+  const wantZ = (keyNav.pageDown ? 1 : 0) + (keyNav.pageUp ? -1 : 0);
+
+  if (wantX) keyNav.velRotX = approachVel(keyNav.velRotX, wantX * KEY_NAV.orbitMax, KEY_NAV.orbitAccel, dt);
+  else keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+  if (wantY) keyNav.velRotY = approachVel(keyNav.velRotY, wantY * KEY_NAV.orbitMax, KEY_NAV.orbitAccel, dt);
+  else keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+  if (wantZ) keyNav.velZoom = approachVel(keyNav.velZoom, wantZ * KEY_NAV.dollyMax, KEY_NAV.dollyAccel, dt);
+  else keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+
+  if (keyNav.velRotX) {
+    controls.targetRotationX = THREE.MathUtils.clamp(
+      controls.targetRotationX + keyNav.velRotX * dt,
+      -1.1,
+      1.1
+    );
+  }
+  if (keyNav.velRotY) controls.targetRotationY += keyNav.velRotY * dt;
+  if (keyNav.velZoom) {
+    const zMin = viewLevel >= 2 ? 36 : 120;
+    const zMax = viewLevel >= 2 ? 240 : 520;
+    controls.targetZoom = THREE.MathUtils.clamp(
+      controls.targetZoom + keyNav.velZoom * dt,
+      zMin,
+      zMax
+    );
+    if (viewLevel === 2) refreshClusterPoseFromControls();
+  }
+}
+
 /**
  * Scripted check: activate every visible label and assert HUD title matches.
  * Exposed on window for QA / CI scripts.
@@ -3436,27 +3617,56 @@ function setupInteraction() {
     }
   });
 
+  const setArrowHeld = (key, pressed) => {
+    if (key === 'ArrowLeft') keyNav.left = pressed;
+    else if (key === 'ArrowRight') keyNav.right = pressed;
+    else if (key === 'ArrowUp') keyNav.up = pressed;
+    else if (key === 'ArrowDown') keyNav.down = pressed;
+    else if (key === 'PageUp') keyNav.pageUp = pressed;
+    else if (key === 'PageDown') keyNav.pageDown = pressed;
+    else return false;
+    return true;
+  };
+
   window.addEventListener('keydown', (e) => {
-    // Type-to-search: capture printable keys when not in a form field
+    const blocked = isKeyboardNavBlocked(e.target);
     const inEditable = isEditableTarget(e.target);
     const inSearchInput = e.target?.id === 'search-input';
+    const hudOpen = isHudOpen();
+    const navKey = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Enter', 'Backspace', 'Escape'].includes(e.key);
 
     if (e.key === 'Escape') {
+      if (blocked && !searchActive && !hudOpen) return;
       noteUserActivity();
       closePrintStyleMenu();
+      e.preventDefault();
       if (searchActive) {
-        e.preventDefault();
         closeSearchHud();
         return;
       }
-      if (viewLevel >= 3 || currentStar) closeHUD();
-      else if (viewLevel === 2) exitClusterView();
+      // HUD open: close. Else step out of cluster → overview.
+      zoomOutOneLevel();
       return;
+    }
+
+    if (blocked) return;
+
+    if (hudOpen && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (setArrowHeld(e.key, true)) {
+        e.preventDefault();
+        noteUserActivity();
+        return;
+      }
+      if (e.key === 'Enter' || e.key === 'Backspace') {
+        e.preventDefault();
+        noteUserActivity();
+        closeHUD();
+        return;
+      }
     }
 
     if (!inEditable && !inSearchInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
       // Search open: Backspace edits; Delete/Esc clear (Esc handled above).
-      // Search closed (empty buffer): Backspace / Delete → Overview (O is a search letter).
       if (e.key === 'Backspace') {
         e.preventDefault();
         noteUserActivity();
@@ -3465,7 +3675,7 @@ function setupInteraction() {
           if (!next) closeSearchHud();
           else setSearchQuery(next);
         } else {
-          enterOverviewMode();
+          zoomOutOneLevel();
         }
         return;
       }
@@ -3473,13 +3683,23 @@ function setupInteraction() {
         e.preventDefault();
         noteUserActivity();
         if (searchActive) closeSearchHud();
-        else enterOverviewMode();
+        else zoomOutOneLevel();
         return;
       }
-      if (e.key === 'Enter' && searchActive) {
+      if (e.key === 'Enter') {
         e.preventDefault();
         noteUserActivity();
-        commitSearchBestMatch();
+        if (searchActive) {
+          commitSearchBestMatch();
+          return;
+        }
+        const star = pickStarNearestScreenCenter();
+        if (star) openHUD(star);
+        return;
+      }
+      if (setArrowHeld(e.key, true)) {
+        e.preventDefault();
+        noteUserActivity();
         return;
       }
       // No single-letter command shortcuts — printable keys always type-to-search.
@@ -3491,8 +3711,14 @@ function setupInteraction() {
       }
     }
 
+    if (navKey) e.preventDefault();
     noteUserActivity();
   });
+
+  window.addEventListener('keyup', (e) => {
+    if (setArrowHeld(e.key, false)) e.preventDefault();
+  });
+  window.addEventListener('blur', () => clearKeyNavHeld());
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -3535,9 +3761,13 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
 
+  updateKeyboardNav(dt);
+
   // Apply orbit at L1–L3; idle auto-spin only in overview. Never fight fly tweens.
   if (!isFlying && !autoMode) {
-    if (viewLevel === 1 && !controls.mouseDown) {
+    const keyOrbiting = keyNav.left || keyNav.right || keyNav.up || keyNav.down
+      || Math.abs(keyNav.velRotX) > 1e-4 || Math.abs(keyNav.velRotY) > 1e-4;
+    if (viewLevel === 1 && !controls.mouseDown && !keyOrbiting && !isHudOpen()) {
       controls.targetRotationY += 0.00025;
     }
     if (viewLevel >= 1 && viewLevel <= 3) {
