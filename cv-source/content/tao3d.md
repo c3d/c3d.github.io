@@ -1,7 +1,7 @@
 ---
 id: tao3d
 title: Tao3D
-theme: Languages & Compilers
+theme: Games & 3D
 years: 2010-Present
 weight: 9
 featured: true
@@ -12,6 +12,7 @@ related:
   - taodyne
   - 3divart
   - firefly
+  - alpha-waves
 videos: []
 links:
   - label: Tao3D
