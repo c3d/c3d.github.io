@@ -40,12 +40,11 @@ topics:
 
 Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.
 
-Pre-silicon Itanium C/C++ compiler: binary interface (kernel & user), exceptions, performance, templates. Cross-team & cross-industry
-
+- Led multi-team pre-silicon cross and native bring-up, kernel and user ABI
+- Front-end team lead: exceptions, templates, performance, precompiled headers
 - Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation
 - Initiated the common C++ ABI effort ([Itanium C++ ABI](https://itanium-cxx-abi.github.io/cxx-abi/)), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde
 - Represented HP at the C++ standards committee for a short period
 - Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick
-- Contributed to precompiled headers, another compile-time performance improvement
 
 **Quote:** *"An exceedingly sharp engineer"* — Mark Mitchell

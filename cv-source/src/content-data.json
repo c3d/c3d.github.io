@@ -1328,8 +1328,16 @@
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<p>Pre-silicon Itanium C/C++ compiler: binary interface (kernel &amp; user), exceptions, performance, templates. Cross-team &amp; cross-industry</p>\n<ul>\n<li>Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n<li>Contributed to precompiled headers, another compile-time performance improvement</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<ul>\n<li>Led multi-team pre-silicon cross and native bring-up, kernel and user ABI</li>\n<li>Front-end team lead: exceptions, templates, performance, precompiled headers</li>\n<li>Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
+      {
+        "text": "Led multi-team pre-silicon cross and native bring-up, kernel and user ABI",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Front-end team lead: exceptions, templates, performance, precompiled headers",
+        "section": "C++ compiler for Itanium"
+      },
       {
         "text": "Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation",
         "section": "C++ compiler for Itanium"
@@ -1344,10 +1352,6 @@
       },
       {
         "text": "Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Contributed to precompiled headers, another compile-time performance improvement",
         "section": "C++ compiler for Itanium"
       }
     ]
