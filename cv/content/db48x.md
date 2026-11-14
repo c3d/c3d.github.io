@@ -5,7 +5,7 @@ theme: Languages & Compilers
 years: 2022-Present
 weight: 9
 print: 2
-related: [hp48-games]
+related: [hp48-games, hpds]
 videos:
   - WU5Dg1mPkl8
   - 34pPycq8ia8

@@ -5,8 +5,7 @@ theme: Games & 3D
 years: null
 weight: 7
 related:
-  - taodyne
-  - xl-tao3d
+  - tao3d
 videos: []
 links:
   - label: Taodyne blog

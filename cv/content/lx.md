@@ -5,7 +5,7 @@ theme: Languages & Compilers
 years: 1988-1998
 weight: 8
 related:
-  - xl-tao3d
+  - xl
   - mozart
   - moka
 videos: []

@@ -1,26 +1,28 @@
 ---
 id: hpcpp
-title: HP aC++ Compiler & C++ ABI
+title: HP aC++ Compiler
 theme: Languages & Compilers
 years: 1998-2000
 weight: 10
 print: 1
-related: []
+related:
+  - itanium-cxx-abi
 videos: []
 links:
-  - label: Itanium C++ ABI
-    url: 'https://itanium-cxx-abi.github.io/cxx-abi/'
+  - label: aC++
+    url: 'http://www.hp.com/go/aCC'
 images:
-  - /cv/media/hpcpp.jpg
+  - /cv/media/hpcpp.png
 ---
-## C++ templates, exception handling, and the industry ABI
+## C++ compiler for Itanium
 
 Cupertino, Hewlett-Packard Compiler and Languages Lab.
 
-- Worked on C++ templates and exception handling
-- Initiated / contributed to the common C++ ABI for Itanium
-- Represented HP at the C++ standards committee for a period
-- Built the first native Itanium C and C++ compilers
-- Exception-handling approach remains widely used in modern compilers
+- Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)
+- Early work on templates, performance, the run-time library, and precompiled headers
+- Implemented exception handling
+- One of the initiators of the common C++ ABI effort
+- Represented HP at the C++ standards committee for a short period
+- Built the first native Itanium C and C++ compilers (coordinating 16 teams)
 
 **Quote:** *"An exceedingly sharp engineer"* — Mark Mitchell

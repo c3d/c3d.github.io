@@ -4,7 +4,7 @@ title: Firefly
 theme: Games & 3D
 years: 
 weight: 9
-related: [xl-tao3d, 3divart, taodyne]
+related: [tao3d, 3divart, taodyne]
 videos:
   - GUMqT9W5BG8
 links:
