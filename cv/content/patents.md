@@ -12,7 +12,7 @@ links:
   - label: Justia inventor page
     url: 'https://patents.justia.com/inventor/christophe-de-dinechin'
 images:
-  - /cv/media/patents.png
+  - /cv/media/patents.jpg
 ---
 ## Issued patents (Hewlett-Packard)
 

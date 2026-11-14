@@ -8,8 +8,6 @@ related:
   - capavoit
 videos: []
 links: []
-images:
-  - /cv/media/musolver.png
 ---
 ## Multi-equation numerical solver on Atari ST
 

@@ -11,7 +11,7 @@ links:
   - label: Itanium C++ ABI
     url: 'https://itanium-cxx-abi.github.io/cxx-abi/'
 images:
-  - /cv/media/hpcpp.png
+  - /cv/media/hpcpp.jpg
 ---
 ## C++ templates, exception handling, and the industry ABI
 

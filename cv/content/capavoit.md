@@ -9,7 +9,7 @@ related:
 videos: []
 links: []
 images:
-  - /cv/media/capavoit.png
+  - /cv/media/capavoit.jpg
 ---
 ## Subway car capacity planning for Axlog
 

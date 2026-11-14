@@ -11,7 +11,7 @@ links:
   - label: DxO
     url: 'https://www.dxo.com/'
 images:
-  - /cv/media/dxo-one.png
+  - /cv/media/dxo-one.jpg
 ---
 ## Software quality for a diminutive connected camera
 

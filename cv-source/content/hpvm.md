@@ -13,7 +13,7 @@ links:
   - label: HPVM on Wikipedia
     url: 'https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines'
 images:
-  - /cv/media/hpvm.png
+  - /cv/media/hpvm.jpg
 ---
 ## Enterprise-grade virtualization for high-end Itanium servers
 

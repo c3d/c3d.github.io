@@ -10,7 +10,7 @@ related:
 videos: []
 links: []
 images:
-  - /cv/media/ecu-cartoons.png
+  - /cv/media/ecu-cartoons.jpg
 ---
 ## Release cartoons for HP products
 

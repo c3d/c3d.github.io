@@ -12,7 +12,7 @@ links:
   - label: Amazon FR
     url: 'https://www.amazon.fr/dp/B0C5GQTWTQ'
 images:
-  - /cv/media/reunifions.png
+  - /cv/media/reunifions.jpg
 ---
 ## Shorter French introduction to TIM ideas
 

@@ -12,7 +12,7 @@ links:
   - label: Taodyne blog
     url: 'http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d'
 images:
-  - /cv/media/sonar-thales.png
+  - /cv/media/sonar-thales.jpg
 ---
 ## Tao3D serious game for Thales Underwater Systems
 

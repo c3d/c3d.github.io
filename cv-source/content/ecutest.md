@@ -9,7 +9,7 @@ related: []
 videos: []
 links: []
 images:
-  - /cv/media/ecutest.png
+  - /cv/media/ecutest.jpg
 ---
 ## Real-time test system for car electronics
 
