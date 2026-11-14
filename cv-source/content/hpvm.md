@@ -8,6 +8,11 @@ print: 1
 related:
   - kata-containers
   - spice
+  - hpvm-cartoon-booted
+  - hpvm-cartoon-virtualdenise
+  - hpvm-cartoon-stress
+  - hpvm-cartoon-ogm
+  - ecu-cartoons
 videos: []
 links:
   - label: HPVM on Wikipedia

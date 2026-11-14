@@ -293,7 +293,10 @@
     "weight": 10,
     "print": 3,
     "related": [],
-    "videos": [],
+    "videos": [
+      "k9KXqVCYPoo"
+    ],
+    "videoAspect": "9:16",
     "links": [
       {
         "label": "DxO",
@@ -301,9 +304,18 @@
       }
     ],
     "images": [
-      "/cv/media/dxo-one.jpg"
+      {
+        "src": "/cv/media/dxo-one.jpg",
+        "credit": {
+          "author": "Wilmot Yeh",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "via": "Wikimedia Commons",
+          "viaUrl": "https://commons.wikimedia.org/wiki/File:DxO_ONE_connected_to_iPhone_6.jpg"
+        }
+      }
     ],
-    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Improving software quality on a highly capable connected camera</li>\n<li>Compact form factor with serious imaging capability</li>\n</ul>\n",
+    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Improving software quality on a highly capable connected camera</li>\n<li>Compact form factor with serious imaging capability</li>\n<li>The unusual viewfinder UI seen in the video was my invention, proposed during my job interview at DxO</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Dual-core ARM + ISP real-time system",
@@ -316,33 +328,261 @@
       {
         "text": "Compact form factor with serious imaging capability",
         "section": "Software quality for a diminutive connected camera"
+      },
+      {
+        "text": "The unusual viewfinder UI seen in the video was my invention, proposed during my job interview at DxO",
+        "section": "Software quality for a diminutive connected camera"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-dontcare",
+    "title": "Marketing needs not care",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/dontcare.jpg"
+    ],
+    "content": "<h2>Marketing needs not care</h2>\n<ul>\n<li>An interesting sales and marketing technique is to know as little about your product as you possibly can...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "An interesting sales and marketing technique is to know as little about your product as you possibly can...",
+        "section": "Marketing needs not care"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-fuses",
+    "title": "Software that blows",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/fuses.jpg"
+    ],
+    "content": "<h2>Software that blows</h2>\n<ul>\n<li>The first time ECUTEST exited without crashing, a bug in its shutdown code closed all relays, causing a massive short-circuit.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "The first time ECUTEST exited without crashing, a bug in its shutdown code closed all relays, causing a massive short-circuit.",
+        "section": "Software that blows"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-injectors",
+    "title": "Customers know best",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/injectors.jpg"
+    ],
+    "content": "<h2>Customers know best</h2>\n<ul>\n<li>This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed of relief.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed of relief.",
+        "section": "Customers know best"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-itfits",
+    "title": "Tight fit",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/itfits.jpg"
+    ],
+    "content": "<h2>Tight fit</h2>\n<ul>\n<li>Putting all the required hardware in the system required quite a bit of creative thinking on the part of our lead hardware engineer.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Putting all the required hardware in the system required quite a bit of creative thinking on the part of our lead hardware engineer.",
+        "section": "Tight fit"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-notools",
+    "title": "Union worker",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/notools.jpg"
+    ],
+    "content": "<h2>Union worker</h2>\n<ul>\n<li>Demo time at Big Customer. We are not allowed to unpack our system, a &quot;Union Guy&quot; has to do it. He shows up one hour later, only to say he needs to come back with his tools...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Demo time at Big Customer. We are not allowed to unpack our system, a \"Union Guy\" has to do it. He shows up one hour later, only to say he needs to come back with his tools...",
+        "section": "Union worker"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-optimist",
+    "title": "Wild optimism",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/optimist.jpg"
+    ],
+    "content": "<h2>Wild optimism</h2>\n<ul>\n<li>Our sales numbers were not good, yet our sales people always found creative ways to present bad data.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Our sales numbers were not good, yet our sales people always found creative ways to present bad data.",
+        "section": "Wild optimism"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-processes",
+    "title": "Processes",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/processes.jpg"
+    ],
+    "content": "<h2>Processes</h2>\n<ul>\n<li>Our new management forced us to convert all our FrameMaker documents to the very buggy Microsoft Word 6. They learned from our problems, and never migrated to Word themselves.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Our new management forced us to convert all our FrameMaker documents to the very buggy Microsoft Word 6. They learned from our problems, and never migrated to Word themselves.",
+        "section": "Processes"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-venturi",
+    "title": "Yes, it's a bit slow to start",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/Venturi.jpg"
+    ],
+    "content": "<h2>Yes, it&#39;s a bit slow to start</h2>\n<ul>\n<li>We had tried all morning to launch this new software, and nothing happened. We went for lunch, and when we came back, it was finally done starting up...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "We had tried all morning to launch this new software, and nothing happened. We went for lunch, and when we came back, it was finally done starting up...",
+        "section": "Yes, it's a bit slow to start"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-yesterdays",
+    "title": "Ever changing product structure",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/yesterdays.jpg"
+    ],
+    "content": "<h2>Ever changing product structure</h2>\n<ul>\n<li>A problem with prototype hardware is that specifications are not exactly frozen solid. That made the product pricing and options also a moving target.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "A problem with prototype hardware is that specifications are not exactly frozen solid. That made the product pricing and options also a moving target.",
+        "section": "Ever changing product structure"
       }
     ]
   },
   {
     "id": "ecu-cartoons",
-    "title": "ECUTEST & HPVM Cartoons",
+    "title": "ECUTEST Cartoons",
     "theme": "Art & Culture",
     "years": null,
     "weight": 6,
     "related": [
       "ecutest",
-      "hpvm"
+      "ecu-cartoon-dontcare",
+      "ecu-cartoon-fuses",
+      "ecu-cartoon-injectors",
+      "ecu-cartoon-itfits",
+      "ecu-cartoon-notools",
+      "ecu-cartoon-optimist",
+      "ecu-cartoon-processes",
+      "ecu-cartoon-venturi",
+      "ecu-cartoon-yesterdays"
     ],
     "videos": [],
     "links": [],
     "images": [
       "/cv/media/ecu-cartoons.jpg"
     ],
-    "content": "<h2>Release cartoons for HP products</h2>\n<ul>\n<li>Cartoon series for HP ECUTEST manufacturing release</li>\n<li>Separate cartoon set for HPVM release humor and milestones</li>\n</ul>\n",
+    "content": "<h2>Release cartoons for HP ECUTEST</h2>\n<ul>\n<li>Cartoon series for the HP ECUTEST manufacturing release</li>\n<li>Each panel is its own satellite star around this hub</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Cartoon series for HP ECUTEST manufacturing release",
-        "section": "Release cartoons for HP products"
+        "text": "Cartoon series for the HP ECUTEST manufacturing release",
+        "section": "Release cartoons for HP ECUTEST"
       },
       {
-        "text": "Separate cartoon set for HPVM release humor and milestones",
-        "section": "Release cartoons for HP products"
+        "text": "Each panel is its own satellite star around this hub",
+        "section": "Release cartoons for HP ECUTEST"
       }
     ]
   },
@@ -353,7 +593,9 @@
     "years": "1994-1998",
     "weight": 9,
     "print": 4,
-    "related": [],
+    "related": [
+      "ecu-cartoons"
+    ],
     "videos": [],
     "links": [],
     "images": [
@@ -550,6 +792,98 @@
     ]
   },
   {
+    "id": "hpvm-cartoon-booted",
+    "title": "First boot, first burp",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/Booted.jpg"
+    ],
+    "content": "<h2>First boot, first burp</h2>\n<ul>\n<li>Todd Kjos successfully dealt simultaneously with the early bring-up of HPVM and the early bring-up of his newborn child...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Todd Kjos successfully dealt simultaneously with the early bring-up of HPVM and the early bring-up of his newborn child...",
+        "section": "First boot, first burp"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-ogm",
+    "title": "What does OGM stand for?",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/OGM.jpg"
+    ],
+    "content": "<h2>What does OGM stand for?</h2>\n<ul>\n<li>Karen Noel did wonders with on-line guest migration and OpenVMS support, but also cooked amazing turkeys.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Karen Noel did wonders with on-line guest migration and OpenVMS support, but also cooked amazing turkeys.",
+        "section": "What does OGM stand for?"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-stress",
+    "title": "Stress testing",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/Stress.jpg"
+    ],
+    "content": "<h2>Stress testing</h2>\n<ul>\n<li>Lynda Rice was responsible for stress-testing HPVM and pushing it to its limit. But she was pushing herself too.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Lynda Rice was responsible for stress-testing HPVM and pushing it to its limit. But she was pushing herself too.",
+        "section": "Stress testing"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "High availability management",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/VirtualDenise.jpg"
+    ],
+    "content": "<h2>High availability management</h2>\n<ul>\n<li>It was hard to tell that Denise Dumas was overworked, given how many things she managed to juggle successfully.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "It was hard to tell that Denise Dumas was overworked, given how many things she managed to juggle successfully.",
+        "section": "High availability management"
+      }
+    ]
+  },
+  {
     "id": "hpvm",
     "title": "HPVM - Enterprise Virtualization",
     "theme": "Systems & Virtualization",
@@ -558,7 +892,12 @@
     "print": 1,
     "related": [
       "kata-containers",
-      "spice"
+      "spice",
+      "hpvm-cartoon-booted",
+      "hpvm-cartoon-virtualdenise",
+      "hpvm-cartoon-stress",
+      "hpvm-cartoon-ogm",
+      "ecu-cartoons"
     ],
     "videos": [],
     "links": [
@@ -888,8 +1227,20 @@
     ],
     "videos": [],
     "links": [],
-    "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
+    "images": [
+      {
+        "src": "/cv/media/musolver.png",
+        "credit": {
+          "caption": "MuSolver adaptait TK!Solver pour Atari ST"
+        }
+      }
+    ],
+    "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>MuSolver was a quasi-clone of TK!Solver for the Atari ST</li>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
     "bullets": [
+      {
+        "text": "MuSolver was a quasi-clone of TK!Solver for the Atari ST",
+        "section": "Multi-equation numerical solver on Atari ST"
+      },
       {
         "text": "First graphical app — TK!Solver-style system of non-linear equations",
         "section": "Multi-equation numerical solver on Atari ST"

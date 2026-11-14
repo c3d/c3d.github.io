@@ -51,7 +51,12 @@ for (const file of fs.readdirSync(contentDir).filter((f) => f.endsWith('.md'))) 
     reports.push({ id: data.id, status: videos.length ? 'video-only' : 'no-media' });
     continue;
   }
-  for (const img of images) {
+  for (const imgEntry of images) {
+    const img = typeof imgEntry === 'string' ? imgEntry : imgEntry?.src;
+    if (!img) {
+      failures.push({ id: data.id, img: imgEntry, reason: 'missing-src' });
+      continue;
+    }
     const rel = String(img).replace(/^\/cv\//, '');
     const candidates = [
       path.join(root, 'public', rel.replace(/^media\//, 'media/')),

@@ -431,6 +431,21 @@
       height: auto;
       vertical-align: top;
     }
+    .hud-image-credit {
+      margin: 0;
+      padding: 6px 8px 7px;
+      font-family: "Source Sans 3", sans-serif;
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(20, 28, 40, 0.78);
+      background: #e8eef6;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .hud-image-credit a {
+      color: #0b4f8a;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
     .hud-video {
       position: relative;
       padding-bottom: 56.25%;
@@ -438,6 +453,16 @@
       margin: 0 0 12px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
+    }
+    .hud-video.hud-video-vertical {
+      /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
+      width: min(100%, 220px);
+      max-height: min(390px, 52vh);
+      margin-left: auto;
+      margin-right: auto;
+      padding-bottom: 0;
+      height: auto;
+      aspect-ratio: 9 / 16;
     }
     .hud-video iframe {
       position: absolute;
@@ -673,7 +698,7 @@
     }
 
   </style>
-  <script type="module" crossorigin src="/cv/assets/main-xMfsszjz.js"></script>
+  <script type="module" crossorigin src="/cv/assets/main-kFrgtVfk.js"></script>
   <link rel="stylesheet" crossorigin href="/cv/assets/main-B3qKxleE.css">
 </head>
 <body>

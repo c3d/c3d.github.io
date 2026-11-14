@@ -668,6 +668,103 @@ function createNebulae() {
 /**
  * Each Markdown bullet → one star, clustered by project inside its theme nebula.
  */
+function addProjectStarCluster({
+  project,
+  cluster,
+  theme,
+  themePos,
+  color,
+  slot = 0,
+  pi = 0,
+  satellite = false
+}) {
+  // Every project gets an L2 mini-HUD label (fixed screen size)
+  {
+    const pl = createLabelAnchor({ text: project.title, hex: color, kind: 'project', parent: scene });
+    const yOff = satellite ? 1.6 : 2.8 + (slot % 2) * 1.1;
+    const xOff = satellite ? ((slot % 2 === 0) ? -1.6 : 1.8) : ((slot % 2 === 0) ? -2.8 : 3.2);
+    pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 2) * 0.8));
+    pl.userData.projectId = project.id;
+    pl.userData.projectTheme = theme;
+    pl.userData.priority = satellite ? Math.min(project.weight || 3, 3) : (project.weight || 5);
+    pl.userData.satelliteOf = project.satelliteOf || null;
+    pl.userData.home = pl.position.clone();
+    pl.userData.themeOffset = pl.position.clone().sub(themePos);
+    pl.userData.screenOffset = { x: slot % 2 === 0 ? -10 : 10, y: -14 };
+  }
+
+  const bullets = project.bullets || [];
+  const n = Math.max(bullets.length, 1);
+  const starBullets = bullets.length ? bullets : [{ text: project.title || project.id, section: null }];
+  starBullets.forEach((bullet, bi) => {
+    const br = mulberry32(10000 + pi * 97 + bi * 13 + (satellite ? 3331 : 0));
+    const angle = (bi / n) * Math.PI * 2 + br() * 0.4;
+    const radius = satellite ? (1.2 + br() * 1.6) : (4 + br() * 7);
+    const position = new THREE.Vector3(
+      cluster.x + Math.cos(angle) * radius,
+      cluster.y + (br() - 0.5) * (satellite ? 2.2 : 6),
+      cluster.z + Math.sin(angle) * radius
+    );
+
+    const weight = project.weight || (satellite ? 3 : 5);
+    const size = satellite
+      ? 0.85 + (Math.min(weight, 4) / 10) * 1.1
+      : 1.6 + (weight / 10) * 2.2;
+    const haloOpacity = satellite ? 0.55 : 0.92;
+
+    const group = new THREE.Group();
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: softThemeDiscs[theme] || softWhiteDisc,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: haloOpacity,
+      fog: true
+    }));
+    halo.scale.set(size * 2.8, size * 2.8, 1);
+    group.add(halo);
+
+    const core = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: softWhiteDisc,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: satellite ? 0.85 : 1,
+      fog: true
+    }));
+    core.scale.set(size * 0.7, size * 0.7, 1);
+    group.add(core);
+    group.position.copy(position);
+    scene.add(group);
+
+    stars.push({
+      mesh: group,
+      halo,
+      position,
+      themeOffset: position.clone().sub(themePos),
+      color,
+      size,
+      bullet,
+      project,
+      id: `${project.id}__${bi}`,
+      satellite: !!satellite
+    });
+  });
+
+  // Snap project label just above the project's first star
+  const pl = labelSprites.find(
+    (l) => l.userData.kind === 'project' && l.userData.projectId === project.id
+  );
+  const firstStar = stars.find((s) => s.project.id === project.id);
+  if (pl && firstStar) {
+    const side = (slot % 2 === 0) ? -1 : 1;
+    const lift = satellite ? 2.0 : 3.2;
+    pl.position.copy(firstStar.position).add(new THREE.Vector3(side * (satellite ? 1.5 : 2.4), lift, 0.4));
+    pl.userData.home.copy(pl.position);
+    pl.userData.themeOffset = pl.position.clone().sub(themePos);
+  }
+}
+
 function createStarsFromBullets(projectList) {
   // Skip "about" intro — it is header/about, not a Tools project cluster
   projects = projectList.filter((p) => p.role !== 'about' && p.id !== 'intro');
@@ -681,10 +778,11 @@ function createStarsFromBullets(projectList) {
     byTheme[theme].push(p);
   });
 
+  // Place hubs first so satellites can orbit them (even across themes).
   Object.keys(byTheme).forEach((theme) => {
     const themePos = THEME_POSITIONS[theme];
     const color = THEME_COLORS[theme];
-    const plist = byTheme[theme];
+    const plist = byTheme[theme].filter((p) => !p.satelliteOf);
     const themeRand = mulberry32(theme.split('').reduce((a, c) => a + c.charCodeAt(0), 0));
 
     // Rank projects so high-weight labels get preferred screen slots
@@ -703,84 +801,58 @@ function createStarsFromBullets(projectList) {
         themePos.z + Math.sin(angle) * ring + (themeRand() - 0.5) * 8
       );
 
-      // Every project gets an L2 mini-HUD label (fixed screen size)
-      {
-        const pl = createLabelAnchor({ text: project.title, hex: color, kind: 'project', parent: scene });
-        const yOff = 2.8 + (slot % 2) * 1.1;
-        const xOff = (slot % 2 === 0 ? -2.8 : 3.2);
-        pl.position.copy(cluster).add(new THREE.Vector3(xOff, yOff, (slot % 2) * 0.8));
-        pl.userData.projectId = project.id;
-        pl.userData.projectTheme = theme;
-        pl.userData.priority = project.weight || 5;
-        pl.userData.home = pl.position.clone();
-        pl.userData.themeOffset = pl.position.clone().sub(themePos);
-        pl.userData.screenOffset = { x: slot % 2 === 0 ? -10 : 10, y: -14 };
-      }
-
-      const bullets = project.bullets || [];
-      const n = Math.max(bullets.length, 1);
-      bullets.forEach((bullet, bi) => {
-        const br = mulberry32(10000 + pi * 97 + bi * 13);
-        const angle = (bi / n) * Math.PI * 2 + br() * 0.4;
-        const radius = 4 + br() * 7;
-        const position = new THREE.Vector3(
-          cluster.x + Math.cos(angle) * radius,
-          cluster.y + (br() - 0.5) * 6,
-          cluster.z + Math.sin(angle) * radius
-        );
-
-        const weight = project.weight || 5;
-        const size = 1.6 + (weight / 10) * 2.2;
-
-        const group = new THREE.Group();
-        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: softThemeDiscs[theme] || softWhiteDisc,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-          opacity: 0.92,
-          fog: true
-        }));
-        halo.scale.set(size * 2.8, size * 2.8, 1);
-        group.add(halo);
-
-        const core = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: softWhiteDisc,
-          transparent: true,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-          opacity: 1,
-          fog: true
-        }));
-        core.scale.set(size * 0.7, size * 0.7, 1);
-        group.add(core);
-        group.position.copy(position);
-        scene.add(group);
-
-        stars.push({
-          mesh: group,
-          halo,
-          position,
-          themeOffset: position.clone().sub(themePos),
-          color,
-          size,
-          bullet,
-          project,
-          id: `${project.id}__${bi}`
-        });
+      addProjectStarCluster({
+        project,
+        cluster,
+        theme,
+        themePos,
+        color,
+        slot,
+        pi,
+        satellite: false
       });
+    });
+  });
 
-      // Snap project label just above the project's first star
-      const pl = labelSprites.find(
-        (l) => l.userData.kind === 'project' && l.userData.projectId === project.id
+  // Satellites orbit their parent hub (may be in another theme).
+  const satellites = projects.filter((p) => p.satelliteOf && THEME_POSITIONS[p.theme || '']);
+  const byParent = {};
+  satellites.forEach((p) => {
+    const key = p.satelliteOf;
+    if (!byParent[key]) byParent[key] = [];
+    byParent[key].push(p);
+  });
+  Object.entries(byParent).forEach(([parentId, kids]) => {
+    const parentStar = stars.find((s) => s.project.id === parentId);
+    const parentProject = projects.find((p) => p.id === parentId);
+    const parentTheme = parentProject?.theme || kids[0].theme;
+    // Layout offsets follow the parent hub's theme so satellites stay nearby
+    // when desktop/mobile theme layouts swap.
+    const layoutTheme = parentTheme || kids[0].theme;
+    const themePos = THEME_POSITIONS[layoutTheme] || THEME_POSITIONS[kids[0].theme];
+    const center = parentStar
+      ? parentStar.position.clone()
+      : (themePos ? new THREE.Vector3(themePos.x, themePos.y, themePos.z) : new THREE.Vector3());
+    kids.forEach((project, si) => {
+      const angle = (si / Math.max(kids.length, 1)) * Math.PI * 2;
+      const orbit = 5.5 + (si % 3) * 1.2;
+      const cluster = new THREE.Vector3(
+        center.x + Math.cos(angle) * orbit,
+        center.y + Math.sin(angle * 1.7) * 2.4,
+        center.z + Math.sin(angle) * orbit
       );
-      const firstStar = stars.find((s) => s.project.id === project.id);
-      if (pl && firstStar) {
-        const side = (slot % 2 === 0) ? -1 : 1;
-        pl.position.copy(firstStar.position).add(new THREE.Vector3(side * 2.4, 3.2, 0.4));
-        pl.userData.home.copy(pl.position);
-        pl.userData.themeOffset = pl.position.clone().sub(themePos);
-      }
+      // Keep visual theme color from the content theme; layout uses parent themePos.
+      const visualTheme = project.theme || layoutTheme;
+      addProjectStarCluster({
+        project,
+        cluster,
+        theme: visualTheme,
+        themePos: themePos || center,
+        color: THEME_COLORS[visualTheme] || THEME_COLORS[layoutTheme],
+        slot: si,
+        pi: si + 50,
+        satellite: true
+      });
     });
   });
 
@@ -1179,7 +1251,10 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   const media = hud.querySelector('[data-hud="media"]');
   media.innerHTML = '';
   if (project.images && project.images.length) {
-    project.images.forEach((src) => {
+    project.images.forEach((entry) => {
+      const src = typeof entry === 'string' ? entry : entry?.src;
+      if (!src) return;
+      const credit = typeof entry === 'object' ? entry.credit : null;
       const wrap = document.createElement('div');
       wrap.className = 'hud-image';
       const img = document.createElement('img');
@@ -1187,13 +1262,40 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
       img.alt = project.title || '';
       img.loading = 'lazy';
       wrap.appendChild(img);
+      if (credit && (credit.caption || credit.author)) {
+        const cap = document.createElement('p');
+        cap.className = 'hud-image-credit';
+        if (credit.caption) {
+          // Freeform illustration / context caption (e.g. TK!Solver stand-in for MuSolver)
+          cap.textContent = credit.caption;
+        } else {
+          const license = document.createElement('a');
+          license.href = credit.licenseUrl || '#';
+          license.target = '_blank';
+          license.rel = 'noopener noreferrer';
+          license.textContent = credit.license || 'license';
+          const via = document.createElement('a');
+          via.href = credit.viaUrl || '#';
+          via.target = '_blank';
+          via.rel = 'noopener noreferrer';
+          via.textContent = credit.via || 'source';
+          cap.append(
+            document.createTextNode(`Photo: ${credit.author} · `),
+            license,
+            document.createTextNode(' · via '),
+            via
+          );
+        }
+        wrap.appendChild(cap);
+      }
       media.appendChild(wrap);
     });
   }
   if (project.videos && project.videos.length) {
+    const vertical = project.videoAspect === '9:16' || project.videoAspect === 'vertical';
     project.videos.forEach((id) => {
       const wrap = document.createElement('div');
-      wrap.className = 'hud-video';
+      wrap.className = vertical ? 'hud-video hud-video-vertical' : 'hud-video';
       const extras = allowAutoplay ? '' : '&mute=1';
       wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0${extras}&enablejsapi=1" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
       media.appendChild(wrap);
