@@ -1847,6 +1847,34 @@ function removeHudFlyLabel() {
   document.getElementById('hud-fly-label')?.remove();
 }
 
+/** Always leave the real HUD title readable — no leftover opacity/transform from morph. */
+function revealHudProjectTitle(hud) {
+  if (!hud) return;
+  removeHudFlyLabel();
+  hud.classList.remove('hud-flying');
+  const titleBar = hud.querySelector('.hud-title-bar');
+  const titleText = hud.querySelector('[data-hud="project"]');
+  if (titleBar) {
+    titleBar.style.opacity = '';
+    titleBar.style.transition = '';
+  }
+  if (titleText) {
+    titleText.style.opacity = '';
+    titleText.style.transition = '';
+    titleText.style.fontSize = '';
+    titleText.style.transform = '';
+  }
+}
+
+function makeHudFlyLabel(title, accent) {
+  const fly = document.createElement('div');
+  fly.id = 'hud-fly-label';
+  fly.style.setProperty('--hud-accent', accent || '#40e0ff');
+  fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
+  fly.querySelector('.ms-label-text').textContent = title || '';
+  return fly;
+}
+
 function applyHudTimingCss(hud) {
   if (!hud) return;
   hud.style.setProperty('--hud-clip-ms', `${HUD_TIMING.lateralMs}ms`);
@@ -2325,6 +2353,7 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
 
   const snapOpen = async () => {
     clearHudStageClasses(hud);
+    revealHudProjectTitle(hud);
     hud.classList.add('open', 'hud-expanded', 'hud-chip-section', 'hud-chip-years', 'hud-body-in', 'hud-ready');
     hud.setAttribute('aria-hidden', 'false');
     if (labelEl) labelEl.classList.add('ms-label-hud-open');
@@ -2372,36 +2401,31 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   labelEl.classList.add('ms-label-hud-open');
   labelEl.classList.remove('is-visible');
 
-  // 1) Title flies to final title slot
-  hud.classList.add('open', 'hud-flying', 'hud-clipping', 'hud-stage-title');
+  // 1) Mini-label morphs into the HUD title slot (clone flies; real title hidden only while clone shows).
+  hud.classList.add('open', 'hud-clipping', 'hud-stage-title');
   hud.setAttribute('aria-hidden', 'false');
   // Force layout with above/below collapsed so title rect is stable
   void panel.offsetWidth;
   setPanelClip(panel, panelClipInsets(panel, titleBar, 'title'), { immediate: true, ms: HUD_TIMING.lateralMs });
 
   const to = titleBar.getBoundingClientRect();
-  const fly = document.createElement('div');
-  fly.id = 'hud-fly-label';
-  fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
-  fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
-  fly.querySelector('.ms-label-text').textContent = star.project?.title || '';
+  const fly = makeHudFlyLabel(
+    star.project?.title || '',
+    hud.style.getPropertyValue('--hud-accent') || '#40e0ff'
+  );
   document.body.appendChild(fly);
   fly.style.left = `${from.left}px`;
   fly.style.top = `${from.top}px`;
   fly.style.width = `${from.width}px`;
   fly.style.height = `${from.height}px`;
+  fly.style.maxWidth = 'none';
+  // Hide the real title only after the flying clone is on screen (seamless morph).
+  hud.classList.add('hud-flying');
 
   await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs, growTitle: true });
+  // Hand off to the real title even if this open was superseded (node switch / reduced path).
+  revealHudProjectTitle(hud);
   if (!stillHudGen(gen)) return;
-
-  removeHudFlyLabel();
-  hud.classList.remove('hud-flying');
-  titleBar.style.opacity = '';
-  const titleText = titleBar.querySelector('[data-hud="project"]');
-  if (titleText) {
-    titleText.style.opacity = '';
-    titleText.style.transition = '';
-  }
 
   // Freeze title-band insets before vertical expansion shifts the title bar.
   const titleBand = panelClipInsets(panel, titleBar, 'title');
@@ -2594,24 +2618,28 @@ async function runHudCloseContinuity() {
     return;
   }
 
-  // Hide the real title bar via .hud-flying CSS; fly clone carries the text.
-  hud.classList.add('hud-flying');
-  const fly = document.createElement('div');
-  fly.id = 'hud-fly-label';
-  fly.classList.add('hud-fly-as-title');
-  fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
-  fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
+  // Morph: place clone on the title, then hide the real title while it flies to the mini-label.
   const miniText = labelEl.querySelector('.ms-label-text')?.textContent || star.project?.title || '';
-  fly.querySelector('.ms-label-text').textContent = miniText;
+  const fly = makeHudFlyLabel(
+    miniText,
+    hud.style.getPropertyValue('--hud-accent') || '#40e0ff'
+  );
+  fly.classList.add('hud-fly-as-title');
   document.body.appendChild(fly);
   fly.style.left = `${from.left}px`;
   fly.style.top = `${from.top}px`;
   fly.style.width = `${from.width}px`;
   fly.style.height = `${from.height}px`;
   fly.style.maxWidth = 'none';
+  hud.classList.add('hud-flying');
 
   await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs });
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) {
+    removeHudFlyLabel();
+    // Keep title styles clean if a new open superseded this close.
+    revealHudProjectTitle(hud);
+    return;
+  }
 
   removeHudFlyLabel();
   // Reveal the real mini-label in its normal projected slot (no leftover inline)
@@ -2724,14 +2752,17 @@ function openHUD(star, { fromAuto = false } = {}) {
     hudAnimGen += 1;
     stopHudTeletype({ finish: true });
     stopHudVideos();
-    removeHudFlyLabel();
     findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
     const prevHud = document.getElementById('hud');
     clearHudStageClasses(prevHud);
+    revealHudProjectTitle(prevHud);
     prevHud?.classList.remove('open');
     prevHud?.setAttribute('aria-hidden', 'true');
     prevHud?.querySelectorAll('[data-hud], .hud-index, .hud-topics, .hud-connected').forEach((el) => {
       el.style.opacity = '';
+      el.style.transition = '';
+      el.style.fontSize = '';
+      el.style.transform = '';
     });
   }
   if (!clusterPose) clusterPose = captureCameraPose();
