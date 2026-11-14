@@ -1434,8 +1434,13 @@ function updateLabels(_dt) {
   });
 }
 
-/** Force-project one label's DOM box to its current camera projection (for FLIP). */
-function syncLabelScreenPosition(projectId) {
+/**
+ * Force-project one label's DOM box for FLIP.
+ * Optional `pose` projects from a stored cluster/overview camera so close FLIP
+ * targets where the mini-HUD will sit after the camera returns — not the
+ * distorted detail-camera projection (which parks the label on the HUD).
+ */
+function syncLabelScreenPosition(projectId, { pose = null } = {}) {
   const label = labelSprites.find(
     (l) => l.userData.kind === 'project' && l.userData.projectId === projectId
   );
@@ -1445,15 +1450,38 @@ function syncLabelScreenPosition(projectId) {
   const h = window.innerHeight;
   if (label.userData.home) label.position.copy(label.userData.home);
   label.getWorldPosition(_labelWorld);
-  _labelNdc.copy(_labelWorld).project(camera);
+
+  let projCam = camera;
+  let tmpCam = null;
+  if (pose?.position && pose?.lookAt) {
+    tmpCam = camera.clone();
+    tmpCam.position.copy(pose.position);
+    tmpCam.fov = typeof pose.fov === 'number' ? pose.fov : camera.fov;
+    tmpCam.aspect = camera.aspect;
+    tmpCam.near = camera.near;
+    tmpCam.far = camera.far;
+    tmpCam.up.copy(camera.up);
+    tmpCam.lookAt(pose.lookAt);
+    tmpCam.updateProjectionMatrix();
+    tmpCam.updateMatrixWorld(true);
+    projCam = tmpCam;
+  }
+
+  _labelNdc.copy(_labelWorld).project(projCam);
   const off = label.userData.screenOffset || { x: 0, y: -14 };
   const sx = Math.round((_labelNdc.x * 0.5 + 0.5) * w + off.x);
   const sy = Math.round((-_labelNdc.y * 0.5 + 0.5) * h + off.y);
   label.userData.lastSx = sx;
   label.userData.lastSy = sy;
   el.style.transform = `translate3d(${sx}px, ${sy}px, 0) translate(-50%, calc(-100% - 6px))`;
+  // Clear leftover animation inline styles; visibility stays driven by classes.
   el.style.opacity = '';
   el.style.visibility = '';
+  el.style.left = '';
+  el.style.top = '';
+  el.style.width = '';
+  el.style.height = '';
+  el.style.maxWidth = '';
   return el;
 }
 
@@ -1797,7 +1825,8 @@ function clearHudStageClasses(hud) {
 function panelClipInsets(panel, titleBar, mode) {
   const pr = panel.getBoundingClientRect();
   const tr = titleBar.getBoundingClientRect();
-  const pad = 2;
+  // Generous pad so title glyphs are never sliced by the inset edge.
+  const pad = 6;
   const titleTop = Math.max(0, tr.top - pr.top - pad);
   const titleLeft = Math.max(0, tr.left - pr.left - pad);
   const titleRight = Math.max(0, pr.right - tr.right - pad);
@@ -1966,12 +1995,16 @@ function animateFlipRect(el, from, to, { duration = HUD_TIMING.flipMs, growTitle
     el.style.maxWidth = 'none';
     el.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
     if (growTitle) el.classList.add('hud-fly-as-title');
+    else el.classList.remove('hud-fly-as-title');
     el.style.transition = 'none';
     void el.offsetWidth;
     el.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
     el.style.transform = 'translate(0, 0) scale(1, 1)';
     const done = () => {
       el.removeEventListener('transitionend', done);
+      // Leave the element at the final box with no residual transform.
+      el.style.transition = 'none';
+      el.style.transform = '';
       resolve();
     };
     el.addEventListener('transitionend', done);
@@ -2163,7 +2196,8 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   }
 
   // Ensure the mini-label has a live projected box before measuring (labels may
-  // have been hidden all overview and never laid out at 0×0).
+  // have been hidden all overview and never laid out at 0×0), then remember it
+  // for close FLIP fallback.
   syncLabelScreenPosition(projectId);
   void labelEl.offsetWidth;
   let from = labelEl.getBoundingClientRect();
@@ -2177,6 +2211,9 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
     await snapOpen();
     return;
   }
+  labelEl.dataset.hudOpenRect = JSON.stringify({
+    left: from.left, top: from.top, width: from.width, height: from.height
+  });
 
   // Hide teletype targets until their stage; keep labels for chip chrome.
   const themeText = themeEl?.textContent || '';
@@ -2321,7 +2358,7 @@ async function runHudCloseContinuity() {
     return;
   }
 
-  // Reverse 6: blink+fade teletyped body / chip / theme text (title stays readable)
+  // Reverse 6: blink+fade teletyped body / chip / theme text
   await blinkFadeHudText([...bodyBits, sectionEl, yearsEl, themeEl], gen);
   if (!stillHudGen(gen)) return;
   hud.classList.remove('hud-body-in', 'hud-ready');
@@ -2359,28 +2396,45 @@ async function runHudCloseContinuity() {
   }, { immediate: true });
 
   // Reverse 3: collapse upward. Open bottom clip first so the moving title
-  // cannot be cut; tighten to a fresh title band after the grid settles.
+  // cannot be cut; title text stays centered in the title bar meanwhile.
   setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { immediate: true, ms: HUD_TIMING.upMs });
   hud.classList.remove('hud-stage-up');
   await waitMs(HUD_TIMING.upMs);
   if (!stillHudGen(gen)) return;
   void panel.offsetWidth;
+
+  // Fade title text BEFORE tightening the frame so glyphs are never clipped.
+  const titleText = titleBar.querySelector('[data-hud="project"]') || titleBar;
+  titleText.style.transition = `opacity ${HUD_TIMING.fadeMs}ms ease`;
+  titleText.style.opacity = '0';
+  await waitMs(HUD_TIMING.fadeMs);
+  if (!stillHudGen(gen)) return;
+
   band = panelClipInsets(panel, titleBar, 'title');
 
-  // Reverse 2: clip to the live title band (lateral + vertical frame)
+  // Reverse 2: clip to the live title band (empty frame — text already faded)
   hud.classList.remove('hud-stage-wide');
   hud.classList.add('hud-stage-title');
   setPanelClip(panel, band, { ms: HUD_TIMING.lateralMs });
   await waitMs(HUD_TIMING.lateralMs);
   if (!stillHudGen(gen)) return;
 
-  // Reverse 1: title returns to mini-HUD label at its CURRENT projected position
-  syncLabelScreenPosition(projectId);
+  // Reverse 1: FLIP to the mini-HUD at its cluster-view screen position
+  // (detail camera would project the label onto the HUD itself).
+  const returnPose = clusterPose || preHudPose;
+  syncLabelScreenPosition(projectId, { pose: returnPose });
   void labelEl.offsetWidth;
-  const to = labelEl.getBoundingClientRect();
+  let to = labelEl.getBoundingClientRect();
+  // Prefer the rect captured at open time if pose projection still degenerates.
+  const saved = labelEl.dataset.hudOpenRect;
+  if ((to.width < 2 || to.height < 2) && saved) {
+    try {
+      const r = JSON.parse(saved);
+      to = { left: r.left, top: r.top, width: r.width, height: r.height, right: r.left + r.width, bottom: r.top + r.height };
+    } catch { /* ignore */ }
+  }
   const from = titleBar.getBoundingClientRect();
   if (to.width < 2 || to.height < 2) {
-    // Label not laid out — snap rather than FLIP to a degenerate rect
     snapClose();
     return;
   }
@@ -2391,7 +2445,6 @@ async function runHudCloseContinuity() {
   fly.classList.add('hud-fly-as-title');
   fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
   fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
-  // Prefer the live mini-label text so the FLIP lands on the same string/style
   const miniText = labelEl.querySelector('.ms-label-text')?.textContent || star.project?.title || '';
   fly.querySelector('.ms-label-text').textContent = miniText;
   document.body.appendChild(fly);
@@ -2409,6 +2462,9 @@ async function runHudCloseContinuity() {
   labelEl.classList.remove('ms-label-hud-open');
   labelEl.style.opacity = '';
   labelEl.style.visibility = '';
+  delete labelEl.dataset.hudOpenRect;
+  // Re-sync with live camera after fly so the label matches normal updateLabels.
+  syncLabelScreenPosition(projectId);
   snapClose();
 }
 
