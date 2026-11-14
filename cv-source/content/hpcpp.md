@@ -13,6 +13,9 @@ links:
     url: 'http://www.hp.com/go/aCC'
 images:
   - /cv/media/hpcpp.png
+topics:
+  - cpp
+  - compilers
 ---
 ## C++ compiler for Itanium
 

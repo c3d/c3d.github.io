@@ -19,6 +19,9 @@ links:
     url: 'https://www.youtube.com/playlist?list=PLQQY5qJ7xX-f-3_8-iYzKplcDemASk8NQ'
 images:
   - /cv/media/physics-books.jpg
+topics:
+  - physics
+  - writing
 ---
 ## Amateur physics research — unifying GR and QM
 

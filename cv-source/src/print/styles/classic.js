@@ -1,3 +1,5 @@
+import { TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref } from '../icons.js';
+
 /** Classic compact print style (original one-pager). */
 export const classicStyle = {
   id: 'classic',
@@ -17,7 +19,7 @@ export const classicStyle = {
       </header>`;
     model.themes.forEach((theme) => {
       html += `<section class="pvc-theme" style="--theme-color:${theme.color}">
-        <h2>${theme.name}</h2>`;
+        <h2><a class="pv-deep pv-deep-on-dark" href="${clusterHref(theme.name)}">${theme.name}</a></h2>`;
       theme.projects.forEach((p) => {
         html += `<div class="pvc-project"><h3>${p.title}</h3>`;
         if (p.years) html += `<span class="pvc-years">${p.years}</span>`;
@@ -30,6 +32,12 @@ export const classicStyle = {
       });
       html += '</section>';
     });
+    html += `<div class="pvc-tech">${TECH_TAGS.map((t) => {
+      const tid = TECH_TAG_TOPIC_IDS[t];
+      return tid
+        ? `<a class="pv-deep" href="${topicHref(tid)}">${t}</a>`
+        : `<span>${t}</span>`;
+    }).join('')}</div>`;
     if (model.patentsLine) {
       html += `<p class="pvc-patents">${model.patentsLine}</p>`;
     }

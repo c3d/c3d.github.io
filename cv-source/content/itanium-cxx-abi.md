@@ -13,6 +13,9 @@ links:
     url: 'https://itanium-cxx-abi.github.io/cxx-abi/'
 images:
   - /cv/media/itanium-cxx-abi.png
+topics:
+  - cpp
+  - compilers
 ---
 ## Common ABI for representing C++ programs
 

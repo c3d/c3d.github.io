@@ -16,6 +16,10 @@ links:
     url: 'https://tao3d.sourceforge.net/'
 images:
   - /cv/media/taodyne.png
+topics:
+  - graphics3d
+  - compilers
+  - opensource
 ---
 ## Founder and CEO — real-time 3D presentations
 

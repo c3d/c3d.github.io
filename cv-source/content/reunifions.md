@@ -13,6 +13,9 @@ links:
     url: 'https://www.amazon.fr/dp/B0C5GQTWTQ'
 images:
   - /cv/media/reunifions.jpg
+topics:
+  - physics
+  - writing
 ---
 ## Shorter French introduction to TIM ideas
 

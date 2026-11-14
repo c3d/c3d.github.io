@@ -13,6 +13,10 @@ links:
       http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code
 images:
   - /cv/media/breakout-tao3d.png
+topics:
+  - games
+  - graphics3d
+  - education
 ---
 ## Demo game under 300 lines of Tao3D
 
