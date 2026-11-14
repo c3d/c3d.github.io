@@ -196,6 +196,41 @@
     ]
   },
   {
+    "id": "cxx-abi",
+    "title": "C++ ABI",
+    "theme": "Languages & Compilers",
+    "years": "1999-2000",
+    "weight": 8,
+    "print": 2,
+    "related": [
+      "hpcpp",
+      "wiess-exception-handling"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Itanium C++ ABI",
+        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      }
+    ],
+    "topics": [
+      "cpp",
+      "compilers",
+      "research"
+    ],
+    "content": "<h2>Cross-industry C++ compiler interoperability</h2>\n<ul>\n<li>Initiated a cross-industry standardization effort for C++ compiler interoperability, still in use today</li>\n<li>Related to HP aC++ and the WIESS exception-handling work on Itanium</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Initiated a cross-industry standardization effort for C++ compiler interoperability, still in use today",
+        "section": "Cross-industry C++ compiler interoperability"
+      },
+      {
+        "text": "Related to HP aC++ and the WIESS exception-handling work on Itanium",
+        "section": "Cross-industry C++ compiler interoperability"
+      }
+    ]
+  },
+  {
     "id": "db48x-tests",
     "title": "DB48X automated test suite",
     "theme": "Languages & Compilers",
@@ -258,7 +293,7 @@
     "theme": "Languages & Compilers",
     "years": "2022-Present",
     "weight": 9,
-    "print": 2,
+    "print": 5,
     "related": [
       "hp48-games",
       "hpds"
@@ -717,7 +752,7 @@
   },
   {
     "id": "ecutest",
-    "title": "HP ECUTEST Real-Time System",
+    "title": "HP ECUTEST Real Time Test System for car electronics",
     "theme": "Systems & Virtualization",
     "years": "1994-1998",
     "weight": 9,
@@ -1042,6 +1077,7 @@
     "print": 1,
     "related": [
       "wiess-exception-handling",
+      "cxx-abi",
       "make-it-quick"
     ],
     "videos": [],
@@ -1435,7 +1471,7 @@
         "url": "https://c3d.github.io"
       }
     ],
-    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly innovative and differentiating software that makes a real difference.</p>\n<ul>\n<li>French software developer — operating systems, languages, games</li>\n<li>Amateur physics researcher and tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
+    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly innovative and differentiating software, hoping to change the world one step at a time.</p>\n<ul>\n<li>French software developer — operating systems, languages, games</li>\n<li>Amateur physics researcher and tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "French software developer — operating systems, languages, games",
@@ -1841,6 +1877,35 @@
     ]
   },
   {
+    "id": "presentation-software",
+    "title": "Software",
+    "theme": "Communication Skills",
+    "years": null,
+    "weight": 6,
+    "related": [
+      "tao3d",
+      "taodyne"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Tao3D",
+        "url": "https://tao3d.sourceforge.net/"
+      }
+    ],
+    "topics": [
+      "graphics3d",
+      "compilers"
+    ],
+    "content": "<h2>Presentation software</h2>\n<ul>\n<li>Designed my own presentation software (Tao3D), still using it to this day</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Designed my own presentation software (Tao3D), still using it to this day",
+        "section": "Presentation software"
+      }
+    ]
+  },
+  {
     "id": "recorder",
     "title": "Recorder",
     "theme": "Tools & Apps",
@@ -2144,7 +2209,7 @@
   {
     "id": "tao3d",
     "title": "Tao3D",
-    "theme": "Languages & Compilers",
+    "theme": "Games & 3D",
     "years": "2010-Present",
     "weight": 9,
     "featured": true,
@@ -2154,7 +2219,8 @@
       "elfe",
       "taodyne",
       "3divart",
-      "firefly"
+      "firefly",
+      "alpha-waves"
     ],
     "videos": [],
     "links": [
@@ -2247,12 +2313,13 @@
     "theme": "Games & 3D",
     "years": "2010-2016",
     "weight": 9,
-    "print": 3,
+    "print": 4,
     "related": [
       "tao3d",
       "xl",
       "3divart",
-      "taodyne-blog"
+      "taodyne-blog",
+      "presentation-software"
     ],
     "videos": [],
     "links": [
@@ -2313,6 +2380,78 @@
     ]
   },
   {
+    "id": "videos-portfolio",
+    "title": "Videos",
+    "theme": "Communication Skills",
+    "years": null,
+    "weight": 6,
+    "related": [
+      "db48x",
+      "physics-books"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "DB48X playlist",
+        "url": "https://www.youtube.com/watch?v=WU5Dg1mPkl8&list=PLz1qkflzABy-Cs1R07zGB8A9K5Yjolmlf"
+      },
+      {
+        "label": "Theory of Incomplete Measurements",
+        "url": "https://www.youtube.com/@atheoryofincompletemeasure865"
+      }
+    ],
+    "topics": [
+      "writing",
+      "conferences"
+    ],
+    "content": "<h2>Videos</h2>\n<ul>\n<li>Sample: DB48X playlist; Theory of Incomplete Measurements channel</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Sample: DB48X playlist; Theory of Incomplete Measurements channel",
+        "section": "Videos"
+      }
+    ]
+  },
+  {
+    "id": "websites-blogs",
+    "title": "Web sites and blogs",
+    "theme": "Communication Skills",
+    "years": null,
+    "weight": 6,
+    "related": [
+      "tao3d",
+      "taodyne",
+      "grenouille-bouillie",
+      "db48x"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Tao3D",
+        "url": "https://tao3d.sourceforge.net/"
+      },
+      {
+        "label": "Grenouille Bouillie",
+        "url": "https://grenouillebouillie.wordpress.com/"
+      },
+      {
+        "label": "DB48X",
+        "url": "https://c3d.github.io/db48x/"
+      }
+    ],
+    "topics": [
+      "writing",
+      "opensource"
+    ],
+    "content": "<h2>Web sites and blogs</h2>\n<ul>\n<li>Sample sites: Tao3D, Grenouille Bouillie, DB48X</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Sample sites: Tao3D, Grenouille Bouillie, DB48X",
+        "section": "Web sites and blogs"
+      }
+    ]
+  },
+  {
     "id": "wiess-exception-handling",
     "title": "WIESS — C++ exception handling on Itanium",
     "theme": "Research",
@@ -2356,6 +2495,7 @@
     "print": 3,
     "related": [
       "tao3d",
+      "xlr8",
       "elfe",
       "lx",
       "mozart",
@@ -2400,6 +2540,37 @@
       {
         "text": "XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own",
         "section": "Extensible language designed to evolve"
+      }
+    ]
+  },
+  {
+    "id": "xlr8",
+    "title": "XLR8",
+    "theme": "Languages & Compilers",
+    "years": null,
+    "weight": 8,
+    "print": 4,
+    "related": [
+      "xl",
+      "tao3d",
+      "elfe"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "XLR",
+        "url": "http://xlr.sourceforge.net"
+      }
+    ],
+    "topics": [
+      "compilers",
+      "opensource"
+    ],
+    "content": "<h2>Super-fast VM for XL</h2>\n<ul>\n<li>XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support",
+        "section": "Super-fast VM for XL"
       }
     ]
   }
