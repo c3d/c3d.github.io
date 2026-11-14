@@ -1,6 +1,6 @@
 ---
 id: hpvm-presilicon
-title: HPVM on simulator (pre-silicon)
+title: HPVM pre-silicon and A-step bring-up
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 8
@@ -18,6 +18,7 @@ topics:
   - firmware
 ---
 
-## Running HP Integrity VM on a simulator before hardware
+## HPVM on Ski, then early silicon
 
-- Brought up HPVM software against a simulator ahead of Integrity hardware availability
+- Early HPVM (HP Integrity VM) boot was done entirely on Ski, HP’s functional Itanium simulator — physical hardware took a while to arrive
+- First silicon was an A-step (A-series) chip with a few functional defects; those were fixed in later tapeouts

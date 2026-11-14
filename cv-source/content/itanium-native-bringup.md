@@ -20,8 +20,8 @@ topics:
   - compilers
 ---
 
-## First native Itanium C++ compiler
+## First native Itanium C++ compiler (pre-silicon on Ski)
 
-- Implemented the first native Itanium C++ compiler; did the compiler bring-up on pre-release Itanium
+- Wrote the first native Itanium C++ compiler before silicon existed; ran it on Ski, HP’s functional Itanium simulator (a second simulator also modelled performance details)
 - HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator
-- Linked from the HP aC++ compiler entry (California Language Lab, 1998)
+- Linked from the HP aC++ / California Language Lab entry
