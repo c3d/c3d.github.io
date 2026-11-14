@@ -916,11 +916,19 @@
       letter-spacing: 0.03em;
       white-space: nowrap;
     }
+    /* Match .hud-project so the morph lands on the same static title look. */
+    #hud-fly-label.hud-fly-as-title {
+      max-width: none;
+      align-items: center;
+    }
     #hud-fly-label.hud-fly-as-title .ms-label-text {
-      font-size: 18px;
+      font-size: clamp(13px, 2.2vw, 18px);
       font-weight: 700;
       padding: 10px 12px;
-      white-space: normal;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .ms-label.ms-label-hud-open {
       opacity: 0 !important;
