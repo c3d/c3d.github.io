@@ -8,14 +8,9 @@
  */
 
 const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
-const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
-/** Both inventor name forms; verified not to match other Dinechin inventors. */
-const PATENT_LIST_URL =
-  'https://patents.google.com/?inventor=Christophe+de+Dinechin&inventor=Christophe+Marie+Francois+Dupont+de+Dinechin';
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
-const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
@@ -32,9 +27,10 @@ function deepLink(href, label) {
 /** Print-only title/bullet copy (constellation entries keep their full detail). */
 const PRINT_COPY = {
   ecutest: {
-    title: 'HP ECUTEST Real Time Test System for car electronics',
+    title: 'HP ECUTEST Real-time Test System for car electronics',
     bullets: [
-      'Tech lead (team of 12); ECU real-time testing; RTICL portable drivers for VXI/VME/SCPI'
+      'From prototype and concept demo to 10+ people team lead and customer evangelism.',
+      'Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)'
     ]
   },
   spice: {
@@ -43,23 +39,29 @@ const PRINT_COPY = {
     ]
   },
   'kata-containers': {
+    title: 'Kata Containers / OpenShift Sandboxed Containers / Confidential Containers (Red Hat)',
     bullets: [
-      'OpenShift Sandboxed Containers lead (HyperShift); Fedora RPMs; qemu-mini demand-loaded QEMU'
+      'Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift',
+      'Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API'
     ]
   },
   'confidential-containers': {
     bullets: [
-      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split; Agent Sandbox for AI (encrypted GPU + GPU attestation)'
+      'Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API'
     ]
   },
   'dxo-one': {
+    title: 'DxO ONE Connected Camera',
     bullets: [
-      'A tiny, but high-quality camera for photographers. Dual-core ARM + ISP, RTOS + Linux; pink pictures fixed via build system; automated hardware test farm; boot 2–5 s → <1 s'
+      'A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.',
+      'Went from random pink pictures and 5s boot to automated software testing farm and <1s boot'
     ]
   },
   hpcpp: {
+    title: 'HP aC++ Compiler',
     bullets: [
-      'First native pre-silicon Itanium C/C++ compiler; kernel & user ABI; exception handling, templates, performance; leading & coordinating 16 teams.'
+      'Led multi-team pre-silicon cross and native bring-up, kernel and user ABI',
+      'Front-end team lead: exceptions, templates, performance, precompiled headers'
     ]
   },
   hpvm: {
@@ -70,20 +72,21 @@ const PRINT_COPY = {
     ]
   },
   'cxx-abi': {
-    title: 'C++ ABI',
+    title: 'C++ Application Binary Interface',
     bullets: [
-      'Initiated with Cary Coutant; weekly industry meetings (~20 engineers across HP, Sun, SGI, IBM, Microsoft, GCC)'
+      `Initiated industry-wide interoperability and standard compliance effort. ${deepLink('https://itanium-cxx-abi.github.io/cxx-abi/', 'Still in use today')}.`
     ]
   },
   tao3d: {
+    title: 'Tao3D (Taodyne)',
     bullets: ['Tao3D is an XL-based platform for interactive real-time 3D presentations']
   },
   xl: {
-    bullets: ['XL is an Extensible Language with interpreted and JIT modes']
+    bullets: ['Extensible language designed to evolve']
   },
   xlr8: {
     bullets: [
-      'XLR8 is a super-fast VM with interpreted and JIT modes'
+      'XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes'
     ]
   },
   db48x: {
@@ -94,7 +97,7 @@ const PRINT_COPY = {
   },
   'make-it-quick': {
     bullets: [
-      'A make-based build system with auto-configuration, replaces automake/autoconf/cmake'
+      'A make-based build system with auto-configuration, faster and simpler than automake/autoconf'
     ]
   },
   recorder: {
@@ -103,13 +106,15 @@ const PRINT_COPY = {
     ]
   },
   'emacs-aqua': {
+    title: 'Emacs on Aqua',
     bullets: [
-      'First graphical port of Emacs on macOS (at the time still called Rhapsody), first Emacs with transparent windows'
+      'Graphical port of Emacs on macOS Rhapsody, first Emacs with transparent windows'
     ]
   },
   de200c: {
+    title: 'HP DE200C with MythTV',
     bullets: [
-      'HP Linux appliance; client/server driver for the front-panel VFD; Linux patches for remote control and front-panel keys'
+      'Repurposed Linux appliance, early Tivo-style DVR. Display and remote control drivers.'
     ]
   },
   'hardware-firmware': {
@@ -118,6 +123,7 @@ const PRINT_COPY = {
     ]
   },
   'alpha-waves': {
+    title: 'Alpha Waves / Continuum (Infogrames)',
     bullets: [
       'First 3D platform game ever (Guinness Book of Records), precursor of Alone in the Dark'
     ]
@@ -142,24 +148,7 @@ function researchPrintProjects() {
       title: 'Computer science research',
       years: '',
       bullets: [
-        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(CCS_2024_URL, 'CCS 2024')} confidential computing; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48x`
-      ]
-    },
-    {
-      id: 'patents',
-      title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
-      titleHref: PATENT_LIST_URL,
-      years: '',
-      bullets: [
-        'Covering virtualization, enterprise computing, confidential computing'
-      ]
-    },
-    {
-      id: 'physics-books',
-      title: 'Physics research',
-      years: '',
-      bullets: [
-        `A Theory of Incomplete Measurements — unifying GR and QM (${deepLink(TIM_URL, 'TIM')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')})`
+        `Published research on ${deepLink(WIESS_URL, 'compilers')}, ${deepLink(CCS_2024_URL, 'confidential computing')}, ${deepLink(FOSDEM_2024_URL, 'embedded systems')}`
       ]
     }
   ];
@@ -173,7 +162,7 @@ function communicationPrintProjects() {
       title: 'Free and Open Source Software (FOSS)',
       years: '',
       bullets: [
-        `Publishing free software since 1999. Linux user since 1998 (MkLinux). Kernel developer (HP-UX, HPVM, Linux, RTOS). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
+        `Publishing free software since 1999. Linux user since 1998 (MkLinux). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
       ]
     },
     {
@@ -181,15 +170,15 @@ function communicationPrintProjects() {
       title: 'Artificial Intelligence',
       years: '',
       bullets: [
-        'Hands-on with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+        'Developed and reviewed code with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
       ]
     },
     {
       id: 'informagie',
-      title: 'Books',
+      title: 'Wrote 4 books',
       years: '',
       bullets: [
-        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}; AI: ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
+        `${deepLink(INFORMAGIE_URL, 'Informagie')}, ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Reunifions la Physique')}, ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
       ]
     },
     {
@@ -238,7 +227,7 @@ export function buildPrintModel(data, {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
   const aboutLines = (about?.bullets || []).map((b) => b.text);
   const aboutPara = (about?.content || '').match(/<p>([\s\S]*?)<\/p>/)?.[1]?.replace(/<[^>]+>/g, '')
-    || 'Pushing the boundaries by writing highly original software, hoping to change the world one step at a time.';
+    || 'Pushing the boundaries by writing highly original software and turning it into successful products by leading great teams.';
   const email = aboutLines.find((t) => t.includes('@')) || 'christophe@dinechin.org';
   // Avoid matching incidental "ms " (e.g. "forms of art") — require real education cues.
   const isEducation = (t) => /École|Mines|MS Computer/i.test(t);

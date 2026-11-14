@@ -20,16 +20,16 @@ export const orbitStyle = {
       <aside class="pvo-side">
         ${photo}
         <section class="pvo-block">
-          <h2><span class="pvo-mini">◈</span> About</h2>
+          <h2><span class="pvo-mini">◈</span><span class="pvo-heading-label">About</span><span class="pvo-rule" aria-hidden="true"></span></h2>
           <p>${model.aboutPara}</p>
           ${model.aboutFacts.slice(0, 3).map((t) => `<p class="pvo-muted">${t}</p>`).join('')}
         </section>
         <section class="pvo-block">
-          <h2><span class="pvo-mini">◎</span> Key skills</h2>
+          <h2><span class="pvo-mini">◎</span><span class="pvo-heading-label">Key skills</span><span class="pvo-rule" aria-hidden="true"></span></h2>
           <ul class="pvo-skills">${model.skills.map((t) => `<li><span class="pvo-check">✓</span><a class="pv-deep pv-deep-on-dark" href="${clusterHref(t)}">${t}</a></li>`).join('')}</ul>
         </section>
         <section class="pvo-block">
-          <h2><span class="pvo-mini">▤</span> Technologies</h2>
+          <h2><span class="pvo-mini">▤</span><span class="pvo-heading-label">Technologies</span><span class="pvo-rule" aria-hidden="true"></span></h2>
           <div class="pvo-tags">${TECH_TAGS.map((t) => {
             const tid = TECH_TAG_TOPIC_IDS[t];
             return tid
@@ -38,7 +38,7 @@ export const orbitStyle = {
           }).join('')}</div>
         </section>
         <section class="pvo-block">
-          <h2><span class="pvo-mini">ℹ</span> Info</h2>
+          <h2><span class="pvo-mini">ℹ</span><span class="pvo-heading-label">Info</span><span class="pvo-rule" aria-hidden="true"></span></h2>
           <ul class="pvo-info">
             ${model.educationHtml || model.education ? `<li><span>★</span>${model.educationHtml || model.education}</li>` : ''}
             <li><span>✉</span>${model.email}</li>

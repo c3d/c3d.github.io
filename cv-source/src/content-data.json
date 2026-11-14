@@ -46,8 +46,7 @@
     "years": null,
     "weight": 7,
     "related": [
-      "une-intelligence",
-      "confidential-containers"
+      "une-intelligence"
     ],
     "videos": [],
     "links": [],
@@ -55,21 +54,21 @@
       "ai",
       "writing"
     ],
-    "content": "<h2>Hands-on with AI tools</h2>\n<p>Daily practice as a user of modern AI assistants and agent tooling.</p>\n<ul>\n<li>Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot</li>\n<li>See also <a href=\"#une-intelligence\">Une intelligence à vos côtés</a> and Confidential Containers Agent Sandbox work</li>\n</ul>\n",
+    "content": "<h2>Developed and reviewed code with AI tools</h2>\n<p>Daily practice as a user of modern AI assistants and agent tooling.</p>\n<ul>\n<li>Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot</li>\n<li>See also <a href=\"#une-intelligence\">Une intelligence à vos côtés</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot",
-        "section": "Hands-on with AI tools"
+        "section": "Developed and reviewed code with AI tools"
       },
       {
-        "text": "See also <a class=\"hud-deep\" href=\"#une-intelligence\">Une intelligence à vos côtés</a> and Confidential Containers Agent Sandbox work",
-        "section": "Hands-on with AI tools"
+        "text": "See also <a class=\"hud-deep\" href=\"#une-intelligence\">Une intelligence à vos côtés</a>",
+        "section": "Developed and reviewed code with AI tools"
       }
     ]
   },
   {
     "id": "alpha-waves",
-    "title": "Alpha Waves / Continuum",
+    "title": "Alpha Waves / Continuum (Infogrames)",
     "theme": "Games & 3D",
     "years": "1989-1990",
     "weight": 10,
@@ -199,13 +198,11 @@
     "theme": "Systems & Virtualization",
     "years": "2021-Present",
     "weight": 8,
-    "print": 4,
     "related": [
       "kata-containers",
       "hpvm",
       "spice",
-      "patents",
-      "ai"
+      "patents"
     ],
     "videos": [
       "3UoChFEH6jQ",
@@ -293,25 +290,16 @@
       "confidential-computing",
       "virtualization",
       "opensource",
-      "linux",
-      "ai"
+      "linux"
     ],
-    "content": "<h2>Confidential Containers and attestation</h2>\n<p>Focused on attestation for Confidential Containers (CoCo): wrote the Red Hat attestation blog series, and identified two major flaws in the original CoCo design — incremental / in-guest image download and the split host/tenant API — with proposed solutions.</p>\n<ul>\n<li>Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview</li>\n<li>FOSDEM 2024 main-stage (Janson) talk: “Proving that Cloud Sysadmins Cannot Read your Data!” — attestation for confidential VMs, containers, and clusters (not a keynote)</li>\n<li>Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023</li>\n<li>Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021</li>\n<li>Co-inventor of <a href=\"https://patents.google.com/patent/US12321473B2/en\">US12321473B2</a> (on-demand encrypted container image download)</li>\n<li>Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)</li>\n<li>One CoCo use case is running AI agents in a sandbox (Agent Sandbox), with encrypted communication with the GPU and GPU attestation</li>\n</ul>\n",
+    "content": "<h2>Confidential Containers and attestation</h2>\n<p>Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API</p>\n<ul>\n<li>Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview</li>\n<li>Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023</li>\n<li>Co-inventor of <a href=\"https://patents.google.com/patent/US12321473B2/en\">US12321473B2</a> (on-demand encrypted container image download)</li>\n<li>Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview",
         "section": "Confidential Containers and attestation"
       },
       {
-        "text": "FOSDEM 2024 main-stage (Janson) talk: “Proving that Cloud Sysadmins Cannot Read your Data!” — attestation for confidential VMs, containers, and clusters (not a keynote)",
-        "section": "Confidential Containers and attestation"
-      },
-      {
         "text": "Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023",
-        "section": "Confidential Containers and attestation"
-      },
-      {
-        "text": "Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021",
         "section": "Confidential Containers and attestation"
       },
       {
@@ -321,16 +309,12 @@
       {
         "text": "Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)",
         "section": "Confidential Containers and attestation"
-      },
-      {
-        "text": "One CoCo use case is running AI agents in a sandbox (Agent Sandbox), with encrypted communication with the GPU and GPU attestation",
-        "section": "Confidential Containers and attestation"
       }
     ]
   },
   {
     "id": "cxx-abi",
-    "title": "C++ ABI",
+    "title": "C++ Application Binary Interface",
     "theme": "Languages & Compilers",
     "years": "1999-2000",
     "weight": 8,
@@ -352,7 +336,7 @@
       "research",
       "asm"
     ],
-    "content": "<h2>Cross-industry C++ compiler interoperability</h2>\n<ul>\n<li>Initiated the project with the help of Cary Coutant (who had written the C ABI)</li>\n<li>Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams</li>\n<li>Still in use today for C++ compiler interoperability</li>\n<li>Related to HP aC++ and the WIESS exception-handling work on Itanium</li>\n</ul>\n",
+    "content": "<h2>Cross-industry C++ compiler interoperability</h2>\n<p>Initiated industry-wide interoperability and standard compliance effort. <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Still in use today</a>.</p>\n<blockquote>\n<p>Accordingly, it is used as the standard C++ ABI for many major operating systems on all major architectures, and is implemented in many major C++ compilers, including GCC and Clang.</p>\n<p>— <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></p>\n</blockquote>\n<ul>\n<li>Initiated the project with the help of Cary Coutant (who had written the C ABI)</li>\n<li>Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams</li>\n<li>Related to HP aC++ and the WIESS exception-handling work on Itanium</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Initiated the project with the help of Cary Coutant (who had written the C ABI)",
@@ -360,10 +344,6 @@
       },
       {
         "text": "Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams",
-        "section": "Cross-industry C++ compiler interoperability"
-      },
-      {
-        "text": "Still in use today for C++ compiler interoperability",
         "section": "Cross-industry C++ compiler interoperability"
       },
       {
@@ -541,7 +521,7 @@
   },
   {
     "id": "de200c",
-    "title": "HP DE200C MythTV",
+    "title": "HP DE200C with MythTV",
     "theme": "Tools & Apps",
     "years": 2008,
     "weight": 7,
@@ -570,7 +550,7 @@
       "multimedia",
       "embedded"
     ],
-    "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
+    "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<p>Repurposed Linux appliance, early Tivo-style DVR. Display and remote control drivers.</p>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
     "bullets": [
       {
         "text": "HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)",
@@ -596,7 +576,7 @@
     "theme": "Systems & Virtualization",
     "years": "2015-2016",
     "weight": 10,
-    "print": 3,
+    "print": 4,
     "related": [
       "make-it-quick",
       "recorder",
@@ -631,26 +611,18 @@
       "imaging",
       "asm"
     ],
-    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Camera randomly took pink pictures: components built by hand, structs sized differently under inconsistent <code>#ifdef</code>s — redesigned the build system to fix it (ancestor of <a href=\"#make-it-quick\">make-it-quick</a>)</li>\n<li>Introduced version control, CI, modularity, and testing practices where almost none existed</li>\n<li>Left behind a wall of test boxes: each Raspberry Pi flashed firmware into a DxO ONE and shot reference pictures under controlled lighting</li>\n<li>Asserts used to lock up and drain the battery in a spin loop; serial debug spam slowed the camera — replaced with a printf-compatible circular buffer dumped only on failure (ancestor of the <a href=\"#recorder\">recorder</a>); boot time from 2–5 s to under 1 s</li>\n<li>Proposed the black-and-white viewfinder UI idea during the interview (others implemented it)</li>\n<li>Also implemented real-time HDR for iPhone/iPad</li>\n</ul>\n",
+    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.</li>\n<li>Went from random pink pictures and 5s boot to automated software testing farm and &lt;1s boot</li>\n<li>Introduced version control, CI, modularity, and testing practices where almost none existed</li>\n<li>Proposed the black-and-white viewfinder UI idea during the interview (others implemented it)</li>\n<li>Also implemented real-time HDR for iPhone/iPad</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Dual-core ARM + ISP real-time system",
+        "text": "A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.",
         "section": "Software quality for a diminutive connected camera"
       },
       {
-        "text": "Camera randomly took pink pictures: components built by hand, structs sized differently under inconsistent `#ifdef`s — redesigned the build system to fix it (ancestor of <a class=\"hud-deep\" href=\"#make-it-quick\">make-it-quick</a>)",
+        "text": "Went from random pink pictures and 5s boot to automated software testing farm and <1s boot",
         "section": "Software quality for a diminutive connected camera"
       },
       {
         "text": "Introduced version control, CI, modularity, and testing practices where almost none existed",
-        "section": "Software quality for a diminutive connected camera"
-      },
-      {
-        "text": "Left behind a wall of test boxes: each Raspberry Pi flashed firmware into a DxO ONE and shot reference pictures under controlled lighting",
-        "section": "Software quality for a diminutive connected camera"
-      },
-      {
-        "text": "Asserts used to lock up and drain the battery in a spin loop; serial debug spam slowed the camera — replaced with a printf-compatible circular buffer dumped only on failure (ancestor of the <a class=\"hud-deep\" href=\"#recorder\">recorder</a>); boot time from 2–5 s to under 1 s",
         "section": "Software quality for a diminutive connected camera"
       },
       {
@@ -944,7 +916,7 @@
   },
   {
     "id": "ecutest",
-    "title": "HP ECUTEST Real Time Test System for car electronics",
+    "title": "HP ECUTEST Real-time Test System for car electronics",
     "theme": "Systems & Virtualization",
     "years": "1994-1998",
     "weight": 9,
@@ -964,22 +936,18 @@
       "system",
       "validation"
     ],
-    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>Tech lead, team of 12</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>RTICL (Real-Time Instrument Control Library): a comprehensive set of portable real-time device drivers for VXI, VME and SCPI devices — no operation was blocking; time domains varied hugely (some drivers took seconds to configure, others worked in the microsecond range)</li>\n<li>Sub-millisecond closed loop (250µs in some configurations)</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
+    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>From prototype and concept demo to 10+ people team lead and customer evangelism.</li>\n<li>Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Tech lead, team of 12",
+        "text": "From prototype and concept demo to 10+ people team lead and customer evangelism.",
+        "section": "Real-time test system for car electronics"
+      },
+      {
+        "text": "Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)",
         "section": "Real-time test system for car electronics"
       },
       {
         "text": "Designed HP ECUTEST for engine control unit testing and system validation",
-        "section": "Real-time test system for car electronics"
-      },
-      {
-        "text": "RTICL (Real-Time Instrument Control Library): a comprehensive set of portable real-time device drivers for VXI, VME and SCPI devices — no operation was blocking; time domains varied hugely (some drivers took seconds to configure, others worked in the microsecond range)",
-        "section": "Real-time test system for car electronics"
-      },
-      {
-        "text": "Sub-millisecond closed loop (250µs in some configurations)",
         "section": "Real-time test system for car electronics"
       },
       {
@@ -1073,7 +1041,7 @@
       "ui",
       "opensource"
     ],
-    "content": "<h2>First graphical Emacs on Mac OS X Aqua</h2>\n<ul>\n<li>Adapted an old NeXT port to Aqua when only Terminal Emacs shipped</li>\n<li>Added macOS niceties such as transparent windows</li>\n<li>Published on SourceForge; later superseded by upstream Cocoa support</li>\n</ul>\n",
+    "content": "<h2>First graphical Emacs on Mac OS X Aqua</h2>\n<p>Graphical port of Emacs on macOS Rhapsody, first Emacs with transparent windows</p>\n<ul>\n<li>Adapted an old NeXT port to Aqua when only Terminal Emacs shipped</li>\n<li>Added macOS niceties such as transparent windows</li>\n<li>Published on SourceForge; later superseded by upstream Cocoa support</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Adapted an old NeXT port to Aqua when only Terminal Emacs shipped",
@@ -1356,22 +1324,18 @@
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler, pre-silicon testing on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">ski</a>, overriding HP&#39;s plans to ship a PA-RISC to Itanium cross-compiler running in the <a href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\">Aries PA-RISC to Itanium dynamic translator</a></li>\n<li>C++ front end: tech lead, team of 10</li>\n<li>Exception handling: led the project across at least 8 teams (C++, C, HLO, LLO, CodeGen, assembler, linker, LTO), about 20 engineers involved; built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\">WIESS 2000</a> paper, motivated the common ABI work</li>\n<li>Native compiler: led a 16-team effort covering the whole toolchain — C, C++ and other front ends, UCODE2 (HP&#39;s internal IR), optimizers (HLO and LLO), code generation, assembler, linker, system libraries</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Improved template handling, notably to support the STL</li>\n<li>Compiler performance improvements, including redesigning the symbol table for scalability</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n<li>Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed</li>\n<li>Contributed to precompiled headers, another compile-time performance improvement</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<ul>\n<li>Led multi-team pre-silicon cross and native bring-up, kernel and user ABI</li>\n<li>Front-end team lead: exceptions, templates, performance, precompiled headers</li>\n<li>Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
-        "text": "Wrote the first native Itanium C++ compiler, pre-silicon testing on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">ski</a>, overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the <a class=\"pv-deep\" href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Aries PA-RISC to Itanium dynamic translator</a>",
+        "text": "Led multi-team pre-silicon cross and native bring-up, kernel and user ABI",
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "C++ front end: tech lead, team of 10",
+        "text": "Front-end team lead: exceptions, templates, performance, precompiled headers",
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Exception handling: led the project across at least 8 teams (C++, C, HLO, LLO, CodeGen, assembler, linker, LTO), about 20 engineers involved; built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a class=\"pv-deep\" href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">WIESS 2000</a> paper, motivated the common ABI work",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Native compiler: led a 16-team effort covering the whole toolchain — C, C++ and other front ends, UCODE2 (HP's internal IR), optimizers (HLO and LLO), code generation, assembler, linker, system libraries",
+        "text": "Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -1383,23 +1347,7 @@
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Improved template handling, notably to support the STL",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Compiler performance improvements, including redesigning the symbol table for scalability",
-        "section": "C++ compiler for Itanium"
-      },
-      {
         "text": "Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Contributed to precompiled headers, another compile-time performance improvement",
         "section": "C++ compiler for Itanium"
       }
     ]
@@ -1715,7 +1663,7 @@
         "url": "https://c3d.github.io"
       }
     ],
-    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly original software, hoping to change the world one step at a time.</p>\n<ul>\n<li>French software developer — operating systems, languages, games</li>\n<li>Amateur physics researcher and tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
+    "content": "<h2>Software as a Passion</h2>\n<p>Pushing the boundaries by writing highly original software and turning it into successful products by leading great teams.</p>\n<ul>\n<li>French software developer — operating systems, languages, games</li>\n<li>Amateur physics researcher and tinkerer in strange forms of art</li>\n<li>MS Computer Science, École des Mines (1991, Paris)</li>\n<li>Native French, fluent English, some German</li>\n<li><a href=\"mailto:christophe@dinechin.org\">christophe@dinechin.org</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "French software developer — operating systems, languages, games",
@@ -1741,7 +1689,7 @@
   },
   {
     "id": "kata-containers",
-    "title": "Kata Containers",
+    "title": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)",
     "theme": "Systems & Virtualization",
     "years": "2019-Present",
     "weight": 9,
@@ -1795,27 +1743,15 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>OpenShift Sandboxed Containers</h2>\n<p>Brought Kata Containers into the Red Hat stack and created the first RPMs and packaging (Fedora 31, October 2019), which became OpenShift Sandboxed Containers. Still in a lead role on OpenShift Sandboxed Containers; currently working on integration with HyperShift.</p>\n<ul>\n<li>Packaged Kata for Fedora as five RPMs (<code>kata-runtime</code>, <code>kata-osbuilder</code> / agent, <code>kata-proxy</code>, <code>kata-shim</code>, <code>kata-ksm-throttler</code>); <code>kata-runtime</code> 1.8.2 landed in Fedora 31 stable on 31 October 2019</li>\n<li>Transferred RPM management to other engineers, but re-took the Fedora packaging for a while during the transition from the Go runtime to the Rust runtime</li>\n<li>Created “qemu-mini”: a QEMU build where everything optional is demand-loaded instead of built in, to shrink the payload for Kata Containers (stock QEMU was too big)</li>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
+    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers (Red Hat)</h2>\n<p>Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Packaged Kata for Fedora as five RPMs (`kata-runtime`, `kata-osbuilder` / agent, `kata-proxy`, `kata-shim`, `kata-ksm-throttler`); `kata-runtime` 1.8.2 landed in Fedora 31 stable on 31 October 2019",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
-        "text": "Transferred RPM management to other engineers, but re-took the Fedora packaging for a while during the transition from the Go runtime to the Rust runtime",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
-        "text": "Created “qemu-mini”: a QEMU build where everything optional is demand-loaded instead of built in, to shrink the payload for Kata Containers (stock QEMU was too big)",
-        "section": "OpenShift Sandboxed Containers"
-      },
-      {
         "text": "Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020",
-        "section": "OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)"
       },
       {
         "text": "Later talks on Kata footprint and adoption (DevConf.CZ 2021)",
-        "section": "OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)"
       }
     ]
   },
@@ -2533,7 +2469,7 @@
   },
   {
     "id": "tao3d",
-    "title": "Tao3D",
+    "title": "Tao3D (Taodyne)",
     "theme": "Games & 3D",
     "years": "2010-Present",
     "weight": 9,
@@ -2813,7 +2749,7 @@
   },
   {
     "id": "wiess-exception-handling",
-    "title": "WIESS — C++ exception handling on Itanium",
+    "title": "Computer science research",
     "theme": "Research",
     "years": "2000",
     "weight": 8,
@@ -2830,6 +2766,14 @@
       {
         "label": "Itanium C++ ABI",
         "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      },
+      {
+        "label": "CCS 2024: Crossing Shifted Moats",
+        "url": "https://doi.org/10.1145/3658644.3670352"
+      },
+      {
+        "label": "FOSDEM 2024",
+        "url": "https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/"
       }
     ],
     "topics": [
@@ -2838,7 +2782,7 @@
       "cpp",
       "compilers"
     ],
-    "content": "<h2>Published computer science research</h2>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></li>\n</ul>\n",
+    "content": "<h2>Published computer science research</h2>\n<p>Published research on <a href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\">compilers</a>, <a href=\"https://doi.org/10.1145/3658644.3670352\">confidential computing</a>, <a href=\"https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/\">embedded systems</a>.</p>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a class=\"pv-deep\" href=\"https://itanium-cxx-abi.github.io/cxx-abi/\" target=\"_blank\" rel=\"noopener noreferrer\">Itanium C++ ABI</a>",
@@ -2852,6 +2796,7 @@
     "theme": "Languages & Compilers",
     "years": "1992-Present",
     "weight": 9,
+    "print": 4,
     "related": [
       "tao3d",
       "xlr8",
@@ -2908,6 +2853,7 @@
     "theme": "Languages & Compilers",
     "years": "2026-Present",
     "weight": 8,
+    "print": 5,
     "related": [
       "xl",
       "tao3d",

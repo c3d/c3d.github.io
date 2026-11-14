@@ -18,7 +18,7 @@ links:
 
 ## Software as a Passion
 
-Pushing the boundaries by writing highly original software, hoping to change the world one step at a time.
+Pushing the boundaries by writing highly original software and turning it into successful products by leading great teams.
 
 - French software developer — operating systems, languages, games
 - Amateur physics researcher and tinkerer in strange forms of art

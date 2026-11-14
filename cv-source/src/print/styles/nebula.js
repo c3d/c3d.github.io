@@ -69,10 +69,10 @@ export const nebulaStyle = {
           </section>
           <section class="pvn-card"><h2>Info</h2>
             <ul class="pvn-info">
-              ${model.educationHtml || model.education ? `<li><span>★</span>${model.educationHtml || model.education}</li>` : ''}
-              <li><span>✉</span>${model.email}</li>
-              <li><span>⌘</span>${model.github.replace(/^https?:\/\//, '')}</li>
-              <li><span>◉</span>${model.website.replace(/^https?:\/\//, '')}</li>
+              ${model.educationHtml || model.education ? `<li><span>★</span><span>${model.educationHtml || model.education}</span></li>` : ''}
+              <li><span>✉</span><span>${model.email}</span></li>
+              <li><span>⌘</span><span>${model.github.replace(/^https?:\/\//, '')}</span></li>
+              <li><span>◉</span><span>${model.website.replace(/^https?:\/\//, '')}</span></li>
             </ul>
           </section>
           <section class="pvn-card"><h2>Technologies</h2>

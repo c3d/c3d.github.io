@@ -4,13 +4,11 @@ title: Confidential Containers (CoCo)
 theme: Systems & Virtualization
 years: 2021-Present
 weight: 8
-print: 4
 related:
   - kata-containers
   - hpvm
   - spice
   - patents
-  - ai
 videos:
   - 3UoChFEH6jQ
   - ww6EiDsCRz4
@@ -61,16 +59,12 @@ topics:
   - virtualization
   - opensource
   - linux
-  - ai
 ---
 ## Confidential Containers and attestation
 
-Focused on attestation for Confidential Containers (CoCo): wrote the Red Hat attestation blog series, and identified two major flaws in the original CoCo design — incremental / in-guest image download and the split host/tenant API — with proposed solutions.
+Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API
 
 - Six-part Red Hat blog series on confidential computing and attestation (May–June 2023), including CoCo attestation architecture; plus the September 2023 hub and co-authorship of the CoCo project overview
-- FOSDEM 2024 main-stage (Janson) talk: “Proving that Cloud Sysadmins Cannot Read your Data!” — attestation for confidential VMs, containers, and clusters (not a keynote)
 - Same attestation material also at KVM Forum 2023, DevConf.CZ 2023, and Azur Tech Winter 2023
-- Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021
 - Co-inventor of [US12321473B2](https://patents.google.com/patent/US12321473B2/en) (on-demand encrypted container image download)
 - Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)
-- One CoCo use case is running AI agents in a sandbox (Agent Sandbox), with encrypted communication with the GPU and GPU attestation
