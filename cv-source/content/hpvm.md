@@ -1,6 +1,6 @@
 ---
 id: hpvm
-title: HPVM - Enterprise Virtualization
+title: HPVM - Enterprise-grade Itanium virtualization
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 10
@@ -25,6 +25,7 @@ topics:
 ---
 ## Enterprise-grade virtualization for high-end Itanium servers
 
+- From first line of code and pre-silicon bring up all the way to 7 digits of revenue per quarter
 - Early HPVM boot entirely on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux) (pre-silicon); later A-step silicon bring-up
 - Started the HP Integrity Virtual Machines project in late 2000
 - Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)
