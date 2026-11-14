@@ -56,12 +56,12 @@ const PRINT_THEME_COLORS = {
 };
 
 /** Wide constellation for landscape. Physics (front-left) ≠ Languages (back-left). */
-/** Desktop layout — slightly inset so bloom + labels clear viewport edges. */
+/** Desktop layout — hexagonal ring (middle waist pushed outward, not two columns). */
 const THEME_LAYOUT_DESKTOP = {
   'Physics': { x: -78, y: 40, z: 42 },
-  'Languages & Compilers': { x: -82, y: -4, z: -40 },
+  'Languages & Compilers': { x: -132, y: -6, z: -40 },
   'Tools & Apps': { x: 2, y: 36, z: -58 },
-  'Systems & Virtualization': { x: 80, y: 34, z: -12 },
+  'Systems & Virtualization': { x: 132, y: -2, z: -12 },
   'Games & 3D': { x: -44, y: -60, z: 6 },
   'Art & Culture': { x: 76, y: -48, z: 42 }
 };
