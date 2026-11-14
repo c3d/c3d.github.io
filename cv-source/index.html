@@ -814,7 +814,11 @@
       background: color-mix(in srgb, var(--hud-accent) 12%, transparent);
     }
     .hud-bullet {
-      min-height: 1.55em;
+      /* Keep empty-state height for teletype, but never allow the grid to crush
+         below content — that made description text paint over Connected topics. */
+      min-height: min-content;
+      height: max-content;
+      align-self: start;
     }
     .hud-bullet a {
       color: var(--hud-accent);
@@ -945,6 +949,22 @@
       border-bottom: 1px solid rgba(255,255,255,0.14);
       text-shadow: 0 1px 6px rgba(0,0,0,0.55);
     }
+    .hud-bullet h2,
+    .hud-bullet h3 {
+      font-family: Orbitron, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.35;
+      margin: 0 0 8px;
+      color: #f2f7ff;
+    }
+    .hud-bullet ul {
+      margin: 0;
+      padding-left: 1.15em;
+    }
+    .hud-bullet li {
+      margin: 0 0 0.35em;
+    }
     .hud-index {
       font-family: Orbitron, sans-serif;
       font-size: 10px;
@@ -956,37 +976,48 @@
       margin: 0 0 12px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
-      /* Light plate so transparent PNGs (dark logos) stay readable */
-      background: #f4f7fb;
+      /* Box hugs the media — no letterbox plate behind object-fit contain. */
+      width: fit-content;
+      max-width: 100%;
+      background: transparent;
     }
     .hud-image img {
       display: block;
-      width: 100%;
+      width: auto;
       height: auto;
+      max-width: 100%;
+      max-height: min(42vh, 320px);
+      object-fit: contain;
+      object-position: center;
       vertical-align: top;
+      background: transparent;
     }
     .hud-image-credit {
       margin: 0;
-      padding: 6px 8px 7px;
+      padding: 6px 2px 2px;
       font-family: "Source Sans 3", sans-serif;
       font-size: 11px;
       line-height: 1.35;
-      color: rgba(20, 28, 40, 0.78);
-      background: #e8eef6;
-      border-top: 1px solid rgba(0,0,0,0.06);
+      color: rgba(180, 210, 255, 0.72);
+      background: transparent;
+      border-top: 1px solid rgba(255,255,255,0.12);
     }
     .hud-image-credit a {
-      color: #0b4f8a;
+      color: var(--hud-accent);
       text-decoration: underline;
       text-underline-offset: 2px;
     }
     .hud-video {
       position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      padding-bottom: 0;
       margin: 0 0 12px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0, 0, 0, 0.35);
     }
     .hud-video.hud-video-vertical {
       /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
@@ -1114,7 +1145,9 @@
         font-size: 16px;
         padding: 9px 10px;
       }
-      /* Bottom-docked HUD: two columns — info chips | media (contain). */
+      /* Bottom-docked HUD: two columns — info chips | media.
+         Rows are content-sized so description / connected never crush-overlap;
+         .hud-below-inner scrolls when the stack exceeds the panel. */
       .hud-below-inner {
         display: grid;
         grid-template-columns: minmax(132px, 0.9fr) minmax(0, 1.35fr);
@@ -1124,10 +1157,11 @@
           "topics topics"
           "bullet bullet"
           "connected connected";
+        grid-auto-rows: max-content;
         column-gap: 12px;
         row-gap: 10px;
         align-content: start;
-        align-items: stretch;
+        align-items: start;
       }
       .hud-index {
         grid-area: index;
@@ -1148,62 +1182,68 @@
       .hud-bullet {
         grid-area: bullet;
         margin: 0;
+        min-height: min-content;
+        height: max-content;
       }
       .hud-connected {
         grid-area: connected;
         margin-top: 0;
+        min-height: min-content;
+        height: max-content;
+        align-self: start;
       }
       [data-hud="media"] {
         grid-area: media;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 8px;
         min-width: 0;
-        min-height: 0;
-        max-height: min(36vh, 280px);
-        align-self: stretch;
+        min-height: min-content;
+        max-height: none;
+        align-self: start;
       }
       [data-hud="media"] .hud-image {
-        /* Size to the image — do not flex-grow into an empty light plate. */
-        flex: 0 1 auto;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-height: 100%;
-        min-height: 0;
-        margin: 0;
+        flex: 0 0 auto;
+        display: block;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
         overflow: hidden;
+        background: transparent;
       }
       [data-hud="media"] .hud-image img {
-        flex: 0 1 auto;
-        width: 100%;
+        display: block;
+        width: auto;
         height: auto;
-        max-height: 100%;
-        min-height: 0;
+        max-width: 100%;
+        max-height: min(32vh, 240px);
         object-fit: contain;
         object-position: center;
+        background: transparent;
       }
       [data-hud="media"] .hud-image-credit {
-        flex: 0 0 auto;
+        display: block;
+        width: 100%;
       }
       [data-hud="media"] .hud-video {
-        flex: 1 1 auto;
+        flex: 0 0 auto;
         position: relative;
         width: 100%;
         height: auto;
         max-width: 100%;
-        max-height: 100%;
+        max-height: min(32vh, 240px);
         margin: 0 auto;
         padding-bottom: 0;
         aspect-ratio: 16 / 9;
+        background: rgba(0, 0, 0, 0.35);
       }
       [data-hud="media"] .hud-video.hud-video-vertical {
         width: auto;
-        height: 100%;
-        max-width: 100%;
-        max-height: 100%;
+        height: auto;
+        max-width: min(100%, 160px);
+        max-height: min(32vh, 240px);
         aspect-ratio: 9 / 16;
         margin: 0 auto;
       }
@@ -1250,12 +1290,17 @@
           "topics"
           "bullet"
           "connected";
+        grid-auto-rows: max-content;
+        align-items: start;
       }
       .hud-readouts {
         grid-template-columns: 1fr 1fr;
       }
-      [data-hud="media"] {
-        max-height: min(32vh, 240px);
+      [data-hud="media"] .hud-image img {
+        max-height: min(28vh, 200px);
+      }
+      [data-hud="media"] .hud-video {
+        max-height: min(28vh, 200px);
       }
     }
 
