@@ -22,7 +22,7 @@ topics:
 ---
 ## Cartoons for ECUTEST Release
 
-- [Marketing needs not care](#ecu-cartoon-dontcare)
+- [Marketing need not care](#ecu-cartoon-dontcare)
 - [Software that blows](#ecu-cartoon-fuses)
 - [Customers know best](#ecu-cartoon-injectors)
 - [Tight fit](#ecu-cartoon-itfits)
@@ -30,4 +30,4 @@ topics:
 - [Wild optimism](#ecu-cartoon-optimist)
 - [Processes](#ecu-cartoon-processes)
 - [Yes, it's a bit slow to start](#ecu-cartoon-venturi)
-- [Ever changing product structure](#ecu-cartoon-yesterdays)
+- [Ever-changing product structure](#ecu-cartoon-yesterdays)

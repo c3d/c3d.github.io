@@ -5,7 +5,9 @@ theme: Systems & Virtualization
 years: 2015-2016
 weight: 10
 print: 5
-related: []
+related:
+  - make-it-quick
+  - recorder
 videos:
   - k9KXqVCYPoo
 videoAspect: '9:16'
@@ -31,6 +33,9 @@ topics:
 Paris.
 
 - Dual-core ARM + ISP real-time system
-- Improving software quality on a highly capable connected camera
-- Compact form factor with serious imaging capability
-- The unusual viewfinder UI seen in the video was my invention, proposed during my job interview at DxO
+- Camera randomly took pink pictures: components built by hand, structs sized differently under inconsistent `#ifdef`s — redesigned the build system to fix it (ancestor of [make-it-quick](#make-it-quick))
+- Introduced version control, CI, modularity, and testing practices where almost none existed
+- Left behind a wall of test boxes: each Raspberry Pi flashed firmware into a DxO ONE and shot reference pictures under controlled lighting
+- Asserts used to lock up and drain the battery in a spin loop; serial debug spam slowed the camera — replaced with a printf-compatible circular buffer dumped only on failure (ancestor of the [recorder](#recorder)); boot time from 2–5 s to under 1 s
+- Proposed the black-and-white viewfinder UI idea during the interview (others implemented it)
+- Also implemented real-time HDR for iPhone/iPad

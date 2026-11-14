@@ -15,7 +15,7 @@ links:
     url: 'http://tao3d.sf.net'
   - label: Grenouille Bouillie
     url: 'https://grenouillebouillie.wordpress.com/'
-  - label: DB48X
+  - label: DB48x
     url: 'https://c3d.github.io/db48x/'
 topics:
   - writing
@@ -23,4 +23,4 @@ topics:
 ---
 ## Web sites and blogs
 
-- Sample sites: Tao3D, Grenouille Bouillie, DB48X
+- Sample sites: Tao3D, Grenouille Bouillie, DB48x

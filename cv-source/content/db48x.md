@@ -1,6 +1,6 @@
 ---
 id: db48x
-title: DB48X - Modern RPL Calculator
+title: DB48x - Modern RPL Calculator
 theme: Languages & Compilers
 years: 2022-Present
 weight: 9
@@ -17,7 +17,7 @@ links:
     url: 'https://github.com/c3d/db48x'
   - label: Try it
     url: 'https://c3d.github.io/db48x/'
-  - label: 'DB48X - Reviving the spirit of HP calculators'
+  - label: 'DB48x - Reviving the spirit of HP calculators'
     url: 'https://www.youtube.com/watch?v=jNOA39HnkcM'
   - label: FOSDEM 2024
     url: 'https://www.youtube.com/watch?v=WU5Dg1mPkl8'
@@ -47,7 +47,7 @@ topics:
 
 Free software for physical calculators or phone apps.
 
-- Best scientific calculator today, a modern rebuild of high-end HP-48 and HP-50 calculators
+- A modern rebuild of high-end HP-48 and HP-50 calculators, firmware for low-power ARM SoC
 - Ships as firmware for real hardware calculators including SwissMicros DM32 and DM42 with low-power ARM SoC
 - DM32: [ARM Cortex-M33](https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m33) ([STM32U575](https://www.st.com/en/microcontrollers-microprocessors/stm32u575.html)); DM42: [ARM Cortex-M4](https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m4) ([STM32L476](https://www.st.com/en/microcontrollers-microprocessors/stm32l476zg.html))
 - Rich RPL data types and built-in functions with Lisp-level programming power

@@ -44,7 +44,9 @@ const PRINT_COPY = {
     bullets: ['Bring the SPICE remote-access application to the modern 3D and video desktop']
   },
   'dxo-one': {
-    bullets: ['A tiny, but high-quality camera for photographers. Dual-core ARM + ISP, RTOS + Linux']
+    bullets: [
+      'A tiny, but high-quality camera for photographers. Dual-core ARM + ISP, RTOS + Linux; pink pictures fixed via build system; automated hardware test farm; boot 2–5 s → <1 s'
+    ]
   },
   hpcpp: {
     bullets: [
@@ -75,9 +77,9 @@ const PRINT_COPY = {
     ]
   },
   db48x: {
-    title: 'DB48X - Modern RPL Calculator',
+    title: 'DB48x - Modern RPL Calculator',
     bullets: [
-      'Best scientific calculator today, a modern rebuild of high-end HP-48 and HP-50 calculators'
+      'A modern rebuild of high-end HP-48 and HP-50 calculators, firmware for low-power ARM SoC'
     ]
   },
   'make-it-quick': {
@@ -120,7 +122,7 @@ function researchPrintProjects() {
       title: 'Computer science research',
       years: '',
       bullets: [
-        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48X`
+        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48x`
       ]
     },
     {
@@ -167,7 +169,7 @@ function communicationPrintProjects() {
       title: 'Web sites and blogs',
       years: '',
       bullets: [
-        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48X')}`
+        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
       ]
     },
     {
@@ -224,7 +226,7 @@ export function buildPrintModel(data, {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
   const aboutLines = (about?.bullets || []).map((b) => b.text);
   const aboutPara = (about?.content || '').match(/<p>([\s\S]*?)<\/p>/)?.[1]?.replace(/<[^>]+>/g, '')
-    || 'Pushing the boundaries by writing highly innovative and differentiating software, hoping to change the world one step at a time.';
+    || 'Pushing the boundaries by writing highly original software, hoping to change the world one step at a time.';
   const email = aboutLines.find((t) => t.includes('@')) || 'christophe@dinechin.org';
   // Avoid matching incidental "ms " (e.g. "forms of art") — require real education cues.
   const isEducation = (t) => /École|Mines|MS Computer/i.test(t);
