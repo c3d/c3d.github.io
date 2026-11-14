@@ -2,7 +2,7 @@
 id: special-relativity
 title: Relativity as Perspective
 theme: Research
-years: null
+years: 1995
 weight: 7
 related:
   - physics-books

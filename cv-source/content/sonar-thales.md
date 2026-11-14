@@ -2,7 +2,7 @@
 id: sonar-thales
 title: Thales Sonar Serious Game
 theme: Games & 3D
-years: null
+years: 2016
 weight: 9
 related:
   - tao3d

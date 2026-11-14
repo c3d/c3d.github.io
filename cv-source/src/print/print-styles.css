@@ -229,16 +229,19 @@ a.pv-deep-on-dark {
   background: #0a1528;
 }
 .pvn-photo img {
-  /* Square asset fills the circle at 100%; enlarge (~1.45×) to crop in on the face */
+  /*
+   * Square asset fills the circle at 100%. Enlarge and shift so the
+   * visible window is the head: hair near the top rim, chin ~75% down.
+   */
   position: absolute;
-  width: 145%;
-  height: 145%;
+  width: 220%;
+  height: 220%;
   max-width: none;
   left: 50%;
-  top: 42%;
+  top: 64%;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  object-position: 50% 22%;
+  object-position: 50% 18%;
   display: block;
 }
 .pvn-sub { margin: 0.6mm 0 0; font-size: 8.5pt; color: rgba(255,255,255,.88); text-align: left; }
@@ -341,16 +344,19 @@ a.pvn-qr:hover { color: inherit; }
   background: #06101f;
 }
 .pvo-photo img {
-  /* Square asset fills the circle at 100%; enlarge (~1.45×) to crop in on the face */
+  /*
+   * Square asset fills the circle at 100%. Enlarge and shift so the
+   * visible window is the head: hair near the top rim, chin ~75% down.
+   */
   position: absolute;
-  width: 145%;
-  height: 145%;
+  width: 220%;
+  height: 220%;
   max-width: none;
   left: 50%;
-  top: 42%;
+  top: 64%;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  object-position: 50% 22%;
+  object-position: 50% 18%;
   display: block;
 }
 .pvo-block h2 {

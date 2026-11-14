@@ -3,7 +3,7 @@
     "id": "3divart",
     "title": "3DIVART",
     "theme": "Communication Skills",
-    "years": null,
+    "years": 2015,
     "weight": 9,
     "print": 1,
     "related": [
@@ -13,7 +13,12 @@
     "images": [
       "/cv/3DIVART.jpg"
     ],
-    "links": [],
+    "links": [
+      {
+        "label": "WebTime Médias",
+        "url": "https://www.webtimemedias.com/article/sophia-3d-sans-lunettes-et-3divart-en-vitrine-avec-taodyne?old_id=56533"
+      }
+    ],
     "topics": [
       "graphics3d",
       "opensource"
@@ -85,7 +90,7 @@
     "id": "breakout-tao3d",
     "title": "Breakout in Tao3D",
     "theme": "Games & 3D",
-    "years": null,
+    "years": 2015,
     "weight": 7,
     "related": [
       "tao3d"
@@ -95,6 +100,10 @@
       {
         "label": "Taodyne blog",
         "url": "http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"
+      },
+      {
+        "label": "Tao3D examples list",
+        "url": "https://github.com/c3d/tao3D/blame/master/tao-examples-list#L105"
       }
     ],
     "images": [
@@ -125,7 +134,7 @@
     "id": "capavoit",
     "title": "CapaVoit",
     "theme": "Tools & Apps",
-    "years": null,
+    "years": 1993,
     "weight": 7,
     "related": [
       "musolver"
@@ -1636,7 +1645,7 @@
     "id": "moka",
     "title": "Moka",
     "theme": "Languages & Compilers",
-    "years": null,
+    "years": 2001,
     "weight": 8,
     "related": [
       "xl",
@@ -1645,8 +1654,12 @@
     "videos": [],
     "links": [
       {
-        "label": "Moka",
-        "url": "http://mozart-dev.sourceforge.net"
+        "label": "What is Moka? (Dr. Dobb's Journal, July 2001)",
+        "url": "http://web.archive.org/web/20250123210258/https://www.drdobbs.com/jvm/what-is-moka/184404696"
+      },
+      {
+        "label": "Moka project page",
+        "url": "https://mozart-dev.sourceforge.net/moka.html"
       }
     ],
     "images": [
@@ -2059,7 +2072,7 @@
     "id": "sonar-thales",
     "title": "Thales Sonar Serious Game",
     "theme": "Games & 3D",
-    "years": null,
+    "years": 2016,
     "weight": 9,
     "related": [
       "tao3d"
@@ -2101,7 +2114,7 @@
     "id": "special-relativity",
     "title": "Relativity as Perspective",
     "theme": "Research",
-    "years": null,
+    "years": 1995,
     "weight": 7,
     "related": [
       "physics-books"
@@ -2389,7 +2402,7 @@
     "id": "videos-portfolio",
     "title": "Videos",
     "theme": "Communication Skills",
-    "years": "2022-Present",
+    "years": "2008-Present",
     "weight": 6,
     "related": [
       "db48x",
@@ -2553,7 +2566,7 @@
     "id": "xlr8",
     "title": "XLR8",
     "theme": "Languages & Compilers",
-    "years": "2009-Present",
+    "years": "2026-Present",
     "weight": 8,
     "print": 4,
     "related": [

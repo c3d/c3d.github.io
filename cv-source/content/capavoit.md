@@ -2,7 +2,7 @@
 id: capavoit
 title: CapaVoit
 theme: Tools & Apps
-years: null
+years: 1993
 weight: 7
 related:
   - musolver
