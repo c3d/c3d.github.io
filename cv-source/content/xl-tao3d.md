@@ -6,6 +6,8 @@ years: 1992-Present
 weight: 9
 print: 3
 related:
+  - mozart
+  - moka
   - taodyne
   - 3divart
   - firefly

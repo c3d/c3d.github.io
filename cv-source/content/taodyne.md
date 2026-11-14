@@ -13,7 +13,7 @@ links:
   - label: Tao3D
     url: 'https://tao3d.sourceforge.net/'
 images:
-  - /cv/media/taodyne.jpg
+  - /cv/media/taodyne.png
 ---
 ## Founder and CEO — real-time 3D presentations
 

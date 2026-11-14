@@ -6,7 +6,8 @@ years: 1988-1998
 weight: 8
 related:
   - xl-tao3d
-  - mozart-moka
+  - mozart
+  - moka
 videos: []
 links: []
 images:

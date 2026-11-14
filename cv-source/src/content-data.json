@@ -729,7 +729,8 @@
     "weight": 8,
     "related": [
       "xl-tao3d",
-      "mozart-moka"
+      "mozart",
+      "moka"
     ],
     "videos": [],
     "links": [],
@@ -797,12 +798,50 @@
     ]
   },
   {
-    "id": "mozart-moka",
-    "title": "Mozart & Moka",
+    "id": "moka",
+    "title": "Moka",
+    "theme": "Languages & Compilers",
+    "years": null,
+    "weight": 8,
+    "related": [
+      "mozart",
+      "xl-tao3d",
+      "lx"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Moka",
+        "url": "http://mozart-dev.sourceforge.net"
+      }
+    ],
+    "images": [
+      "/cv/media/moka.png"
+    ],
+    "content": "<h2>Java-to-Java extensible compiler</h2>\n<ul>\n<li>Built on the Mozart intermediate language</li>\n<li>Java parser/compiler with extensible front-end hooks</li>\n<li>Covered in a Dr. Dobb’s article on concept programming tools</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Built on the Mozart intermediate language",
+        "section": "Java-to-Java extensible compiler"
+      },
+      {
+        "text": "Java parser/compiler with extensible front-end hooks",
+        "section": "Java-to-Java extensible compiler"
+      },
+      {
+        "text": "Covered in a Dr. Dobb’s article on concept programming tools",
+        "section": "Java-to-Java extensible compiler"
+      }
+    ]
+  },
+  {
+    "id": "mozart",
+    "title": "Mozart",
     "theme": "Languages & Compilers",
     "years": null,
     "weight": 9,
     "related": [
+      "moka",
       "lx",
       "xl-tao3d"
     ],
@@ -814,21 +853,21 @@
       }
     ],
     "images": [
-      "/cv/media/mozart-moka.jpg"
+      "/cv/media/mozart.png"
     ],
-    "content": "<h2>Extensible front-end IL and Java-to-Java compiler</h2>\n<ul>\n<li>Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article</li>\n<li>Experiments that informed later XL / parse-tree design choices</li>\n</ul>\n",
+    "content": "<h2>Extensible development-tools framework</h2>\n<ul>\n<li>Intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>First framework designed to fully enable concept programming</li>\n<li>Hosted thin tools / compiler plug-ins; informed later XL parse-tree design</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "Intermediate language for extensible language front-ends (with Daveed Vandevoorde)",
+        "section": "Extensible development-tools framework"
       },
       {
-        "text": "Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "First framework designed to fully enable concept programming",
+        "section": "Extensible development-tools framework"
       },
       {
-        "text": "Experiments that informed later XL / parse-tree design choices",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "Hosted thin tools / compiler plug-ins; informed later XL parse-tree design",
+        "section": "Extensible development-tools framework"
       }
     ]
   },
@@ -1177,7 +1216,7 @@
       }
     ],
     "images": [
-      "/cv/media/taodyne.jpg"
+      "/cv/media/taodyne.png"
     ],
     "content": "<h2>Founder and CEO — real-time 3D presentations</h2>\n<p>Sophia-Antipolis.</p>\n<ul>\n<li>Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)</li>\n<li>Tao3D Studio / Player for interactive 3D documents</li>\n<li>Commercial features: stereoscopy, auto-stereoscopy, signed/encrypted documents</li>\n<li>Technical success but commercial failure</li>\n<li>Awards: Best elevator pitch and Best technology in TIC (Business Accelerator 06)</li>\n<li>Most innovative product — Tao3D (DEVCOM 2012)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Christophe is a very innovative and open minded entrepreneur&quot;</em> — P. Zucchetta</p>\n",
     "bullets": [
@@ -1215,6 +1254,8 @@
     "weight": 9,
     "print": 3,
     "related": [
+      "mozart",
+      "moka",
       "taodyne",
       "3divart",
       "firefly",
