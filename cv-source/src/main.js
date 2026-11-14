@@ -55,9 +55,9 @@ const PRINT_THEME_COLORS = {
   'Tools & Apps': 0x1496b0
 };
 
-/** Wide constellation for landscape. Physics (front-left) ≠ Languages (back-left). */
-/** Desktop layout — hexagonal ring (middle waist pushed outward, not two columns). */
-const THEME_LAYOUT_DESKTOP = {
+/** Hexagonal ring for every aspect ratio — fitOverviewToClusters scales/fits the
+ * camera instead of switching to a portrait 3×2 column layout. */
+const THEME_LAYOUT_RING = {
   'Physics': { x: -78, y: 40, z: 42 },
   'Languages & Compilers': { x: -132, y: -6, z: -40 },
   'Tools & Apps': { x: 2, y: 36, z: -58 },
@@ -66,19 +66,12 @@ const THEME_LAYOUT_DESKTOP = {
   'Art & Culture': { x: 76, y: -48, z: 42 }
 };
 
-/** Tall 3×2 for portrait — inset so labels/clusters stay inside the viewport. */
-const THEME_LAYOUT_MOBILE = {
-  'Physics': { x: -28, y: 78, z: 22 },
-  'Languages & Compilers': { x: 28, y: 72, z: -28 },
-  'Tools & Apps': { x: -32, y: 8, z: -40 },
-  'Systems & Virtualization': { x: 30, y: 14, z: 8 },
-  'Games & 3D': { x: -30, y: -70, z: -10 },
-  'Art & Culture': { x: 30, y: -64, z: 34 }
-};
+/** @deprecated alias — kept so older call sites / docs still resolve */
+const THEME_LAYOUT_DESKTOP = THEME_LAYOUT_RING;
 
 /** Active theme centers (mutated by applyThemeLayout). */
-const THEME_POSITIONS = { ...THEME_LAYOUT_DESKTOP };
-let activeLayoutMobile = null;
+const THEME_POSITIONS = { ...THEME_LAYOUT_RING };
+let themeLayoutApplied = false;
 
 function mulberry32(seed) {
   return function () {
@@ -412,13 +405,14 @@ function refreshClusterPoseFromControls() {
 }
 
 /**
- * Swap desktop ↔ portrait theme layouts and move nebulae / stars / labels.
+ * Apply the hexagonal ring layout and move nebulae / stars / labels.
+ * Aspect ratio is handled by fitOverviewToClusters (scale/fit), not a column layout.
  */
-function applyThemeLayout(forceMobile = null) {
-  const isMobile = forceMobile ?? window.innerWidth < 768;
-  if (activeLayoutMobile === isMobile && nebulaGroups.length) return;
-  activeLayoutMobile = isMobile;
-  const layout = isMobile ? THEME_LAYOUT_MOBILE : THEME_LAYOUT_DESKTOP;
+function applyThemeLayout(_forceMobile = null) {
+  // _forceMobile ignored — ring at any aspect (kept for call-site compat).
+  if (themeLayoutApplied && nebulaGroups.length) return;
+  themeLayoutApplied = true;
+  const layout = THEME_LAYOUT_RING;
   Object.keys(layout).forEach((theme) => {
     THEME_POSITIONS[theme] = { ...layout[theme] };
   });
@@ -455,19 +449,32 @@ function applyThemeLayout(forceMobile = null) {
   if (stars.length) createProjectLineages();
 }
 
+/** Title HUD bottom edge in CSS pixels — overview labels must stay below this. */
+function titleOverlayBottomPx() {
+  const title = document.getElementById('title-overlay');
+  if (!title) return 0;
+  const r = title.getBoundingClientRect();
+  // Include a small gap under the title chrome so labels never kiss the frame.
+  return Math.ceil(r.bottom) + 10;
+}
+
 /**
- * Fit overview so all six clusters + theme labels sit fully inside the
- * viewport with a comfortable margin (desktop + mobile).
+ * Fit overview so all six ring clusters + theme labels sit fully inside the
+ * viewport. Narrow/portrait: zoom/fit the same ring (never switch to columns).
+ * Top margin always clears the title HUD height.
  */
 function fitOverviewToClusters() {
   applyThemeLayout();
 
-  const isMobile = window.innerWidth < 768;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const narrow = w < 768;
+  const veryNarrow = w < 480;
   // Nebula glow + bloom halo; theme labels sit ~26 above centers
-  const padX = isMobile ? 28 : 38;
-  const padYLo = isMobile ? 26 : 36;
-  const padYHi = isMobile ? 38 : 46;
-  const padZ = isMobile ? 26 : 36;
+  const padX = veryNarrow ? 40 : narrow ? 34 : 38;
+  const padYLo = veryNarrow ? 34 : narrow ? 30 : 36;
+  const padYHi = veryNarrow ? 48 : narrow ? 42 : 46;
+  const padZ = veryNarrow ? 32 : narrow ? 28 : 36;
   const box = new THREE.Box3();
   Object.values(THEME_POSITIONS).forEach((p) => {
     box.expandByPoint(new THREE.Vector3(p.x - padX, p.y - padYLo, p.z - padZ));
@@ -482,56 +489,104 @@ function fitOverviewToClusters() {
   const vFov = THREE.MathUtils.degToRad(camera.fov);
   const aspect = Math.max(camera.aspect, 0.35);
   const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
-  // Leave margin for bloom halo + labels (mobile layout already inset)
-  const fill = isMobile ? 0.70 : 0.58;
+  // Narrow: leave more fill headroom so the ring scales down instead of clipping
+  const fill = veryNarrow ? 0.42 : narrow ? 0.50 : 0.58;
   const halfH = Math.max(size.y, size.z * 0.55) * 0.5;
   const halfW = Math.max(size.x, size.z * 0.45) * 0.5;
   const distV = halfH / Math.tan((vFov * fill) / 2);
   const distH = halfW / Math.tan((hFov * fill) / 2);
   let dist = Math.max(distV, distH);
-  dist = THREE.MathUtils.clamp(dist, isMobile ? 155 : 190, isMobile ? 340 : 480);
+  dist = THREE.MathUtils.clamp(dist, narrow ? 180 : 190, veryNarrow ? 640 : narrow ? 560 : 480);
 
   controls.targetZoom = dist;
   controls.currentZoom = dist;
-  controls.targetRotationX = isMobile ? 0.14 : 0.08;
-  controls.targetRotationY = isMobile ? 0.02 : 0.10;
+  controls.targetRotationX = narrow ? 0.10 : 0.08;
+  // On portrait, reduce yaw so left/right ring nodes stay in-frame
+  controls.targetRotationY = veryNarrow ? 0.02 : narrow ? 0.04 : 0.10;
   controls.currentRotationX = controls.targetRotationX;
   controls.currentRotationY = controls.targetRotationY;
   updateCameraFromControls();
   camera.lookAt(controls.lookAt);
 
-  // Screen-space guard: zoom out until every theme (+ bloom + label) is inset
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const marginX = isMobile ? 18 : Math.max(48, w * 0.06);
-  const marginY = isMobile ? 28 : Math.max(52, h * 0.08);
-  const bloomPad = isMobile ? 28 : Math.max(42, Math.min(w, h) * 0.055);
+  // Screen-space guard: zoom out until every theme (+ bloom + real DOM label)
+  // is inset, and no theme label sits under the title HUD.
+  const marginX = veryNarrow ? 4 : narrow ? Math.max(10, w * 0.025) : Math.max(48, w * 0.06);
+  const marginYBottom = narrow ? Math.max(24, h * 0.05) : Math.max(52, h * 0.08);
+  const marginYTop = Math.max(marginYBottom, titleOverlayBottomPx());
+  const bloomPad = veryNarrow ? 14 : narrow ? Math.max(20, Math.min(w, h) * 0.04) : Math.max(42, Math.min(w, h) * 0.055);
   const ndc = new THREE.Vector3();
-  for (let iter = 0; iter < 12; iter++) {
+  const themeLabels = () => labelSprites.filter((l) => l.userData.kind === 'theme' && l.userData.el);
+
+  const projectThemeLabelEls = () => {
+    themeLabels().forEach((label) => {
+      if (label.userData.home) label.position.copy(label.userData.home);
+      label.getWorldPosition(_labelWorld);
+      _labelNdc.copy(_labelWorld).project(camera);
+      const off = label.userData.screenOffset || { x: 0, y: -14 };
+      const sx = Math.round((_labelNdc.x * 0.5 + 0.5) * w + off.x);
+      const sy = Math.round((-_labelNdc.y * 0.5 + 0.5) * h + off.y);
+      label.userData.el.style.transform =
+        `translate3d(${sx}px, ${sy}px, 0) translate(-50%, calc(-100% - 6px))`;
+    });
+  };
+
+  for (let iter = 0; iter < 24; iter++) {
     let needsZoom = false;
     Object.values(THEME_POSITIONS).forEach((p) => {
       ndc.set(p.x, p.y, p.z).project(camera);
       const sx = (ndc.x * 0.5 + 0.5) * w;
       const sy = (-ndc.y * 0.5 + 0.5) * h;
-      const labelHalfW = Math.max(48, (55 / Math.max(controls.currentZoom, 1)) * h * 0.32);
-      const labelHalfH = Math.max(12, (8.4 / Math.max(controls.currentZoom, 1)) * h * 0.32);
-      ndc.set(p.x, p.y + 26, p.z).project(camera);
-      const lsx = (ndc.x * 0.5 + 0.5) * w;
-      const lsy = (-ndc.y * 0.5 + 0.5) * h;
       if (
         sx - bloomPad < marginX || sx + bloomPad > w - marginX
-        || sy - bloomPad < marginY || sy + bloomPad > h - marginY
-        || lsx - labelHalfW < marginX * 0.55
-        || lsx + labelHalfW > w - marginX * 0.55
-        || lsy - labelHalfH < marginY * 0.6
-        || lsy + labelHalfH > h - marginY * 0.45
+        || sy - bloomPad < marginYTop || sy + bloomPad > h - marginYBottom
       ) {
         needsZoom = true;
       }
     });
+    // Measure actual theme mini-HUD boxes. Long names ("Languages & Compilers",
+    // "Systems & Virtualization") are ~220–250px once Orbitron loads — if the
+    // DOM box is still unset/pre-font, assume a conservative half-width.
+    projectThemeLabelEls();
+    const themeEls = themeLabels();
+    if (themeEls.length) {
+      themeEls.forEach((label) => {
+        const r = label.userData.el.getBoundingClientRect();
+        const halfW = Math.max(r.width > 4 ? r.width * 0.5 : (veryNarrow ? 120 : 70), 1);
+        const halfH = Math.max(r.height > 2 ? r.height * 0.5 : 14, 1);
+        const cx = r.width > 4 ? r.left + r.width * 0.5 : null;
+        const cy = r.height > 2 ? r.top + r.height * 0.5 : null;
+        // Prefer live box; fall back to projected center ± assumed size.
+        if (cx != null && cy != null) {
+          if (
+            cx - halfW < marginX
+            || cx + halfW > w - marginX
+            || cy - halfH < marginYTop
+            || cy + halfH > h - marginYBottom * 0.35
+          ) {
+            needsZoom = true;
+          }
+        } else {
+          needsZoom = true;
+        }
+      });
+    } else if (veryNarrow || narrow) {
+      // Labels not mounted yet — still reserve space for wide theme names.
+      Object.values(THEME_POSITIONS).forEach((p) => {
+        ndc.set(p.x, p.y + 26, p.z).project(camera);
+        const lsx = (ndc.x * 0.5 + 0.5) * w;
+        const lsy = (-ndc.y * 0.5 + 0.5) * h;
+        const halfW = veryNarrow ? 120 : 80;
+        if (
+          lsx - halfW < marginX || lsx + halfW > w - marginX
+          || lsy - 14 < marginYTop || lsy + 14 > h - marginYBottom * 0.35
+        ) {
+          needsZoom = true;
+        }
+      });
+    }
     if (!needsZoom) break;
-    dist *= 1.09;
-    dist = Math.min(dist, isMobile ? 360 : 520);
+    dist *= 1.07;
+    dist = Math.min(dist, veryNarrow ? 1100 : narrow ? 720 : 520);
     controls.targetZoom = dist;
     controls.currentZoom = dist;
     updateCameraFromControls();
@@ -1344,8 +1399,8 @@ function updateLabels(_dt) {
     const behind = _labelNdc.z > 1 || _labelNdc.z < -1;
     if (behind) wantVisible = false;
 
-    // Always project screen position — even while the open-HUD label is hidden —
-    // so close FLIP can re-measure the live 3D-projected slot.
+    // Always project screen position (even while hidden) so HUD open/close FLIP
+    // can measure the live slot — never leave the DOM node at 0×0 / unset.
     const off = label.userData.screenOffset || { x: 0, y: -14 };
     let sx = Math.round((_labelNdc.x * 0.5 + 0.5) * w + off.x);
     let sy = Math.round((-_labelNdc.y * 0.5 + 0.5) * h + off.y);
@@ -2094,7 +2149,25 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
     }
   };
 
+  // Narrow / bottom-docked layout must still run the FLIP choreography — only
+  // reduced-motion or a missing label/panel legitimately snaps open.
   if (prefersReducedMotion() || !labelEl || !titleBar || !panel) {
+    await snapOpen();
+    return;
+  }
+
+  // Ensure the mini-label has a live projected box before measuring (labels may
+  // have been hidden all overview and never laid out at 0×0).
+  syncLabelScreenPosition(projectId);
+  void labelEl.offsetWidth;
+  let from = labelEl.getBoundingClientRect();
+  if (from.width < 2 || from.height < 2) {
+    await waitMs(32);
+    syncLabelScreenPosition(projectId);
+    void labelEl.offsetWidth;
+    from = labelEl.getBoundingClientRect();
+  }
+  if (from.width < 2 || from.height < 2) {
     await snapOpen();
     return;
   }
@@ -2107,7 +2180,6 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   if (sectionEl) sectionEl.textContent = '';
   if (yearsEl) yearsEl.textContent = '';
 
-  const from = labelEl.getBoundingClientRect();
   labelEl.classList.add('ms-label-hud-open');
   labelEl.classList.remove('is-visible');
 
@@ -3283,6 +3355,15 @@ async function init() {
   applyDeepLinkFromUrl({ pushUrl: false });
   window.addEventListener('popstate', () => applyDeepLinkFromUrl({ pushUrl: false }));
   document.getElementById('loading').classList.add('hidden');
+
+  // Orbitron load expands theme mini-HUD boxes — refit so long names stay on-screen.
+  const refit = () => {
+    if (viewLevel === 1 && !currentStar && !isFlying) fitOverviewToClusters();
+  };
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(refit).catch(() => {});
+  }
+  setTimeout(refit, 400);
 
   if (window.location.hash) {
     const id = decodeURIComponent(window.location.hash.slice(1));
