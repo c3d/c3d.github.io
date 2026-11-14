@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
 
 const contentDir = path.join(__dirname, '../content');
 const outputFile = path.join(__dirname, '../src/content-data.json');
+// Also publish under public/ so the runtime can fetch with ?v=buildId (cache-bust).
+const publicOutputFile = path.join(__dirname, '../public/content-data.json');
 
 function extractBullets(markdown) {
   const bullets = [];
@@ -64,5 +66,9 @@ files.forEach((file) => {
   console.log(`✓ ${file} — ${bullets.length} bullets`);
 });
 
-fs.writeFileSync(outputFile, JSON.stringify(content, null, 2));
+const json = JSON.stringify(content, null, 2);
+fs.writeFileSync(outputFile, json);
+fs.mkdirSync(path.dirname(publicOutputFile), { recursive: true });
+fs.writeFileSync(publicOutputFile, json);
 console.log(`\n✓ Wrote ${content.length} projects to ${outputFile}`);
+console.log(`✓ Published ${publicOutputFile}`);
