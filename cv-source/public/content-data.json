@@ -970,6 +970,10 @@
       {
         "label": "aC++",
         "url": "http://www.hp.com/go/aCC"
+      },
+      {
+        "label": "Ski",
+        "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
     "images": [
@@ -982,10 +986,10 @@
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL).</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon; ran it on Ski (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries</li>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Did the compiler bring-up on Ski before silicon existed (a second HP simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL).</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon; ran it on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries</li>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Did the compiler bring-up on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
-        "text": "Wrote the first native Itanium C++ compiler before silicon; ran it on Ski (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries",
+        "text": "Wrote the first native Itanium C++ compiler before silicon; ran it on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> (HP’s functional Itanium simulator); HP’s plan was a PA-RISC cross-compiler via Aries",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -993,7 +997,7 @@
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Did the compiler bring-up on Ski before silicon existed (a second HP simulator also modelled performance details)",
+        "text": "Did the compiler bring-up on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -1173,6 +1177,10 @@
       {
         "label": "HPVM on Wikipedia",
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
+      },
+      {
+        "label": "Ski",
+        "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
     "topics": [
@@ -1181,15 +1189,15 @@
       "system",
       "firmware"
     ],
-    "content": "<h2>HPVM on Ski, then early silicon</h2>\n<ul>\n<li>Early HPVM (HP Integrity VM) boot was done entirely on Ski, HP’s functional Itanium simulator — physical hardware took a while to arrive</li>\n<li>First silicon was an A-step (A-series) chip with a few functional defects; those were fixed in later tapeouts</li>\n</ul>\n",
+    "content": "<h2>HPVM on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>, then early silicon</h2>\n<ul>\n<li>Early HPVM (HP Integrity VM) boot was done entirely on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>, HP’s functional Itanium simulator — physical hardware took a while to arrive</li>\n<li>First silicon was an A-step (A-series) chip with a few functional defects; those were fixed in later tapeouts</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Early HPVM (HP Integrity VM) boot was done entirely on Ski, HP’s functional Itanium simulator — physical hardware took a while to arrive",
-        "section": "HPVM on Ski, then early silicon"
+        "text": "Early HPVM (HP Integrity VM) boot was done entirely on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a>, HP’s functional Itanium simulator — physical hardware took a while to arrive",
+        "section": "HPVM on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux), then early silicon"
       },
       {
         "text": "First silicon was an A-step (A-series) chip with a few functional defects; those were fixed in later tapeouts",
-        "section": "HPVM on Ski, then early silicon"
+        "section": "HPVM on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux), then early silicon"
       }
     ]
   },
@@ -1210,6 +1218,10 @@
       {
         "label": "HPVM on Wikipedia",
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
+      },
+      {
+        "label": "Ski",
+        "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
     "images": [
@@ -1221,14 +1233,14 @@
       "system",
       "pre-silicon"
     ],
-    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early boot entirely on Ski (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Firmware-level VMM / platform software for Integrity servers</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
+    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early boot entirely on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Firmware-level VMM / platform software for Integrity servers</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
     "bullets": [
       {
         "text": "Started the HP Integrity Virtual Machines project in late 2000",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Early boot entirely on Ski (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry",
+        "text": "Early boot entirely on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> (pre-silicon); later A-step silicon bring-up — see HPVM pre-silicon entry",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
@@ -1414,6 +1426,10 @@
       {
         "label": "aC++",
         "url": "http://www.hp.com/go/aCC"
+      },
+      {
+        "label": "Ski",
+        "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
       }
     ],
     "topics": [
@@ -1423,19 +1439,19 @@
       "cpp",
       "compilers"
     ],
-    "content": "<h2>First native Itanium C++ compiler (pre-silicon on Ski)</h2>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon existed; ran it on Ski, HP’s functional Itanium simulator (a second simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Linked from the HP aC++ / California Language Lab entry</li>\n</ul>\n",
+    "content": "<h2>First native Itanium C++ compiler (pre-silicon on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>)</h2>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon existed; ran it on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>, HP’s functional Itanium simulator (a second simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Linked from the HP aC++ / California Language Lab entry</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Wrote the first native Itanium C++ compiler before silicon existed; ran it on Ski, HP’s functional Itanium simulator (a second simulator also modelled performance details)",
-        "section": "First native Itanium C++ compiler (pre-silicon on Ski)"
+        "text": "Wrote the first native Itanium C++ compiler before silicon existed; ran it on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a>, HP’s functional Itanium simulator (a second simulator also modelled performance details)",
+        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
       },
       {
         "text": "HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator",
-        "section": "First native Itanium C++ compiler (pre-silicon on Ski)"
+        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
       },
       {
         "text": "Linked from the HP aC++ / California Language Lab entry",
-        "section": "First native Itanium C++ compiler (pre-silicon on Ski)"
+        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
       }
     ]
   },
