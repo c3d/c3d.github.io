@@ -143,9 +143,10 @@ body.print-preview #print-view {
 .pvc-tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 8px;
+  gap: 3px 6px;
   margin: 4px 0 2px;
-  font-size: 9.5px;
+  /* ~10% smaller to fit Arm JD keyword chips */
+  font-size: 8.5px;
   color: #445;
 }
 .pvc-qr { margin-top: 4px; padding-top: 4px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 8px; font-size: 10px; flex-shrink: 0; }
@@ -235,8 +236,8 @@ a.pv-deep-on-dark {
 .pvn-skills, .pvn-info { list-style: none; margin: 0; padding: 0; }
 .pvn-skills li, .pvn-info li { display: flex; gap: 1.4mm; align-items: flex-start; font-size: 6.6pt; line-height: 1.22; margin: 0 0 1mm; }
 .pvn-check { flex-shrink: 0; width: 3.2mm; height: 3.2mm; border-radius: 50%; color: #fff; font-size: 5pt; line-height: 3.2mm; text-align: center; margin-top: 0.3mm; }
-.pvn-tags { display: flex; flex-wrap: wrap; gap: 1.2mm; }
-.pvn-tags span { background: #e7eef6; color: #243447; border-radius: 999px; padding: 0.7mm 1.8mm; font-size: 6.2pt; }
+.pvn-tags { display: flex; flex-wrap: wrap; gap: 1.0mm; }
+.pvn-tags span { background: #e7eef6; color: #243447; border-radius: 999px; padding: 0.55mm 1.5mm; font-size: 5.6pt; }
 .pvn-qr { display: flex; align-items: center; gap: 2.2mm; color: inherit; text-decoration: none; }
 a.pvn-qr:hover { color: inherit; }
 .pvn-qr img { width: 16mm; height: 16mm; border: 0.3mm solid var(--pv-line); background: #fff; }
@@ -333,13 +334,13 @@ a.pvn-qr:hover { color: inherit; }
   width: 3.2mm; height: 3.2mm; border-radius: 50%;
   font-size: 5pt; line-height: 3.2mm; text-align: center; flex-shrink: 0; margin-top: 0.3mm;
 }
-.pvo-tags { display: flex; flex-wrap: wrap; gap: 1.2mm; }
+.pvo-tags { display: flex; flex-wrap: wrap; gap: 1.0mm; }
 .pvo-tags span {
   border: 0.3mm solid rgba(201,162,39,.7);
   color: #f2e6b8;
   border-radius: 999px;
-  padding: 0.6mm 1.7mm;
-  font-size: 6pt;
+  padding: 0.5mm 1.4mm;
+  font-size: 5.4pt;
 }
 .pvo-info span:first-child { color: var(--orbit-gold); width: 3.5mm; text-align: center; flex-shrink: 0; }
 .pvo-qr { display: flex; gap: 2mm; align-items: center; font-size: 6.4pt; color: inherit; text-decoration: none; }

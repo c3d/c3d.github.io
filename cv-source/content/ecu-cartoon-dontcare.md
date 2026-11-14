@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-dontcare
 title: Marketing needs not care
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

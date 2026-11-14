@@ -16,12 +16,15 @@ images:
   - /cv/media/hpvm.jpg
 topics:
   - virtualization
+  - firmware
+  - system
 ---
 ## Enterprise-grade virtualization for high-end Itanium servers
 
 - Started the HP Integrity Virtual Machines project in late 2000
 - Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)
 - Contributions across interrupt handling, binary translation, memory, I/O, scheduling
+- Firmware-level VMM / platform software for Integrity servers
 - Features including para-virtualized I/O and on-line guest migration
 - Longest single professional project (~10 years)
 

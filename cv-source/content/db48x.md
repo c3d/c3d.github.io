@@ -27,6 +27,9 @@ topics:
   - linux
   - macos
   - arm
+  - soc
+  - firmware
+  - system
 ---
 
 ## A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)
@@ -35,7 +38,8 @@ Free software for physical calculators or phone apps.
 
 - Rebuild and improve the HP48-family user experience
 - Rich RPL data types and built-in functions with Lisp-level programming power
-- Targets SwissMicro DM42 and DM32 (DMCP platform)
+- Targets SwissMicros DM42 and DM32 calculator SoCs (DMCP platform)
+- Firmware-style RPL runtime on ARM microcontroller hardware
 - Simulator tested on macOS and Linux
 - Long-term ports envisioned for ARM HP50/HP49/HP48Gii and HP Prime G1
 - Presented at FOSDEM 2023 with an update in 2024

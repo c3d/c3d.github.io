@@ -36,23 +36,24 @@ async function loadContentData() {
 // Logo-inspired theme palette
 // ============================================================================
 
+/* Object key order = print section order (Tools right after Systems). */
 const THEME_COLORS = {
   'Languages & Compilers': 0x4a90ff,
   'Systems & Virtualization': 0xff4a5a,
+  'Tools & Apps': 0x40e0ff,
   'Games & 3D': 0x5dff6a,
   'Physics': 0xffb040,
-  'Art & Culture': 0xff5ad6,
-  'Tools & Apps': 0x40e0ff
+  'Communication Skills': 0xff5ad6
 };
 
 /** Darker cousins of THEME_COLORS for print on white paper (same hue family). */
 const PRINT_THEME_COLORS = {
   'Languages & Compilers': 0x1f5fd0,
   'Systems & Virtualization': 0xc62838,
+  'Tools & Apps': 0x1496b0,
   'Games & 3D': 0x2aa83a,
   'Physics': 0xd48918,
-  'Art & Culture': 0xc2188a,
-  'Tools & Apps': 0x1496b0
+  'Communication Skills': 0xc2188a
 };
 
 /** Hexagonal ring for every aspect ratio — fitOverviewToClusters scales/fits the
@@ -63,7 +64,7 @@ const THEME_LAYOUT_RING = {
   'Tools & Apps': { x: 2, y: 36, z: -58 },
   'Systems & Virtualization': { x: 132, y: -2, z: -12 },
   'Games & 3D': { x: -44, y: -60, z: 6 },
-  'Art & Culture': { x: 76, y: -48, z: 42 }
+  'Communication Skills': { x: 76, y: -48, z: 42 }
 };
 
 /** @deprecated alias — kept so older call sites / docs still resolve */
@@ -176,6 +177,8 @@ const TOPICS_BY_ID = Object.fromEntries(topicsRegistry.map((t) => [t.id, t]));
 const CLUSTER_BY_SLUG = Object.fromEntries(
   Object.entries(THEME_CLUSTER_SLUGS).map(([theme, slug]) => [slug, theme])
 );
+/* Legacy deep-link slug from the former "Art & Culture" cluster name. */
+CLUSTER_BY_SLUG.art = 'Communication Skills';
 /** Type-to-search: query string while the Searching… HUD is open. */
 let searchQuery = '';
 let searchActive = false;

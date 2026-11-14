@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-optimist
 title: Wild optimism
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

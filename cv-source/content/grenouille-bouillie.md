@@ -1,7 +1,7 @@
 ---
 id: grenouille-bouillie
 title: Grenouille Bouillie
-theme: Art & Culture
+theme: Communication Skills
 years: 2003-Present
 weight: 6
 related:

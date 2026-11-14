@@ -1,7 +1,7 @@
 ---
 id: informagie
 title: Informagie
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 7
 print: 2

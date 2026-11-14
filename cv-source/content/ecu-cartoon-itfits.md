@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-itfits
 title: Tight fit
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons
