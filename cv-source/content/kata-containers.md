@@ -1,10 +1,11 @@
 ---
 id: kata-containers
-title: Kata & Confidential Containers
+title: Kata Containers
 theme: Systems & Virtualization
 years: 2017-Present
 weight: 9
 related:
+  - confidential-containers
   - hpvm
   - spice
 videos: []
@@ -14,9 +15,8 @@ links:
 images:
   - /cv/media/kata-containers.png
 ---
-## OpenShift Sandboxed Containers / confidential containers
+## OpenShift Sandboxed Containers
 
 - Project owner for OpenShift Sandboxed Containers
-- Work on confidential containers
-- Responsible for virtualization release quality in RHEL 8 (career systems track)
 - Combines Kubernetes/OpenShift orchestration with VM isolation
+- Responsible for virtualization release quality in RHEL 8 (career systems track)

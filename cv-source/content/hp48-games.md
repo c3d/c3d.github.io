@@ -1,12 +1,14 @@
 ---
 id: hp48-games
-title: HP-48 Games & HPDS
+title: HP-48 Games
 theme: Games & 3D
 years: 1989-1993
 weight: 9
 print: 2
 related:
+  - hpds
   - db48x
+  - alpha-waves
 videos:
   - '-Cnh_fIN55I'
 links:
@@ -17,9 +19,8 @@ links:
 images:
   - /cv/media/hp48-games.jpg
 ---
-## Viral calculator games and a development system
+## Viral calculator games
 
-- HPDS — HP Development System for HP calculators (from earlier SATAS)
 - PacMan — first use of HP48 hardware scroll (per Paul Courbis)
 - Spread virally via infrared networking
 - Tetris demo/tutorial game for HPDS

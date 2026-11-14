@@ -6,8 +6,9 @@ years: 2017-Present
 weight: 8
 print: 2
 related:
-  - hpvm
   - kata-containers
+  - confidential-containers
+  - red-skin-cat
 videos: []
 links:
   - label: SPICE

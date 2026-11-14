@@ -7,9 +7,7 @@
     "weight": 9,
     "print": 1,
     "related": [
-      "xl-tao3d",
-      "taodyne",
-      "firefly"
+      "tao3d"
     ],
     "videos": [],
     "images": [
@@ -76,55 +74,13 @@
     ]
   },
   {
-    "id": "blogs",
-    "title": "Blogs & Writing",
-    "theme": "Art & Culture",
-    "years": null,
-    "weight": 6,
-    "related": [],
-    "videos": [],
-    "links": [
-      {
-        "label": "Grenouille Bouillie",
-        "url": "http://grenouille-bouillie.blogspot.fr/"
-      },
-      {
-        "label": "Red Skin Cat",
-        "url": "https://redskincat.wordpress.com/"
-      },
-      {
-        "label": "Taodyne blog",
-        "url": "http://blog.taodyne.com"
-      }
-    ],
-    "images": [
-      "/cv/media/blogs.png"
-    ],
-    "content": "<h2>Technical and personal blogs</h2>\n<ul>\n<li>Grenouille Bouillie — tech frustrations and French politics</li>\n<li>Red Skin Cat — personal technical brain dump</li>\n<li>Taodyne blog — Tao3D tutorials, opinions, and product news</li>\n</ul>\n",
-    "bullets": [
-      {
-        "text": "Grenouille Bouillie — tech frustrations and French politics",
-        "section": "Technical and personal blogs"
-      },
-      {
-        "text": "Red Skin Cat — personal technical brain dump",
-        "section": "Technical and personal blogs"
-      },
-      {
-        "text": "Taodyne blog — Tao3D tutorials, opinions, and product news",
-        "section": "Technical and personal blogs"
-      }
-    ]
-  },
-  {
     "id": "breakout-tao3d",
     "title": "Breakout in Tao3D",
     "theme": "Games & 3D",
     "years": null,
     "weight": 7,
     "related": [
-      "taodyne",
-      "xl-tao3d"
+      "tao3d"
     ],
     "videos": [],
     "links": [
@@ -183,6 +139,39 @@
     ]
   },
   {
+    "id": "confidential-containers",
+    "title": "Confidential Containers",
+    "theme": "Systems & Virtualization",
+    "years": "2017-Present",
+    "weight": 8,
+    "related": [
+      "kata-containers",
+      "hpvm",
+      "spice"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Kata Containers",
+        "url": "https://katacontainers.io/"
+      }
+    ],
+    "images": [
+      "/cv/media/confidential-containers.png"
+    ],
+    "content": "<h2>Confidential containers</h2>\n<ul>\n<li>Work on confidential containers alongside OpenShift Sandboxed Containers / Kata</li>\n<li>Builds on VM-isolated container runtimes for stronger isolation and trust boundaries</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Work on confidential containers alongside OpenShift Sandboxed Containers / Kata",
+        "section": "Confidential containers"
+      },
+      {
+        "text": "Builds on VM-isolated container runtimes for stronger isolation and trust boundaries",
+        "section": "Confidential containers"
+      }
+    ]
+  },
+  {
     "id": "db48x",
     "title": "DB48X - Modern RPL Calculator",
     "theme": "Languages & Compilers",
@@ -190,7 +179,8 @@
     "weight": 9,
     "print": 2,
     "related": [
-      "hp48-games"
+      "hp48-games",
+      "hpds"
     ],
     "videos": [
       "WU5Dg1mPkl8",
@@ -626,6 +616,54 @@
     ]
   },
   {
+    "id": "elfe",
+    "title": "ELFE",
+    "theme": "Languages & Compilers",
+    "years": "2012-Present",
+    "weight": 8,
+    "related": [
+      "xl",
+      "tao3d"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "ELFE",
+        "url": "https://github.com/c3d/elfe"
+      },
+      {
+        "label": "Visit ELFE",
+        "url": "http://c3d.github.io/elfe/"
+      }
+    ],
+    "images": [
+      "/cv/media/elfe.png"
+    ],
+    "content": "<h2>Extensible Language for Everyday (and the Internet of Things)</h2>\n<ul>\n<li>Small general-purpose language tuned for configuration and control of swarms of sensors and actuators</li>\n<li>Can serve as a remotely accessible extension language for larger applications</li>\n<li>Trimmed-down XL that runs without LLVM</li>\n<li>First release to incorporate a tree-shape type system designed in late 2012</li>\n<li>Formerly called ELIoT (Extensible Language for the Internet of Things); renamed after a trademark complaint</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Small general-purpose language tuned for configuration and control of swarms of sensors and actuators",
+        "section": "Extensible Language for Everyday (and the Internet of Things)"
+      },
+      {
+        "text": "Can serve as a remotely accessible extension language for larger applications",
+        "section": "Extensible Language for Everyday (and the Internet of Things)"
+      },
+      {
+        "text": "Trimmed-down XL that runs without LLVM",
+        "section": "Extensible Language for Everyday (and the Internet of Things)"
+      },
+      {
+        "text": "First release to incorporate a tree-shape type system designed in late 2012",
+        "section": "Extensible Language for Everyday (and the Internet of Things)"
+      },
+      {
+        "text": "Formerly called ELIoT (Extensible Language for the Internet of Things); renamed after a trademark complaint",
+        "section": "Extensible Language for Everyday (and the Internet of Things)"
+      }
+    ]
+  },
+  {
     "id": "emacs-aqua",
     "title": "Emacs on Aqua",
     "theme": "Tools & Apps",
@@ -666,7 +704,7 @@
     "years": null,
     "weight": 9,
     "related": [
-      "xl-tao3d",
+      "tao3d",
       "3divart",
       "taodyne"
     ],
@@ -700,14 +738,56 @@
     ]
   },
   {
+    "id": "grenouille-bouillie",
+    "title": "Grenouille Bouillie",
+    "theme": "Art & Culture",
+    "years": "2003-Present",
+    "weight": 6,
+    "related": [
+      "red-skin-cat",
+      "taodyne-blog"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Grenouille Bouillie",
+        "url": "https://grenouillebouillie.wordpress.com"
+      },
+      {
+        "label": "Blogspot archive",
+        "url": "http://grenouille-bouillie.blogspot.fr/"
+      }
+    ],
+    "images": [
+      "/cv/media/grenouille-bouillie.png"
+    ],
+    "content": "<h2>Things we got used to, but really should fix</h2>\n<ul>\n<li>Started in 2003 after returning from California (&quot;Boiled Frog&quot; in French)</li>\n<li>Originally about the perspective of people who lived in multiple countries and no longer take local norms for granted</li>\n<li>Evolved to cover things people accept little by little — software bugs, politics, and similar</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Started in 2003 after returning from California (\"Boiled Frog\" in French)",
+        "section": "Things we got used to, but really should fix"
+      },
+      {
+        "text": "Originally about the perspective of people who lived in multiple countries and no longer take local norms for granted",
+        "section": "Things we got used to, but really should fix"
+      },
+      {
+        "text": "Evolved to cover things people accept little by little — software bugs, politics, and similar",
+        "section": "Things we got used to, but really should fix"
+      }
+    ]
+  },
+  {
     "id": "hp48-games",
-    "title": "HP-48 Games & HPDS",
+    "title": "HP-48 Games",
     "theme": "Games & 3D",
     "years": "1989-1993",
     "weight": 9,
     "print": 2,
     "related": [
-      "db48x"
+      "hpds",
+      "db48x",
+      "alpha-waves"
     ],
     "videos": [
       "-Cnh_fIN55I"
@@ -725,69 +805,111 @@
     "images": [
       "/cv/media/hp48-games.jpg"
     ],
-    "content": "<h2>Viral calculator games and a development system</h2>\n<ul>\n<li>HPDS — HP Development System for HP calculators (from earlier SATAS)</li>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n<p>The HUD video for this topic is a third-party YouTube upload (not the author&#39;s own recording).</p>\n",
+    "content": "<h2>Viral calculator games</h2>\n<ul>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n<p>The HUD video for this topic is a third-party YouTube upload (not the author&#39;s own recording).</p>\n",
     "bullets": [
       {
-        "text": "HPDS — HP Development System for HP calculators (from earlier SATAS)",
-        "section": "Viral calculator games and a development system"
-      },
-      {
         "text": "PacMan — first use of HP48 hardware scroll (per Paul Courbis)",
-        "section": "Viral calculator games and a development system"
+        "section": "Viral calculator games"
       },
       {
         "text": "Spread virally via infrared networking",
-        "section": "Viral calculator games and a development system"
+        "section": "Viral calculator games"
       },
       {
         "text": "Tetris demo/tutorial game for HPDS",
-        "section": "Viral calculator games and a development system"
+        "section": "Viral calculator games"
       },
       {
         "text": "Lemmings clone with level editor, pushing memory and CPU limits",
-        "section": "Viral calculator games and a development system"
+        "section": "Viral calculator games"
       }
     ]
   },
   {
     "id": "hpcpp",
-    "title": "HP aC++ Compiler & C++ ABI",
+    "title": "HP aC++ Compiler",
     "theme": "Languages & Compilers",
     "years": "1998-2000",
     "weight": 10,
     "print": 1,
-    "related": [],
+    "related": [
+      "itanium-cxx-abi"
+    ],
     "videos": [],
     "links": [
       {
-        "label": "Itanium C++ ABI",
-        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+        "label": "aC++",
+        "url": "http://www.hp.com/go/aCC"
       }
     ],
     "images": [
-      "/cv/media/hpcpp.jpg"
+      "/cv/media/hpcpp.png"
     ],
-    "content": "<h2>C++ templates, exception handling, and the industry ABI</h2>\n<p>Cupertino, Hewlett-Packard Compiler and Languages Lab.</p>\n<ul>\n<li>Worked on C++ templates and exception handling</li>\n<li>Initiated / contributed to the common C++ ABI for Itanium</li>\n<li>Represented HP at the C++ standards committee for a period</li>\n<li>Built the first native Itanium C and C++ compilers</li>\n<li>Exception-handling approach remains widely used in modern compilers</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard Compiler and Languages Lab.</p>\n<ul>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
-        "text": "Worked on C++ templates and exception handling",
-        "section": "C++ templates, exception handling, and the industry ABI"
+        "text": "Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)",
+        "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Initiated / contributed to the common C++ ABI for Itanium",
-        "section": "C++ templates, exception handling, and the industry ABI"
+        "text": "Early work on templates, performance, the run-time library, and precompiled headers",
+        "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Represented HP at the C++ standards committee for a period",
-        "section": "C++ templates, exception handling, and the industry ABI"
+        "text": "Implemented exception handling",
+        "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Built the first native Itanium C and C++ compilers",
-        "section": "C++ templates, exception handling, and the industry ABI"
+        "text": "One of the initiators of the common C++ ABI effort",
+        "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Exception-handling approach remains widely used in modern compilers",
-        "section": "C++ templates, exception handling, and the industry ABI"
+        "text": "Represented HP at the C++ standards committee for a short period",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Built the first native Itanium C and C++ compilers (coordinating 16 teams)",
+        "section": "C++ compiler for Itanium"
+      }
+    ]
+  },
+  {
+    "id": "hpds",
+    "title": "HPDS",
+    "theme": "Languages & Compilers",
+    "years": "1989-1993",
+    "weight": 8,
+    "related": [
+      "hp48-games",
+      "db48x"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Example HPDS program",
+        "url": "http://cc3d.free.fr/HPDS3.0/HP48-Sources/PacMan/PacLib.48S"
+      }
+    ],
+    "images": [
+      "/cv/media/hpds.png"
+    ],
+    "content": "<h2>HP Development System for HP calculators</h2>\n<ul>\n<li>SATAS — assembler for the HP-28C, HP-28S, and HP-48SX</li>\n<li>Evolved into HPDS (HP Development System) for any kind of HP calculator program, not only assembly</li>\n<li>Used to create games for these calculators</li>\n<li>Source for HPDS was lost; a MacOS 7 binary for HPDS 3.0 and game sources remain</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "SATAS — assembler for the HP-28C, HP-28S, and HP-48SX",
+        "section": "HP Development System for HP calculators"
+      },
+      {
+        "text": "Evolved into HPDS (HP Development System) for any kind of HP calculator program, not only assembly",
+        "section": "HP Development System for HP calculators"
+      },
+      {
+        "text": "Used to create games for these calculators",
+        "section": "HP Development System for HP calculators"
+      },
+      {
+        "text": "Source for HPDS was lost; a MacOS 7 binary for HPDS 3.0 and game sources remain",
+        "section": "HP Development System for HP calculators"
       }
     ]
   },
@@ -892,12 +1014,7 @@
     "print": 1,
     "related": [
       "kata-containers",
-      "spice",
-      "hpvm-cartoon-booted",
-      "hpvm-cartoon-virtualdenise",
-      "hpvm-cartoon-stress",
-      "hpvm-cartoon-ogm",
-      "ecu-cartoons"
+      "confidential-containers"
     ],
     "videos": [],
     "links": [
@@ -1027,12 +1144,57 @@
     ]
   },
   {
+    "id": "itanium-cxx-abi",
+    "title": "Itanium C++ ABI",
+    "theme": "Languages & Compilers",
+    "years": "1998-2000",
+    "weight": 9,
+    "print": 2,
+    "related": [
+      "hpcpp"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Itanium C++ ABI",
+        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      }
+    ],
+    "images": [
+      "/cv/media/itanium-cxx-abi.png"
+    ],
+    "content": "<h2>Common ABI for representing C++ programs</h2>\n<ul>\n<li>After exception-handling work, proposed a common C++ ABI for Itanium with Cary Coutant</li>\n<li>Met with C++ engineers from many companies (with Daveed Vandevoorde)</li>\n<li>Result: a standard-compliant C++ ABI for data and program representation on Itanium</li>\n<li>Adopted by other platforms starting with GCC (Mark Mitchell as primary maintainer of the documentation)</li>\n<li>Still called the Itanium C++ ABI; adapted on many platforms and maintained for new C++ revisions</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "After exception-handling work, proposed a common C++ ABI for Itanium with Cary Coutant",
+        "section": "Common ABI for representing C++ programs"
+      },
+      {
+        "text": "Met with C++ engineers from many companies (with Daveed Vandevoorde)",
+        "section": "Common ABI for representing C++ programs"
+      },
+      {
+        "text": "Result: a standard-compliant C++ ABI for data and program representation on Itanium",
+        "section": "Common ABI for representing C++ programs"
+      },
+      {
+        "text": "Adopted by other platforms starting with GCC (Mark Mitchell as primary maintainer of the documentation)",
+        "section": "Common ABI for representing C++ programs"
+      },
+      {
+        "text": "Still called the Itanium C++ ABI; adapted on many platforms and maintained for new C++ revisions",
+        "section": "Common ABI for representing C++ programs"
+      }
+    ]
+  },
+  {
     "id": "kata-containers",
-    "title": "Kata & Confidential Containers",
+    "title": "Kata Containers",
     "theme": "Systems & Virtualization",
     "years": "2017-Present",
     "weight": 9,
     "related": [
+      "confidential-containers",
       "hpvm",
       "spice"
     ],
@@ -1046,23 +1208,19 @@
     "images": [
       "/cv/media/kata-containers.png"
     ],
-    "content": "<h2>OpenShift Sandboxed Containers / confidential containers</h2>\n<ul>\n<li>Project owner for OpenShift Sandboxed Containers</li>\n<li>Work on confidential containers</li>\n<li>Responsible for virtualization release quality in RHEL 8 (career systems track)</li>\n<li>Combines Kubernetes/OpenShift orchestration with VM isolation</li>\n</ul>\n",
+    "content": "<h2>OpenShift Sandboxed Containers</h2>\n<ul>\n<li>Project owner for OpenShift Sandboxed Containers</li>\n<li>Combines Kubernetes/OpenShift orchestration with VM isolation</li>\n<li>Responsible for virtualization release quality in RHEL 8 (career systems track)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Project owner for OpenShift Sandboxed Containers",
-        "section": "OpenShift Sandboxed Containers / confidential containers"
-      },
-      {
-        "text": "Work on confidential containers",
-        "section": "OpenShift Sandboxed Containers / confidential containers"
-      },
-      {
-        "text": "Responsible for virtualization release quality in RHEL 8 (career systems track)",
-        "section": "OpenShift Sandboxed Containers / confidential containers"
+        "section": "OpenShift Sandboxed Containers"
       },
       {
         "text": "Combines Kubernetes/OpenShift orchestration with VM isolation",
-        "section": "OpenShift Sandboxed Containers / confidential containers"
+        "section": "OpenShift Sandboxed Containers"
+      },
+      {
+        "text": "Responsible for virtualization release quality in RHEL 8 (career systems track)",
+        "section": "OpenShift Sandboxed Containers"
       }
     ]
   },
@@ -1073,7 +1231,7 @@
     "years": "1988-1998",
     "weight": 8,
     "related": [
-      "xl-tao3d",
+      "xl",
       "mozart",
       "moka"
     ],
@@ -1149,9 +1307,8 @@
     "years": null,
     "weight": 8,
     "related": [
-      "mozart",
-      "xl-tao3d",
-      "lx"
+      "xl",
+      "mozart"
     ],
     "videos": [],
     "links": [
@@ -1188,7 +1345,7 @@
     "related": [
       "moka",
       "lx",
-      "xl-tao3d"
+      "xl"
     ],
     "videos": [],
     "links": [
@@ -1385,6 +1542,51 @@
     ]
   },
   {
+    "id": "red-skin-cat",
+    "title": "Red Skin Cat",
+    "theme": "Art & Culture",
+    "years": "2017-Present",
+    "weight": 6,
+    "related": [
+      "grenouille-bouillie",
+      "taodyne-blog",
+      "spice"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Red Skin Cat",
+        "url": "https://redskincat.wordpress.com/"
+      },
+      {
+        "label": "christophe.dinechin.org",
+        "url": "http://christophe.dinechin.org"
+      }
+    ],
+    "images": [
+      "/cv/media/red-skin-cat.png"
+    ],
+    "content": "<h2>Christophe&#39;s brain dump</h2>\n<ul>\n<li>Personal technical lab book started after joining Red Hat in January 2017</li>\n<li>Focus on virtualization and 3D; written while on the Spice team</li>\n<li>Public notes meant for the author — not polished literature</li>\n<li>Name: &quot;Red Skin Cat&quot; in French is &quot;Chat Peau Rouge&quot;, homophone of &quot;Chapeau Rouge&quot; / &quot;Red Hat&quot;</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Personal technical lab book started after joining Red Hat in January 2017",
+        "section": "Christophe's brain dump"
+      },
+      {
+        "text": "Focus on virtualization and 3D; written while on the Spice team",
+        "section": "Christophe's brain dump"
+      },
+      {
+        "text": "Public notes meant for the author — not polished literature",
+        "section": "Christophe's brain dump"
+      },
+      {
+        "text": "Name: \"Red Skin Cat\" in French is \"Chat Peau Rouge\", homophone of \"Chapeau Rouge\" / \"Red Hat\"",
+        "section": "Christophe's brain dump"
+      }
+    ]
+  },
+  {
     "id": "reunifions",
     "title": "Réunifions la physique",
     "theme": "Physics",
@@ -1423,8 +1625,7 @@
     "years": null,
     "weight": 9,
     "related": [
-      "taodyne",
-      "xl-tao3d"
+      "tao3d"
     ],
     "videos": [
       "Ts7uoqeK720"
@@ -1525,8 +1726,9 @@
     "weight": 8,
     "print": 2,
     "related": [
-      "hpvm",
-      "kata-containers"
+      "kata-containers",
+      "confidential-containers",
+      "red-skin-cat"
     ],
     "videos": [],
     "links": [
@@ -1555,6 +1757,96 @@
     ]
   },
   {
+    "id": "tao3d",
+    "title": "Tao3D",
+    "theme": "Languages & Compilers",
+    "years": "2010-Present",
+    "weight": 9,
+    "print": 3,
+    "related": [
+      "xl",
+      "elfe",
+      "taodyne",
+      "3divart",
+      "firefly"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Tao3D",
+        "url": "https://tao3d.sourceforge.net/"
+      }
+    ],
+    "images": [
+      "/cv/media/tao3d.png"
+    ],
+    "content": "<h2>Language for interactive 3D</h2>\n<ul>\n<li>Programming language for interactive 3D, derived from XLR</li>\n<li>Makes visualisation and animations quick to create; suited to talks, trade shows, museums, and education</li>\n<li>Commercial version from Taodyne (co-founded) adds stereoscopy, auto-stereoscopy, encrypted documents, and related features</li>\n<li>Used for Breakout demo, Thales sonar serious game, Firefly, and 3DIVART work</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Programming language for interactive 3D, derived from XLR",
+        "section": "Language for interactive 3D"
+      },
+      {
+        "text": "Makes visualisation and animations quick to create; suited to talks, trade shows, museums, and education",
+        "section": "Language for interactive 3D"
+      },
+      {
+        "text": "Commercial version from Taodyne (co-founded) adds stereoscopy, auto-stereoscopy, encrypted documents, and related features",
+        "section": "Language for interactive 3D"
+      },
+      {
+        "text": "Used for Breakout demo, Thales sonar serious game, Firefly, and 3DIVART work",
+        "section": "Language for interactive 3D"
+      }
+    ]
+  },
+  {
+    "id": "taodyne-blog",
+    "title": "Taodyne Blog",
+    "theme": "Art & Culture",
+    "years": "2011-Present",
+    "weight": 6,
+    "related": [
+      "grenouille-bouillie",
+      "red-skin-cat",
+      "taodyne",
+      "tao3d"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Taodyne blog",
+        "url": "http://blog.taodyne.com"
+      },
+      {
+        "label": "Older Blogspot",
+        "url": "http://taodyne.blogspot.fr"
+      }
+    ],
+    "images": [
+      "/cv/media/taodyne-blog.png"
+    ],
+    "content": "<h2>Company blog for Tao3D and Taodyne</h2>\n<ul>\n<li>Most frequent author on the Taodyne company blog after co-founding Taodyne in 2011</li>\n<li>Tutorials and use cases for Tao3D, company news, and occasional industry notes</li>\n<li>Primary blog was lost when Gandi shut down their US data center before a migration</li>\n<li>Older Blogspot blog exists and is no longer maintained</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Most frequent author on the Taodyne company blog after co-founding Taodyne in 2011",
+        "section": "Company blog for Tao3D and Taodyne"
+      },
+      {
+        "text": "Tutorials and use cases for Tao3D, company news, and occasional industry notes",
+        "section": "Company blog for Tao3D and Taodyne"
+      },
+      {
+        "text": "Primary blog was lost when Gandi shut down their US data center before a migration",
+        "section": "Company blog for Tao3D and Taodyne"
+      },
+      {
+        "text": "Older Blogspot blog exists and is no longer maintained",
+        "section": "Company blog for Tao3D and Taodyne"
+      }
+    ]
+  },
+  {
     "id": "taodyne",
     "title": "Taodyne",
     "theme": "Games & 3D",
@@ -1562,8 +1854,10 @@
     "weight": 9,
     "print": 3,
     "related": [
-      "xl-tao3d",
-      "3divart"
+      "tao3d",
+      "xl",
+      "3divart",
+      "taodyne-blog"
     ],
     "videos": [],
     "links": [
@@ -1604,59 +1898,54 @@
     ]
   },
   {
-    "id": "xl-tao3d",
-    "title": "XL, Tao3D & ELFE",
+    "id": "xl",
+    "title": "XL",
     "theme": "Languages & Compilers",
     "years": "1992-Present",
     "weight": 9,
     "print": 3,
     "related": [
+      "tao3d",
+      "elfe",
+      "lx",
       "mozart",
-      "moka",
-      "taodyne",
-      "3divart",
-      "firefly",
-      "lx"
+      "moka"
     ],
     "videos": [],
     "links": [
       {
         "label": "XL",
         "url": "https://github.com/c3d/xl"
-      },
-      {
-        "label": "Tao3D",
-        "url": "https://tao3d.sourceforge.net/"
-      },
-      {
-        "label": "ELFE",
-        "url": "https://github.com/c3d/elfe"
       }
     ],
     "images": [
-      "/cv/media/xl-tao3d.png"
+      "/cv/media/xl.png"
     ],
-    "content": "<h2>Extensible languages designed to evolve</h2>\n<ul>\n<li>XL — an extensible language designed to evolve (from earlier LX work)</li>\n<li>Tao3D — XL derivative for interactive 3D graphics and presentations</li>\n<li>ELFE — experiment for single-source programming in the Internet of Things</li>\n<li>Advanced generics and a simplified parse tree across implementations</li>\n<li>XLR / Tao3D lineage for dynamic 3D animations</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
+    "content": "<h2>Extensible language designed to evolve</h2>\n<ul>\n<li>Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible</li>\n<li>Re-implemented on Mozart (itself largely reusing LX code)</li>\n<li>Inherited advanced generics from LX</li>\n<li>XL2 — re-implementation with a simplified parse tree (8 node types), still used in XLR, Tao3D, and ELFE; meta-programming friendly</li>\n<li>XL2 was bootstrapped in three stages (first stage in C++)</li>\n<li>XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
     "bullets": [
       {
-        "text": "XL — an extensible language designed to evolve (from earlier LX work)",
-        "section": "Extensible languages designed to evolve"
+        "text": "Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible",
+        "section": "Extensible language designed to evolve"
       },
       {
-        "text": "Tao3D — XL derivative for interactive 3D graphics and presentations",
-        "section": "Extensible languages designed to evolve"
+        "text": "Re-implemented on Mozart (itself largely reusing LX code)",
+        "section": "Extensible language designed to evolve"
       },
       {
-        "text": "ELFE — experiment for single-source programming in the Internet of Things",
-        "section": "Extensible languages designed to evolve"
+        "text": "Inherited advanced generics from LX",
+        "section": "Extensible language designed to evolve"
       },
       {
-        "text": "Advanced generics and a simplified parse tree across implementations",
-        "section": "Extensible languages designed to evolve"
+        "text": "XL2 — re-implementation with a simplified parse tree (8 node types), still used in XLR, Tao3D, and ELFE; meta-programming friendly",
+        "section": "Extensible language designed to evolve"
       },
       {
-        "text": "XLR / Tao3D lineage for dynamic 3D animations",
-        "section": "Extensible languages designed to evolve"
+        "text": "XL2 was bootstrapped in three stages (first stage in C++)",
+        "section": "Extensible language designed to evolve"
+      },
+      {
+        "text": "XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own",
+        "section": "Extensible language designed to evolve"
       }
     ]
   }

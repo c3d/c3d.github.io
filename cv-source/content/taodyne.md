@@ -6,8 +6,10 @@ years: 2010-2016
 weight: 9
 print: 3
 related:
-  - xl-tao3d
+  - tao3d
+  - xl
   - 3divart
+  - taodyne-blog
 videos: []
 links:
   - label: Tao3D
