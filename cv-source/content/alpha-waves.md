@@ -1,6 +1,6 @@
 ---
 id: alpha-waves
-title: Alpha Waves / Continuum
+title: Alpha Waves / Continuum (Infogrames)
 theme: Games & 3D
 years: 1989-1990
 weight: 10

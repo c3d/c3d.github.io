@@ -1,6 +1,6 @@
 ---
 id: tao3d
-title: Tao3D
+title: Tao3D (Taodyne)
 theme: Games & 3D
 years: 2010-Present
 weight: 9

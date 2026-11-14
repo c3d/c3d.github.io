@@ -39,7 +39,7 @@ const PRINT_COPY = {
     ]
   },
   'kata-containers': {
-    title: 'Kata Containers / OpenShift Sandboxed Containers / Confidential Containers',
+    title: 'Kata Containers / OpenShift Sandboxed Containers / Confidential Containers (Red Hat)',
     bullets: [
       'Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift',
       'Attestation (main track FOSDEM talk). Removing limitations: guest image pull, host/tenant API'
@@ -78,6 +78,7 @@ const PRINT_COPY = {
     ]
   },
   tao3d: {
+    title: 'Tao3D (Taodyne)',
     bullets: ['Tao3D is an XL-based platform for interactive real-time 3D presentations']
   },
   xl: {
@@ -122,6 +123,7 @@ const PRINT_COPY = {
     ]
   },
   'alpha-waves': {
+    title: 'Alpha Waves / Continuum (Infogrames)',
     bullets: [
       'First 3D platform game ever (Guinness Book of Records), precursor of Alone in the Dark'
     ]

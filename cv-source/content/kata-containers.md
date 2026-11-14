@@ -1,6 +1,6 @@
 ---
 id: kata-containers
-title: Kata Containers / OpenShift Sandboxed Containers
+title: Kata Containers / OpenShift Sandboxed Containers (Red Hat)
 theme: Systems & Virtualization
 years: 2019-Present
 weight: 9
@@ -36,7 +36,7 @@ topics:
   - opensource
   - linux
 ---
-## Kata Containers / OpenShift Sandboxed Containers
+## Kata Containers / OpenShift Sandboxed Containers (Red Hat)
 
 Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift
 

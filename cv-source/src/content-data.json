@@ -68,7 +68,7 @@
   },
   {
     "id": "alpha-waves",
-    "title": "Alpha Waves / Continuum",
+    "title": "Alpha Waves / Continuum (Infogrames)",
     "theme": "Games & 3D",
     "years": "1989-1990",
     "weight": 10,
@@ -1689,7 +1689,7 @@
   },
   {
     "id": "kata-containers",
-    "title": "Kata Containers / OpenShift Sandboxed Containers",
+    "title": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)",
     "theme": "Systems & Virtualization",
     "years": "2019-Present",
     "weight": 9,
@@ -1743,15 +1743,15 @@
       "opensource",
       "linux"
     ],
-    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers</h2>\n<p>Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
+    "content": "<h2>Kata Containers / OpenShift Sandboxed Containers (Red Hat)</h2>\n<p>Fedora RPMs → Red Hat product: qemu-mini (modular qemu), scalability, Rust rewrites, HyperShift</p>\n<ul>\n<li>Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020</li>\n<li>Later talks on Kata footprint and adoption (DevConf.CZ 2021)</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Presented packaging and qemu-mini at DevConf.CZ 2020 and SophiaConf 2020",
-        "section": "Kata Containers / OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)"
       },
       {
         "text": "Later talks on Kata footprint and adoption (DevConf.CZ 2021)",
-        "section": "Kata Containers / OpenShift Sandboxed Containers"
+        "section": "Kata Containers / OpenShift Sandboxed Containers (Red Hat)"
       }
     ]
   },
@@ -2469,7 +2469,7 @@
   },
   {
     "id": "tao3d",
-    "title": "Tao3D",
+    "title": "Tao3D (Taodyne)",
     "theme": "Games & 3D",
     "years": "2010-Present",
     "weight": 9,
