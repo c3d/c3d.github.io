@@ -1897,7 +1897,7 @@
   },
   {
     "id": "presentation-software",
-    "title": "Software",
+    "title": "3D presentation software",
     "theme": "Communication Skills",
     "years": "2010-Present",
     "weight": 6,
@@ -1905,7 +1905,9 @@
       "tao3d",
       "taodyne"
     ],
-    "videos": [],
+    "videos": [
+      "TbMKCN2-GPk"
+    ],
     "links": [
       {
         "label": "Tao3D",
@@ -1916,10 +1918,26 @@
       "graphics3d",
       "compilers"
     ],
-    "content": "<h2>Presentation software</h2>\n<ul>\n<li>Designed my own presentation software (Tao3D), still using it to this day</li>\n</ul>\n",
+    "content": "<h2>Presentation software</h2>\n<ul>\n<li>Designed my own presentation software (Tao3D), still using it to this day</li>\n<li>Interactive real-time 3D animations and presentations</li>\n<li>Document description / high-level scripting language</li>\n<li>Deploys on 2D and 3D screens, including auto-stereoscopic displays</li>\n<li>Free software for Windows, macOS, and Linux</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Designed my own presentation software (Tao3D), still using it to this day",
+        "section": "Presentation software"
+      },
+      {
+        "text": "Interactive real-time 3D animations and presentations",
+        "section": "Presentation software"
+      },
+      {
+        "text": "Document description / high-level scripting language",
+        "section": "Presentation software"
+      },
+      {
+        "text": "Deploys on 2D and 3D screens, including auto-stereoscopic displays",
+        "section": "Presentation software"
+      },
+      {
+        "text": "Free software for Windows, macOS, and Linux",
         "section": "Presentation software"
       }
     ]
