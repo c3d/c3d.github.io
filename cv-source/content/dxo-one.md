@@ -27,6 +27,7 @@ topics:
   - arm
   - realtime
   - imaging
+  - asm
 ---
 ## Software quality for a diminutive connected camera
 

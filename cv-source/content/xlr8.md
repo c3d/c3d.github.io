@@ -24,6 +24,7 @@ links:
 topics:
   - compilers
   - opensource
+  - asm
 ---
 ## Super-fast VM for XL
 

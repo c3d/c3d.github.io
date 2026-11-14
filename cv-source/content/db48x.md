@@ -41,6 +41,7 @@ topics:
   - soc
   - firmware
   - system
+  - asm
 ---
 
 ## A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)

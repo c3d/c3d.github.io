@@ -15,6 +15,7 @@ links:
 topics:
   - games
   - graphics3d
+  - asm
 ---
 
 ## First 3D platformer ever
