@@ -9,9 +9,10 @@ related: []
 videos: []
 links:
   - label: Itanium C++ ABI
-    url: https://itanium-cxx-abi.github.io/cxx-abi/
+    url: 'https://itanium-cxx-abi.github.io/cxx-abi/'
+images:
+  - /cv/media/hpcpp.png
 ---
-
 ## C++ templates, exception handling, and the industry ABI
 
 Cupertino, Hewlett-Packard Compiler and Languages Lab.

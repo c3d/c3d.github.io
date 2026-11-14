@@ -8,8 +8,9 @@ print: 4
 related: []
 videos: []
 links: []
+images:
+  - /cv/media/ecutest.png
 ---
-
 ## Real-time test system for car electronics
 
 Lyon.

@@ -100,33 +100,69 @@
     }
 
     #title-overlay {
+      --hud-accent: #40e0ff;
       position: fixed;
-      top: 20px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 14;
       text-align: center;
-      pointer-events: none; /* shell ignores canvas picks */
-      z-index: 3;
+      pointer-events: none;
+      max-width: min(520px, calc(100vw - 24px));
+      padding: 12px 18px 14px;
+      background-color: rgba(4, 10, 22, 0.42);
+      background-image:
+        linear-gradient(165deg, rgba(14, 32, 58, 0.36), rgba(4, 10, 22, 0.3)),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(120, 200, 255, 0.03) 3px,
+          rgba(120, 200, 255, 0.03) 4px
+        );
+      backdrop-filter: blur(18px) saturate(1.3);
+      -webkit-backdrop-filter: blur(18px) saturate(1.3);
+      border: 1px solid color-mix(in srgb, var(--hud-accent) 60%, transparent);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3) inset,
+        0 0 22px color-mix(in srgb, var(--hud-accent) 22%, transparent),
+        0 8px 28px rgba(0, 0, 0, 0.28);
+      clip-path: polygon(
+        0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px,
+        100% calc(100% - 10px), calc(100% - 10px) 100%,
+        10px 100%, 0 calc(100% - 10px)
+      );
       transition: opacity 0.35s ease;
     }
+    #title-overlay::before,
+    #title-overlay::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--hud-accent);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    #title-overlay::before { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
+    #title-overlay::after { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
 
     #title-overlay a.title-print-link {
-      pointer-events: auto; /* only the name is clickable — never reaches canvas pick */
+      pointer-events: auto;
       display: inline-block;
       text-decoration: none;
       color: inherit;
       cursor: pointer;
-      border-radius: 4px;
-      transition: transform 0.25s ease;
       position: relative;
       -webkit-user-select: none;
       user-select: none;
       -webkit-touch-callout: none;
+      transition: transform 0.2s ease;
     }
     #title-overlay a.title-print-link::after {
       content: "";
       position: absolute;
-      inset: -8px;
+      inset: -6px;
       border-radius: 50%;
       background: conic-gradient(#40e0ff var(--hold, 0%), transparent 0);
       opacity: 0;
@@ -152,12 +188,12 @@
 
     #title-overlay h1 {
       font-family: Orbitron, sans-serif;
-      font-size: 28px;
+      font-size: clamp(16px, 3.6vw, 24px);
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       margin: 0;
-      color: #f4f8ff;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      color: #f2f7ff;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
       transition: text-shadow 0.25s ease, color 0.25s ease;
     }
 
@@ -177,15 +213,89 @@
 
     #title-overlay a.title-print-link:focus-visible {
       outline: 1px solid rgba(64, 224, 255, 0.7);
-      outline-offset: 6px;
+      outline-offset: 4px;
     }
 
     #title-overlay p {
-      font-size: 16px;
-      font-weight: 300;
-      margin: 5px 0 0 0;
-      opacity: 0.8;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      font-family: "Source Sans 3", sans-serif;
+      font-size: clamp(12px, 2.4vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      margin: 6px 0 0;
+      color: color-mix(in srgb, var(--hud-accent) 75%, #e8f4ff);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Fixed-screen mindscape labels (mini HUD plates) */
+    #label-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 12;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .ms-label {
+      --ms-accent: #40e0ff;
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-flex;
+      align-items: stretch;
+      max-width: min(240px, 42vw);
+      margin: 0;
+      padding: 0;
+      border: 1px solid color-mix(in srgb, var(--ms-accent) 60%, transparent);
+      background:
+        linear-gradient(165deg, rgba(14, 32, 58, 0.55), rgba(4, 10, 22, 0.48)),
+        rgba(4, 10, 22, 0.42);
+      backdrop-filter: blur(12px) saturate(1.25);
+      -webkit-backdrop-filter: blur(12px) saturate(1.25);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3) inset,
+        0 0 14px color-mix(in srgb, var(--ms-accent) 22%, transparent);
+      color: #f2f7ff;
+      font-family: Orbitron, sans-serif;
+      text-align: left;
+      cursor: pointer;
+      pointer-events: auto;
+      will-change: transform;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.18s ease;
+    }
+    .ms-label.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .ms-label-bar {
+      width: 4px;
+      flex-shrink: 0;
+      background: var(--ms-accent);
+    }
+    .ms-label-text {
+      padding: 5px 9px 5px 8px;
+      line-height: 1.25;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ms-label-theme .ms-label-text {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 7px 11px 7px 10px;
+    }
+    .ms-label-project .ms-label-text {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .ms-label:hover,
+    .ms-label:focus-visible {
+      border-color: color-mix(in srgb, var(--ms-accent) 90%, white);
+      outline: none;
     }
 
     /* Sci-fi HUD — right deck on desktop, bottom sheet on mobile.
@@ -366,9 +476,58 @@
     }
     #hud-close:hover { border-color: var(--hud-accent); color: var(--hud-accent); }
 
+    .hud-connected {
+      margin-top: 14px;
+    }
+    .hud-connected-title {
+      font-family: Orbitron, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--hud-accent);
+      margin: 0 0 8px;
+    }
+    .hud-connected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .hud-connected-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      max-width: 100%;
+      padding: 6px 10px 6px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.07);
+      color: #eef5ff;
+      font-family: Orbitron, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-align: left;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .hud-connected-chip:hover,
+    .hud-connected-chip:focus-visible {
+      border-color: color-mix(in srgb, var(--hud-accent) 80%, white);
+      outline: none;
+    }
+    .hud-connected-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px currentColor;
+    }
+
     @media (max-width: 768px) {
-      #title-overlay h1 { font-size: 20px; }
-      #title-overlay p { font-size: 13px; }
+      #title-overlay {
+        top: 10px;
+        padding: 10px 14px 11px;
+        max-width: calc(100vw - 16px);
+      }
       #controls {
         bottom: 10px;
         left: 10px;
@@ -513,7 +672,7 @@
     }
 
   </style>
-  <script type="module" crossorigin src="/cv/assets/main-DvtA5aDH.js"></script>
+  <script type="module" crossorigin src="/cv/assets/main-vIyb-ei1.js"></script>
   <link rel="stylesheet" crossorigin href="/cv/assets/main-B3qKxleE.css">
 </head>
 <body>
@@ -542,6 +701,8 @@
     <p><span class="control-key">ESC</span> Close HUD</p>
   </div>
 
+  <div id="label-layer" aria-hidden="true"></div>
+
   <aside id="hud" aria-hidden="true">
     <div class="hud-panel">
       <button id="hud-close" type="button" aria-label="Close">×</button>
@@ -554,6 +715,10 @@
       </div>
       <p class="hud-bullet" data-hud="bullet"></p>
       <div data-hud="media"></div>
+      <div class="hud-connected" data-hud="connected" hidden>
+        <h3 class="hud-connected-title">Connected topics</h3>
+        <div class="hud-connected-list" data-hud="connected-list"></div>
+      </div>
     </div>
   </aside>
 

@@ -2,13 +2,16 @@
 id: ecu-cartoons
 title: ECUTEST & HPVM Cartoons
 theme: Art & Culture
-years: 
+years: null
 weight: 6
-related: [ecutest, hpvm]
+related:
+  - ecutest
+  - hpvm
 videos: []
 links: []
+images:
+  - /cv/media/ecu-cartoons.png
 ---
-
 ## Release cartoons for HP products
 
 - Cartoon series for HP ECUTEST manufacturing release

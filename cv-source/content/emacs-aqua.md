@@ -2,16 +2,17 @@
 id: emacs-aqua
 title: Emacs on Aqua
 theme: Tools & Apps
-years: 
+years: null
 weight: 6
 print: 3
 related: []
 videos: []
 links:
   - label: SourceForge
-    url: https://sourceforge.net/projects/emacs-on-aqua/
+    url: 'https://sourceforge.net/projects/emacs-on-aqua/'
+images:
+  - /cv/media/emacs-aqua.png
 ---
-
 ## First graphical Emacs on Mac OS X Aqua
 
 - Adapted an old NeXT port to Aqua when only Terminal Emacs shipped

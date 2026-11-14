@@ -5,13 +5,16 @@ theme: Games & 3D
 years: 2010-2016
 weight: 9
 print: 3
-related: [xl-tao3d, 3divart]
+related:
+  - xl-tao3d
+  - 3divart
 videos: []
 links:
   - label: Tao3D
-    url: https://tao3d.sourceforge.net/
+    url: 'https://tao3d.sourceforge.net/'
+images:
+  - /cv/media/taodyne.png
 ---
-
 ## Founder and CEO — real-time 3D presentations
 
 Sophia-Antipolis.

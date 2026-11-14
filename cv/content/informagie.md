@@ -2,16 +2,17 @@
 id: informagie
 title: Informagie
 theme: Art & Culture
-years: 
+years: null
 weight: 7
 print: 2
 related: []
 videos: []
 links:
   - label: Amazon FR
-    url: https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X
+    url: 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X'
+images:
+  - /cv/media/informagie.png
 ---
-
 ## Science-fiction novel (French)
 
 - Started as a student around the same time as Alpha Waves

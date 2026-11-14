@@ -9,9 +9,10 @@ related: []
 videos: []
 links:
   - label: DxO
-    url: https://www.dxo.com/
+    url: 'https://www.dxo.com/'
+images:
+  - /cv/media/dxo-one.png
 ---
-
 ## Software quality for a diminutive connected camera
 
 Paris.

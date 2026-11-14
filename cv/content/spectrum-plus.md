@@ -2,13 +2,14 @@
 id: spectrum-plus
 title: Spectrum+
 theme: Languages & Compilers
-years: 
+years: null
 weight: 7
 related: []
 videos: []
 links: []
+images:
+  - /cv/media/spectrum-plus.png
 ---
-
 ## BASIC extension for the Sinclair ZX Spectrum
 
 - First published program — graphic BASIC extensions for the ZX Spectrum

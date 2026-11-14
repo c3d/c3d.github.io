@@ -97,6 +97,9 @@
         "url": "http://blog.taodyne.com"
       }
     ],
+    "images": [
+      "/cv/media/blogs.png"
+    ],
     "content": "<h2>Technical and personal blogs</h2>\n<ul>\n<li>Grenouille Bouillie — tech frustrations and French politics</li>\n<li>Red Skin Cat — personal technical brain dump</li>\n<li>Taodyne blog — Tao3D tutorials, opinions, and product news</li>\n</ul>\n",
     "bullets": [
       {
@@ -130,6 +133,9 @@
         "url": "http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"
       }
     ],
+    "images": [
+      "/cv/media/breakout-tao3d.png"
+    ],
     "content": "<h2>Demo game under 300 lines of Tao3D</h2>\n<ul>\n<li>Breakout-style demo to show short animated programs to students</li>\n<li>Written in Tao3D to illustrate concise interactive 3D coding</li>\n<li>Not a commercial product — a teaching / demo piece</li>\n</ul>\n",
     "bullets": [
       {
@@ -157,6 +163,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/capavoit.png"
+    ],
     "content": "<h2>Subway car capacity planning for Axlog</h2>\n<ul>\n<li>First Mac application, built at Axlog Ingénierie in Paris</li>\n<li>MacDraw-like editor with a built-in numerical solver</li>\n<li>Aimed at capacity planning and rapid prototyping of subway cars</li>\n</ul>\n",
     "bullets": [
       {
@@ -251,6 +260,9 @@
         "url": "http://repo.or.cz/w/de200vfd.git"
       }
     ],
+    "images": [
+      "/cv/media/de200c.png"
+    ],
     "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
     "bullets": [
       {
@@ -286,6 +298,9 @@
         "url": "https://www.dxo.com/"
       }
     ],
+    "images": [
+      "/cv/media/dxo-one.png"
+    ],
     "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Improving software quality on a highly capable connected camera</li>\n<li>Compact form factor with serious imaging capability</li>\n</ul>\n",
     "bullets": [
       {
@@ -314,6 +329,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons.png"
+    ],
     "content": "<h2>Release cartoons for HP products</h2>\n<ul>\n<li>Cartoon series for HP ECUTEST manufacturing release</li>\n<li>Separate cartoon set for HPVM release humor and milestones</li>\n</ul>\n",
     "bullets": [
       {
@@ -336,6 +354,9 @@
     "related": [],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/ecutest.png"
+    ],
     "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>Designed HP ECUTEST for engine control unit testing</li>\n<li>Sub-millisecond closed loop (250µs in some configurations)</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
     "bullets": [
       {
@@ -374,6 +395,9 @@
         "label": "SourceForge",
         "url": "https://sourceforge.net/projects/emacs-on-aqua/"
       }
+    ],
+    "images": [
+      "/cv/media/emacs-aqua.png"
     ],
     "content": "<h2>First graphical Emacs on Mac OS X Aqua</h2>\n<ul>\n<li>Adapted an old NeXT port to Aqua when only Terminal Emacs shipped</li>\n<li>Added macOS niceties such as transparent windows</li>\n<li>Published on SourceForge; later superseded by upstream Cocoa support</li>\n</ul>\n",
     "bullets": [
@@ -448,6 +472,9 @@
         "url": "https://www.hpcalc.org/"
       }
     ],
+    "images": [
+      "/cv/media/hp48-games.png"
+    ],
     "content": "<h2>Viral calculator games and a development system</h2>\n<ul>\n<li>HPDS — HP Development System for HP calculators (from earlier SATAS)</li>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n",
     "bullets": [
       {
@@ -486,6 +513,9 @@
         "label": "Itanium C++ ABI",
         "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
       }
+    ],
+    "images": [
+      "/cv/media/hpcpp.png"
     ],
     "content": "<h2>C++ templates, exception handling, and the industry ABI</h2>\n<p>Cupertino, Hewlett-Packard Compiler and Languages Lab.</p>\n<ul>\n<li>Worked on C++ templates and exception handling</li>\n<li>Initiated / contributed to the common C++ ABI for Itanium</li>\n<li>Represented HP at the C++ standards committee for a period</li>\n<li>Built the first native Itanium C and C++ compilers</li>\n<li>Exception-handling approach remains widely used in modern compilers</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
@@ -529,6 +559,9 @@
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
       }
     ],
+    "images": [
+      "/cv/media/hpvm.png"
+    ],
     "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
     "bullets": [
       {
@@ -567,6 +600,9 @@
         "label": "Amazon FR",
         "url": "https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X"
       }
+    ],
+    "images": [
+      "/cv/media/informagie.png"
     ],
     "content": "<h2>Science-fiction novel (French)</h2>\n<ul>\n<li>Started as a student around the same time as Alpha Waves</li>\n<li>Finished after 32 years and published</li>\n<li>Humorous SF autobiography by Antoine Ravelin</li>\n<li>A video game saves humanity with the help of dinosaurs</li>\n<li>English translation tentatively titled &quot;Nin, Binary&quot; (very low priority)</li>\n</ul>\n",
     "bullets": [
@@ -660,6 +696,9 @@
         "url": "https://katacontainers.io/"
       }
     ],
+    "images": [
+      "/cv/media/kata-containers.png"
+    ],
     "content": "<h2>OpenShift Sandboxed Containers / confidential containers</h2>\n<ul>\n<li>Project owner for OpenShift Sandboxed Containers</li>\n<li>Work on confidential containers</li>\n<li>Responsible for virtualization release quality in RHEL 8 (career systems track)</li>\n<li>Combines Kubernetes/OpenShift orchestration with VM isolation</li>\n</ul>\n",
     "bullets": [
       {
@@ -692,6 +731,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/lx.png"
+    ],
     "content": "<h2>Precursor to XL</h2>\n<ul>\n<li>Started after an Alsys SA Ada internship in 1988</li>\n<li>Experimental language design spanning roughly a decade</li>\n<li>Early compilers targeted MC68000; later generated C for portability</li>\n<li>Rewritten several times as ideas evolved; led into XL</li>\n</ul>\n",
     "bullets": [
       {
@@ -728,6 +770,9 @@
         "label": "GitHub",
         "url": "https://github.com/c3d/make-it-quick"
       }
+    ],
+    "images": [
+      "/cv/media/make-it-quick.png"
     ],
     "content": "<h2>Make-only auto-configuring build system</h2>\n<ul>\n<li>Short readable makefiles without automake/cmake complexity</li>\n<li>Automatic incremental configuration (<code>config.h</code>)</li>\n<li>Colorized progress, tests, install, parallel builds</li>\n<li>Portable across Linux, macOS, Windows</li>\n</ul>\n",
     "bullets": [
@@ -766,6 +811,9 @@
         "url": "http://mozart-dev.sourceforge.net"
       }
     ],
+    "images": [
+      "/cv/media/mozart-moka.png"
+    ],
     "content": "<h2>Extensible front-end IL and Java-to-Java compiler</h2>\n<ul>\n<li>Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article</li>\n<li>Experiments that informed later XL / parse-tree design choices</li>\n</ul>\n",
     "bullets": [
       {
@@ -793,6 +841,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/musolver.png"
+    ],
     "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
     "bullets": [
       {
@@ -825,6 +876,9 @@
         "label": "Justia inventor page",
         "url": "https://patents.justia.com/inventor/christophe-de-dinechin"
       }
+    ],
+    "images": [
+      "/cv/media/patents.png"
     ],
     "content": "<h2>Issued patents (Hewlett-Packard)</h2>\n<ul>\n<li>US 8,694,819 — virtual interval timer adjustment for VMs (with Noel, Ross)</li>\n<li>US 8,505,020 — computer workload migration using processor pooling</li>\n<li>US 8,091,090 — scratch registers for a virtual-machine monitor</li>\n<li>US 7,996,833 — replacing instructions/blocks in guest code</li>\n<li>US 7,765,238 / 7,613,847 / 7,577,944 / 7,478,394 / 7,330,942 / 7,213,125 / 6,895,491 — VM memory, I/O, and instruction virtualization</li>\n</ul>\n",
     "bullets": [
@@ -876,6 +930,9 @@
         "url": "https://www.youtube.com/playlist?list=PLQQY5qJ7xX-f-3_8-iYzKplcDemASk8NQ"
       }
     ],
+    "images": [
+      "/cv/media/physics-books.jpg"
+    ],
     "content": "<h2>Amateur physics research — unifying GR and QM</h2>\n<ul>\n<li>A Theory of Incomplete Measurements — unifying GR and quantum mechanics</li>\n<li>New relativity principle: do physics with any instrument</li>\n<li>Discrete measurements instead of continuum space-time</li>\n</ul>\n",
     "bullets": [
       {
@@ -908,6 +965,9 @@
         "label": "GitHub",
         "url": "https://github.com/c3d/recorder"
       }
+    ],
+    "images": [
+      "/cv/media/recorder.png"
     ],
     "content": "<h2>Lock-free flight recorder for C and C++</h2>\n<ul>\n<li>Continuous recording with printf-like statements</li>\n<li>Classify events to keep both old important and recent rapid events</li>\n<li>Dump on demand (signals / debugger)</li>\n<li>Trace categories live; export channels for visualization</li>\n</ul>\n",
     "bullets": [
@@ -946,6 +1006,9 @@
         "url": "https://www.amazon.fr/dp/B0C5GQTWTQ"
       }
     ],
+    "images": [
+      "/cv/media/reunifions.png"
+    ],
     "content": "<h2>Shorter French introduction to TIM ideas</h2>\n<ul>\n<li>Gentle French introduction to incomplete-measurement physics</li>\n<li>Companion to A Theory of Incomplete Measurements</li>\n</ul>\n",
     "bullets": [
       {
@@ -974,6 +1037,9 @@
         "label": "Taodyne blog",
         "url": "http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d"
       }
+    ],
+    "images": [
+      "/cv/media/sonar-thales.png"
     ],
     "content": "<h2>Tao3D serious game for Thales Underwater Systems</h2>\n<ul>\n<li>Interactive presentation of Thales sonar offerings</li>\n<li>Followed by a simulation of sonar operations</li>\n<li>Among the largest applications written with Tao3D</li>\n</ul>\n",
     "bullets": [
@@ -1007,6 +1073,9 @@
         "url": "http://cc3d.free.fr/Relativity/Relat1.html"
       }
     ],
+    "images": [
+      "/cv/media/special-relativity.png"
+    ],
     "content": "<h2>Special relativity as space-time perspective</h2>\n<ul>\n<li>Explains Lorentz transforms as perspective / Wick rotation in space-time</li>\n<li>Written to make relativity intuitive beyond 1905 textbook formulas</li>\n</ul>\n",
     "bullets": [
       {
@@ -1028,6 +1097,9 @@
     "related": [],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/spectrum-plus.png"
+    ],
     "content": "<h2>BASIC extension for the Sinclair ZX Spectrum</h2>\n<ul>\n<li>First published program — graphic BASIC extensions for the ZX Spectrum</li>\n<li>Windows, ellipses, clipping, flood fill (including 8×8 patterns)</li>\n<li>~3.5KB of Z80 assembly; distributed by Valric-Laurene</li>\n<li>Name collided with Sinclair’s own Spectrum+ computer release</li>\n</ul>\n",
     "bullets": [
       {
@@ -1066,6 +1138,9 @@
         "url": "https://www.spice-space.org/"
       }
     ],
+    "images": [
+      "/cv/media/spice.png"
+    ],
     "content": "<h2>Remote visualization for virtualization</h2>\n<ul>\n<li>Part of the Spice team at Red Hat</li>\n<li>Implemented smart streaming in the SPICE remote viewer</li>\n<li>Remote visualization essential to Red Hat&#39;s virtualization offering</li>\n</ul>\n",
     "bullets": [
       {
@@ -1099,6 +1174,9 @@
         "label": "Tao3D",
         "url": "https://tao3d.sourceforge.net/"
       }
+    ],
+    "images": [
+      "/cv/media/taodyne.png"
     ],
     "content": "<h2>Founder and CEO — real-time 3D presentations</h2>\n<p>Sophia-Antipolis.</p>\n<ul>\n<li>Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)</li>\n<li>Tao3D Studio / Player for interactive 3D documents</li>\n<li>Commercial features: stereoscopy, auto-stereoscopy, signed/encrypted documents</li>\n<li>Technical success but commercial failure</li>\n<li>Awards: Best elevator pitch and Best technology in TIC (Business Accelerator 06)</li>\n<li>Most innovative product — Tao3D (DEVCOM 2012)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Christophe is a very innovative and open minded entrepreneur&quot;</em> — P. Zucchetta</p>\n",
     "bullets": [
@@ -1155,6 +1233,9 @@
         "label": "ELFE",
         "url": "https://github.com/c3d/elfe"
       }
+    ],
+    "images": [
+      "/cv/media/xl-tao3d.png"
     ],
     "content": "<h2>Extensible languages designed to evolve</h2>\n<ul>\n<li>XL — an extensible language designed to evolve (from earlier LX work)</li>\n<li>Tao3D — XL derivative for interactive 3D graphics and presentations</li>\n<li>ELFE — experiment for single-source programming in the Internet of Things</li>\n<li>Advanced generics and a simplified parse tree across implementations</li>\n<li>XLR / Tao3D lineage for dynamic 3D animations</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
     "bullets": [

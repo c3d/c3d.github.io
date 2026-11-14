@@ -4,11 +4,14 @@ title: LX — Langage Expérimental
 theme: Languages & Compilers
 years: 1988-1998
 weight: 8
-related: [xl-tao3d, mozart-moka]
+related:
+  - xl-tao3d
+  - mozart-moka
 videos: []
 links: []
+images:
+  - /cv/media/lx.png
 ---
-
 ## Precursor to XL
 
 - Started after an Alsys SA Ada internship in 1988

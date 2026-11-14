@@ -2,15 +2,18 @@
 id: sonar-thales
 title: Thales Sonar Serious Game
 theme: Games & 3D
-years: 
+years: null
 weight: 9
-related: [taodyne, xl-tao3d]
+related:
+  - taodyne
+  - xl-tao3d
 videos: []
 links:
   - label: Taodyne blog
-    url: http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d
+    url: 'http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d'
+images:
+  - /cv/media/sonar-thales.png
 ---
-
 ## Tao3D serious game for Thales Underwater Systems
 
 - Interactive presentation of Thales sonar offerings

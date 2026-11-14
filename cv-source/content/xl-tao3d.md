@@ -1,21 +1,26 @@
 ---
 id: xl-tao3d
-title: XL, Tao3D & ELFE
+title: 'XL, Tao3D & ELFE'
 theme: Languages & Compilers
 years: 1992-Present
 weight: 9
 print: 3
-related: [taodyne, 3divart, firefly, lx]
+related:
+  - taodyne
+  - 3divart
+  - firefly
+  - lx
 videos: []
 links:
   - label: XL
-    url: https://github.com/c3d/xl
+    url: 'https://github.com/c3d/xl'
   - label: Tao3D
-    url: https://tao3d.sourceforge.net/
+    url: 'https://tao3d.sourceforge.net/'
   - label: ELFE
-    url: https://github.com/c3d/elfe
+    url: 'https://github.com/c3d/elfe'
+images:
+  - /cv/media/xl-tao3d.png
 ---
-
 ## Extensible languages designed to evolve
 
 - XL — an extensible language designed to evolve (from earlier LX work)

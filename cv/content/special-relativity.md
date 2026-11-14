@@ -2,15 +2,17 @@
 id: special-relativity
 title: Relativity as Perspective
 theme: Physics
-years: 
+years: null
 weight: 7
-related: [physics-books]
+related:
+  - physics-books
 videos: []
 links:
   - label: Essay
-    url: http://cc3d.free.fr/Relativity/Relat1.html
+    url: 'http://cc3d.free.fr/Relativity/Relat1.html'
+images:
+  - /cv/media/special-relativity.png
 ---
-
 ## Special relativity as space-time perspective
 
 - Explains Lorentz transforms as perspective / Wick rotation in space-time
