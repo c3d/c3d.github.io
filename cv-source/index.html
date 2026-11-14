@@ -510,13 +510,39 @@
       opacity: 1;
       visibility: visible;
     }
+    /* Close control lives on #hud (outside .hud-panel) so clip-path choreography
+       never moves/hides it; panel content starts below this chrome row. */
+    #hud-close {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+    #hud.open #hud-close {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+    #hud-close:hover { border-color: var(--hud-accent); color: var(--hud-accent); }
     .hud-panel {
       position: relative;
       display: flex;
       flex-direction: column;
       height: calc(100% - 8px);
       overflow: hidden;
-      padding: 22px 20px 28px;
+      /* Top padding clears the absolute close button (22px offset + 34px + gap). */
+      padding: 52px 20px 28px;
       pointer-events: none;
       background-color: rgba(4, 10, 22, 0.38);
       background-image:
@@ -578,12 +604,12 @@
       text-transform: uppercase;
       color: var(--hud-accent);
       margin: 0 0 8px;
-      padding-right: 40px;
+      padding-right: 0;
     }
     .hud-title-bar {
       flex: 0 0 auto;
       display: flex;
-      align-items: stretch;
+      align-items: center;
       margin: 0;
       border: 1px solid color-mix(in srgb, var(--hud-accent) 55%, transparent);
       background:
@@ -593,11 +619,14 @@
         0 0 0 1px rgba(0, 0, 0, 0.3) inset,
         0 0 14px color-mix(in srgb, var(--hud-accent) 22%, transparent);
       opacity: 1;
+      /* Title layout is final — choreography must not change alignment. */
+      overflow: visible;
     }
     #hud.hud-flying .hud-title-bar { opacity: 0; }
     .hud-title-bar::before {
       content: "";
       width: 4px;
+      align-self: stretch;
       flex-shrink: 0;
       background: var(--hud-accent);
     }
@@ -607,7 +636,7 @@
       font-weight: 700;
       line-height: 1.25;
       margin: 0;
-      padding: 10px 40px 10px 12px;
+      padding: 10px 12px;
       flex: 1;
       color: #f2f7ff;
       text-shadow: 0 1px 8px rgba(0,0,0,0.65);
@@ -626,11 +655,14 @@
       min-height: 0;
       padding-top: 12px;
     }
-    /* Chip boxes grow from the left edge; content teletypes after. */
+    /* Chip boxes grow from the left via scaleX only — layout width is final from the start
+       so teletyped text wraps normally (never animate width/max-width/flex-basis). */
     .hud-chip {
       transform: scaleX(0);
       transform-origin: left center;
       opacity: 0;
+      width: auto;
+      max-width: none;
       transition:
         transform var(--hud-chip-ms, 160ms) cubic-bezier(0.22, 1, 0.36, 1),
         opacity var(--hud-chip-ms, 160ms) cubic-bezier(0.22, 1, 0.36, 1);
@@ -789,7 +821,9 @@
       text-shadow: 0 1px 4px rgba(0,0,0,0.45);
       /* scaleX / opacity transitions declared with chip reveal stages above */
     }
-    .hud-chip span {
+    /* Direct-child label only — must NOT match .hud-tt-char spans (that stacked
+       every teletyped glyph as display:block → one character per line). */
+    .hud-chip > span {
       display: block;
       font-family: Orbitron, sans-serif;
       font-size: 9px;
@@ -797,6 +831,9 @@
       text-transform: uppercase;
       color: rgba(180,210,255,0.65);
       margin-bottom: 3px;
+    }
+    .hud-chip .hud-tt-char {
+      display: inline;
     }
     .hud-bullet {
       font-size: 16px;
@@ -884,21 +921,6 @@
       background: var(--hud-accent);
       padding: 8px 12px;
     }
-    #hud-close {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 34px;
-      height: 34px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(0,0,0,0.35);
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 2;
-    }
-    #hud-close:hover { border-color: var(--hud-accent); color: var(--hud-accent); }
-
     .hud-connected {
       margin-top: 14px;
     }
@@ -967,7 +989,12 @@
         height: min(62vh, 560px);
         padding: 10px;
       }
+      #hud-close {
+        top: 14px;
+        right: 14px;
+      }
       .hud-panel {
+        padding-top: 48px;
         clip-path: polygon(
           0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px,
           100% 100%, 0 100%
@@ -975,7 +1002,7 @@
       }
       .hud-project {
         font-size: 16px;
-        padding: 9px 36px 9px 10px;
+        padding: 9px 10px;
       }
       /* Bottom-docked HUD: two columns — info chips | media (contain). */
       .hud-below-inner {
@@ -1029,19 +1056,21 @@
         align-self: stretch;
       }
       [data-hud="media"] .hud-image {
-        flex: 1 1 auto;
+        /* Size to the image — do not flex-grow into an empty light plate. */
+        flex: 0 1 auto;
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        max-height: 100%;
         min-height: 0;
         margin: 0;
         overflow: hidden;
       }
       [data-hud="media"] .hud-image img {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
         width: 100%;
-        height: 100%;
+        height: auto;
+        max-height: 100%;
         min-height: 0;
         object-fit: contain;
         object-position: center;
@@ -1275,8 +1304,9 @@
   <div id="label-layer" aria-hidden="true"></div>
 
   <aside id="hud" aria-hidden="true">
+    <!-- Outside .hud-panel so clip-path open/close never covers or shifts it. -->
+    <button id="hud-close" type="button" aria-label="Close">×</button>
     <div class="hud-panel">
-      <button id="hud-close" type="button" aria-label="Close">×</button>
       <div class="hud-above">
         <div class="hud-above-inner">
           <div class="hud-kicker" data-hud="theme">THEME</div>
