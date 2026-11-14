@@ -63,8 +63,9 @@ const PRINT_COPY = {
     ]
   },
   hpcpp: {
+    title: 'HP aC++ Compiler',
     bullets: [
-      'First native pre-silicon Itanium C/C++ compiler; kernel & user ABI; exception handling, templates, performance; leading & coordinating 16 teams.'
+      'Pre-silicon Itanium C/C++ compiler: binary interface (kernel & user), exceptions. Cross-team & cross-industry'
     ]
   },
   hpvm: {

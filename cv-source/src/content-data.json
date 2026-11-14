@@ -1328,22 +1328,10 @@
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler, pre-silicon testing on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">ski</a>, overriding HP&#39;s plans to ship a PA-RISC to Itanium cross-compiler running in the <a href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\">Aries PA-RISC to Itanium dynamic translator</a></li>\n<li>C++ front end: tech lead, team of 10</li>\n<li>Exception handling: led the project across at least 8 teams (C++, C, HLO, LLO, CodeGen, assembler, linker, LTO), about 20 engineers involved; built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\">WIESS 2000</a> paper, motivated the common ABI work</li>\n<li>Native compiler: led a 16-team effort covering the whole toolchain — C, C++ and other front ends, UCODE2 (HP&#39;s internal IR), optimizers (HLO and LLO), code generation, assembler, linker, system libraries</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Improved template handling, notably to support the STL</li>\n<li>Compiler performance improvements, including redesigning the symbol table for scalability</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n<li>Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed</li>\n<li>Contributed to precompiled headers, another compile-time performance improvement</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<p>Pre-silicon Itanium C/C++ compiler: binary interface (kernel &amp; user), exceptions, performance, templates. Cross-team &amp; cross-industry</p>\n<ul>\n<li>Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation</li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n<li>Contributed to precompiled headers, another compile-time performance improvement</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
-        "text": "Wrote the first native Itanium C++ compiler, pre-silicon testing on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">ski</a>, overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the <a class=\"pv-deep\" href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Aries PA-RISC to Itanium dynamic translator</a>",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "C++ front end: tech lead, team of 10",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Exception handling: led the project across at least 8 teams (C++, C, HLO, LLO, CodeGen, assembler, linker, LTO), about 20 engineers involved; built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a class=\"pv-deep\" href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">WIESS 2000</a> paper, motivated the common ABI work",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Native compiler: led a 16-team effort covering the whole toolchain — C, C++ and other front ends, UCODE2 (HP's internal IR), optimizers (HLO and LLO), code generation, assembler, linker, system libraries",
+        "text": "Led the 16-team native compiler bring-up, the exception-handling project across 8 teams, and worked with HP-UX on speculation",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -1355,19 +1343,7 @@
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Improved template handling, notably to support the STL",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Compiler performance improvements, including redesigning the symbol table for scalability",
-        "section": "C++ compiler for Itanium"
-      },
-      {
         "text": "Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed",
         "section": "C++ compiler for Itanium"
       },
       {
