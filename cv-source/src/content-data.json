@@ -2792,7 +2792,7 @@
   },
   {
     "id": "xl",
-    "title": "XL",
+    "title": "XL, an extensible language",
     "theme": "Languages & Compilers",
     "years": "1992-Present",
     "weight": 9,
@@ -2819,37 +2819,37 @@
       "compilers",
       "opensource"
     ],
-    "content": "<h2>Extensible language designed to evolve</h2>\n<ul>\n<li>Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible</li>\n<li>Re-implemented on Mozart (itself largely reusing LX code)</li>\n<li>Inherited advanced generics from LX</li>\n<li>XL2 — re-implementation with a simplified parse tree (8 node types), still used in XLR, Tao3D, and ELFE; meta-programming friendly</li>\n<li>XL2 was bootstrapped in three stages (first stage in C++)</li>\n<li>XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
+    "content": "<h2>XL, an extensible language</h2>\n<p>A language designed to evolve with user needs, based on &quot;Concept programming&quot;</p>\n<ul>\n<li>Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible</li>\n<li>Re-implemented on Mozart (itself largely reusing LX code)</li>\n<li>Inherited advanced generics from LX</li>\n<li>XL2 — re-implementation with a simplified parse tree (8 node types), still used in XLR, Tao3D, and ELFE; meta-programming friendly</li>\n<li>XL2 was bootstrapped in three stages (first stage in C++)</li>\n<li>XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
     "bullets": [
       {
         "text": "Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       },
       {
         "text": "Re-implemented on Mozart (itself largely reusing LX code)",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       },
       {
         "text": "Inherited advanced generics from LX",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       },
       {
         "text": "XL2 — re-implementation with a simplified parse tree (8 node types), still used in XLR, Tao3D, and ELFE; meta-programming friendly",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       },
       {
         "text": "XL2 was bootstrapped in three stages (first stage in C++)",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       },
       {
         "text": "XLR — Extensible Language Runtime; initially an LLVM-backed dynamic back-end for XL2; became a language of its own",
-        "section": "Extensible language designed to evolve"
+        "section": "XL, an extensible language"
       }
     ]
   },
   {
     "id": "xlr8",
-    "title": "XLR8",
+    "title": "XLR8, an extensible accelerated runtime and JIT",
     "theme": "Languages & Compilers",
     "years": "2026-Present",
     "weight": 8,
@@ -2887,35 +2887,35 @@
       "opensource",
       "asm"
     ],
-    "content": "<h2>Super-fast VM for XL</h2>\n<ul>\n<li>XLR8 is a super-fast VM with interpreted and JIT modes</li>\n<li>Significantly faster than Lua or Python VMs on a sample of micro-benchmarks</li>\n<li>In JIT mode, it runs within 20% of C/C++ on most tests</li>\n<li>XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes</li>\n<li>A full LLVM target generating XLR8 bytecode runs many C and C++ programs</li>\n<li>Bytecode can be evaluated while bytecode is running, so the runtime itself is extensible</li>\n<li>XLR8 is intended as the next runtime for XL</li>\n</ul>\n",
+    "content": "<h2>XLR8, an extensible accelerated runtime and JIT</h2>\n<p>A very fast VM with bytecode interpreter and built-in JIT for ARM, x86 and RISC-V.</p>\n<ul>\n<li>XLR8 is a super-fast VM with interpreted and JIT modes</li>\n<li>Significantly faster than Lua or Python VMs on a sample of micro-benchmarks</li>\n<li>In JIT mode, it runs within 20% of C/C++ on most tests</li>\n<li>XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes</li>\n<li>A full LLVM target generating XLR8 bytecode runs many C and C++ programs</li>\n<li>Bytecode can be evaluated while bytecode is running, so the runtime itself is extensible</li>\n<li>XLR8 is intended as the next runtime for XL</li>\n</ul>\n",
     "bullets": [
       {
         "text": "XLR8 is a super-fast VM with interpreted and JIT modes",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "Significantly faster than Lua or Python VMs on a sample of micro-benchmarks",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "In JIT mode, it runs within 20% of C/C++ on most tests",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "A full LLVM target generating XLR8 bytecode runs many C and C++ programs",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "Bytecode can be evaluated while bytecode is running, so the runtime itself is extensible",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       },
       {
         "text": "XLR8 is intended as the next runtime for XL",
-        "section": "Super-fast VM for XL"
+        "section": "XLR8, an extensible accelerated runtime and JIT"
       }
     ]
   }
