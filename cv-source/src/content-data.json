@@ -397,7 +397,7 @@
       }
     ],
     "images": [
-      "/cv/media/emacs-aqua.jpg"
+      "/cv/media/emacs-aqua.png"
     ],
     "content": "<h2>First graphical Emacs on Mac OS X Aqua</h2>\n<ul>\n<li>Adapted an old NeXT port to Aqua when only Terminal Emacs shipped</li>\n<li>Added macOS niceties such as transparent windows</li>\n<li>Published on SourceForge; later superseded by upstream Cocoa support</li>\n</ul>\n",
     "bullets": [
