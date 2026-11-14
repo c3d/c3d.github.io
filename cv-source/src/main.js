@@ -2184,9 +2184,32 @@ function setupTitlePrintMenu() {
   });
 }
 
+function isPrintMode() {
+  const params = new URLSearchParams(location.search);
+  return params.get('print') === '1' || location.hash === '#print';
+}
+
+async function initPrintOnly(contentData) {
+  // Print/PDF path: never boot WebGL, stars, or mini-HUD labels.
+  document.body.classList.add('print-preview');
+  const layer = document.getElementById('label-layer');
+  if (layer) {
+    layer.innerHTML = '';
+    layer.hidden = true;
+    layer.setAttribute('aria-hidden', 'true');
+  }
+  generatePrintView(contentData);
+  document.getElementById('loading')?.classList.add('hidden');
+}
+
 async function init() {
   console.log('Initializing 3D CV...', { buildId: BUILD_ID });
   const contentData = await loadContentData();
+  if (isPrintMode()) {
+    console.log(`Print-only mode (${contentData.length} projects, build ${BUILD_ID})`);
+    await initPrintOnly(contentData);
+    return;
+  }
   initScene();
   console.log(`Loaded ${contentData.length} projects (build ${BUILD_ID})`);
   createStarsFromBullets(contentData);

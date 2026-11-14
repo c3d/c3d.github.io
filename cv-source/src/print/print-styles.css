@@ -59,6 +59,21 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  #canvas-container,
+  #controls,
+  #ui-overlay,
+  #title-overlay,
+  #loading,
+  #hud,
+  #warp-bar,
+  #print-style-menu,
+  #label-layer,
+  #hud-fly-label,
+  #search-hud,
+  #search-fab,
+  .ms-label {
+    display: none !important;
+  }
   #print-view {
     width: 210mm;
     height: 297mm;
@@ -78,7 +93,11 @@ body.print-preview #title-overlay,
 body.print-preview #loading,
 body.print-preview #hud,
 body.print-preview #warp-bar,
-body.print-preview #print-style-menu { display: none !important; }
+body.print-preview #print-style-menu,
+body.print-preview #label-layer,
+body.print-preview #hud-fly-label,
+body.print-preview #search-hud,
+body.print-preview #search-fab { display: none !important; }
 body.print-preview { overflow: auto; background: #d8dee8; }
 body.print-preview #print-view {
   display: block;
