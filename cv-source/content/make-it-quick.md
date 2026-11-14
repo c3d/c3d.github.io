@@ -2,16 +2,19 @@
 id: make-it-quick
 title: Make-It-Quick
 theme: Tools & Apps
-years: null
+years: 2018-Present
 weight: 7
 print: 1
 related:
   - recorder
   - hpcpp
-videos: []
+videos:
+  - uAAynpfCJa0
 links:
   - label: GitHub
     url: 'https://github.com/c3d/make-it-quick'
+  - label: Presentation video
+    url: 'https://www.youtube.com/watch?v=uAAynpfCJa0'
 images:
   - /cv/media/make-it-quick.png
 topics:

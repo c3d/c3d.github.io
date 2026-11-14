@@ -2,7 +2,7 @@
 id: ecu-cartoons
 title: ECUTEST Cartoons
 theme: Communication Skills
-years: null
+years: 1994-1998
 weight: 6
 related:
   - ecutest

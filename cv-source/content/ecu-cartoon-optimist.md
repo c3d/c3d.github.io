@@ -2,7 +2,7 @@
 id: ecu-cartoon-optimist
 title: Wild optimism
 theme: Communication Skills
-years: null
+years: 1994-1998
 weight: 3
 satelliteOf: ecu-cartoons
 related:

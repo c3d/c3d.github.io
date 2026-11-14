@@ -2,7 +2,7 @@
 id: ecu-cartoon-processes
 title: Processes
 theme: Communication Skills
-years: null
+years: 1994-1998
 weight: 3
 satelliteOf: ecu-cartoons
 related:
