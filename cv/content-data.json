@@ -2581,18 +2581,58 @@
     "videos": [],
     "links": [
       {
-        "label": "XLR",
-        "url": "http://xlr.sourceforge.net"
+        "label": "XL",
+        "url": "https://github.com/c3d/xl"
+      },
+      {
+        "label": "LLVM",
+        "url": "https://llvm.org"
+      },
+      {
+        "label": "Lua",
+        "url": "https://www.lua.org"
+      },
+      {
+        "label": "Python",
+        "url": "https://www.python.org"
+      },
+      {
+        "label": "RISC-V",
+        "url": "https://riscv.org"
       }
     ],
     "topics": [
       "compilers",
       "opensource"
     ],
-    "content": "<h2>Super-fast VM for XL</h2>\n<ul>\n<li>XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support</li>\n</ul>\n",
+    "content": "<h2>Super-fast VM for XL</h2>\n<ul>\n<li>XLR8 is a super-fast VM with interpreted and JIT modes</li>\n<li>In interpreted mode, it runs 40% faster than Lua and 8× faster than Python for similar microbenchmarks</li>\n<li>In JIT mode, it runs within 20% of C/C++ on most tests</li>\n<li>XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes</li>\n<li>A full LLVM target generating XLR8 bytecode runs many C and C++ programs</li>\n<li>XLR8 has a unique feature where bytecode can be evaluated during bytecode evaluation, so that the bytecode runtime is itself extensible</li>\n<li>XLR8 is intended as the next runtime for XL</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support",
+        "text": "XLR8 is a super-fast VM with interpreted and JIT modes",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "In interpreted mode, it runs 40% faster than Lua and 8× faster than Python for similar microbenchmarks",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "In JIT mode, it runs within 20% of C/C++ on most tests",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "A full LLVM target generating XLR8 bytecode runs many C and C++ programs",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "XLR8 has a unique feature where bytecode can be evaluated during bytecode evaluation, so that the bytecode runtime is itself extensible",
+        "section": "Super-fast VM for XL"
+      },
+      {
+        "text": "XLR8 is intended as the next runtime for XL",
         "section": "Super-fast VM for XL"
       }
     ]
