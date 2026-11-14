@@ -18,11 +18,10 @@ links:
 
 ## Software as a Passion
 
-Pushing the boundaries by writing highly innovative and differentiating software to make as much of a difference as possible.
+Pushing the boundaries by writing highly innovative and differentiating software that makes a real difference.
 
-- French software developer — games, languages, operating systems
-- Amateur physics researcher
-- Tinkerer in strange forms of art
+- French software developer — operating systems, languages, games
+- Amateur physics researcher and tinkerer in strange forms of art
 - MS Computer Science, École des Mines (1991, Paris)
 - Native French, fluent English, some German
 - christophe@dinechin.org

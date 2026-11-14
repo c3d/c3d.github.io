@@ -4,7 +4,6 @@ title: HPVM pre-silicon and A-step bring-up
 theme: Systems & Virtualization
 years: 2000-2010
 weight: 8
-print: 2
 related:
   - hpvm
 videos: []

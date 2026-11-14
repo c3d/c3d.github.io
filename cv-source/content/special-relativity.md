@@ -1,7 +1,7 @@
 ---
 id: special-relativity
 title: Relativity as Perspective
-theme: Physics
+theme: Research
 years: null
 weight: 7
 related:
@@ -15,6 +15,7 @@ images:
 topics:
   - physics
   - writing
+  - research
 ---
 ## Special relativity as space-time perspective
 

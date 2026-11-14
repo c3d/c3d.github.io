@@ -53,7 +53,7 @@ Your project description in Markdown format.
   - `Languages & Compilers`
   - `Systems & Virtualization`
   - `Games & 3D`
-  - `Physics`
+  - `Research`
   - `Tools & Apps`
   - `Communication Skills`
 - **years**: Time period (e.g., "2020-Present", "1989-1990")
