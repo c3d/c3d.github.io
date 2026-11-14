@@ -86,11 +86,11 @@ const PRINT_COPY = {
     bullets: ['Tao3D is an XL-based platform for interactive real-time 3D presentations']
   },
   xl: {
-    bullets: ['XL is an Extensible Language with interpreted and JIT modes']
+    bullets: ['Extensible language designed to evolve']
   },
   xlr8: {
     bullets: [
-      'XLR8 is a super-fast VM with interpreted and JIT modes'
+      'XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes'
     ]
   },
   db48x: {
