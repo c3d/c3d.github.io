@@ -2,7 +2,7 @@
 id: websites-blogs
 title: Web sites and blogs
 theme: Communication Skills
-years: null
+years: 2003-Present
 weight: 6
 related:
   - tao3d
@@ -12,7 +12,7 @@ related:
 videos: []
 links:
   - label: Tao3D
-    url: 'https://tao3d.sourceforge.net/'
+    url: 'http://tao3d.sf.net'
   - label: Grenouille Bouillie
     url: 'https://grenouillebouillie.wordpress.com/'
   - label: DB48X

@@ -1,6 +1,6 @@
 ---
 id: grenouille-bouillie
-title: Grenouille Bouillie
+title: 'Blog: Grenouille Bouillie'
 theme: Communication Skills
 years: 2003-Present
 weight: 6

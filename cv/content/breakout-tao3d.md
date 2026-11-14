@@ -2,7 +2,7 @@
 id: breakout-tao3d
 title: Breakout in Tao3D
 theme: Games & 3D
-years: null
+years: 2015
 weight: 7
 related:
   - tao3d
@@ -11,6 +11,8 @@ links:
   - label: Taodyne blog
     url: >-
       http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code
+  - label: Tao3D examples list
+    url: 'https://github.com/c3d/tao3D/blame/master/tao-examples-list#L105'
 images:
   - /cv/media/breakout-tao3d.png
 topics:

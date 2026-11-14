@@ -1,8 +1,8 @@
 ---
 id: hpvm-cartoon-virtualdenise
-title: High availability management
+title: 'Cartoon: High availability management'
 theme: Systems & Virtualization
-years: null
+years: 2000-2010
 weight: 3
 satelliteOf: hpvm
 related:

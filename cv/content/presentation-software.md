@@ -2,7 +2,7 @@
 id: presentation-software
 title: Software
 theme: Communication Skills
-years: null
+years: 2010-Present
 weight: 6
 related:
   - tao3d
@@ -10,7 +10,7 @@ related:
 videos: []
 links:
   - label: Tao3D
-    url: 'https://tao3d.sourceforge.net/'
+    url: 'http://tao3d.sf.net'
 topics:
   - graphics3d
   - compilers
