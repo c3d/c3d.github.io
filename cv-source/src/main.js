@@ -1767,9 +1767,15 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   hud.querySelector('[data-hud="project"]').textContent = project.title || '';
   hud.querySelector('[data-hud="years"]').textContent = project.years || '—';
   hud.querySelector('[data-hud="section"]').textContent = bullet.section || 'DATUM';
+  // Prefer full project HTML so teletype walks rendered text nodes (links/formatting survive).
+  // Fall back to the clicked bullet for sparse items.
   const bulletEl = hud.querySelector('[data-hud="bullet"]');
-  const raw = bullet.text || '';
-  bulletEl.innerHTML = raw ? marked.parseInline(raw, { async: false }) : '';
+  if (project.content) {
+    bulletEl.innerHTML = project.content;
+  } else {
+    const raw = bullet.text || '';
+    bulletEl.innerHTML = raw ? marked.parseInline(raw, { async: false }) : '';
+  }
 
   const topicsEl = hud.querySelector('[data-hud="topics"]');
   if (topicsEl) {
@@ -1810,10 +1816,7 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
         const cap = document.createElement('p');
         cap.className = 'hud-image-credit';
         if (credit.caption) {
-<<<<<<< HEAD
           // Freeform illustration / context caption (e.g. TK!Solver stand-in for MuSolver)
-=======
->>>>>>> 9dc21f8 (Add HUD continuity FLIP open/close with teletype description)
           cap.textContent = credit.caption;
         } else {
           const license = document.createElement('a');
