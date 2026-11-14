@@ -582,12 +582,12 @@
       opacity: 1;
       visibility: visible;
     }
-    /* Media focus: center the HUD and slide chrome away so image/video dominate. */
+    /* Media focus: HUD shrinks to the media only (≤95vw/95vh); chrome fully gone. */
     #hud-media-focus-backdrop {
       position: fixed;
       inset: 0;
       z-index: 34;
-      background: rgba(2, 6, 16, 0.55);
+      background: rgba(2, 6, 16, 0.62);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -617,26 +617,65 @@
       right: auto !important;
       bottom: auto !important;
       transform: translate(-50%, -50%);
-      width: min(var(--hud-focus-w, 80vw), 80vw) !important;
-      height: min(var(--hud-focus-h, 80vh), 80vh) !important;
-      max-width: 80vw;
-      max-height: 80vh;
+      width: min(var(--hud-focus-w, 95vw), 95vw) !important;
+      height: min(var(--hud-focus-h, 95vh), 95vh) !important;
+      max-width: 95vw;
+      max-height: 95vh;
       z-index: 36;
-      padding: 10px 12px 14px;
-      gap: 6px;
+      padding: 0 !important;
+      gap: 0 !important;
       pointer-events: none;
+      overflow: visible;
     }
     #hud.hud-media-focus.open {
       pointer-events: none;
     }
+    /* Keep only a small × overlay — chrome row itself is collapsed. */
+    #hud.hud-media-focus .hud-chrome {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      z-index: 5;
+      pointer-events: none;
+    }
+    #hud.hud-media-focus #hud-close {
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+      background: rgba(0, 0, 0, 0.55);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }
     #hud.hud-media-focus .hud-panel {
       pointer-events: auto;
       height: 100%;
-      background-color: rgba(4, 10, 22, 0.92);
+      width: 100%;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      background-image: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      clip-path: none !important;
+      overflow: hidden;
     }
-    #hud.hud-media-focus .hud-chrome {
-      height: 28px;
+    #hud.hud-media-focus .hud-panel::before,
+    #hud.hud-media-focus .hud-panel::after {
+      display: none !important;
+      content: none !important;
     }
+    /* Fully remove non-media chrome (not just fade). */
     #hud.hud-media-focus .hud-above,
     #hud.hud-media-focus .hud-title-bar,
     #hud.hud-media-focus .hud-index,
@@ -645,36 +684,34 @@
     #hud.hud-media-focus .hud-bullet,
     #hud.hud-media-focus .hud-connected,
     #hud.hud-media-focus .hud-links,
-    #hud.hud-media-focus .hud-image-credit {
-      opacity: 0;
-      max-height: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      overflow: hidden;
-      pointer-events: none;
-      border: none;
-      transform: translateY(-10px);
-      transition:
-        opacity 0.28s ease,
-        transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-        max-height 0.32s ease,
-        margin 0.32s ease,
-        padding 0.32s ease;
-    }
-    #hud.hud-media-focus .hud-above {
-      grid-template-rows: 0fr;
+    #hud.hud-media-focus .hud-image-credit,
+    #hud.hud-media-focus .hud-kicker {
+      display: none !important;
     }
     #hud.hud-media-focus .hud-below {
+      display: block;
       flex: 1 1 auto;
       min-height: 0;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      grid-template-rows: none;
     }
     #hud.hud-media-focus .hud-below-inner {
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      padding: 0;
+      overflow: hidden !important;
+      padding: 0 !important;
+      margin: 0 !important;
       height: 100%;
+      width: 100%;
+      scrollbar-width: none;
+    }
+    #hud.hud-media-focus .hud-below-inner::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
     }
     #hud.hud-media-focus [data-hud="media"] {
       width: 100%;
@@ -682,12 +719,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0;
+      padding: 0;
     }
     #hud.hud-media-focus .hud-image,
     #hud.hud-media-focus .hud-video {
-      margin: 0;
+      margin: 0 !important;
+      border: none !important;
       max-width: 100%;
       max-height: 100%;
+      background: #000;
     }
     #hud.hud-media-focus .hud-image {
       width: auto;
@@ -698,21 +739,24 @@
       max-height: 100%;
       width: auto;
       height: auto;
+      object-fit: contain;
     }
     #hud.hud-media-focus .hud-video {
-      width: min(100%, var(--hud-focus-media-w, 100%));
-      height: auto;
-      aspect-ratio: 16 / 9;
+      width: var(--hud-focus-media-w, 100%);
+      height: var(--hud-focus-media-h, auto);
+      max-width: 100%;
       max-height: 100%;
+      aspect-ratio: auto;
     }
     #hud.hud-media-focus .hud-video.hud-video-vertical {
-      width: min(100%, var(--hud-focus-media-w, 100%));
-      aspect-ratio: 9 / 16;
+      width: var(--hud-focus-media-w, 100%);
+      height: var(--hud-focus-media-h, auto);
+      aspect-ratio: auto;
       max-height: 100%;
     }
     #hud.hud-media-focus .hud-image:not(.hud-media-focus-active),
     #hud.hud-media-focus .hud-video:not(.hud-media-focus-active) {
-      display: none;
+      display: none !important;
     }
     /* Desktop: keep the detail HUD in the right rail; the stack slot must not
        grow a blank band under the warp/topic chrome. When the rail is open,

@@ -2337,7 +2337,7 @@ function stopHudVideos() {
   media.querySelectorAll('.hud-video').forEach((el) => el.remove());
 }
 
-/** Media focus mode: centered HUD, chrome tucked away, media sized to ≤80vw/80vh. */
+/** Media focus: HUD = media only, centered, sized to ≤95vw/95vh. */
 let mediaFocusEl = null;
 
 function isMediaFocus() {
@@ -2359,10 +2359,10 @@ function ensureMediaFocusBackdrop() {
 function sizeMediaFocus(mediaEl) {
   const hud = document.getElementById('hud');
   if (!hud || !mediaEl) return;
-  const maxW = window.innerWidth * 0.8;
-  const maxH = window.innerHeight * 0.8;
+  const maxW = window.innerWidth * 0.95;
+  const maxH = window.innerHeight * 0.95;
   let mediaW = maxW;
-  let mediaH = maxH * 0.85;
+  let mediaH = maxH;
 
   if (mediaEl.classList.contains('hud-image')) {
     const img = mediaEl.querySelector('img');
@@ -2390,10 +2390,13 @@ function sizeMediaFocus(mediaEl) {
     }
   }
 
-  const chrome = 52; // close row + padding
-  hud.style.setProperty('--hud-focus-w', `${Math.ceil(mediaW + 28)}px`);
-  hud.style.setProperty('--hud-focus-h', `${Math.ceil(mediaH + chrome)}px`);
-  hud.style.setProperty('--hud-focus-media-w', `${Math.ceil(mediaW)}px`);
+  // HUD box is exactly the media — no chrome padding.
+  const w = Math.ceil(mediaW);
+  const h = Math.ceil(mediaH);
+  hud.style.setProperty('--hud-focus-w', `${w}px`);
+  hud.style.setProperty('--hud-focus-h', `${h}px`);
+  hud.style.setProperty('--hud-focus-media-w', `${w}px`);
+  hud.style.setProperty('--hud-focus-media-h', `${h}px`);
 }
 
 function enterMediaFocus(mediaEl) {
@@ -2435,6 +2438,7 @@ function exitMediaFocus() {
     hud.style.removeProperty('--hud-focus-w');
     hud.style.removeProperty('--hud-focus-h');
     hud.style.removeProperty('--hud-focus-media-w');
+    hud.style.removeProperty('--hud-focus-media-h');
   }
   const backdrop = document.getElementById('hud-media-focus-backdrop');
   if (backdrop) {
@@ -3211,6 +3215,26 @@ function projectStarRepresentatives() {
   return [...byId.values()];
 }
 
+/**
+ * Stable review order = the `stars` array (same index as NODE xxx / yyy).
+ * delta +1 = next (Ctrl-N), -1 = previous (Ctrl-P); wraps at ends.
+ */
+function reviewNeighborStar(delta) {
+  if (!stars.length) return null;
+  let idx = currentStar ? stars.indexOf(currentStar) : -1;
+  if (idx < 0) idx = delta > 0 ? -1 : 0;
+  const next = (idx + delta + stars.length) % stars.length;
+  return stars[next];
+}
+
+/** Open the previous/next node in NODE-counter order (stops video, title morph via openHUD). */
+function goReviewStar(delta) {
+  const target = reviewNeighborStar(delta);
+  if (!target) return;
+  if (isMediaFocus()) exitMediaFocus();
+  openHUD(target);
+}
+
 /** Among `pool`, pick the star whose 3D position is nearest to `from`. */
 function nearestStarInPool(from, pool) {
   if (!pool.length) return null;
@@ -3830,6 +3854,19 @@ function setupInteraction() {
     const inSearchInput = e.target?.id === 'search-input';
     const hudOpen = isHudOpen();
     const navKey = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Enter', 'Backspace', 'Escape'].includes(e.key);
+
+    // Ctrl/Cmd-P / Ctrl/Cmd-N — sequential review of every NODE (stars[] order).
+    // preventDefault so Ctrl-P does not open the browser print dialog.
+    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === 'p' || k === 'n') {
+        if (inEditable || inSearchInput || blocked) return;
+        e.preventDefault();
+        noteUserActivity();
+        goReviewStar(k === 'n' ? 1 : -1);
+        return;
+      }
+    }
 
     if (e.key === 'Escape') {
       if (blocked && !searchActive && !hudOpen) return;
