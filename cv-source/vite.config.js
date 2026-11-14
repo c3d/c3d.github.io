@@ -14,6 +14,7 @@ function resolveBuildId() {
 
 const BUILD_ID = resolveBuildId();
 
+/** Write public/build-meta.json (gitignored) for dist deploy / CI checks. */
 function writeBuildMeta() {
   const meta = {
     buildId: BUILD_ID,
@@ -21,15 +22,27 @@ function writeBuildMeta() {
   };
   const out = path.resolve('public/build-meta.json');
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, JSON.stringify(meta, null, 2));
+  fs.writeFileSync(out, `${JSON.stringify(meta, null, 2)}\n`);
   return meta;
 }
 
-writeBuildMeta();
+function buildMetaPlugin() {
+  return {
+    name: 'cv-build-meta',
+    // Dev server + every vite build — keep meta fresh without committing it.
+    configResolved() {
+      writeBuildMeta();
+    },
+    buildStart() {
+      writeBuildMeta();
+    }
+  };
+}
 
 export default defineConfig({
   base: '/cv/',
   define: {
+    // Runtime already falls back to 'dev' when this define is absent.
     __BUILD_ID__: JSON.stringify(BUILD_ID)
   },
   build: {
@@ -42,6 +55,7 @@ export default defineConfig({
     }
   },
   plugins: [
+    buildMetaPlugin(),
     {
       name: 'cv-index-cache-headers',
       transformIndexHtml(html) {
