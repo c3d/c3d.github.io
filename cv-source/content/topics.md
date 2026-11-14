@@ -15,6 +15,7 @@ comes only from each item’s real CV / homepage text.
 | compilers | Compilers | Language design, compilers, ABIs, and extensible languages |
 | virtualization | Virtualization | Hypervisors, guests, and virtual machine platforms |
 | containers | Containers | Container runtimes and confidential containers |
+| confidential-computing | Confidential computing | Trusted execution, attestation, and confidential VMs / containers |
 | realtime | Real-time | Hard and soft real-time systems and closed-loop control |
 | embedded | Embedded | Embedded boards, appliances, and constrained devices |
 | arm | ARM | ARM CPUs, ISPs, and calculator platforms |
