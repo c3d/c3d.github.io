@@ -19,9 +19,6 @@ const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
-const TAO3D_URL = 'http://tao3d.sf.net';
-const GRENOUILLE_URL = 'https://grenouillebouillie.wordpress.com/';
-const DB48X_SITE_URL = 'https://c3d.github.io/db48x/';
 const CCS_2024_URL = 'https://doi.org/10.1145/3658644.3670352';
 const DEVCONF_CZ_2019_SPICE_URL = 'https://youtu.be/kpy4SqpunoY';
 const DEVCONF_CZ_2020_KATA_URL = 'https://youtu.be/SK4Tk9rv3H0';
@@ -52,7 +49,7 @@ const PRINT_COPY = {
   },
   'confidential-containers': {
     bullets: [
-      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split (US12321473B2, CCS 2024)'
+      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split; Agent Sandbox for AI (encrypted GPU + GPU attestation)'
     ]
   },
   'dxo-one': {
@@ -180,11 +177,19 @@ function communicationPrintProjects() {
       ]
     },
     {
+      id: 'ai',
+      title: 'Artificial Intelligence',
+      years: '',
+      bullets: [
+        'Hands-on with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+      ]
+    },
+    {
       id: 'informagie',
       title: 'Books',
       years: '',
       bullets: [
-        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}`
+        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}; AI: ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
       ]
     },
     {
@@ -193,14 +198,6 @@ function communicationPrintProjects() {
       years: '',
       bullets: [
         `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions); ${deepLink(DEVCONF_CZ_2019_SPICE_URL, 'DevConf.CZ')} (SPICE 2019, ${deepLink(DEVCONF_CZ_2020_KATA_URL, 'Kata 2020')}); ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (DB48x, ${deepLink(FOSDEM_2024_COCO_URL, 'CoCo 2024')})`
-      ]
-    },
-    {
-      id: 'websites-blogs',
-      title: 'Web sites and blogs',
-      years: '',
-      bullets: [
-        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
       ]
     }
   ];

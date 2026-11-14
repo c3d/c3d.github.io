@@ -10,6 +10,7 @@ related:
   - hpvm
   - spice
   - patents
+  - ai
 videos:
   - 3UoChFEH6jQ
   - ww6EiDsCRz4
@@ -60,6 +61,7 @@ topics:
   - virtualization
   - opensource
   - linux
+  - ai
 ---
 ## Confidential Containers and attestation
 
@@ -71,3 +73,4 @@ Focused on attestation for Confidential Containers (CoCo): wrote the Red Hat att
 - Design issues called out in DevConf.CZ 2022 and KVM Forum 2022 “Five Big Problems”; guest-side image pull / download already in KVM Forum 2021
 - Co-inventor of [US12321473B2](https://patents.google.com/patent/US12321473B2/en) (on-demand encrypted container image download)
 - Co-author of CCS 2024 “Crossing Shifted Moats…” (host/tenant control-plane split)
+- One CoCo use case is running AI agents in a sandbox (Agent Sandbox), with encrypted communication with the GPU and GPU attestation
