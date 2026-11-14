@@ -3299,6 +3299,22 @@ function setupInteraction() {
     closeHUD();
   });
 
+  // In-HUD markdown deep links (`#projectId` / `#projectId__0`) open that node
+  // in the constellation HUD instead of only changing the URL bar.
+  document.getElementById('hud')?.addEventListener('click', (e) => {
+    const a = e.target?.closest?.('a[href^="#"]');
+    if (!a || !document.getElementById('hud')?.contains(a)) return;
+    const href = a.getAttribute('href') || '';
+    if (!href.startsWith('#') || href === '#' || href === '#print') return;
+    const id = decodeURIComponent(href.slice(1));
+    const star = stars.find((s) => s.id === id) || firstStarForProject(id);
+    if (!star) return;
+    e.preventDefault();
+    e.stopPropagation();
+    noteUserActivity();
+    openHUD(star);
+  });
+
   setupTitlePrintMenu();
   setupTypeToSearch();
   noteUserActivity();

@@ -723,7 +723,7 @@
   },
   {
     "id": "ecu-cartoons",
-    "title": "Cartoon: ECUTEST Cartoons",
+    "title": "Cartoons for ECUTEST Release",
     "theme": "Communication Skills",
     "years": "1994-1998",
     "weight": 6,
@@ -741,21 +741,46 @@
     ],
     "videos": [],
     "links": [],
-    "images": [
-      "/cv/media/ecu-cartoons.jpg"
-    ],
     "topics": [
       "writing"
     ],
-    "content": "<h2>Release cartoons for HP ECUTEST</h2>\n<ul>\n<li>Cartoon series for the HP ECUTEST manufacturing release</li>\n<li>Each panel is its own satellite star around this hub</li>\n</ul>\n",
+    "content": "<h2>Cartoons for ECUTEST Release</h2>\n<ul>\n<li><a href=\"#ecu-cartoon-dontcare\">Cartoon: Marketing needs not care</a></li>\n<li><a href=\"#ecu-cartoon-fuses\">Cartoon: Software that blows</a></li>\n<li><a href=\"#ecu-cartoon-injectors\">Cartoon: Customers know best</a></li>\n<li><a href=\"#ecu-cartoon-itfits\">Cartoon: Tight fit</a></li>\n<li><a href=\"#ecu-cartoon-notools\">Cartoon: Union worker</a></li>\n<li><a href=\"#ecu-cartoon-optimist\">Cartoon: Wild optimism</a></li>\n<li><a href=\"#ecu-cartoon-processes\">Cartoon: Processes</a></li>\n<li><a href=\"#ecu-cartoon-venturi\">Cartoon: Yes, it&#39;s a bit slow to start</a></li>\n<li><a href=\"#ecu-cartoon-yesterdays\">Cartoon: Ever changing product structure</a></li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Cartoon series for the HP ECUTEST manufacturing release",
-        "section": "Release cartoons for HP ECUTEST"
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-dontcare\">Cartoon: Marketing needs not care</a>",
+        "section": "Cartoons for ECUTEST Release"
       },
       {
-        "text": "Each panel is its own satellite star around this hub",
-        "section": "Release cartoons for HP ECUTEST"
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-fuses\">Cartoon: Software that blows</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-injectors\">Cartoon: Customers know best</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-itfits\">Cartoon: Tight fit</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-notools\">Cartoon: Union worker</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-optimist\">Cartoon: Wild optimism</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-processes\">Cartoon: Processes</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-venturi\">Cartoon: Yes, it's a bit slow to start</a>",
+        "section": "Cartoons for ECUTEST Release"
+      },
+      {
+        "text": "<a class=\"hud-deep\" href=\"#ecu-cartoon-yesterdays\">Cartoon: Ever changing product structure</a>",
+        "section": "Cartoons for ECUTEST Release"
       }
     ]
   },
