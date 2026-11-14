@@ -77,9 +77,9 @@ const PRINT_COPY = {
     ]
   },
   'cxx-abi': {
-    title: 'C++ ABI',
+    title: 'C++ Application Binary Interface',
     bullets: [
-      'Initiated with Cary Coutant; weekly industry meetings (~20 engineers across HP, Sun, SGI, IBM, Microsoft, GCC)'
+      `Initiated industry-wide interoperability and standard compliance effort. ${deepLink('https://itanium-cxx-abi.github.io/cxx-abi/', 'Still in use today')}.`
     ]
   },
   tao3d: {

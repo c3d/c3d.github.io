@@ -314,7 +314,7 @@
   },
   {
     "id": "cxx-abi",
-    "title": "C++ ABI",
+    "title": "C++ Application Binary Interface",
     "theme": "Languages & Compilers",
     "years": "1999-2000",
     "weight": 8,
@@ -336,7 +336,7 @@
       "research",
       "asm"
     ],
-    "content": "<h2>Cross-industry C++ compiler interoperability</h2>\n<ul>\n<li>Initiated the project with the help of Cary Coutant (who had written the C ABI)</li>\n<li>Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams</li>\n<li>Still in use today for C++ compiler interoperability</li>\n<li>Related to HP aC++ and the WIESS exception-handling work on Itanium</li>\n</ul>\n",
+    "content": "<h2>Cross-industry C++ compiler interoperability</h2>\n<p>Initiated industry-wide interoperability and standard compliance effort. <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Still in use today</a>.</p>\n<blockquote>\n<p>Accordingly, it is used as the standard C++ ABI for many major operating systems on all major architectures, and is implemented in many major C++ compilers, including GCC and Clang.</p>\n<p>— <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></p>\n</blockquote>\n<ul>\n<li>Initiated the project with the help of Cary Coutant (who had written the C ABI)</li>\n<li>Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams</li>\n<li>Related to HP aC++ and the WIESS exception-handling work on Itanium</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Initiated the project with the help of Cary Coutant (who had written the C ABI)",
@@ -344,10 +344,6 @@
       },
       {
         "text": "Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams",
-        "section": "Cross-industry C++ compiler interoperability"
-      },
-      {
-        "text": "Still in use today for C++ compiler interoperability",
         "section": "Cross-industry C++ compiler interoperability"
       },
       {
