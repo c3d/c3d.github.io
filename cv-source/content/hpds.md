@@ -13,6 +13,9 @@ links:
     url: 'http://cc3d.free.fr/HPDS3.0/HP48-Sources/PacMan/PacLib.48S'
 images:
   - /cv/media/hpds.png
+topics:
+  - calculators
+  - compilers
 ---
 ## HP Development System for HP calculators
 

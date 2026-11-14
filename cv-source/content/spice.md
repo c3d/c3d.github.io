@@ -15,6 +15,11 @@ links:
     url: 'https://www.spice-space.org/'
 images:
   - /cv/media/spice.png
+topics:
+  - networking
+  - virtualization
+  - opensource
+  - linux
 ---
 ## Remote visualization for virtualization
 

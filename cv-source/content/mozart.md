@@ -14,6 +14,9 @@ links:
     url: 'http://mozart-dev.sourceforge.net'
 images:
   - /cv/media/mozart.png
+topics:
+  - compilers
+  - opensource
 ---
 ## Extensible development-tools framework
 

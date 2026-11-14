@@ -1,4 +1,4 @@
-import { THEME_ICONS, TECH_TAGS } from '../icons.js';
+import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref } from '../icons.js';
 
 /** Orbit: deep-space navy & gold monochrome elegance. */
 export const orbitStyle = {
@@ -26,11 +26,16 @@ export const orbitStyle = {
         </section>
         <section class="pvo-block">
           <h2><span class="pvo-mini">◎</span> Key skills</h2>
-          <ul class="pvo-skills">${model.skills.map((t) => `<li><span class="pvo-check">✓</span>${t}</li>`).join('')}</ul>
+          <ul class="pvo-skills">${model.skills.map((t) => `<li><span class="pvo-check">✓</span><a class="pv-deep pv-deep-on-dark" href="${clusterHref(t)}">${t}</a></li>`).join('')}</ul>
         </section>
         <section class="pvo-block">
           <h2><span class="pvo-mini">▤</span> Technologies</h2>
-          <div class="pvo-tags">${TECH_TAGS.map((t) => `<span>${t}</span>`).join('')}</div>
+          <div class="pvo-tags">${TECH_TAGS.map((t) => {
+            const tid = TECH_TAG_TOPIC_IDS[t];
+            return tid
+              ? `<a class="pv-deep pv-deep-on-dark" href="${topicHref(tid)}">${t}</a>`
+              : `<span>${t}</span>`;
+          }).join('')}</div>
         </section>
         <section class="pvo-block">
           <h2><span class="pvo-mini">ℹ</span> Info</h2>
@@ -104,7 +109,7 @@ export const orbitStyle = {
       html += `<section class="pvo-theme">
         <div class="pvo-theme-head">
           <span class="pvo-tile">${icon}</span>
-          <h2>${theme.name}</h2>
+          <h2><a class="pv-deep" href="${clusterHref(theme.name)}">${theme.name}</a></h2>
           <span class="pvo-rule"></span>
         </div>
         <div class="pvo-timeline">`;

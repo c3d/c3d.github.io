@@ -5,12 +5,16 @@ theme: Games & 3D
 years: 1989-1990
 weight: 10
 print: 1
-related: [hp48-games]
+related:
+  - hp48-games
 videos:
   - uTrIZNyacUs
 links:
   - label: Wikipedia
-    url: https://en.wikipedia.org/wiki/Alpha_Waves
+    url: 'https://en.wikipedia.org/wiki/Alpha_Waves'
+topics:
+  - games
+  - graphics3d
 ---
 
 ## First 3D platformer ever

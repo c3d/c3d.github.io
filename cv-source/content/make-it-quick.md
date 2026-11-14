@@ -13,6 +13,11 @@ links:
     url: 'https://github.com/c3d/make-it-quick'
 images:
   - /cv/media/make-it-quick.png
+topics:
+  - build-systems
+  - opensource
+  - linux
+  - macos
 ---
 ## Make-only auto-configuring build system
 

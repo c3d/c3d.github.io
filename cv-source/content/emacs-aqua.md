@@ -12,6 +12,11 @@ links:
     url: 'https://sourceforge.net/projects/emacs-on-aqua/'
 images:
   - /cv/media/emacs-aqua.png
+topics:
+  - emacs
+  - macos
+  - ui
+  - opensource
 ---
 ## First graphical Emacs on Mac OS X Aqua
 

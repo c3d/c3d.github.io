@@ -17,6 +17,9 @@ links:
     url: 'http://taodyne.blogspot.fr'
 images:
   - /cv/media/taodyne-blog.png
+topics:
+  - writing
+  - opensource
 ---
 ## Company blog for Tao3D and Taodyne
 

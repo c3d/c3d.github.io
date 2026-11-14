@@ -12,6 +12,9 @@ links:
     url: 'http://cc3d.free.fr/Relativity/Relat1.html'
 images:
   - /cv/media/special-relativity.png
+topics:
+  - physics
+  - writing
 ---
 ## Special relativity as space-time perspective
 

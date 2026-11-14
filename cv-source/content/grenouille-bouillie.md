@@ -15,6 +15,9 @@ links:
     url: 'http://grenouille-bouillie.blogspot.fr/'
 images:
   - /cv/media/grenouille-bouillie.png
+topics:
+  - writing
+  - opensource
 ---
 ## Things we got used to, but really should fix
 

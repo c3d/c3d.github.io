@@ -15,6 +15,10 @@ links:
     url: 'http://c3d.github.io/elfe/'
 images:
   - /cv/media/elfe.png
+topics:
+  - compilers
+  - embedded
+  - opensource
 ---
 ## Extensible Language for Everyday (and the Internet of Things)
 

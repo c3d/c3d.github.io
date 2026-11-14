@@ -12,3 +12,39 @@ export const TECH_TAGS = [
   'C++', 'C', 'RPL', 'Lisp', 'XL', 'Tao3D', 'ELFE',
   'Linux', 'macOS', 'Windows', 'SPICE', 'Emacs', 'OpenShift', 'Make'
 ];
+
+/** Map print tech-tag labels → topic ids for ?topic= deep links. */
+export const TECH_TAG_TOPIC_IDS = {
+  'C++': 'cpp',
+  C: 'cpp',
+  RPL: 'lisp',
+  Lisp: 'lisp',
+  XL: 'compilers',
+  Tao3D: 'graphics3d',
+  ELFE: 'compilers',
+  Linux: 'linux',
+  macOS: 'macos',
+  Windows: 'opensource',
+  SPICE: 'networking',
+  Emacs: 'emacs',
+  OpenShift: 'containers',
+  Make: 'build-systems'
+};
+
+export const THEME_CLUSTER_SLUGS = {
+  'Languages & Compilers': 'languages',
+  'Systems & Virtualization': 'systems',
+  'Games & 3D': 'games',
+  Physics: 'physics',
+  'Art & Culture': 'art',
+  'Tools & Apps': 'tools'
+};
+
+export function topicHref(topicId) {
+  return `https://c3d.github.io/cv/?topic=${encodeURIComponent(topicId)}`;
+}
+
+export function clusterHref(themeName) {
+  const slug = THEME_CLUSTER_SLUGS[themeName] || themeName;
+  return `https://c3d.github.io/cv/?cluster=${encodeURIComponent(slug)}`;
+}

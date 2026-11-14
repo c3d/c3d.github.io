@@ -18,6 +18,9 @@ links:
     url: 'https://www.hpcalc.org/'
 images:
   - /cv/media/hp48-games.jpg
+topics:
+  - games
+  - calculators
 ---
 ## Viral calculator games
 

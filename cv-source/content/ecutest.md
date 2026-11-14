@@ -11,6 +11,9 @@ videos: []
 links: []
 images:
   - /cv/media/ecutest.jpg
+topics:
+  - realtime
+  - embedded
 ---
 ## Real-time test system for car electronics
 

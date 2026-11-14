@@ -12,6 +12,8 @@ images:
   - src: /cv/media/musolver.png
     credit:
       caption: 'MuSolver adaptait TK!Solver pour Atari ST'
+topics:
+  - ui
 ---
 ## Multi-equation numerical solver on Atari ST
 

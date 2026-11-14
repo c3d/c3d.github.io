@@ -13,6 +13,9 @@ links:
     url: 'https://github.com/c3d/recorder'
 images:
   - /cv/media/recorder.png
+topics:
+  - cpp
+  - opensource
 ---
 ## Lock-free flight recorder for C and C++
 

@@ -9,6 +9,7 @@ import '@fontsource/source-sans-3/400.css';
 import '@fontsource/source-sans-3/500.css';
 import '@fontsource/source-sans-3/600.css';
 import './print/print-styles.css';
+import topicsRegistry from './topics.json';
 import {
   PRINT_STYLES,
   PRINT_STYLE_STORAGE_KEY,
@@ -16,6 +17,7 @@ import {
   resolvePrintStyleId,
   buildModelForStyles
 } from './print/registry.js';
+import { THEME_CLUSTER_SLUGS } from './print/icons.js';
 
 /** Injected by vite.config.js — used to cache-bust content-data.json fetches. */
 const BUILD_ID = typeof __BUILD_ID__ !== 'undefined' ? __BUILD_ID__ : 'dev';
@@ -174,6 +176,12 @@ let viewLevel = 1;
 let focusTheme = null;
 let overviewPose = null;
 let clusterPose = null;
+/** Active skills/tech topic filter (?topic=<id>); null = show all. */
+let activeTopicId = null;
+const TOPICS_BY_ID = Object.fromEntries(topicsRegistry.map((t) => [t.id, t]));
+const CLUSTER_BY_SLUG = Object.fromEntries(
+  Object.entries(THEME_CLUSTER_SLUGS).map(([theme, slug]) => [slug, theme])
+);
 let softWhiteDisc;
 const softThemeDiscs = {};
 const clock = new THREE.Clock();
@@ -779,7 +787,7 @@ function addProjectStarCluster({
 
 function createStarsFromBullets(projectList) {
   // Skip "about" intro — it is header/about, not a Tools project cluster
-  projects = projectList.filter((p) => p.role !== 'about' && p.id !== 'intro');
+  projects = projectList.filter((p) => p.role !== 'about' && p.role !== 'meta' && p.id !== 'intro');
   createNebulae();
 
   const byTheme = {};
@@ -918,11 +926,112 @@ function createProjectLineages() {
   });
 }
 
-function highlightConnectedEdges(projectId) {
+function projectMatchesTopic(project, topicId = activeTopicId) {
+  if (!topicId) return true;
+  return (project?.topics || []).includes(topicId);
+}
+
+function refreshEdgeOpacities() {
+  const focusId = currentStar?.project?.id || null;
   lineageLines.forEach((line) => {
-    const active = projectId
-      && (line.userData.fromId === projectId || line.userData.toId === projectId);
-    line.material.opacity = active ? 0.78 : (projectId ? 0.08 : line.userData.baseOpacity);
+    let op = line.userData.baseOpacity ?? 0.22;
+    if (activeTopicId) {
+      const a = projects.find((p) => p.id === line.userData.fromId);
+      const b = projects.find((p) => p.id === line.userData.toId);
+      const am = projectMatchesTopic(a, activeTopicId);
+      const bm = projectMatchesTopic(b, activeTopicId);
+      // Brightest when both ends match the topic; still visible if one matches
+      if (am && bm) op = 0.88;
+      else if (am || bm) op = 0.42;
+      else op = 0.05;
+    }
+    if (focusId) {
+      const onFocus = line.userData.fromId === focusId || line.userData.toId === focusId;
+      op = onFocus ? Math.max(op, 0.8) : Math.min(op, activeTopicId ? op : 0.08);
+    }
+    line.material.opacity = op;
+  });
+}
+
+function highlightConnectedEdges(_projectId) {
+  refreshEdgeOpacities();
+}
+
+function applyTopicFilter() {
+  stars.forEach((s) => {
+    const match = projectMatchesTopic(s.project);
+    const mul = !activeTopicId ? 1 : (match ? 1.05 : 0.42);
+    if (s.halo?.material) {
+      const base = s.userDataHaloOp ?? s.halo.material.opacity ?? 0.92;
+      if (s.userDataHaloOp == null) s.userDataHaloOp = base;
+      s.halo.material.opacity = s.userDataHaloOp * mul * (viewLevel >= 3 ? 0.7 : 1);
+    }
+    if (s.core?.material) {
+      const base = s.userDataCoreOp ?? s.core.material.opacity ?? 1;
+      if (s.userDataCoreOp == null) s.userDataCoreOp = base;
+      s.core.material.opacity = s.userDataCoreOp * mul;
+    }
+    if (s.mesh) s.mesh.userData.topicMatch = match;
+  });
+  labelSprites.forEach((label) => {
+    const el = label.userData.el;
+    if (!el) return;
+    const project = label.userData.projectId
+      ? projects.find((p) => p.id === label.userData.projectId)
+      : null;
+    const match = label.userData.kind === 'theme'
+      ? (!activeTopicId || projects.some((p) => p.theme === label.userData.theme && projectMatchesTopic(p)))
+      : projectMatchesTopic(project);
+    el.classList.toggle('ms-label-dim', !!activeTopicId && !match);
+  });
+  refreshEdgeOpacities();
+  updateTopicIndicator();
+}
+
+function setActiveTopic(topicId, { pushUrl = true } = {}) {
+  const next = topicId && TOPICS_BY_ID[topicId] ? topicId : null;
+  activeTopicId = next;
+  applyTopicFilter();
+  if (pushUrl) {
+    const params = new URLSearchParams(location.search);
+    if (activeTopicId) params.set('topic', activeTopicId);
+    else params.delete('topic');
+    // keep print/cluster params
+    const q = params.toString();
+    const url = `${location.pathname}${q ? `?${q}` : ''}${location.hash || ''}`;
+    history.pushState({ topic: activeTopicId }, '', url);
+  }
+}
+window.setActiveTopic = setActiveTopic;
+
+function updateTopicIndicator() {
+  let bar = document.getElementById('topic-filter-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'topic-filter-bar';
+    bar.hidden = true;
+    document.body.appendChild(bar);
+  }
+  if (!activeTopicId || !TOPICS_BY_ID[activeTopicId]) {
+    bar.hidden = true;
+    bar.innerHTML = '';
+    return;
+  }
+  const t = TOPICS_BY_ID[activeTopicId];
+  bar.hidden = false;
+  bar.innerHTML = `
+    <div class="topic-filter-panel">
+      <span class="topic-filter-kicker">Topic</span>
+      <strong class="topic-filter-name"></strong>
+      <span class="topic-filter-desc"></span>
+      <button type="button" class="topic-filter-clear" aria-label="Clear topic filter">×</button>
+    </div>`;
+  bar.querySelector('.topic-filter-name').textContent = t.name;
+  bar.querySelector('.topic-filter-desc').textContent = t.description || '';
+  bar.querySelector('.topic-filter-clear').addEventListener('click', (e) => {
+    e.preventDefault();
+    noteUserActivity();
+    setActiveTopic(null);
   });
 }
 
@@ -2184,15 +2293,52 @@ function setupTitlePrintMenu() {
   });
 }
 
+function isPrintMode() {
+  const params = new URLSearchParams(location.search);
+  return params.get('print') === '1' || location.hash === '#print';
+}
+
+async function initPrintOnly(contentData) {
+  // Print/PDF path: never boot WebGL, stars, or mini-HUD labels.
+  document.body.classList.add('print-preview');
+  const layer = document.getElementById('label-layer');
+  if (layer) {
+    layer.innerHTML = '';
+    layer.hidden = true;
+    layer.setAttribute('aria-hidden', 'true');
+  }
+  generatePrintView(contentData);
+  document.getElementById('loading')?.classList.add('hidden');
+}
+
+function applyDeepLinkFromUrl({ pushUrl = false } = {}) {
+  const params = new URLSearchParams(location.search);
+  const topic = params.get('topic');
+  const cluster = params.get('cluster');
+  setActiveTopic(topic, { pushUrl });
+  if (cluster && CLUSTER_BY_SLUG[cluster]) {
+    const theme = CLUSTER_BY_SLUG[cluster];
+    // Defer until stars/labels exist
+    setTimeout(() => enterClusterView(theme), 120);
+  }
+}
+
 async function init() {
   console.log('Initializing 3D CV...', { buildId: BUILD_ID });
   const contentData = await loadContentData();
+  if (isPrintMode()) {
+    console.log(`Print-only mode (${contentData.length} projects, build ${BUILD_ID})`);
+    await initPrintOnly(contentData);
+    return;
+  }
   initScene();
   console.log(`Loaded ${contentData.length} projects (build ${BUILD_ID})`);
   createStarsFromBullets(contentData);
   fitOverviewToClusters();
   setupInteraction();
   generatePrintView(contentData);
+  applyDeepLinkFromUrl({ pushUrl: false });
+  window.addEventListener('popstate', () => applyDeepLinkFromUrl({ pushUrl: false }));
   document.getElementById('loading').classList.add('hidden');
 
   if (window.location.hash) {

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "cpp",
+    "name": "C++",
+    "description": "C and C++ languages, ABIs, and toolchains"
+  },
+  {
+    "id": "compilers",
+    "name": "Compilers",
+    "description": "Language design, compilers, ABIs, and extensible languages"
+  },
+  {
+    "id": "virtualization",
+    "name": "Virtualization",
+    "description": "Hypervisors, guests, and virtual machine platforms"
+  },
+  {
+    "id": "containers",
+    "name": "Containers",
+    "description": "Container runtimes and confidential containers"
+  },
+  {
+    "id": "realtime",
+    "name": "Real-time",
+    "description": "Hard and soft real-time systems and closed-loop control"
+  },
+  {
+    "id": "embedded",
+    "name": "Embedded",
+    "description": "Embedded boards, appliances, and constrained devices"
+  },
+  {
+    "id": "arm",
+    "name": "ARM",
+    "description": "ARM CPUs, ISPs, and calculator platforms"
+  },
+  {
+    "id": "calculators",
+    "name": "Calculators",
+    "description": "HP calculator software, RPL, and related hardware"
+  },
+  {
+    "id": "lisp",
+    "name": "Lisp / RPL",
+    "description": "Lisp-family and Reverse Polish Lisp programming"
+  },
+  {
+    "id": "linux",
+    "name": "Linux",
+    "description": "Linux systems, drivers, and open platforms"
+  },
+  {
+    "id": "macos",
+    "name": "macOS",
+    "description": "macOS / Aqua / NeXT desktop software"
+  },
+  {
+    "id": "graphics3d",
+    "name": "3D / GLSL",
+    "description": "Interactive 3D, shaders, ray-marching, and OpenGL-class graphics"
+  },
+  {
+    "id": "games",
+    "name": "Games",
+    "description": "Games, demos, and playful interactive software"
+  },
+  {
+    "id": "physics",
+    "name": "Physics",
+    "description": "Physics research, essays, and popularization"
+  },
+  {
+    "id": "writing",
+    "name": "Writing",
+    "description": "Books, novels, blogs, and technical writing"
+  },
+  {
+    "id": "opensource",
+    "name": "Open source",
+    "description": "Free and open-source projects and communities"
+  },
+  {
+    "id": "ui",
+    "name": "UI / UX",
+    "description": "User interfaces, editors, and interactive UX"
+  },
+  {
+    "id": "networking",
+    "name": "Networking",
+    "description": "Remote display, streaming, and network protocols"
+  },
+  {
+    "id": "imaging",
+    "name": "Imaging",
+    "description": "Cameras, imaging pipelines, and visual capture"
+  },
+  {
+    "id": "build-systems",
+    "name": "Build systems",
+    "description": "Make-based and lightweight build tooling"
+  },
+  {
+    "id": "emacs",
+    "name": "Emacs",
+    "description": "Emacs ports and editing environments"
+  },
+  {
+    "id": "patents",
+    "name": "Patents",
+    "description": "Patented inventions and prior art disclosure"
+  },
+  {
+    "id": "education",
+    "name": "Education",
+    "description": "Teaching demos, tutorials, and student-facing tools"
+  },
+  {
+    "id": "multimedia",
+    "name": "Multimedia",
+    "description": "Home entertainment, MythTV, and media appliances"
+  }
+]

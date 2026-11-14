@@ -59,6 +59,21 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  #canvas-container,
+  #controls,
+  #ui-overlay,
+  #title-overlay,
+  #loading,
+  #hud,
+  #warp-bar,
+  #print-style-menu,
+  #label-layer,
+  #hud-fly-label,
+  #search-hud,
+  #search-fab,
+  .ms-label {
+    display: none !important;
+  }
   #print-view {
     width: 210mm;
     height: 297mm;
@@ -78,7 +93,11 @@ body.print-preview #title-overlay,
 body.print-preview #loading,
 body.print-preview #hud,
 body.print-preview #warp-bar,
-body.print-preview #print-style-menu { display: none !important; }
+body.print-preview #print-style-menu,
+body.print-preview #label-layer,
+body.print-preview #hud-fly-label,
+body.print-preview #search-hud,
+body.print-preview #search-fab { display: none !important; }
 body.print-preview { overflow: auto; background: #d8dee8; }
 body.print-preview #print-view {
   display: block;
@@ -121,7 +140,43 @@ body.print-preview #print-view {
   border-radius: 4px;
   line-height: 1.2;
 }
+.pvc-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 4px 0 2px;
+  font-size: 9.5px;
+  color: #445;
+}
 .pvc-qr { margin-top: 4px; padding-top: 4px; border-top: 1px solid #ccd; display: flex; align-items: center; gap: 8px; font-size: 10px; flex-shrink: 0; }
+
+/* Subtle deep-links (topic / cluster) — clickable in PDF, no loud blue underline */
+a.pv-deep {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 0.2mm dotted currentColor;
+  opacity: 0.92;
+}
+a.pv-deep:hover { opacity: 1; }
+a.pv-deep-on-dark {
+  color: inherit;
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+}
+.pvn-tags a.pv-deep,
+.pvo-tags a.pv-deep,
+.pvc-tech a.pv-deep {
+  background: #e7eef6;
+  color: #243447;
+  border-radius: 999px;
+  padding: 0.7mm 1.8mm;
+  border-bottom: none;
+  display: inline-block;
+}
+.pvo-tags a.pv-deep {
+  background: transparent;
+  border: 0.3mm solid rgba(201,162,39,.7);
+  color: #f2e6b8;
+}
 .pvc-qr-link { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
 .pvc-qr-img { width: 52px; height: 52px; border: 1px solid #ccd; }
 .pvc-logo-sm { width: 34px; height: 34px; }
