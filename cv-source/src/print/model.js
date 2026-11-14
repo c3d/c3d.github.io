@@ -50,7 +50,7 @@ const PRINT_COPY = {
   },
   'confidential-containers': {
     bullets: [
-      'CoCo attestation (blog series, FOSDEM 2024 Janson); guest image pull and host/tenant API split; Agent Sandbox for AI (encrypted GPU + GPU attestation)'
+      'Attestation (main track FOSDEM talk); restoring feature/performance parity (guest image pull, host/tenant API)'
     ]
   },
   'dxo-one': {
