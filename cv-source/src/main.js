@@ -2153,6 +2153,171 @@ function stopHudVideos() {
   media.querySelectorAll('.hud-video').forEach((el) => el.remove());
 }
 
+/** Media focus mode: centered HUD, chrome tucked away, media sized to ≤80vw/80vh. */
+let mediaFocusEl = null;
+
+function isMediaFocus() {
+  return !!document.getElementById('hud')?.classList.contains('hud-media-focus');
+}
+
+function ensureMediaFocusBackdrop() {
+  let el = document.getElementById('hud-media-focus-backdrop');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'hud-media-focus-backdrop';
+    document.body.appendChild(el);
+  }
+  el.hidden = false;
+  el.setAttribute('aria-hidden', 'false');
+  return el;
+}
+
+function sizeMediaFocus(mediaEl) {
+  const hud = document.getElementById('hud');
+  if (!hud || !mediaEl) return;
+  const maxW = window.innerWidth * 0.8;
+  const maxH = window.innerHeight * 0.8;
+  let mediaW = maxW;
+  let mediaH = maxH * 0.85;
+
+  if (mediaEl.classList.contains('hud-image')) {
+    const img = mediaEl.querySelector('img');
+    const nw = img?.naturalWidth || img?.width || 640;
+    const nh = img?.naturalHeight || img?.height || 360;
+    if (nw > 0 && nh > 0) {
+      if (nw <= maxW && nh <= maxH) {
+        mediaW = nw;
+        mediaH = nh;
+      } else {
+        const s = Math.min(maxW / nw, maxH / nh);
+        mediaW = nw * s;
+        mediaH = nh * s;
+      }
+    }
+  } else if (mediaEl.classList.contains('hud-video')) {
+    const vertical = mediaEl.classList.contains('hud-video-vertical');
+    const ar = vertical ? 9 / 16 : 16 / 9;
+    if (maxW / maxH > ar) {
+      mediaH = maxH;
+      mediaW = mediaH * ar;
+    } else {
+      mediaW = maxW;
+      mediaH = mediaW / ar;
+    }
+  }
+
+  const chrome = 52; // close row + padding
+  hud.style.setProperty('--hud-focus-w', `${Math.ceil(mediaW + 28)}px`);
+  hud.style.setProperty('--hud-focus-h', `${Math.ceil(mediaH + chrome)}px`);
+  hud.style.setProperty('--hud-focus-media-w', `${Math.ceil(mediaW)}px`);
+}
+
+function enterMediaFocus(mediaEl) {
+  const hud = document.getElementById('hud');
+  if (!hud?.classList.contains('open') || !mediaEl) return;
+  if (!mediaEl.classList.contains('hud-image') && !mediaEl.classList.contains('hud-video')) return;
+
+  mediaFocusEl = mediaEl;
+  hud.querySelectorAll('.hud-media-focus-active').forEach((el) => {
+    el.classList.remove('hud-media-focus-active');
+  });
+  mediaEl.classList.add('hud-media-focus-active');
+  sizeMediaFocus(mediaEl);
+  if (mediaEl.classList.contains('hud-image')) {
+    const img = mediaEl.querySelector('img');
+    if (img && !img.complete) {
+      img.addEventListener('load', () => {
+        if (mediaFocusEl === mediaEl) sizeMediaFocus(mediaEl);
+      }, { once: true });
+    }
+  }
+  hud.classList.add('hud-media-focus');
+
+  const backdrop = ensureMediaFocusBackdrop();
+  backdrop.classList.add('is-on');
+  // Pin media into view
+  const below = hud.querySelector('.hud-below-inner');
+  if (below) below.scrollTop = 0;
+}
+
+function exitMediaFocus() {
+  const hud = document.getElementById('hud');
+  mediaFocusEl = null;
+  hud?.classList.remove('hud-media-focus');
+  hud?.querySelectorAll('.hud-media-focus-active').forEach((el) => {
+    el.classList.remove('hud-media-focus-active');
+  });
+  if (hud) {
+    hud.style.removeProperty('--hud-focus-w');
+    hud.style.removeProperty('--hud-focus-h');
+    hud.style.removeProperty('--hud-focus-media-w');
+  }
+  const backdrop = document.getElementById('hud-media-focus-backdrop');
+  if (backdrop) {
+    backdrop.classList.remove('is-on');
+    backdrop.hidden = true;
+    backdrop.setAttribute('aria-hidden', 'true');
+  }
+}
+
+function setupMediaFocusInteractions() {
+  const hud = document.getElementById('hud');
+  if (!hud || hud.dataset.mediaFocusBound) return;
+  hud.dataset.mediaFocusBound = '1';
+
+  hud.addEventListener('click', (e) => {
+    const mediaEl = e.target?.closest?.('.hud-image, .hud-video');
+    if (mediaEl && hud.contains(mediaEl) && !isMediaFocus()) {
+      // Image click / video chrome click → focus. Links inside credits still work
+      // (credit is hidden in focus; ignore credit clicks before focus).
+      if (e.target?.closest?.('.hud-image-credit, .hud-links, a')) return;
+      noteUserActivity();
+      enterMediaFocus(mediaEl);
+      return;
+    }
+    if (isMediaFocus() && !e.target?.closest?.('.hud-image, .hud-video, #hud-close')) {
+      noteUserActivity();
+      exitMediaFocus();
+    }
+  });
+
+  const backdrop = ensureMediaFocusBackdrop();
+  backdrop.hidden = true;
+  backdrop.addEventListener('click', (e) => {
+    e.preventDefault();
+    noteUserActivity();
+    exitMediaFocus();
+  });
+
+  window.addEventListener('message', (e) => {
+    if (!e.origin || !String(e.origin).includes('youtube.com')) return;
+    let data = e.data;
+    try {
+      if (typeof data === 'string') data = JSON.parse(data);
+    } catch {
+      return;
+    }
+    const state = data?.event === 'onStateChange'
+      ? data.info
+      : data?.info?.playerState;
+    // 1 = playing
+    if (state !== 1) return;
+    if (!hud.classList.contains('open')) return;
+    const frames = hud.querySelectorAll('.hud-video iframe');
+    for (const frame of frames) {
+      if (frame.contentWindow === e.source) {
+        const wrap = frame.closest('.hud-video');
+        if (wrap) enterMediaFocus(wrap);
+        break;
+      }
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (isMediaFocus() && mediaFocusEl) sizeMediaFocus(mediaFocusEl);
+  });
+}
+
 function populateHUD(star, { allowAutoplay = true } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
@@ -2160,6 +2325,7 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   const themeColor = `#${new THREE.Color(star.color).getHexString()}`;
 
   // Stop any previous node's video before rebuilding media.
+  exitMediaFocus();
   stopHudVideos();
 
   hud.style.setProperty('--hud-accent', themeColor);
@@ -2287,6 +2453,12 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
       const extras = allowAutoplay ? '' : '&mute=1';
       const startParam = Number.isFinite(start) && start > 0 ? `&start=${start}` : '';
       wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0${extras}${startParam}&enablejsapi=1" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+      const iframe = wrap.querySelector('iframe');
+      iframe?.addEventListener('load', () => {
+        try {
+          iframe.contentWindow?.postMessage(JSON.stringify({ event: 'listening', id: id }), '*');
+        } catch { /* ignore */ }
+      });
       media.appendChild(wrap);
     });
   }
@@ -2788,6 +2960,7 @@ function closeHUD({ restoreCamera = true } = {}) {
     if (!restoreCamera) preHudPose = null;
     return;
   }
+  exitMediaFocus();
   // Stop embeds immediately so audio does not continue through the close animation.
   stopHudVideos();
   const closingStar = currentStar;
@@ -3313,6 +3486,12 @@ function setupInteraction() {
         closeSearchHud();
         return;
       }
+      // Media focus first, then close HUD on a second Esc.
+      if (isMediaFocus()) {
+        e.preventDefault();
+        exitMediaFocus();
+        return;
+      }
       if (viewLevel >= 3 || currentStar) closeHUD();
       else if (viewLevel === 2) exitClusterView();
       return;
@@ -3370,8 +3549,15 @@ function setupInteraction() {
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
     noteUserActivity();
     e.stopPropagation();
+    // Close button steps out of media focus before closing the HUD.
+    if (isMediaFocus()) {
+      exitMediaFocus();
+      return;
+    }
     closeHUD();
   });
+
+  setupMediaFocusInteractions();
 
   // In-HUD markdown deep links (`#projectId` / `#projectId__0`) open that node
   // in the constellation HUD instead of only changing the URL bar.

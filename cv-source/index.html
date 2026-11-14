@@ -582,6 +582,138 @@
       opacity: 1;
       visibility: visible;
     }
+    /* Media focus: center the HUD and slide chrome away so image/video dominate. */
+    #hud-media-focus-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 34;
+      background: rgba(2, 6, 16, 0.55);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.32s ease, visibility 0.32s ease;
+    }
+    #hud-media-focus-backdrop.is-on {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    #hud {
+      transition:
+        top 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        left 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        right 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        max-height 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.36s ease,
+        opacity 0.2s ease;
+    }
+    #hud.hud-media-focus {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      right: auto !important;
+      bottom: auto !important;
+      transform: translate(-50%, -50%);
+      width: min(var(--hud-focus-w, 80vw), 80vw) !important;
+      height: min(var(--hud-focus-h, 80vh), 80vh) !important;
+      max-width: 80vw;
+      max-height: 80vh;
+      z-index: 36;
+      padding: 10px 12px 14px;
+      gap: 6px;
+      pointer-events: none;
+    }
+    #hud.hud-media-focus.open {
+      pointer-events: none;
+    }
+    #hud.hud-media-focus .hud-panel {
+      pointer-events: auto;
+      height: 100%;
+      background-color: rgba(4, 10, 22, 0.92);
+    }
+    #hud.hud-media-focus .hud-chrome {
+      height: 28px;
+    }
+    #hud.hud-media-focus .hud-above,
+    #hud.hud-media-focus .hud-title-bar,
+    #hud.hud-media-focus .hud-index,
+    #hud.hud-media-focus .hud-readouts,
+    #hud.hud-media-focus .hud-topics,
+    #hud.hud-media-focus .hud-bullet,
+    #hud.hud-media-focus .hud-connected,
+    #hud.hud-media-focus .hud-links,
+    #hud.hud-media-focus .hud-image-credit {
+      opacity: 0;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
+      pointer-events: none;
+      border: none;
+      transform: translateY(-10px);
+      transition:
+        opacity 0.28s ease,
+        transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        max-height 0.32s ease,
+        margin 0.32s ease,
+        padding 0.32s ease;
+    }
+    #hud.hud-media-focus .hud-above {
+      grid-template-rows: 0fr;
+    }
+    #hud.hud-media-focus .hud-below {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    #hud.hud-media-focus .hud-below-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0;
+      height: 100%;
+    }
+    #hud.hud-media-focus [data-hud="media"] {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #hud.hud-media-focus .hud-image,
+    #hud.hud-media-focus .hud-video {
+      margin: 0;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #hud.hud-media-focus .hud-image {
+      width: auto;
+      height: auto;
+    }
+    #hud.hud-media-focus .hud-image img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+    }
+    #hud.hud-media-focus .hud-video {
+      width: min(100%, var(--hud-focus-media-w, 100%));
+      height: auto;
+      aspect-ratio: 16 / 9;
+      max-height: 100%;
+    }
+    #hud.hud-media-focus .hud-video.hud-video-vertical {
+      width: min(100%, var(--hud-focus-media-w, 100%));
+      aspect-ratio: 9 / 16;
+      max-height: 100%;
+    }
+    #hud.hud-media-focus .hud-image:not(.hud-media-focus-active),
+    #hud.hud-media-focus .hud-video:not(.hud-media-focus-active) {
+      display: none;
+    }
     /* Desktop: keep the detail HUD in the right rail; the stack slot must not
        grow a blank band under the warp/topic chrome. When the rail is open,
        inset the bottom stack so topic/warp never sit under it. */
@@ -1014,6 +1146,7 @@
       width: fit-content;
       max-width: 100%;
       background: transparent;
+      cursor: zoom-in;
     }
     .hud-image img {
       display: block;
@@ -1052,6 +1185,7 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
       background: rgba(0, 0, 0, 0.35);
+      cursor: zoom-in;
     }
     .hud-video.hud-video-vertical {
       /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
@@ -1559,6 +1693,7 @@
     </div>
   </div>
 
+  <div id="hud-media-focus-backdrop" hidden aria-hidden="true"></div>
   <div id="print-view"></div>
 
   <div id="print-style-menu" hidden aria-hidden="true" role="menu"></div>
