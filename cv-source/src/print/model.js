@@ -22,9 +22,6 @@ const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-To
 const TAO3D_URL = 'http://tao3d.sf.net';
 const GRENOUILLE_URL = 'https://grenouillebouillie.wordpress.com/';
 const DB48X_SITE_URL = 'https://c3d.github.io/db48x/';
-const DB48X_PLAYLIST_URL =
-  'https://www.youtube.com/watch?v=WU5Dg1mPkl8&list=PLz1qkflzABy-Cs1R07zGB8A9K5Yjolmlf';
-const TIM_YT_URL = 'https://www.youtube.com/@atheoryofincompletemeasure865';
 const CCS_2024_URL = 'https://doi.org/10.1145/3658644.3670352';
 const DEVCONF_CZ_2019_SPICE_URL = 'https://youtu.be/kpy4SqpunoY';
 const DEVCONF_CZ_2020_KATA_URL = 'https://youtu.be/SK4Tk9rv3H0';
@@ -196,11 +193,11 @@ function communicationPrintProjects() {
       ]
     },
     {
-      id: 'ai',
-      title: 'Artificial Intelligence',
+      id: 'websites-blogs',
+      title: 'Web sites and blogs',
       years: '',
       bullets: [
-        'Developed and reviewed code with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
       ]
     },
     {
@@ -217,30 +214,6 @@ function communicationPrintProjects() {
       years: '',
       bullets: [
         `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions); ${deepLink(DEVCONF_CZ_2019_SPICE_URL, 'DevConf.CZ')} (SPICE 2019, ${deepLink(DEVCONF_CZ_2020_KATA_URL, 'Kata 2020')}); ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (DB48x, ${deepLink(FOSDEM_2024_COCO_URL, 'CoCo 2024')})`
-      ]
-    },
-    {
-      id: 'websites-blogs',
-      title: 'Web sites and blogs',
-      years: '',
-      bullets: [
-        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
-      ]
-    },
-    {
-      id: 'videos-portfolio',
-      title: 'Videos',
-      years: '',
-      bullets: [
-        `Sample: ${deepLink(DB48X_PLAYLIST_URL, 'DB48x playlist')}, ${deepLink(TIM_YT_URL, 'Theory of Incomplete Measurements')}`
-      ]
-    },
-    {
-      id: 'presentation-software',
-      title: 'Software',
-      years: '',
-      bullets: [
-        `Designed and implemented my own presentation software (${deepLink(TAO3D_URL, 'Tao3D')}), still using it to this day`
       ]
     }
   ];
