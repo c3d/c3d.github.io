@@ -2506,6 +2506,26 @@ function setupMediaFocusInteractions() {
   });
 }
 
+/**
+ * HUD-only: turn a list that has exactly one <li> into a plain <p> (keep inner HTML).
+ * Innermost lists first so nested singleton lists collapse cleanly. Print CV uses
+ * the separate `bullets` array and is unchanged.
+ */
+function collapseSingletonListsHtml(html) {
+  if (!html) return html;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const lists = [...wrap.querySelectorAll('ul, ol')].reverse();
+  lists.forEach((list) => {
+    const items = [...list.children].filter((el) => el.tagName === 'LI');
+    if (items.length !== 1) return;
+    const p = document.createElement('p');
+    p.innerHTML = items[0].innerHTML;
+    list.replaceWith(p);
+  });
+  return wrap.innerHTML;
+}
+
 function populateHUD(star, { allowAutoplay = true } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
@@ -2538,7 +2558,8 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   // Fall back to the clicked bullet for sparse items.
   const bulletEl = hud.querySelector('[data-hud="bullet"]');
   if (project.content) {
-    bulletEl.innerHTML = project.content;
+    // Singleton <ul>/<ol> → <p> (cartoons and other one-liner sections); print CV untouched.
+    bulletEl.innerHTML = collapseSingletonListsHtml(project.content);
   } else {
     const raw = bullet.text || '';
     bulletEl.innerHTML = raw ? marked.parseInline(raw, { async: false }) : '';
