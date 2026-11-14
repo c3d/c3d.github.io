@@ -1309,11 +1309,17 @@ window.setActiveTopic = setActiveTopic;
 
 function updateTopicIndicator() {
   let bar = document.getElementById('topic-filter-bar');
+  const mount =
+    document.getElementById('bss-topic-inner')
+    || document.getElementById('bottom-stack')
+    || document.body;
   if (!bar) {
     bar = document.createElement('div');
     bar.id = 'topic-filter-bar';
     bar.hidden = true;
-    document.body.appendChild(bar);
+    mount.appendChild(bar);
+  } else if (bar.parentElement !== mount && mount) {
+    mount.appendChild(bar);
   }
   if (!activeTopicId || !TOPICS_BY_ID[activeTopicId]) {
     bar.hidden = true;
@@ -2702,8 +2708,16 @@ function enterAutoMode() {
   document.body.classList.add('auto-warp');
   warpVisited = new Set(currentStar ? [currentStar.project.id] : []);
   lastWarpedProjectId = currentStar?.project?.id || null;
-  if (!currentStar) doWarpJump();
-  else scheduleNextWarp();
+  if (!currentStar) {
+    // Reveal the warp counter immediately (stacks above the topic filter)
+    // while the first jump flies; the post-jump path re-arms the timer.
+    const interval = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+    warpDeadline = performance.now() + interval;
+    updateWarpBar();
+    doWarpJump();
+  } else {
+    scheduleNextWarp();
+  }
 }
 function exitAutoMode() {
   if (!autoMode) return;
