@@ -54,15 +54,15 @@
       "ai",
       "writing"
     ],
-    "content": "<h2>Hands-on with AI tools</h2>\n<p>Daily practice as a user of modern AI assistants and agent tooling.</p>\n<ul>\n<li>Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot</li>\n<li>See also <a href=\"#une-intelligence\">Une intelligence à vos côtés</a></li>\n</ul>\n",
+    "content": "<h2>Developed and reviewed code with AI tools</h2>\n<p>Daily practice as a user of modern AI assistants and agent tooling.</p>\n<ul>\n<li>Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot</li>\n<li>See also <a href=\"#une-intelligence\">Une intelligence à vos côtés</a></li>\n</ul>\n",
     "bullets": [
       {
         "text": "Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot",
-        "section": "Hands-on with AI tools"
+        "section": "Developed and reviewed code with AI tools"
       },
       {
         "text": "See also <a class=\"hud-deep\" href=\"#une-intelligence\">Une intelligence à vos côtés</a>",
-        "section": "Hands-on with AI tools"
+        "section": "Developed and reviewed code with AI tools"
       }
     ]
   },

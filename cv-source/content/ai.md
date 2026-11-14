@@ -12,7 +12,7 @@ topics:
   - ai
   - writing
 ---
-## Hands-on with AI tools
+## Developed and reviewed code with AI tools
 
 Daily practice as a user of modern AI assistants and agent tooling.
 

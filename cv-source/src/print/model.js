@@ -168,7 +168,7 @@ function communicationPrintProjects() {
       title: 'Artificial Intelligence',
       years: '',
       bullets: [
-        'Hands-on with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+        'Developed and reviewed code with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
       ]
     },
     {
