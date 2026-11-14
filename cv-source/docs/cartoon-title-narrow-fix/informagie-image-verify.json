@@ -1,0 +1,1330 @@
+[
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "informagie",
+    "ok": true,
+    "title": "Informagie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      431,
+      618
+    ],
+    "disp": [
+      195.3,
+      280
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "reunifions",
+    "ok": true,
+    "title": "Réunifions la physique",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      371,
+      571
+    ],
+    "disp": [
+      181.9,
+      280
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "physics-books",
+    "ok": true,
+    "title": "A Theory of Incomplete Measurements",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      473,
+      675
+    ],
+    "disp": [
+      196.2,
+      280
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "elfe",
+    "ok": true,
+    "title": "ELFE",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      256,
+      229
+    ],
+    "disp": [
+      256,
+      229
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "grenouille-bouillie",
+    "ok": true,
+    "title": "Blog: Grenouille Bouillie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      265,
+      192
+    ],
+    "disp": [
+      265,
+      192
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "red-skin-cat",
+    "ok": true,
+    "title": "Blog: Red Skin Cat",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      128,
+      115
+    ],
+    "disp": [
+      128,
+      115
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "alpha-waves",
+    "ok": false,
+    "error": "Waiting failed: 35000ms exceeded"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "dxo-one",
+    "ok": true,
+    "title": "DxO ONE Connected Camera",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      1280,
+      853
+    ],
+    "disp": [
+      314,
+      209.3
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "musolver",
+    "ok": true,
+    "title": "µSolver",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      640,
+      480
+    ],
+    "disp": [
+      314,
+      235.5
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "emacs-aqua",
+    "ok": true,
+    "title": "Emacs on Aqua",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      426,
+      315
+    ],
+    "disp": [
+      314,
+      232.2
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "hp48-games",
+    "ok": true,
+    "title": "HP-48 Games",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      480,
+      360
+    ],
+    "disp": [
+      314,
+      235.5
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "spectrum-plus",
+    "ok": true,
+    "title": "Spectrum+",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      350,
+      239
+    ],
+    "disp": [
+      314,
+      214.4
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "ecu-cartoon-venturi",
+    "ok": true,
+    "title": "Cartoon: Yes, it's a bit slow to start",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      1919,
+      1316
+    ],
+    "disp": [
+      314,
+      215.3
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "390x844",
+    "id": "hpvm-cartoon-booted",
+    "ok": true,
+    "title": "Cartoon: First boot, first burp",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      779,
+      502
+    ],
+    "disp": [
+      314,
+      202.3
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "informagie",
+    "ok": true,
+    "title": "Informagie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      431,
+      618
+    ],
+    "disp": [
+      223.1,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "reunifions",
+    "ok": true,
+    "title": "Réunifions la physique",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      371,
+      571
+    ],
+    "disp": [
+      207.9,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "physics-books",
+    "ok": true,
+    "title": "A Theory of Incomplete Measurements",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      473,
+      675
+    ],
+    "disp": [
+      224.2,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "elfe",
+    "ok": true,
+    "title": "ELFE",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      256,
+      229
+    ],
+    "disp": [
+      256,
+      229
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "grenouille-bouillie",
+    "ok": true,
+    "title": "Blog: Grenouille Bouillie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      265,
+      192
+    ],
+    "disp": [
+      265,
+      192
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "red-skin-cat",
+    "ok": true,
+    "title": "Blog: Red Skin Cat",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      128,
+      115
+    ],
+    "disp": [
+      128,
+      115
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "alpha-waves",
+    "ok": false,
+    "error": "Waiting failed: 35000ms exceeded"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "dxo-one",
+    "ok": true,
+    "title": "DxO ONE Connected Camera",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      1280,
+      853
+    ],
+    "disp": [
+      480.2,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "musolver",
+    "ok": true,
+    "title": "µSolver",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      640,
+      480
+    ],
+    "disp": [
+      426.6,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "emacs-aqua",
+    "ok": true,
+    "title": "Emacs on Aqua",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      426,
+      315
+    ],
+    "disp": [
+      426,
+      315
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "hp48-games",
+    "ok": true,
+    "title": "HP-48 Games",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      480,
+      360
+    ],
+    "disp": [
+      426.6,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "spectrum-plus",
+    "ok": true,
+    "title": "Spectrum+",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      350,
+      239
+    ],
+    "disp": [
+      350,
+      239
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "ecu-cartoon-venturi",
+    "ok": true,
+    "title": "Cartoon: Yes, it's a bit slow to start",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      1919,
+      1316
+    ],
+    "disp": [
+      466.6,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "live",
+    "vp": "600x844",
+    "id": "hpvm-cartoon-booted",
+    "ok": true,
+    "title": "Cartoon: First boot, first burp",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      779,
+      502
+    ],
+    "disp": [
+      496.5,
+      320
+    ],
+    "loading": "lazy"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "informagie",
+    "ok": true,
+    "title": "Informagie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      431,
+      618
+    ],
+    "disp": [
+      195.3,
+      280
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "reunifions",
+    "ok": true,
+    "title": "Réunifions la physique",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      371,
+      571
+    ],
+    "disp": [
+      181.9,
+      280
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "physics-books",
+    "ok": true,
+    "title": "A Theory of Incomplete Measurements",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      473,
+      675
+    ],
+    "disp": [
+      196.2,
+      280
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "elfe",
+    "ok": true,
+    "title": "ELFE",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      256,
+      229
+    ],
+    "disp": [
+      256,
+      229
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "grenouille-bouillie",
+    "ok": true,
+    "title": "Blog: Grenouille Bouillie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      265,
+      192
+    ],
+    "disp": [
+      265,
+      192
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "red-skin-cat",
+    "ok": true,
+    "title": "Blog: Red Skin Cat",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      128,
+      115
+    ],
+    "disp": [
+      128,
+      115
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "alpha-waves",
+    "ok": false,
+    "error": "Waiting failed: 35000ms exceeded"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "dxo-one",
+    "ok": true,
+    "title": "DxO ONE Connected Camera",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      1280,
+      853
+    ],
+    "disp": [
+      314,
+      209.3
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "musolver",
+    "ok": true,
+    "title": "µSolver",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      640,
+      480
+    ],
+    "disp": [
+      314,
+      235.5
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "emacs-aqua",
+    "ok": true,
+    "title": "Emacs on Aqua",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      426,
+      315
+    ],
+    "disp": [
+      314,
+      232.2
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "hp48-games",
+    "ok": true,
+    "title": "HP-48 Games",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      480,
+      360
+    ],
+    "disp": [
+      314,
+      235.5
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "spectrum-plus",
+    "ok": true,
+    "title": "Spectrum+",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      350,
+      239
+    ],
+    "disp": [
+      314,
+      214.4
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "ecu-cartoon-venturi",
+    "ok": true,
+    "title": "Cartoon: Yes, it's a bit slow to start",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      1919,
+      1316
+    ],
+    "disp": [
+      314,
+      215.3
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "390x844",
+    "id": "hpvm-cartoon-booted",
+    "ok": true,
+    "title": "Cartoon: First boot, first burp",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "280px",
+    "nat": [
+      779,
+      502
+    ],
+    "disp": [
+      314,
+      202.3
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "informagie",
+    "ok": true,
+    "title": "Informagie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      431,
+      618
+    ],
+    "disp": [
+      223.1,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "reunifions",
+    "ok": true,
+    "title": "Réunifions la physique",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      371,
+      571
+    ],
+    "disp": [
+      207.9,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "physics-books",
+    "ok": true,
+    "title": "A Theory of Incomplete Measurements",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      473,
+      675
+    ],
+    "disp": [
+      224.2,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "elfe",
+    "ok": true,
+    "title": "ELFE",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      256,
+      229
+    ],
+    "disp": [
+      256,
+      229
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "grenouille-bouillie",
+    "ok": true,
+    "title": "Blog: Grenouille Bouillie",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      265,
+      192
+    ],
+    "disp": [
+      265,
+      192
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "red-skin-cat",
+    "ok": true,
+    "title": "Blog: Red Skin Cat",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      128,
+      115
+    ],
+    "disp": [
+      128,
+      115
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "alpha-waves",
+    "ok": false,
+    "error": "Waiting failed: 35000ms exceeded"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "dxo-one",
+    "ok": true,
+    "title": "DxO ONE Connected Camera",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      1280,
+      853
+    ],
+    "disp": [
+      480.2,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "musolver",
+    "ok": true,
+    "title": "µSolver",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      640,
+      480
+    ],
+    "disp": [
+      426.6,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "emacs-aqua",
+    "ok": true,
+    "title": "Emacs on Aqua",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      426,
+      315
+    ],
+    "disp": [
+      426,
+      315
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "hp48-games",
+    "ok": true,
+    "title": "HP-48 Games",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      480,
+      360
+    ],
+    "disp": [
+      426.6,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "spectrum-plus",
+    "ok": true,
+    "title": "Spectrum+",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      350,
+      239
+    ],
+    "disp": [
+      350,
+      239
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "ecu-cartoon-venturi",
+    "ok": true,
+    "title": "Cartoon: Yes, it's a bit slow to start",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      1919,
+      1316
+    ],
+    "disp": [
+      466.6,
+      320
+    ],
+    "loading": "eager"
+  },
+  {
+    "label": "local",
+    "vp": "600x844",
+    "id": "hpvm-cartoon-booted",
+    "ok": true,
+    "title": "Cartoon: First boot, first burp",
+    "bodyIn": true,
+    "ready": true,
+    "mediaOpacity": "1",
+    "scrollTop": 0,
+    "hiddenTop": 0,
+    "titleOverlap": false,
+    "objFit": "contain",
+    "objPos": "50% 0%",
+    "maxH": "320px",
+    "nat": [
+      779,
+      502
+    ],
+    "disp": [
+      496.5,
+      320
+    ],
+    "loading": "eager"
+  }
+]

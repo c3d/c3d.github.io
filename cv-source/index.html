@@ -766,7 +766,7 @@
       overflow: auto;
       min-height: 0;
       padding-top: 12px;
-      /* Image load must not scroll-anchor the comic top (drawn titles) away. */
+      /* Image load must not scroll-anchor the media top (drawn titles / covers) away. */
       overflow-anchor: none;
     }
     /* Chip boxes grow from the left via scaleX only — layout width is final from the start
@@ -789,7 +789,7 @@
     }
     /* Body (media included) stays hidden until hud-body-in. Open choreography
        now adds that class as soon as the panel expands — before chip teletype —
-       so cartoon top titles are visible during Section/Years typing. */
+       so HUD image tops (comics, covers, etc.) stay visible while chips type. */
     #hud:not(.hud-body-in) .hud-index,
     #hud:not(.hud-body-in) .hud-topics,
     #hud:not(.hud-body-in) [data-hud="media"],

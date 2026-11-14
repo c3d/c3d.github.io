@@ -2183,8 +2183,9 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
       const img = document.createElement('img');
       img.src = src;
       img.alt = project.title || '';
-      // Eager: deep-link / open path must show the full comic (incl. top title)
-      // as soon as the panel expands — lazy deferral left a blank media plate.
+      // Eager: deep-link / open path must show the full image (incl. top title /
+      // cover lettering) as soon as the panel expands — lazy deferral left a
+      // blank media plate for cartoons, book covers, and other HUD images.
       img.loading = 'eager';
       img.decoding = 'async';
       const pinMediaTop = () => {
@@ -2423,8 +2424,9 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   panel.style.clipPath = '';
   hud.classList.remove('hud-clipping', 'hud-stage-title', 'hud-stage-wide');
 
-  // Reveal media as soon as the panel is expanded so comic top titles are not
-  // blank during Section/Years teletype (especially deep-link opens).
+  // Reveal media as soon as the panel is expanded so any HUD image top
+  // (cartoon titles, book-cover lettering, etc.) is not blank during
+  // Section/Years teletype — especially on deep-link opens.
   hud.classList.add('hud-body-in');
   const belowInner = hud.querySelector('.hud-below-inner');
   if (belowInner) belowInner.scrollTop = 0;
