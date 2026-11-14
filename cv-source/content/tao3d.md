@@ -5,6 +5,7 @@ theme: Games & 3D
 years: 2010-Present
 weight: 9
 featured: true
+print: 3
 related:
   - xl
   - elfe

@@ -260,8 +260,19 @@ a.pv-deep-on-dark {
 .pvn-card p { margin: 0 0 0.8mm; font-size: 10.5pt; line-height: 1.22; text-align: left; }
 .pvn-muted { color: var(--pv-muted) !important; font-size: 9.9pt !important; }
 .pvn-skills, .pvn-info { list-style: none; margin: 0; padding: 0; }
-.pvn-skills li, .pvn-info li { display: flex; gap: 1.4mm; align-items: flex-start; font-size: 9.9pt; line-height: 1.2; margin: 0 0 0.7mm; }
+.pvn-skills li, .pvn-info li { display: flex; gap: 1.4mm; align-items: flex-start; font-size: 9.9pt; line-height: 1.2; margin: 0 0 0.7mm; text-align: left; }
 .pvn-info li { line-height: 1.25; }
+/* Fixed icon column so contact lines share one left edge (matches Orbit). */
+.pvn-info li > span:first-child {
+  flex-shrink: 0;
+  width: 3.6mm;
+  text-align: center;
+}
+.pvn-info li > span:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
 .pvn-check { flex-shrink: 0; width: 3.6mm; height: 3.6mm; border-radius: 50%; color: #fff; font-size: 6pt; line-height: 3.6mm; text-align: center; margin-top: 0.4mm; }
 .pvn-tags { display: flex; flex-wrap: wrap; gap: 0.9mm; }
 .pvn-tags span,
