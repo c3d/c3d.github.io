@@ -2063,11 +2063,34 @@ function stillHudGen(gen) {
   return gen === hudAnimGen;
 }
 
+/**
+ * Tear down YouTube embeds in the HUD so playback (and audio) cannot continue
+ * after close, Escape, empty-space dismiss, cluster exit, or node switch.
+ * Blanking iframe src is more reliable than postMessage alone when the panel
+ * is only hidden.
+ */
+function stopHudVideos() {
+  const media = document.querySelector('#hud [data-hud="media"]');
+  if (!media) return;
+  media.querySelectorAll('iframe').forEach((iframe) => {
+    try {
+      iframe.src = 'about:blank';
+    } catch (_) {
+      /* ignore cross-document teardown errors */
+    }
+    iframe.removeAttribute('src');
+  });
+  media.querySelectorAll('.hud-video').forEach((el) => el.remove());
+}
+
 function populateHUD(star, { allowAutoplay = true } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
   const bullet = star.bullet;
   const themeColor = `#${new THREE.Color(star.color).getHexString()}`;
+
+  // Stop any previous node's video before rebuilding media.
+  stopHudVideos();
 
   hud.style.setProperty('--hud-accent', themeColor);
   hud.querySelector('[data-hud="theme"]').textContent = project.theme || '';
@@ -2541,6 +2564,7 @@ function enterClusterView(theme, { fromAuto = false, fromDeepLink = false } = {}
   if (currentStar) {
     hudAnimGen += 1;
     stopHudTeletype({ finish: true });
+    stopHudVideos();
     removeHudFlyLabel();
     findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
     currentStar = null;
@@ -2630,6 +2654,7 @@ function openHUD(star, { fromAuto = false } = {}) {
   if (currentStar && currentStar !== star) {
     hudAnimGen += 1;
     stopHudTeletype({ finish: true });
+    stopHudVideos();
     removeHudFlyLabel();
     findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
     const prevHud = document.getElementById('hud');
@@ -2661,6 +2686,8 @@ function closeHUD({ restoreCamera = true } = {}) {
     if (!restoreCamera) preHudPose = null;
     return;
   }
+  // Stop embeds immediately so audio does not continue through the close animation.
+  stopHudVideos();
   const closingStar = currentStar;
   highlightConnectedEdges(null);
   if (window.location.hash) {

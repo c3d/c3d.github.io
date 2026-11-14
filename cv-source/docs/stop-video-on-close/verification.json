@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "results": [
+    {
+      "name": "open-has-youtube",
+      "pass": true,
+      "detail": {
+        "open": true,
+        "count": 3,
+        "srcs": [
+          "https://www.youtube.com/embed/jNOA39HnkcM?rel=0&enablejsapi=1",
+          "https://www.youtube.com/embed/WU5Dg1mPkl8?rel=0&enablejsapi=1",
+          "https://www.youtube.com/embed/34pPycq8ia8?rel=0&enablejsapi=1"
+        ],
+        "videoWraps": 3
+      }
+    },
+    {
+      "name": "escape-stops-video",
+      "pass": true,
+      "detail": {
+        "open": false,
+        "count": 0,
+        "srcs": [],
+        "videoWraps": 0
+      }
+    },
+    {
+      "name": "recorder-open",
+      "pass": true,
+      "detail": {
+        "open": true,
+        "count": 1,
+        "srcs": [
+          "https://www.youtube.com/embed/kEnQY1zFa0Y?rel=0&enablejsapi=1"
+        ],
+        "videoWraps": 1
+      }
+    },
+    {
+      "name": "close-btn-stops-video",
+      "pass": true,
+      "detail": {
+        "open": false,
+        "count": 0,
+        "srcs": [],
+        "videoWraps": 0
+      }
+    },
+    {
+      "name": "switch-stops-previous",
+      "pass": true,
+      "detail": {
+        "firstSrc": "https://www.youtube.com/embed/jNOA39HnkcM?rel=0&enablejsapi=1",
+        "open": true,
+        "count": 1,
+        "srcs": [
+          "https://www.youtube.com/embed/wmsLBirTPjQ?rel=0&enablejsapi=1"
+        ],
+        "videoWraps": 1
+      }
+    },
+    {
+      "name": "empty-space-stops-video",
+      "pass": true,
+      "detail": {
+        "open": false,
+        "count": 0,
+        "srcs": [],
+        "videoWraps": 0
+      }
+    }
+  ]
+}
