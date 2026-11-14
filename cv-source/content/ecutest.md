@@ -1,6 +1,6 @@
 ---
 id: ecutest
-title: HP ECUTEST Real-Time System
+title: HP ECUTEST Real Time Test System for car electronics
 theme: Systems & Virtualization
 years: 1994-1998
 weight: 9

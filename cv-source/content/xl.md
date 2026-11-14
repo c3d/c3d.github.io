@@ -7,6 +7,7 @@ weight: 9
 print: 3
 related:
   - tao3d
+  - xlr8
   - elfe
   - lx
   - mozart

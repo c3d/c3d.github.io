@@ -4,7 +4,7 @@ title: DB48X - Modern RPL Calculator
 theme: Languages & Compilers
 years: 2022-Present
 weight: 9
-print: 2
+print: 5
 related:
   - hp48-games
   - hpds

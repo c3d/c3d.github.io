@@ -40,7 +40,7 @@ export const orbitStyle = {
         <section class="pvo-block">
           <h2><span class="pvo-mini">ℹ</span> Info</h2>
           <ul class="pvo-info">
-            ${model.education ? `<li><span>★</span>${model.education}</li>` : ''}
+            ${model.educationHtml || model.education ? `<li><span>★</span>${model.educationHtml || model.education}</li>` : ''}
             <li><span>✉</span>${model.email}</li>
             <li><span>⌘</span>${model.github.replace(/^https?:\/\//, '')}</li>
             <li><span>◉</span>${model.website.replace(/^https?:\/\//, '')}</li>
