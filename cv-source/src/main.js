@@ -1931,7 +1931,7 @@ function setPanelClip(panel, insets, { ms, immediate = false } = {}) {
 
 function stopHudTeletype({ finish = false } = {}) {
   if (!hudTeletype) return;
-  const { timer, onSkip, chars, cursor, root } = hudTeletype;
+  const { timer, onSkip, chars, cursor, root, resolve } = hudTeletype;
   if (timer) clearInterval(timer);
   if (onSkip) {
     window.removeEventListener('keydown', onSkip, true);
@@ -1946,6 +1946,9 @@ function stopHudTeletype({ finish = false } = {}) {
   cursor?.remove();
   if (root) root.classList.remove('hud-tt-active');
   hudTeletype = null;
+  // Always resolve so a superseded teletype cannot hang open choreography
+  // (which used to leave [data-hud=media] at opacity 0 indefinitely).
+  if (typeof resolve === 'function') resolve();
 }
 
 function prepareTeletypeChars(root) {
@@ -1992,9 +1995,15 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
   let i = 0;
   const interval = Math.max(8, Math.round(1000 / cps));
   return new Promise((resolve) => {
+    let settled = false;
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
     const finish = () => {
       stopHudTeletype({ finish: true });
-      resolve();
+      settle();
     };
     const onSkip = (e) => {
       if (e.type === 'keydown' && e.key === 'Escape') return; // let ESC close HUD
@@ -2014,7 +2023,8 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
       cursor.remove();
       span.after(cursor);
     }, interval);
-    hudTeletype = { timer, onSkip, chars, cursor, root };
+    // resolve is invoked by stopHudTeletype (supersede) or finish() above.
+    hudTeletype = { timer, onSkip, chars, cursor, root, resolve: settle };
     window.addEventListener('keydown', onSkip, true);
     window.addEventListener('pointerdown', onSkip, true);
   });
@@ -2173,7 +2183,15 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
       const img = document.createElement('img');
       img.src = src;
       img.alt = project.title || '';
-      img.loading = 'lazy';
+      // Eager: deep-link / open path must show the full comic (incl. top title)
+      // as soon as the panel expands — lazy deferral left a blank media plate.
+      img.loading = 'eager';
+      img.decoding = 'async';
+      const pinMediaTop = () => {
+        const below = hud.querySelector('.hud-below-inner');
+        if (below) below.scrollTop = 0;
+      };
+      img.addEventListener('load', pinMediaTop);
       wrap.appendChild(img);
       if (credit && (credit.caption || credit.author)) {
         const cap = document.createElement('p');
@@ -2405,6 +2423,12 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   panel.style.clipPath = '';
   hud.classList.remove('hud-clipping', 'hud-stage-title', 'hud-stage-wide');
 
+  // Reveal media as soon as the panel is expanded so comic top titles are not
+  // blank during Section/Years teletype (especially deep-link opens).
+  hud.classList.add('hud-body-in');
+  const belowInner = hud.querySelector('.hud-below-inner');
+  if (belowInner) belowInner.scrollTop = 0;
+
   // 5) Section then Years boxes extend right (overlap)
   hud.classList.add('hud-chip-section');
   await waitMs(Math.max(0, HUD_TIMING.chipMs - HUD_TIMING.chipOverlapMs));
@@ -2416,14 +2440,16 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   // 6) Teletype Section / Years (HTML restored — teletype types visible link text only)
   if (sectionEl) sectionEl.innerHTML = sectionHtml;
   if (yearsEl) yearsEl.innerHTML = yearsHtml;
+  // Mark ready before chip teletype so deep-links don't leave media gated on
+  // typing; layout/clip cleanup can run while chips type.
+  hud.classList.add('hud-ready');
+  if (belowInner) belowInner.scrollTop = 0;
+  clearHudInlineAnimStyles(hud);
   await startHudTeletype(sectionEl, { cps: HUD_TIMING.chipTeletypeCps });
   if (!stillHudGen(gen)) return;
   await startHudTeletype(yearsEl, { cps: HUD_TIMING.chipTeletypeCps });
   if (!stillHudGen(gen)) return;
 
-  hud.classList.add('hud-body-in', 'hud-ready');
-  // Layout is final; drop any open-path inline overrides (clip / title opacity).
-  clearHudInlineAnimStyles(hud);
   await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
 }
 
