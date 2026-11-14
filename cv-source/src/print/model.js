@@ -173,10 +173,10 @@ function communicationPrintProjects() {
     },
     {
       id: 'informagie',
-      title: 'Books',
+      title: 'Wrote 4 books',
       years: '',
       bullets: [
-        `Science fiction: ${deepLink(INFORMAGIE_URL, 'Informagie')}; Physics: ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')}; AI: ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
+        `${deepLink(INFORMAGIE_URL, 'Informagie')}, ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Reunifions la Physique')}, ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
       ]
     },
     {
