@@ -20,7 +20,8 @@ import {
 } from './print/registry.js';
 import { THEME_CLUSTER_SLUGS } from './print/icons.js';
 
-/** Injected by vite.config.js — used to cache-bust content-data.json fetches. */
+/** Injected by vite.config.js — used to cache-bust content-data.json fetches.
+ *  Falls back to 'dev' when the define is absent (e.g. non-Vite tooling). */
 const BUILD_ID = typeof __BUILD_ID__ !== 'undefined' ? __BUILD_ID__ : 'dev';
 
 async function loadContentData() {
