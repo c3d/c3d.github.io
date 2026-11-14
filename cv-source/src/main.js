@@ -1871,11 +1871,14 @@ function clearHudInlineAnimStyles(hud) {
     titleBar.style.opacity = '';
     titleBar.style.transition = '';
   }
+  // Title text must never keep a leftover fade (close used to leave opacity:0).
   hud.querySelectorAll(
-    '[data-hud="theme"], [data-hud="section"], [data-hud="years"], .hud-index, .hud-topics, [data-hud="media"], .hud-bullet, .hud-connected'
+    '[data-hud="project"], [data-hud="theme"], [data-hud="section"], [data-hud="years"], .hud-index, .hud-topics, [data-hud="media"], .hud-bullet, .hud-connected'
   ).forEach((el) => {
     el.style.opacity = '';
     el.style.transition = '';
+    el.style.fontSize = '';
+    el.style.transform = '';
   });
   // Chip open is class/transform driven — never leave width clamps from experiments.
   hud.querySelectorAll('.hud-chip').forEach((el) => {
@@ -2133,7 +2136,15 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
 
   hud.style.setProperty('--hud-accent', themeColor);
   hud.querySelector('[data-hud="theme"]').textContent = project.theme || '';
-  hud.querySelector('[data-hud="project"]').textContent = project.title || '';
+  // Title: plain text immediately — no teletype, no measure/fit, no leftover opacity.
+  const titleEl = hud.querySelector('[data-hud="project"]');
+  if (titleEl) {
+    titleEl.style.opacity = '';
+    titleEl.style.transition = '';
+    titleEl.style.fontSize = '';
+    titleEl.style.transform = '';
+    titleEl.textContent = project.title || '';
+  }
   // Section / Years may contain markdown links — render like the body (visible text + real <a>).
   const yearsRaw = project.years || '—';
   const sectionRaw = bullet.section || 'DATUM';
@@ -2385,7 +2396,12 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
 
   removeHudFlyLabel();
   hud.classList.remove('hud-flying');
-  titleBar.style.opacity = '1';
+  titleBar.style.opacity = '';
+  const titleText = titleBar.querySelector('[data-hud="project"]');
+  if (titleText) {
+    titleText.style.opacity = '';
+    titleText.style.transition = '';
+  }
 
   // Freeze title-band insets before vertical expansion shifts the title bar.
   const titleBand = panelClipInsets(panel, titleBar, 'title');
@@ -2490,10 +2506,12 @@ async function runHudCloseContinuity() {
       labelEl.style.visibility = '';
       // transform stays owned by updateLabels (live projection)
     }
-    [themeEl, sectionEl, yearsEl, titleBar, ...bodyBits].forEach((el) => {
+    const titleText = titleBar?.querySelector('[data-hud="project"]');
+    [themeEl, sectionEl, yearsEl, titleBar, titleText, ...bodyBits].forEach((el) => {
       if (!el) return;
       el.style.opacity = '';
       el.style.transition = '';
+      el.style.fontSize = '';
     });
   };
 
@@ -2547,16 +2565,9 @@ async function runHudCloseContinuity() {
   if (!stillHudGen(gen)) return;
   void panel.offsetWidth;
 
-  // Fade title text BEFORE tightening the frame so glyphs are never clipped.
-  const titleText = titleBar.querySelector('[data-hud="project"]') || titleBar;
-  titleText.style.transition = `opacity ${HUD_TIMING.fadeMs}ms ease`;
-  titleText.style.opacity = '0';
-  await waitMs(HUD_TIMING.fadeMs);
-  if (!stillHudGen(gen)) return;
-
   band = panelClipInsets(panel, titleBar, 'title');
 
-  // Reverse 2: clip to the live title band (empty frame — text already faded)
+  // Reverse 2: clip to the live title band (title stays plain CSS — no fade/fit).
   hud.classList.remove('hud-stage-wide');
   hud.classList.add('hud-stage-title');
   setPanelClip(panel, band, { ms: HUD_TIMING.lateralMs });
@@ -2583,6 +2594,7 @@ async function runHudCloseContinuity() {
     return;
   }
 
+  // Hide the real title bar via .hud-flying CSS; fly clone carries the text.
   hud.classList.add('hud-flying');
   const fly = document.createElement('div');
   fly.id = 'hud-fly-label';
