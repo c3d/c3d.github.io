@@ -15,8 +15,8 @@ links:
     url: 'https://patents.justia.com/inventor/christophe-de-dinechin'
   - label: Justia (Christophe Marie Francois Dupont de Dinechin)
     url: 'https://patents.justia.com/inventor/christophe-marie-francois-dupont-de-dinechin'
-  - label: Google Patents (Dinechin)
-    url: 'https://patents.google.com/?inventor=Dinechin'
+  - label: Google Patents (Christophe de Dinechin)
+    url: 'https://patents.google.com/?inventor=Christophe+de+Dinechin&inventor=Christophe+Marie+Francois+Dupont+de+Dinechin'
 images:
   - /cv/media/patents.jpg
 topics:

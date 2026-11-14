@@ -8,8 +8,9 @@
 
 const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
 const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
-/** Broad inventor query covering both “Christophe de Dinechin” and “Dupont de Dinechin”. */
-const PATENT_LIST_URL = 'https://patents.google.com/?inventor=Dinechin';
+/** Both inventor name forms; verified not to match other Dinechin inventors. */
+const PATENT_LIST_URL =
+  'https://patents.google.com/?inventor=Christophe+de+Dinechin&inventor=Christophe+Marie+Francois+Dupont+de+Dinechin';
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
