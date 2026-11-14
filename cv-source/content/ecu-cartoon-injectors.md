@@ -15,4 +15,4 @@ images:
 ---
 ## Customers know best
 
-- This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed of relief.
+- This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed with relief.

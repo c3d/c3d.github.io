@@ -2,17 +2,24 @@
 id: spice
 title: SPICE Remote Streaming
 theme: Systems & Virtualization
-years: 2017-Present
+years: 2019
 weight: 8
 print: 4
 related:
   - kata-containers
   - confidential-containers
   - red-skin-cat
-videos: []
+  - make-it-quick
+  - recorder
+videos:
+  - kpy4SqpunoY
 links:
   - label: SPICE
     url: 'https://www.spice-space.org/'
+  - label: 'DevConf.CZ 2019: SPICE smart streaming'
+    url: 'https://youtu.be/kpy4SqpunoY'
+  - label: 'SophiaConf 2019: SPICE Smart Streaming'
+    url: 'https://www.telecom-valley.fr/sophiaconf-2019-speakers/'
 images:
   - /cv/media/spice.png
 topics:
@@ -23,6 +30,7 @@ topics:
 ---
 ## Remote visualization for virtualization
 
-- Part of the Spice team at Red Hat
-- Implemented smart streaming in the SPICE remote viewer
-- Remote visualization essential to Red Hat's virtualization offering
+Smart streaming for the SPICE remote desktop protocol: adaptive H.264 whole-desktop streaming with a client-to-server metrics control loop.
+
+- “SPICE smart streaming,” DevConf.CZ 2019 (video) and SophiaConf 2019
+- Dynamic video quality for remote virtual machines
