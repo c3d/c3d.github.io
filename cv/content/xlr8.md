@@ -4,7 +4,6 @@ title: XLR8
 theme: Languages & Compilers
 years: 2026-Present
 weight: 8
-print: 4
 related:
   - xl
   - tao3d

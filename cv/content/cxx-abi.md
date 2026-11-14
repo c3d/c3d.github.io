@@ -20,5 +20,7 @@ topics:
 ---
 ## Cross-industry C++ compiler interoperability
 
-- Initiated a cross-industry standardization effort for C++ compiler interoperability, still in use today
+- Initiated the project with the help of Cary Coutant (who had written the C ABI)
+- Weekly meetings across the industry: HP, Sun, SGI, IBM, Microsoft, GCC maintainers (CodeSourcery, Red Hat) and others; about 20 engineers who dispatched work to their respective compiler teams
+- Still in use today for C++ compiler interoperability
 - Related to HP aC++ and the WIESS exception-handling work on Itanium

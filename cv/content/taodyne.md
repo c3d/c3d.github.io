@@ -4,7 +4,6 @@ title: Taodyne
 theme: Games & 3D
 years: 2010-2016
 weight: 9
-print: 4
 related:
   - tao3d
   - xl
