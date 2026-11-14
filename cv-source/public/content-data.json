@@ -263,10 +263,7 @@
       "hpds"
     ],
     "videos": [
-      {
-        "id": "jNOA39HnkcM",
-        "start": 4769
-      },
+      "jNOA39HnkcM",
       "WU5Dg1mPkl8",
       "34pPycq8ia8"
     ],
@@ -280,8 +277,8 @@
         "url": "https://c3d.github.io/db48x/"
       },
       {
-        "label": "DB48X - Reviving the spirit of HP calculators (at 1:19:29)",
-        "url": "https://www.youtube.com/watch?v=jNOA39HnkcM&t=4769s"
+        "label": "DB48X - Reviving the spirit of HP calculators",
+        "url": "https://www.youtube.com/watch?v=jNOA39HnkcM"
       },
       {
         "label": "FOSDEM 2024",
@@ -1042,8 +1039,8 @@
     "weight": 10,
     "print": 1,
     "related": [
-      "itanium-cxx-abi",
-      "itanium-native-bringup"
+      "wiess-exception-handling",
+      "make-it-quick"
     ],
     "videos": [],
     "links": [
@@ -1054,6 +1051,18 @@
       {
         "label": "Ski simulator",
         "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
+      },
+      {
+        "label": "Itanium C++ ABI",
+        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
+      },
+      {
+        "label": "WIESS 2000 paper (PDF)",
+        "url": "https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf"
+      },
+      {
+        "label": "Aries PA-RISC to Itanium",
+        "url": "https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm"
       }
     ],
     "images": [
@@ -1062,38 +1071,23 @@
     "topics": [
       "cpp",
       "compilers",
+      "performance",
+      "validation",
       "pre-silicon",
+      "research",
+      "build-systems",
+      "kernel",
       "soc",
       "system"
     ],
-    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL).</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler, pre-silicon testing on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">ski</a>, overriding HP&#39;s plans to ship a PA-RISC to Itanium cross-compiler running in the <a href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\">Aries PA-RISC to Itanium dynamic translator</a></li>\n<li>Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)</li>\n<li>Did the compiler bring-up on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Early work on templates, performance, the run-time library, and precompiled headers</li>\n<li>Implemented exception handling</li>\n<li>One of the initiators of the common C++ ABI effort</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Built the first native Itanium C and C++ compilers (coordinating 16 teams)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
+    "content": "<h2>C++ compiler for Itanium</h2>\n<p>Cupertino, Hewlett-Packard California Language Lab (CLL), 1998–2000.</p>\n<ul>\n<li>Wrote the first native Itanium C++ compiler, pre-silicon testing on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">ski</a>, overriding HP&#39;s plans to ship a PA-RISC to Itanium cross-compiler running in the <a href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\">Aries PA-RISC to Itanium dynamic translator</a></li>\n<li>Initiated the common C++ ABI effort (<a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde</li>\n<li>Represented HP at the C++ standards committee for a short period</li>\n<li>Improved template handling, notably to support the STL</li>\n<li>Built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\">WIESS 2000</a> paper, motivated the common ABI work above</li>\n<li>Compiler performance improvements, including redesigning the symbol table for scalability</li>\n<li>Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick</li>\n<li>Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed</li>\n<li>Contributed to precompiled headers, another compile-time performance improvement</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
         "text": "Wrote the first native Itanium C++ compiler, pre-silicon testing on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">ski</a>, overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the <a class=\"pv-deep\" href=\"https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm\" target=\"_blank\" rel=\"noopener noreferrer\">Aries PA-RISC to Itanium dynamic translator</a>",
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Joined HP CLL in 1998 to work on HP aC++ (code base from Taligent)",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Did the compiler bring-up on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a> before silicon existed (a second HP simulator also modelled performance details)",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Early work on templates, performance, the run-time library, and precompiled headers",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "Implemented exception handling",
-        "section": "C++ compiler for Itanium"
-      },
-      {
-        "text": "One of the initiators of the common C++ ABI effort",
+        "text": "Initiated the common C++ ABI effort (<a class=\"pv-deep\" href=\"https://itanium-cxx-abi.github.io/cxx-abi/\" target=\"_blank\" rel=\"noopener noreferrer\">Itanium C++ ABI</a>), proposing a shared Itanium C++ ABI with Cary Coutant and meeting engineers from many companies with Daveed Vandevoorde",
         "section": "C++ compiler for Itanium"
       },
       {
@@ -1101,7 +1095,27 @@
         "section": "C++ compiler for Itanium"
       },
       {
-        "text": "Built the first native Itanium C and C++ compilers (coordinating 16 teams)",
+        "text": "Improved template handling, notably to support the STL",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Built high-performance, zero-cost C++ exception handling that became the reference implementation and, documented in the <a class=\"pv-deep\" href=\"https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">WIESS 2000</a> paper, motivated the common ABI work above",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Compiler performance improvements, including redesigning the symbol table for scalability",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Redesigned the compiler build system to harmonise build configuration across the 16 teams working on the compiler, which all used different makefile conventions — a distant ancestor of Make-It-Quick",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Compiler and OS interaction for Itanium control speculation: recovery/retry for failed speculation needed low-level OS interrupt handlers and compiler-generated code to cooperate; native bring-up uncovered an obscure corner-case speculation bug that made memcpy misbehave and that all earlier testing had missed",
+        "section": "C++ compiler for Itanium"
+      },
+      {
+        "text": "Contributed to precompiled headers, another compile-time performance improvement",
         "section": "C++ compiler for Itanium"
       }
     ]
@@ -1248,7 +1262,6 @@
     "theme": "Systems & Virtualization",
     "years": "2000-2010",
     "weight": 8,
-    "print": 2,
     "related": [
       "hpvm"
     ],
@@ -1440,99 +1453,6 @@
     ]
   },
   {
-    "id": "itanium-cxx-abi",
-    "title": "Itanium C++ ABI",
-    "theme": "Languages & Compilers",
-    "years": "1998-2000",
-    "weight": 9,
-    "print": 3,
-    "related": [
-      "hpcpp"
-    ],
-    "videos": [],
-    "links": [
-      {
-        "label": "Itanium C++ ABI",
-        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
-      }
-    ],
-    "images": [
-      "/cv/media/itanium-cxx-abi.png"
-    ],
-    "topics": [
-      "cpp",
-      "compilers"
-    ],
-    "content": "<h2>Common ABI for representing C++ programs</h2>\n<ul>\n<li>After exception-handling work, proposed a common C++ ABI for Itanium with Cary Coutant</li>\n<li>Met with C++ engineers from many companies (with Daveed Vandevoorde)</li>\n<li>Result: a standard-compliant C++ ABI for data and program representation on Itanium</li>\n<li>Adopted by other platforms starting with GCC (Mark Mitchell as primary maintainer of the documentation)</li>\n<li>Still called the Itanium C++ ABI; adapted on many platforms and maintained for new C++ revisions</li>\n</ul>\n",
-    "bullets": [
-      {
-        "text": "After exception-handling work, proposed a common C++ ABI for Itanium with Cary Coutant",
-        "section": "Common ABI for representing C++ programs"
-      },
-      {
-        "text": "Met with C++ engineers from many companies (with Daveed Vandevoorde)",
-        "section": "Common ABI for representing C++ programs"
-      },
-      {
-        "text": "Result: a standard-compliant C++ ABI for data and program representation on Itanium",
-        "section": "Common ABI for representing C++ programs"
-      },
-      {
-        "text": "Adopted by other platforms starting with GCC (Mark Mitchell as primary maintainer of the documentation)",
-        "section": "Common ABI for representing C++ programs"
-      },
-      {
-        "text": "Still called the Itanium C++ ABI; adapted on many platforms and maintained for new C++ revisions",
-        "section": "Common ABI for representing C++ programs"
-      }
-    ]
-  },
-  {
-    "id": "itanium-native-bringup",
-    "title": "Native Itanium C++ compiler bring-up",
-    "theme": "Languages & Compilers",
-    "years": "1998-2000",
-    "weight": 8,
-    "print": 2,
-    "related": [
-      "hpcpp",
-      "itanium-cxx-abi"
-    ],
-    "videos": [],
-    "links": [
-      {
-        "label": "aC++",
-        "url": "http://www.hp.com/go/aCC"
-      },
-      {
-        "label": "Ski simulator",
-        "url": "https://github.com/linux-ia64/ski/tree/hp-sim-for-linux"
-      }
-    ],
-    "topics": [
-      "pre-silicon",
-      "soc",
-      "system",
-      "cpp",
-      "compilers"
-    ],
-    "content": "<h2>First native Itanium C++ compiler (pre-silicon on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>)</h2>\n<ul>\n<li>Wrote the first native Itanium C++ compiler before silicon existed; ran it on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>, HP’s functional Itanium simulator (a second simulator also modelled performance details)</li>\n<li>HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator</li>\n<li>Linked from the HP aC++ / California Language Lab entry</li>\n</ul>\n",
-    "bullets": [
-      {
-        "text": "Wrote the first native Itanium C++ compiler before silicon existed; ran it on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a>, HP’s functional Itanium simulator (a second simulator also modelled performance details)",
-        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
-      },
-      {
-        "text": "HP’s plan at the time was to ship an Itanium cross-compiler running on PA-RISC, and to run that compiler on Itanium systems through Aries, a PA-RISC to Itanium binary translator",
-        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
-      },
-      {
-        "text": "Linked from the HP aC++ / California Language Lab entry",
-        "section": "First native Itanium C++ compiler (pre-silicon on [Ski](https://github.com/linux-ia64/ski/tree/hp-sim-for-linux))"
-      }
-    ]
-  },
-  {
     "id": "kata-containers",
     "title": "Kata Containers",
     "theme": "Systems & Virtualization",
@@ -1623,7 +1543,8 @@
     "weight": 7,
     "print": 1,
     "related": [
-      "recorder"
+      "recorder",
+      "hpcpp"
     ],
     "videos": [],
     "links": [
@@ -2361,14 +2282,17 @@
     "weight": 8,
     "print": 1,
     "related": [
-      "hpcpp",
-      "itanium-cxx-abi"
+      "hpcpp"
     ],
     "videos": [],
     "links": [
       {
         "label": "WIESS 2000 paper (PDF)",
         "url": "https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf"
+      },
+      {
+        "label": "Itanium C++ ABI",
+        "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
       }
     ],
     "topics": [
@@ -2377,10 +2301,10 @@
       "cpp",
       "compilers"
     ],
-    "content": "<h2>Published computer science research</h2>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium</li>\n</ul>\n",
+    "content": "<h2>Published computer science research</h2>\n<ul>\n<li>WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a href=\"https://itanium-cxx-abi.github.io/cxx-abi/\">Itanium C++ ABI</a></li>\n</ul>\n",
     "bullets": [
       {
-        "text": "WIESS 2000 / USENIX paper on C++ exception handling for Itanium",
+        "text": "WIESS 2000 / USENIX paper on C++ exception handling for Itanium — the reference design that motivated the common <a class=\"pv-deep\" href=\"https://itanium-cxx-abi.github.io/cxx-abi/\" target=\"_blank\" rel=\"noopener noreferrer\">Itanium C++ ABI</a>",
         "section": "Published computer science research"
       }
     ]

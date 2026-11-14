@@ -128,11 +128,29 @@ export function buildPrintModel(data, {
         .slice()
         .sort((a, b) => printRank(a) - printRank(b))
         .slice(0, maxProjects)
-        .map((p) => ({
-          title: p.title,
-          years: p.years || '',
-          bullets: (p.bullets || []).slice(0, maxBullets).map((b) => (typeof b === 'string' ? b : b.text))
-        }));
+        .map((p) => {
+          // HP aC++: curated 2–3 print bullets (full detail stays in the 3D entry).
+          if (p.id === 'hpcpp') {
+            const ski = deepLink('https://github.com/linux-ia64/ski/tree/hp-sim-for-linux', 'ski');
+            const aries = deepLink('https://www.princeton.edu/~rblee/ELE572Papers/PARISCtoIA64.htm', 'Aries PA-RISC to Itanium dynamic translator');
+            const wiess = deepLink('https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf', 'WIESS');
+            const abi = deepLink('https://itanium-cxx-abi.github.io/cxx-abi/', 'C++ ABI');
+            return {
+              title: p.title,
+              years: p.years || '',
+              bullets: [
+                `Wrote the first native Itanium C++ compiler, pre-silicon testing on ${ski}, overriding HP's plans to ship a PA-RISC to Itanium cross-compiler running in the ${aries}`,
+                `Exception handling (reference implementation, ${wiess} paper), ${abi} initiator, C++ standards committee`,
+                'Performance (symbol table, precompiled headers) and build system harmonised across 16 teams'
+              ]
+            };
+          }
+          return {
+            title: p.title,
+            years: p.years || '',
+            bullets: (p.bullets || []).slice(0, maxBullets).map((b) => (typeof b === 'string' ? b : b.text))
+          };
+        });
     }
     return {
       id: theme,

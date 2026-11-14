@@ -9,8 +9,7 @@ related:
   - hp48-games
   - hpds
 videos:
-  - id: jNOA39HnkcM
-    start: 4769
+  - jNOA39HnkcM
   - WU5Dg1mPkl8
   - 34pPycq8ia8
 links:
@@ -18,8 +17,8 @@ links:
     url: 'https://github.com/c3d/db48x'
   - label: Try it
     url: 'https://c3d.github.io/db48x/'
-  - label: 'DB48X - Reviving the spirit of HP calculators (at 1:19:29)'
-    url: 'https://www.youtube.com/watch?v=jNOA39HnkcM&t=4769s'
+  - label: 'DB48X - Reviving the spirit of HP calculators'
+    url: 'https://www.youtube.com/watch?v=jNOA39HnkcM'
   - label: FOSDEM 2024
     url: 'https://www.youtube.com/watch?v=WU5Dg1mPkl8'
   - label: FOSDEM 2023
