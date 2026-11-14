@@ -34,8 +34,8 @@ const PRINT_COPY = {
   ecutest: {
     title: 'HP ECUTEST Real-time Test System for car electronics',
     bullets: [
-      'From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.',
-      'Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)'
+      'From prototype and concept demo to 10+ people team lead and customer evangelism.',
+      'Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)'
     ]
   },
   spice: {

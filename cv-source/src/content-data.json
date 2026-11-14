@@ -941,14 +941,14 @@
       "system",
       "validation"
     ],
-    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.</li>\n<li>Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
+    "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>From prototype and concept demo to 10+ people team lead and customer evangelism.</li>\n<li>Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)</li>\n<li>Designed HP ECUTEST for engine control unit testing and system validation</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "From prototype and concept demo to 10+ people team lead and customer presales. Sub-millisecond closed-loop testing.",
+        "text": "From prototype and concept demo to 10+ people team lead and customer evangelism.",
         "section": "Real-time test system for car electronics"
       },
       {
-        "text": "Real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)",
+        "text": "Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)",
         "section": "Real-time test system for car electronics"
       },
       {
