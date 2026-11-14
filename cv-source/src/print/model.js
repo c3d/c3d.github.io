@@ -65,7 +65,7 @@ const PRINT_COPY = {
   },
   xlr8: {
     bullets: [
-      'XLR8 is a super-fast VM, with JIT to ARM, x86 and RISC-V, 32 and 64 bits and full LLVM support'
+      'XLR8 is a super-fast VM with interpreted and JIT modes'
     ]
   },
   db48x: {
