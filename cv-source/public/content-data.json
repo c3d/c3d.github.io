@@ -263,6 +263,10 @@
       "hpds"
     ],
     "videos": [
+      {
+        "id": "jNOA39HnkcM",
+        "start": 4769
+      },
       "WU5Dg1mPkl8",
       "34pPycq8ia8"
     ],
@@ -276,12 +280,32 @@
         "url": "https://c3d.github.io/db48x/"
       },
       {
+        "label": "DB48X - Reviving the spirit of HP calculators (at 1:19:29)",
+        "url": "https://www.youtube.com/watch?v=jNOA39HnkcM&t=4769s"
+      },
+      {
         "label": "FOSDEM 2024",
         "url": "https://www.youtube.com/watch?v=WU5Dg1mPkl8"
       },
       {
         "label": "FOSDEM 2023",
         "url": "https://www.youtube.com/watch?v=34pPycq8ia8"
+      },
+      {
+        "label": "ARM Cortex-M33",
+        "url": "https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m33"
+      },
+      {
+        "label": "ARM Cortex-M4",
+        "url": "https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m4"
+      },
+      {
+        "label": "STM32U575 (DM32)",
+        "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32u575.html"
+      },
+      {
+        "label": "STM32L476 (DM42)",
+        "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32l476zg.html"
       }
     ],
     "topics": [
@@ -295,10 +319,18 @@
       "firmware",
       "system"
     ],
-    "content": "<h2>A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)</h2>\n<p>Free software for physical calculators or phone apps.</p>\n<ul>\n<li>Rebuild and improve the HP48-family user experience</li>\n<li>Rich RPL data types and built-in functions with Lisp-level programming power</li>\n<li>Targets SwissMicros DM42 and DM32 calculator SoCs (DMCP platform)</li>\n<li>Firmware-style RPL runtime on ARM microcontroller hardware</li>\n<li>Simulator tested on macOS and Linux</li>\n<li>Long-term ports envisioned for ARM HP50/HP49/HP48Gii and HP Prime G1</li>\n<li>Presented at FOSDEM 2023 with an update in 2024</li>\n</ul>\n",
+    "content": "<h2>A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)</h2>\n<p>Free software for physical calculators or phone apps.</p>\n<ul>\n<li>Best scientific calculator today, a modern rebuild of high-end HP-48 and HP-50 calculators</li>\n<li>Ships as firmware for real hardware calculators including SwissMicros DM32 and DM42 with low-power ARM SoC</li>\n<li>DM32: <a href=\"https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m33\">ARM Cortex-M33</a> (<a href=\"https://www.st.com/en/microcontrollers-microprocessors/stm32u575.html\">STM32U575</a>); DM42: <a href=\"https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m4\">ARM Cortex-M4</a> (<a href=\"https://www.st.com/en/microcontrollers-microprocessors/stm32l476zg.html\">STM32L476</a>)</li>\n<li>Rich RPL data types and built-in functions with Lisp-level programming power</li>\n<li>Targets SwissMicros DM42 and DM32 calculator SoCs (DMCP platform)</li>\n<li>Firmware-style RPL runtime on ARM microcontroller hardware</li>\n<li>Simulator tested on macOS and Linux</li>\n<li>Long-term ports envisioned for ARM HP50/HP49/HP48Gii and HP Prime G1</li>\n<li>Presented at FOSDEM 2023 with an update in 2024</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Rebuild and improve the HP48-family user experience",
+        "text": "Best scientific calculator today, a modern rebuild of high-end HP-48 and HP-50 calculators",
+        "section": "A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)"
+      },
+      {
+        "text": "Ships as firmware for real hardware calculators including SwissMicros DM32 and DM42 with low-power ARM SoC",
+        "section": "A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)"
+      },
+      {
+        "text": "DM32: <a class=\"pv-deep\" href=\"https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m33\" target=\"_blank\" rel=\"noopener noreferrer\">ARM Cortex-M33</a> (<a class=\"pv-deep\" href=\"https://www.st.com/en/microcontrollers-microprocessors/stm32u575.html\" target=\"_blank\" rel=\"noopener noreferrer\">STM32U575</a>); DM42: <a class=\"pv-deep\" href=\"https://www.arm.com/products/silicon-ip-cpu/cortex-m/cortex-m4\" target=\"_blank\" rel=\"noopener noreferrer\">ARM Cortex-M4</a> (<a class=\"pv-deep\" href=\"https://www.st.com/en/microcontrollers-microprocessors/stm32l476zg.html\" target=\"_blank\" rel=\"noopener noreferrer\">STM32L476</a>)",
         "section": "A modern recreation of Hewlett-Packard Reverse Polish Lisp (RPL)"
       },
       {

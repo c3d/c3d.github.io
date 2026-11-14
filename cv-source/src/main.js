@@ -2117,11 +2117,26 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   }
   if (project.videos && project.videos.length) {
     const vertical = project.videoAspect === '9:16' || project.videoAspect === 'vertical';
-    project.videos.forEach((id) => {
+    project.videos.forEach((entry) => {
+      // Support plain id strings or { id, start } / "id?start=N" for timed embeds.
+      let id = entry;
+      let start = null;
+      if (entry && typeof entry === 'object') {
+        id = entry.id || entry.videoId || '';
+        start = entry.start ?? entry.t ?? null;
+      } else if (typeof entry === 'string') {
+        const m = entry.match(/^([\w-]+)(?:[?&](?:start|t)=(\d+))?$/);
+        if (m) {
+          id = m[1];
+          start = m[2] ? Number(m[2]) : null;
+        }
+      }
+      if (!id) return;
       const wrap = document.createElement('div');
       wrap.className = vertical ? 'hud-video hud-video-vertical' : 'hud-video';
       const extras = allowAutoplay ? '' : '&mute=1';
-      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0${extras}&enablejsapi=1" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+      const startParam = Number.isFinite(start) && start > 0 ? `&start=${start}` : '';
+      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0${extras}${startParam}&enablejsapi=1" allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
       media.appendChild(wrap);
     });
   }
