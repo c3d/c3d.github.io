@@ -101,7 +101,7 @@ const PRINT_COPY = {
   },
   'make-it-quick': {
     bullets: [
-      'A make-based build system with auto-configuration, replaces automake/autoconf/cmake'
+      'A make-based build system with auto-configuration, faster and simpler than automake/autoconf'
     ]
   },
   recorder: {
