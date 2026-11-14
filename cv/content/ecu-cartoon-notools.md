@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-notools
 title: Union worker
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons

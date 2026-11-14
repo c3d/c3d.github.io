@@ -1,7 +1,7 @@
 ---
 id: taodyne-blog
 title: Taodyne Blog
-theme: Art & Culture
+theme: Communication Skills
 years: 2011-Present
 weight: 6
 related:

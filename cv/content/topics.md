@@ -35,3 +35,9 @@ comes only from each item’s real CV / homepage text.
 | patents | Patents | Patented inventions and prior art disclosure |
 | education | Education | Teaching demos, tutorials, and student-facing tools |
 | multimedia | Multimedia | Home entertainment, MythTV, and media appliances |
+| soc | SoC | System-on-Chip platforms and microcontroller SoCs |
+| firmware | Firmware | Firmware and low-level platform software |
+| system | System | System software spanning hosts, guests, and test platforms |
+| validation | Validation | System validation, automated test suites, and bring-up checks |
+| performance | Performance | Performance measurement, tracing, and efficiency tooling |
+| pre-silicon | Pre-silicon | Software bring-up on simulators before silicon / hardware |

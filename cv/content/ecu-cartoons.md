@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoons
 title: ECUTEST Cartoons
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 6
 related:

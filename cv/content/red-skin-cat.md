@@ -1,7 +1,7 @@
 ---
 id: red-skin-cat
 title: Red Skin Cat
-theme: Art & Culture
+theme: Communication Skills
 years: 2017-Present
 weight: 6
 related:

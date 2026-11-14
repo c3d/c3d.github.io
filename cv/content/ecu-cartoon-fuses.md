@@ -1,7 +1,7 @@
 ---
 id: ecu-cartoon-fuses
 title: Software that blows
-theme: Art & Culture
+theme: Communication Skills
 years: null
 weight: 3
 satelliteOf: ecu-cartoons
