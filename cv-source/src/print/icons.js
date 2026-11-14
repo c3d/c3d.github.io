@@ -10,7 +10,8 @@ export const THEME_ICONS = {
 
 /** Print Tools & technologies pills — exact order and membership. */
 export const TECH_TAGS = [
-  'C', 'C++', 'Asm', 'FOSS', 'AI', 'Virtualization', 'Kernel', 'Real-time', '3D',
+  'C', 'C++', 'Asm', 'FOSS', 'AI', 'ARM', 'Firmware',
+  'Virtualization', 'Kernel', 'Real-time', '3D',
   'Embedded', 'Validation', 'Performance',
   'Linux', 'macOS', 'OpenShift',
   'RPL', 'XL', 'Tao3D', 'ELFE', 'SPICE', 'Make'
@@ -22,11 +23,13 @@ export const TECH_TAG_TOPIC_IDS = {
   'C++': 'cpp',
   Asm: 'asm',
   FOSS: 'opensource',
+  AI: 'ai',
+  ARM: 'arm',
+  Firmware: 'firmware',
   Virtualization: 'virtualization',
   Kernel: 'linux',
   'Real-time': 'realtime',
   '3D': 'graphics3d',
-  AI: 'ai',
   Embedded: 'soc',
   Validation: 'validation',
   Performance: 'performance',

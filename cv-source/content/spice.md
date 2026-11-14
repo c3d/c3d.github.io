@@ -4,7 +4,6 @@ title: SPICE Remote Streaming
 theme: Systems & Virtualization
 years: 2019
 weight: 8
-print: 4
 related:
   - kata-containers
   - confidential-containers

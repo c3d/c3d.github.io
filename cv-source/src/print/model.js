@@ -15,18 +15,15 @@ const PATENT_LIST_URL =
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
-const DEVCONF_2023_URL =
-  'https://devconfcz2023.sched.com/event/1MYgS/confidential-computing-from-host-to-workload';
 const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
-const TAO3D_URL = 'http://tao3d.sf.net';
-const GRENOUILLE_URL = 'https://grenouillebouillie.wordpress.com/';
-const DB48X_SITE_URL = 'https://c3d.github.io/db48x/';
-const DB48X_PLAYLIST_URL =
-  'https://www.youtube.com/watch?v=WU5Dg1mPkl8&list=PLz1qkflzABy-Cs1R07zGB8A9K5Yjolmlf';
-const TIM_YT_URL = 'https://www.youtube.com/@atheoryofincompletemeasure865';
+const CCS_2024_URL = 'https://doi.org/10.1145/3658644.3670352';
+const DEVCONF_CZ_2019_SPICE_URL = 'https://youtu.be/kpy4SqpunoY';
+const DEVCONF_CZ_2020_KATA_URL = 'https://youtu.be/SK4Tk9rv3H0';
+const FOSDEM_2024_COCO_URL =
+  'https://archive.fosdem.org/2024/schedule/event/fosdem-2024-1991-proving-that-cloud-sysadmins-cannot-read-your-data-/';
 
 function deepLink(href, label) {
   return `<a class="pv-deep" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
@@ -37,7 +34,7 @@ const PRINT_COPY = {
   ecutest: {
     title: 'HP ECUTEST Real Time Test System for car electronics',
     bullets: [
-      'Engine control unit (ECU) real-time testing and validation, 400 analog and digital I/O signals'
+      'Tech lead (team of 12); ECU real-time testing; RTICL portable drivers for VXI/VME/SCPI'
     ]
   },
   spice: {
@@ -47,7 +44,7 @@ const PRINT_COPY = {
   },
   'kata-containers': {
     bullets: [
-      'Brought Kata to Fedora/Red Hat packaging (Fedora 31, Oct 2019 RPMs); became OpenShift Sandboxed Containers'
+      'OpenShift Sandboxed Containers lead (HyperShift); Fedora RPMs; qemu-mini demand-loaded QEMU'
     ]
   },
   'confidential-containers': {
@@ -62,19 +59,20 @@ const PRINT_COPY = {
   },
   hpcpp: {
     bullets: [
-      'First native pre-silicon Itanium compiler, exception handling, templates, performance, build system'
+      'First native pre-silicon Itanium C/C++ compiler; kernel & user ABI; exception handling, templates, performance; leading & coordinating 16 teams.'
     ]
   },
   hpvm: {
     title: 'HP Integrity Virtual Machines - Enterprise-grade Itanium virtualization',
     bullets: [
-      'From first line of code and pre-silicon bring up all the way to 7 digits of revenue per quarter'
+      'From first line of code and pre-silicon / A-step bring-up all the way to 7 digits of revenue per quarter',
+      'Grew and led a team of dozens of kernel engineers, within a program of hundreds of engineers'
     ]
   },
   'cxx-abi': {
     title: 'C++ ABI',
     bullets: [
-      'Initiated a cross-industry standardization effort for C++ compiler interoperability, still in use today'
+      'Initiated with Cary Coutant; weekly industry meetings (~20 engineers across HP, Sun, SGI, IBM, Microsoft, GCC)'
     ]
   },
   tao3d: {
@@ -106,7 +104,17 @@ const PRINT_COPY = {
   },
   'emacs-aqua': {
     bullets: [
-      'First graphical port of Emacs on macOS X (Rhapsody), first Emacs with transparent windows'
+      'First graphical port of Emacs on macOS (at the time still called Rhapsody), first Emacs with transparent windows'
+    ]
+  },
+  de200c: {
+    bullets: [
+      'HP Linux appliance; client/server driver for the front-panel VFD; Linux patches for remote control and front-panel keys'
+    ]
+  },
+  'hardware-firmware': {
+    bullets: [
+      'HPVM firmware/platform emulation (UEFI, ACPI, PCI/PCIe, MMIO, DMA, BMC, MCA, NUMA, PM); RTICL and Linux/RTOS drivers'
     ]
   },
   'alpha-waves': {
@@ -134,7 +142,7 @@ function researchPrintProjects() {
       title: 'Computer science research',
       years: '',
       bullets: [
-        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48x`
+        `Published CS research: ${deepLink(WIESS_URL, 'WIESS 2000')} C++ exception handling; ${deepLink(CCS_2024_URL, 'CCS 2024')} confidential computing; ${deepLink(FOSDEM_2024_URL, 'FOSDEM 2024')} / ${deepLink(FOSDEM_2023_URL, 'FOSDEM 2023')} talks on DB48x`
       ]
     },
     {
@@ -165,7 +173,7 @@ function communicationPrintProjects() {
       title: 'Free and Open Source Software (FOSS)',
       years: '',
       bullets: [
-        `Publishing free software since 1999. Linux user since 1998 (MkLinux). Kernel developer. ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
+        `Publishing free software since 1999. Linux user since 1998 (MkLinux). Kernel developer (HP-UX, HPVM, Linux, RTOS). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
       ]
     },
     {
@@ -189,31 +197,7 @@ function communicationPrintProjects() {
       title: 'Conferences and papers',
       years: '',
       bullets: [
-        `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions), ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (SPICE, Kata, DB48x), ${deepLink(DEVCONF_2023_URL, 'DevConf')}`
-      ]
-    },
-    {
-      id: 'websites-blogs',
-      title: 'Web sites and blogs',
-      years: '',
-      bullets: [
-        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
-      ]
-    },
-    {
-      id: 'videos-portfolio',
-      title: 'Videos',
-      years: '',
-      bullets: [
-        `Sample: ${deepLink(DB48X_PLAYLIST_URL, 'DB48x playlist')}, ${deepLink(TIM_YT_URL, 'Theory of Incomplete Measurements')}`
-      ]
-    },
-    {
-      id: 'presentation-software',
-      title: 'Software',
-      years: '',
-      bullets: [
-        `Designed and implemented my own presentation software (${deepLink(TAO3D_URL, 'Tao3D')}), still using it to this day`
+        `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions); ${deepLink(DEVCONF_CZ_2019_SPICE_URL, 'DevConf.CZ')} (SPICE 2019, ${deepLink(DEVCONF_CZ_2020_KATA_URL, 'Kata 2020')}); ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (DB48x, ${deepLink(FOSDEM_2024_COCO_URL, 'CoCo 2024')})`
       ]
     }
   ];

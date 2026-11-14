@@ -4,10 +4,11 @@ title: DxO ONE Connected Camera
 theme: Systems & Virtualization
 years: 2015-2016
 weight: 10
-print: 5
+print: 3
 related:
   - make-it-quick
   - recorder
+  - hardware-firmware
 videos:
   - k9KXqVCYPoo
 videoAspect: '9:16'
