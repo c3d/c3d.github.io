@@ -20,6 +20,8 @@ topics:
 ---
 ## First graphical Emacs on Mac OS X Aqua
 
+Graphical port of Emacs on macOS Rhapsody, first Emacs with transparent windows
+
 - Adapted an old NeXT port to Aqua when only Terminal Emacs shipped
 - Added macOS niceties such as transparent windows
 - Published on SourceForge; later superseded by upstream Cocoa support
