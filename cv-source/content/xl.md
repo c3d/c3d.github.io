@@ -1,6 +1,6 @@
 ---
 id: xl
-title: XL
+title: XL, an extensible language
 theme: Languages & Compilers
 years: 1992-Present
 weight: 9
@@ -22,7 +22,9 @@ topics:
   - compilers
   - opensource
 ---
-## Extensible language designed to evolve
+## XL, an extensible language
+
+A language designed to evolve with user needs, based on "Concept programming"
 
 - Renamed from LX after discussions notably with Daveed Vandevoorde; focus shifted from experimental to extensible
 - Re-implemented on Mozart (itself largely reusing LX code)

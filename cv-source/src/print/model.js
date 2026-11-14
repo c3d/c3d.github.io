@@ -8,12 +8,20 @@
  */
 
 const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
+const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
+/** Both inventor name forms; verified not to match other Dinechin inventors. */
+const PATENT_LIST_URL =
+  'https://patents.google.com/?inventor=Christophe+de+Dinechin&inventor=Christophe+Marie+Francois+Dupont+de+Dinechin';
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
+const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
+const TAO3D_URL = 'http://tao3d.sf.net';
+const GRENOUILLE_URL = 'https://grenouillebouillie.wordpress.com/';
+const DB48X_SITE_URL = 'https://c3d.github.io/db48x/';
 const CCS_2024_URL = 'https://doi.org/10.1145/3658644.3670352';
 const DEVCONF_CZ_2019_SPICE_URL = 'https://youtu.be/kpy4SqpunoY';
 const DEVCONF_CZ_2020_KATA_URL = 'https://youtu.be/SK4Tk9rv3H0';
@@ -30,7 +38,7 @@ const PRINT_COPY = {
     title: 'HP ECUTEST Real-time Test System for car electronics',
     bullets: [
       'From prototype and concept demo to 10+ people team lead and customer evangelism.',
-      'Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types (Windows, HP-RT and pSOS)'
+      'Sub-millisecond closed-loop testing, real-time portable drivers for 50+ instrument types'
     ]
   },
   spice: {
@@ -82,11 +90,13 @@ const PRINT_COPY = {
     bullets: ['Tao3D is an XL-based platform for interactive real-time 3D presentations']
   },
   xl: {
-    bullets: ['Extensible language designed to evolve']
+    title: 'XL, an extensible language',
+    bullets: ['A language designed to evolve with user needs, based on "Concept programming"']
   },
   xlr8: {
+    title: 'XLR8, an extensible accelerated runtime and JIT',
     bullets: [
-      'XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes'
+      'A very fast VM with bytecode interpreter and built-in JIT for ARM, x86 and RISC-V.'
     ]
   },
   db48x: {
@@ -150,6 +160,23 @@ function researchPrintProjects() {
       bullets: [
         `Published research on ${deepLink(WIESS_URL, 'compilers')}, ${deepLink(CCS_2024_URL, 'confidential computing')}, ${deepLink(FOSDEM_2024_URL, 'embedded systems')}`
       ]
+    },
+    {
+      id: 'patents',
+      title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
+      titleHref: PATENT_LIST_URL,
+      years: '',
+      bullets: [
+        'Covering virtualization, enterprise computing, confidential computing'
+      ]
+    },
+    {
+      id: 'physics-books',
+      title: 'Physics research',
+      years: '',
+      bullets: [
+        `A Theory of Incomplete Measurements — unifying GR and QM (${deepLink(TIM_URL, 'TIM')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')})`
+      ]
     }
   ];
 }
@@ -166,11 +193,11 @@ function communicationPrintProjects() {
       ]
     },
     {
-      id: 'ai',
-      title: 'Artificial Intelligence',
+      id: 'websites-blogs',
+      title: 'Web sites and blogs',
       years: '',
       bullets: [
-        'Developed and reviewed code with Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot'
+        `Sample: Web sites of ${deepLink(TAO3D_URL, 'Tao3D')}, ${deepLink(GRENOUILLE_URL, 'Grenouille Bouillie')}, ${deepLink(DB48X_SITE_URL, 'DB48x')}`
       ]
     },
     {
