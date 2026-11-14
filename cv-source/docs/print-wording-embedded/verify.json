@@ -1,0 +1,50 @@
+[
+  {
+    "style": "nebula",
+    "hasSoC": false,
+    "hasHPVM": false,
+    "hasEmbedded": true,
+    "hasIntegrity": true,
+    "hpvmTitle": {
+      "title": "HP Integrity Virtual Machines - Enterprise-grade Itanium virtualization",
+      "lines": 1,
+      "height": 17,
+      "width": 482,
+      "overflowsParent": false,
+      "parentW": 527
+    },
+    "pageOverflow": false
+  },
+  {
+    "style": "orbit",
+    "hasSoC": false,
+    "hasHPVM": false,
+    "hasEmbedded": true,
+    "hasIntegrity": true,
+    "hpvmTitle": {
+      "title": "HP Integrity Virtual Machines - Enterprise-grade Itanium virtualization",
+      "lines": 1,
+      "height": 17,
+      "width": 481,
+      "overflowsParent": false,
+      "parentW": 527
+    },
+    "pageOverflow": false
+  },
+  {
+    "style": "classic",
+    "hasSoC": false,
+    "hasHPVM": false,
+    "hasEmbedded": true,
+    "hasIntegrity": true,
+    "hpvmTitle": {
+      "title": "HP Integrity Virtual Machines - Enterprise-grade Itanium virtualization",
+      "lines": 1,
+      "height": 19,
+      "width": 389,
+      "overflowsParent": false,
+      "parentW": 761
+    },
+    "pageOverflow": false
+  }
+]

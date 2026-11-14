@@ -51,6 +51,12 @@ const PRINT_COPY = {
       'First native pre-silicon Itanium compiler, exception handling, templates, performance, build system'
     ]
   },
+  hpvm: {
+    title: 'HP Integrity Virtual Machines - Enterprise-grade Itanium virtualization',
+    bullets: [
+      'From first line of code and pre-silicon bring up all the way to 7 digits of revenue per quarter'
+    ]
+  },
   'cxx-abi': {
     title: 'C++ ABI',
     bullets: [

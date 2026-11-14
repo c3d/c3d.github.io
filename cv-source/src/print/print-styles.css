@@ -126,7 +126,7 @@ body.print-preview #print-view {
   color: #fff; background: var(--theme-color, #246); display: inline-block; padding: 1px 6px; margin: 0 0 2px;
 }
 .pvc-project { margin: 0 0 2px 5px; padding-left: 6px; border-left: 2px solid var(--theme-color, #246); }
-.pvc-project h3 { font-size: 13px; margin: 0; display: inline; font-weight: 650; }
+.pvc-project h3 { font-size: 13px; margin: 0; display: inline; font-weight: 650; overflow-wrap: anywhere; }
 .pvc-years { font-size: 10px; color: #556; margin-left: 5px; }
 .pvc-project ul { margin: 1px 0 0; padding-left: 13px; font-size: 13.5px; font-weight: 500; line-height: 1.28; }
 .pvc-patents {
@@ -288,8 +288,8 @@ a.pvn-qr:hover { color: inherit; }
 .pvn-timeline { position: relative; padding-left: 2.6mm; border-left: 0.4mm solid var(--theme-color, #246); margin-left: 1mm; }
 .pvn-project { position: relative; margin: 0 0 0.35mm; }
 .pvn-dot { position: absolute; left: -3.7mm; top: 1.3mm; width: 1.8mm; height: 1.8mm; border-radius: 50%; background: var(--theme-color, #246); box-shadow: 0 0 0 0.4mm #fff; }
-.pvn-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.6mm; }
-.pvn-project h3 { font-size: 9pt; margin: 0; font-weight: 700; text-align: left; }
+.pvn-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.6mm; min-width: 0; }
+.pvn-project h3 { font-size: 9pt; margin: 0; font-weight: 700; text-align: left; flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 .pvn-project h3 a.pv-deep { font-weight: inherit; }
 .pvn-years { flex-shrink: 0; font-size: 5.8pt; color: #445566; background: #eef2f7; border-radius: 999px; padding: 0.15mm 0.9mm; white-space: nowrap; }
 .pvn-project ul { margin: 0.2mm 0 0; padding-left: 2.8mm; font-size: 8.8pt; font-weight: 500; color: #243041; line-height: 1.18; }
@@ -427,9 +427,9 @@ a.pvo-qr:hover { color: inherit; }
   width: 1.7mm; height: 1.7mm; border-radius: 50%;
   background: var(--orbit-gold); box-shadow: 0 0 0 0.35mm #fff;
 }
-.pvo-head { display: flex; justify-content: space-between; gap: 1.5mm; align-items: baseline; }
-.pvo-project h3 { margin: 0; font-size: 9pt; color: var(--orbit-navy); font-weight: 700; text-align: left; }
-.pvo-years { font-size: 5.8pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.2mm 1mm; white-space: nowrap; }
+.pvo-head { display: flex; justify-content: space-between; gap: 1.5mm; align-items: baseline; min-width: 0; }
+.pvo-project h3 { margin: 0; font-size: 9pt; color: var(--orbit-navy); font-weight: 700; text-align: left; flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.pvo-years { flex-shrink: 0; font-size: 5.8pt; color: #556; background: #eef1f5; border-radius: 999px; padding: 0.2mm 1mm; white-space: nowrap; }
 .pvo-project ul { margin: 0.25mm 0 0; padding-left: 2.6mm; font-size: 8.8pt; font-weight: 500; color: #243041; line-height: 1.18; }
 .pvo-patents {
   margin: 0.5mm 0 0;
