@@ -1,6 +1,6 @@
 ---
 id: xlr8
-title: XLR8
+title: XLR8, an extensible accelerated runtime and JIT
 theme: Languages & Compilers
 years: 2026-Present
 weight: 8
@@ -26,7 +26,9 @@ topics:
   - opensource
   - asm
 ---
-## Super-fast VM for XL
+## XLR8, an extensible accelerated runtime and JIT
+
+A very fast VM with bytecode interpreter and built-in JIT for ARM, x86 and RISC-V.
 
 - XLR8 is a super-fast VM with interpreted and JIT modes
 - Significantly faster than Lua or Python VMs on a sample of micro-benchmarks
