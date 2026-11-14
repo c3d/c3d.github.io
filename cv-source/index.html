@@ -241,7 +241,9 @@
       top: 0;
       display: inline-flex;
       align-items: stretch;
-      max-width: min(240px, 42vw);
+      /* Grow to fit full names; soft cap only so extreme titles wrap to 2 lines */
+      max-width: min(520px, 92vw);
+      width: max-content;
       margin: 0;
       padding: 0;
       border: 1px solid color-mix(in srgb, var(--ms-accent) 60%, transparent);
@@ -276,9 +278,14 @@
       padding: 5px 9px 5px 8px;
       line-height: 1.25;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
+      white-space: normal;
+      overflow-wrap: anywhere;
+      /* Prefer full single-line names; clamp only if past the soft max-width */
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .ms-label-theme .ms-label-text {
       font-size: 12px;
