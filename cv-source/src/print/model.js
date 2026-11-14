@@ -160,7 +160,7 @@ function communicationPrintProjects() {
       title: 'Free and Open Source Software (FOSS)',
       years: '',
       bullets: [
-        `Publishing free software since 1999. Linux user since 1998 (MkLinux). Kernel developer (HP-UX, HPVM, Linux, RTOS). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
+        `Publishing free software since 1999. Linux user since 1998 (MkLinux). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
       ]
     },
     {
