@@ -21,7 +21,7 @@ const TIM_URL = 'https://c3d.github.io/TIM/';
 const REUNIFIONS_URL = 'https://www.amazon.fr/dp/B0C5GQTWTQ';
 const INFORMAGIE_URL = 'https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X';
 const TIM_AMAZON_URL = 'https://www.amazon.com/theory-incomplete-measurements-Towards-unified/dp/B09TMN922M';
-const TAO3D_URL = 'https://tao3d.sourceforge.net/';
+const TAO3D_URL = 'http://tao3d.sf.net';
 const GRENOUILLE_URL = 'https://grenouillebouillie.wordpress.com/';
 const DB48X_SITE_URL = 'https://c3d.github.io/db48x/';
 const DB48X_PLAYLIST_URL =
@@ -120,9 +120,10 @@ function researchPrintProjects() {
     {
       id: 'patents',
       title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
+      titleHref: PATENT_LIST_URL,
       years: '',
       bullets: [
-        `${PATENT_COUNT} granted ${deepLink(PATENT_LIST_URL, 'US patents')}, ${PATENT_PENDING} pending`
+        'Covering virtualization, enterprise computing, confidential computing'
       ]
     },
     {
@@ -176,7 +177,7 @@ function communicationPrintProjects() {
       title: 'Software',
       years: '',
       bullets: [
-        'Designed my own presentation software (Tao3D), still using it to this day'
+        `Designed and implemented my own presentation software (${deepLink(TAO3D_URL, 'Tao3D')}), still using it to this day`
       ]
     }
   ];

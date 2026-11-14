@@ -116,7 +116,7 @@ export const orbitStyle = {
       theme.projects.forEach((p) => {
         html += `<article class="pvo-project">
           <div class="pvo-dot"></div>
-          <div class="pvo-head"><h3>${entryTitleLink(p.id, p.title)}</h3>${p.years ? `<span class="pvo-years">${p.years}</span>` : ''}</div>
+          <div class="pvo-head"><h3>${entryTitleLink(p.id, p.title, p.titleHref ? { href: p.titleHref } : {})}</h3>${p.years ? `<span class="pvo-years">${p.years}</span>` : ''}</div>
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });

@@ -2,7 +2,7 @@
 id: physics-books
 title: A Theory of Incomplete Measurements
 theme: Research
-years: null
+years: 2022
 weight: 9
 print: 1
 related:

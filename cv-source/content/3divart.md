@@ -2,7 +2,7 @@
 id: 3divart
 title: 3DIVART
 theme: Communication Skills
-years: null
+years: 2015
 weight: 9
 print: 1
 related:
@@ -10,7 +10,9 @@ related:
 videos: []
 images:
   - /cv/3DIVART.jpg
-links: []
+links:
+  - label: WebTime Médias
+    url: 'https://www.webtimemedias.com/article/sophia-3d-sans-lunettes-et-3divart-en-vitrine-avec-taodyne?old_id=56533'
 topics:
   - graphics3d
   - opensource

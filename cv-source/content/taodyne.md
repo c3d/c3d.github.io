@@ -14,7 +14,7 @@ related:
 videos: []
 links:
   - label: Tao3D
-    url: 'https://tao3d.sourceforge.net/'
+    url: 'http://tao3d.sf.net'
 images:
   - /cv/media/taodyne.png
 topics:

@@ -75,7 +75,7 @@ export const nebulaStyle = {
               <li><span>◉</span>${model.website.replace(/^https?:\/\//, '')}</li>
             </ul>
           </section>
-          <section class="pvn-card"><h2>Tools &amp; technologies</h2>
+          <section class="pvn-card"><h2>Technologies</h2>
             <div class="pvn-tags">${TECH_TAGS.map((t) => {
               const tid = TECH_TAG_TOPIC_IDS[t];
               return tid
@@ -99,7 +99,7 @@ export const nebulaStyle = {
       theme.projects.forEach((p) => {
         html += `<article class="pvn-project">
           <div class="pvn-dot"></div>
-          <div class="pvn-head"><h3>${entryTitleLink(p.id, p.title)}</h3>${p.years ? `<span class="pvn-years">${p.years}</span>` : ''}</div>
+          <div class="pvn-head"><h3>${entryTitleLink(p.id, p.title, p.titleHref ? { href: p.titleHref } : {})}</h3>${p.years ? `<span class="pvn-years">${p.years}</span>` : ''}</div>
           <ul>${p.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
         </article>`;
       });

@@ -2,7 +2,7 @@
 id: informagie
 title: Informagie
 theme: Communication Skills
-years: null
+years: 2019
 weight: 7
 print: 2
 related: []

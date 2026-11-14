@@ -1,6 +1,6 @@
 ---
 id: red-skin-cat
-title: Red Skin Cat
+title: 'Blog: Red Skin Cat'
 theme: Communication Skills
 years: 2017-Present
 weight: 6

@@ -21,7 +21,7 @@ export const classicStyle = {
       html += `<section class="pvc-theme" style="--theme-color:${theme.color}">
         <h2><a class="pv-deep pv-deep-on-dark" href="${clusterHref(theme.name)}">${theme.name}</a></h2>`;
       theme.projects.forEach((p) => {
-        html += `<div class="pvc-project"><h3>${entryTitleLink(p.id, p.title)}</h3>`;
+        html += `<div class="pvc-project"><h3>${entryTitleLink(p.id, p.title, p.titleHref ? { href: p.titleHref } : {})}</h3>`;
         if (p.years) html += `<span class="pvc-years">${p.years}</span>`;
         if (p.bullets.length) {
           html += '<ul>';

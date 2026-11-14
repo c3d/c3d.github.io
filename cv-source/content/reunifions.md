@@ -2,7 +2,7 @@
 id: reunifions
 title: Réunifions la physique
 theme: Research
-years: null
+years: 2023
 weight: 8
 print: 2
 related:

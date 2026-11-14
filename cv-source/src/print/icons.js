@@ -62,8 +62,14 @@ export function entryHref(projectId) {
   return `https://c3d.github.io/cv/#${encodeURIComponent(projectId)}`;
 }
 
-/** Print project title → unobtrusive deep link to its constellation node. */
-export function entryTitleLink(projectId, title) {
+/**
+ * Print project title → constellation deep link, or an external href when provided
+ * (e.g. patents title → Google Patents search).
+ */
+export function entryTitleLink(projectId, title, { href } = {}) {
+  if (href) {
+    return `<a class="pv-deep" href="${href}" target="_blank" rel="noopener noreferrer">${title}</a>`;
+  }
   if (!projectId) return title;
   return `<a class="pv-deep" href="${entryHref(projectId)}">${title}</a>`;
 }

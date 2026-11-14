@@ -216,6 +216,8 @@ a.pv-deep-on-dark {
 .pvn-header-text { flex: 1; min-width: 0; }
 .pvn-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 13.5pt; margin: 0; color: #fff; text-align: left; }
 .pvn-photo {
+  position: relative;
+  display: block;
   flex-shrink: 0;
   width: 16mm;
   height: 16mm;
@@ -227,11 +229,19 @@ a.pv-deep-on-dark {
   background: #0a1528;
 }
 .pvn-photo img {
-  width: 100%;
-  height: 100%;
+  /*
+   * ~1.8× zoom: whole head with a small margin under the rim,
+   * shoulders just visible at the bottom (between prior 1.45× / 2.2×).
+   */
+  position: absolute;
+  width: 180%;
+  height: 180%;
+  max-width: none;
+  left: 50%;
+  top: 78%;
+  transform: translate(-50%, -50%);
   object-fit: cover;
-  /* Asset is pre-framed with headroom; keep optical center */
-  object-position: 50% 50%;
+  object-position: 50% 20%;
   display: block;
 }
 .pvn-sub { margin: 0.6mm 0 0; font-size: 8.5pt; color: rgba(255,255,255,.88); text-align: left; }
@@ -322,6 +332,8 @@ a.pvn-qr:hover { color: inherit; }
   margin-bottom: 0.5mm;
 }
 .pvo-photo {
+  position: relative;
+  display: block;
   width: 18mm;
   height: 18mm;
   border-radius: 50%;
@@ -332,11 +344,19 @@ a.pvn-qr:hover { color: inherit; }
   background: #06101f;
 }
 .pvo-photo img {
-  width: 100%;
-  height: 100%;
+  /*
+   * ~1.8× zoom: whole head with a small margin under the rim,
+   * shoulders just visible at the bottom (between prior 1.45× / 2.2×).
+   */
+  position: absolute;
+  width: 180%;
+  height: 180%;
+  max-width: none;
+  left: 50%;
+  top: 78%;
+  transform: translate(-50%, -50%);
   object-fit: cover;
-  /* Asset is pre-framed with headroom; keep optical center */
-  object-position: 50% 50%;
+  object-position: 50% 20%;
   display: block;
 }
 .pvo-block h2 {

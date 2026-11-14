@@ -2,7 +2,7 @@
 id: spectrum-plus
 title: Spectrum+
 theme: Languages & Compilers
-years: null
+years: 1984
 weight: 7
 related: []
 videos: []
