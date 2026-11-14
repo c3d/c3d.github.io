@@ -2213,7 +2213,9 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
 
   const media = hud.querySelector('[data-hud="media"]');
   media.innerHTML = '';
-  if (project.images && project.images.length) {
+  // Prefer video when both are present — keep images in content for print / other uses.
+  const hasVideos = !!(project.videos && project.videos.length);
+  if (!hasVideos && project.images && project.images.length) {
     project.images.forEach((entry) => {
       const src = typeof entry === 'string' ? entry : entry?.src;
       if (!src) return;
