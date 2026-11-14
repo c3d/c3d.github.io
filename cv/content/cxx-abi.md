@@ -16,6 +16,7 @@ topics:
   - cpp
   - compilers
   - research
+  - asm
 ---
 ## Cross-industry C++ compiler interoperability
 

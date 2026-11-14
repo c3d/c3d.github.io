@@ -23,6 +23,7 @@ topics:
   - firmware
   - system
   - pre-silicon
+  - asm
 ---
 ## Enterprise-grade virtualization for high-end Itanium servers
 

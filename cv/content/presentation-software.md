@@ -1,7 +1,7 @@
 ---
 id: presentation-software
 title: 3D presentation software
-theme: Communication Skills
+theme: Communications
 years: 2010-Present
 weight: 6
 related:

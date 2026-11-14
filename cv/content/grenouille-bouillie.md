@@ -1,7 +1,7 @@
 ---
 id: grenouille-bouillie
 title: 'Blog: Grenouille Bouillie'
-theme: Communication Skills
+theme: Communications
 years: 2003-Present
 weight: 6
 related:

@@ -12,6 +12,7 @@ comes only from each item’s real CV / homepage text.
 | id | Name | Description |
 | --- | --- | --- |
 | cpp | C++ | C and C++ languages, ABIs, and toolchains |
+| asm | Asm | Assembly language and low-level machine code |
 | compilers | Compilers | Language design, compilers, ABIs, and extensible languages |
 | virtualization | Virtualization | Hypervisors, guests, and virtual machine platforms |
 | containers | Containers | Container runtimes and confidential containers |
@@ -31,7 +32,7 @@ comes only from each item’s real CV / homepage text.
 | books | Books | Published books and longer-form writing |
 | conferences | Conferences | Conference talks and peer-reviewed presentations |
 | writing | Writing | Books, novels, blogs, and technical writing |
-| opensource | Open source | Free and open-source projects and communities |
+| opensource | FOSS / Open source | Free and open-source software and communities |
 | ui | UI / UX | User interfaces, editors, and interactive UX |
 | networking | Networking | Remote display, streaming, and network protocols |
 | imaging | Imaging | Cameras, imaging pipelines, and visual capture |
