@@ -115,8 +115,9 @@ const PRINT_COPY = {
     ]
   },
   de200c: {
+    title: 'HP DE200C with MythTV',
     bullets: [
-      'HP Linux appliance; client/server driver for the front-panel VFD; Linux patches for remote control and front-panel keys'
+      'Repurposed Linux appliance, early Tivo-style DVR. Display and remote control drivers.'
     ]
   },
   'hardware-firmware': {

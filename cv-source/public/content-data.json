@@ -521,7 +521,7 @@
   },
   {
     "id": "de200c",
-    "title": "HP DE200C MythTV",
+    "title": "HP DE200C with MythTV",
     "theme": "Tools & Apps",
     "years": 2008,
     "weight": 7,
@@ -550,7 +550,7 @@
       "multimedia",
       "embedded"
     ],
-    "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
+    "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<p>Repurposed Linux appliance, early Tivo-style DVR. Display and remote control drivers.</p>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
     "bullets": [
       {
         "text": "HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)",
