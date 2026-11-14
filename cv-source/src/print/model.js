@@ -54,8 +54,10 @@ const PRINT_COPY = {
     ]
   },
   'dxo-one': {
+    title: 'DxO ONE Connected Camera',
     bullets: [
-      'A tiny, but high-quality camera for photographers. Dual-core ARM + ISP, RTOS + Linux; pink pictures fixed via build system; automated hardware test farm; boot 2–5 s → <1 s'
+      'A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.',
+      'Went from random pink pictures and 5s boot to automated software testing farm and <1s boot'
     ]
   },
   hpcpp: {

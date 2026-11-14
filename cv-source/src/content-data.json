@@ -616,26 +616,18 @@
       "imaging",
       "asm"
     ],
-    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Camera randomly took pink pictures: components built by hand, structs sized differently under inconsistent <code>#ifdef</code>s — redesigned the build system to fix it (ancestor of <a href=\"#make-it-quick\">make-it-quick</a>)</li>\n<li>Introduced version control, CI, modularity, and testing practices where almost none existed</li>\n<li>Left behind a wall of test boxes: each Raspberry Pi flashed firmware into a DxO ONE and shot reference pictures under controlled lighting</li>\n<li>Asserts used to lock up and drain the battery in a spin loop; serial debug spam slowed the camera — replaced with a printf-compatible circular buffer dumped only on failure (ancestor of the <a href=\"#recorder\">recorder</a>); boot time from 2–5 s to under 1 s</li>\n<li>Proposed the black-and-white viewfinder UI idea during the interview (others implemented it)</li>\n<li>Also implemented real-time HDR for iPhone/iPad</li>\n</ul>\n",
+    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.</li>\n<li>Went from random pink pictures and 5s boot to automated software testing farm and &lt;1s boot</li>\n<li>Introduced version control, CI, modularity, and testing practices where almost none existed</li>\n<li>Proposed the black-and-white viewfinder UI idea during the interview (others implemented it)</li>\n<li>Also implemented real-time HDR for iPhone/iPad</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Dual-core ARM + ISP real-time system",
+        "text": "A tiny, DSLR-quality camera. Dual-core ARM + ISP, RTOS + Linux.",
         "section": "Software quality for a diminutive connected camera"
       },
       {
-        "text": "Camera randomly took pink pictures: components built by hand, structs sized differently under inconsistent `#ifdef`s — redesigned the build system to fix it (ancestor of <a class=\"hud-deep\" href=\"#make-it-quick\">make-it-quick</a>)",
+        "text": "Went from random pink pictures and 5s boot to automated software testing farm and <1s boot",
         "section": "Software quality for a diminutive connected camera"
       },
       {
         "text": "Introduced version control, CI, modularity, and testing practices where almost none existed",
-        "section": "Software quality for a diminutive connected camera"
-      },
-      {
-        "text": "Left behind a wall of test boxes: each Raspberry Pi flashed firmware into a DxO ONE and shot reference pictures under controlled lighting",
-        "section": "Software quality for a diminutive connected camera"
-      },
-      {
-        "text": "Asserts used to lock up and drain the battery in a spin loop; serial debug spam slowed the camera — replaced with a printf-compatible circular buffer dumped only on failure (ancestor of the <a class=\"hud-deep\" href=\"#recorder\">recorder</a>); boot time from 2–5 s to under 1 s",
         "section": "Software quality for a diminutive connected camera"
       },
       {
