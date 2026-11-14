@@ -1,0 +1,227 @@
+[
+  {
+    "vp": "375x667",
+    "id": "ecu-cartoon-fuses",
+    "title": "Cartoon: Software that blows",
+    "disp": [
+      299,
+      221
+    ],
+    "maxH": "253.46px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00002807561151541016
+  },
+  {
+    "vp": "375x667",
+    "id": "hpvm-cartoon-booted",
+    "title": "Cartoon: First boot, first burp",
+    "disp": [
+      299,
+      193
+    ],
+    "maxH": "253.46px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.000012762186191617175
+  },
+  {
+    "vp": "375x667",
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "Cartoon: High availability management",
+    "disp": [
+      299,
+      224
+    ],
+    "maxH": "253.46px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.0000024257525654824974
+  },
+  {
+    "vp": "390x844",
+    "id": "ecu-cartoon-fuses",
+    "title": "Cartoon: Software that blows",
+    "disp": [
+      314,
+      232
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.0000642973248798917
+  },
+  {
+    "vp": "390x844",
+    "id": "hpvm-cartoon-booted",
+    "title": "Cartoon: First boot, first burp",
+    "disp": [
+      314,
+      202
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00005537694780710645
+  },
+  {
+    "vp": "390x844",
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "Cartoon: High availability management",
+    "disp": [
+      314,
+      235
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00005728519898284823
+  },
+  {
+    "vp": "414x896",
+    "id": "ecu-cartoon-fuses",
+    "title": "Cartoon: Software that blows",
+    "disp": [
+      338,
+      250
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00003095425206267599
+  },
+  {
+    "vp": "414x896",
+    "id": "hpvm-cartoon-booted",
+    "title": "Cartoon: First boot, first burp",
+    "disp": [
+      338,
+      218
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00007116440979260119
+  },
+  {
+    "vp": "414x896",
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "Cartoon: High availability management",
+    "disp": [
+      338,
+      253
+    ],
+    "maxH": "280px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00005257366321265167
+  },
+  {
+    "vp": "600x800",
+    "id": "ecu-cartoon-fuses",
+    "title": "Cartoon: Software that blows",
+    "disp": [
+      433,
+      320
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 4.599975513830401e-7
+  },
+  {
+    "vp": "600x800",
+    "id": "hpvm-cartoon-booted",
+    "title": "Cartoon: First boot, first burp",
+    "disp": [
+      497,
+      320
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.000008073570263000818
+  },
+  {
+    "vp": "600x800",
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "Cartoon: High availability management",
+    "disp": [
+      428,
+      320
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 0,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00002153289819917248
+  },
+  {
+    "vp": "1400x900",
+    "id": "ecu-cartoon-fuses",
+    "title": "Cartoon: Software that blows",
+    "disp": [
+      352,
+      260
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 17,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00000683250951549752
+  },
+  {
+    "vp": "1400x900",
+    "id": "hpvm-cartoon-booted",
+    "title": "Cartoon: First boot, first burp",
+    "disp": [
+      352,
+      227
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 11,
+    "overlappingLabels": [],
+    "aspectDelta": 0.000025934698898000264
+  },
+  {
+    "vp": "1400x900",
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "Cartoon: High availability management",
+    "disp": [
+      352,
+      263
+    ],
+    "maxH": "320px",
+    "objPos": "50% 0%",
+    "objFit": "contain",
+    "visibleLabels": 10,
+    "overlappingLabels": [],
+    "aspectDelta": 0.00005027428330306449
+  }
+]
