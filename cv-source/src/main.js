@@ -9,7 +9,6 @@ import '@fontsource/source-sans-3/400.css';
 import '@fontsource/source-sans-3/500.css';
 import '@fontsource/source-sans-3/600.css';
 import './print/print-styles.css';
-import contentData from './content-data.json';
 import {
   PRINT_STYLES,
   PRINT_STYLE_STORAGE_KEY,
@@ -17,6 +16,18 @@ import {
   resolvePrintStyleId,
   buildModelForStyles
 } from './print/registry.js';
+
+/** Injected by vite.config.js — used to cache-bust content-data.json fetches. */
+const BUILD_ID = typeof __BUILD_ID__ !== 'undefined' ? __BUILD_ID__ : 'dev';
+
+async function loadContentData() {
+  const url = `${import.meta.env.BASE_URL}content-data.json?v=${encodeURIComponent(BUILD_ID)}`;
+  const res = await fetch(url, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(`content-data.json ${res.status} (${url})`);
+  const data = await res.json();
+  if (!Array.isArray(data) || !data.length) throw new Error('content-data.json empty or invalid');
+  return data;
+}
 
 // ============================================================================
 // Logo-inspired theme palette
@@ -2171,9 +2182,10 @@ function setupTitlePrintMenu() {
 }
 
 async function init() {
-  console.log('Initializing 3D CV...');
+  console.log('Initializing 3D CV...', { buildId: BUILD_ID });
+  const contentData = await loadContentData();
   initScene();
-  console.log(`Loaded ${contentData.length} projects from bundled content`);
+  console.log(`Loaded ${contentData.length} projects (build ${BUILD_ID})`);
   createStarsFromBullets(contentData);
   fitOverviewToClusters();
   setupInteraction();
@@ -2191,5 +2203,7 @@ async function init() {
 
 init().catch((err) => {
   console.error(err);
-  document.getElementById('loading').innerHTML = '<p>Failed to load. Please refresh.</p>';
+  const msg = (err && err.message) ? String(err.message).slice(0, 180) : 'Unknown error';
+  document.getElementById('loading').innerHTML =
+    `<p>Failed to load. Please refresh.</p><p style="opacity:.65;font-size:12px;margin-top:8px">${msg}</p>`;
 });

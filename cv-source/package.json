@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Interactive 3D CV constellation for Christophe de Dinechin",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "process-content": "node scripts/process-content.js",
     "generate-qr": "node scripts/generate-qr.js",
