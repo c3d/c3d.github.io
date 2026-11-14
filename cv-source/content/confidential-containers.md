@@ -8,6 +8,7 @@ related:
   - kata-containers
   - hpvm
   - spice
+  - patents
 videos: []
 links:
   - label: Kata Containers

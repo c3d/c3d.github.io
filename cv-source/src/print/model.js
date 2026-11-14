@@ -6,8 +6,10 @@
  * Items without `print` are web-only and omitted from print styles.
  */
 
-const PATENT_COUNT = 11; // unique US grant numbers for inventor Christophe de Dinechin (family-once)
-const PATENT_LIST_URL = 'https://patents.google.com/?inventor=Christophe+de+Dinechin&oq=inventor%3D(Christophe+de+Dinechin)';
+const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
+const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
+/** Broad inventor query covering both “Christophe de Dinechin” and “Dupont de Dinechin”. */
+const PATENT_LIST_URL = 'https://patents.google.com/?inventor=Dinechin';
 const WIESS_URL = 'https://www.usenix.org/legacy/events/wiess2000/full_papers/dinechin/dinechin.pdf';
 const FOSDEM_2024_URL = 'https://fosdem.org/2024/schedule/event/fosdem-2024-1990-how-much-math-can-you-fit-in-700k-/';
 const FOSDEM_2023_URL = 'https://fosdem.org/2023/schedule/event/reversepolishlisp/';
@@ -33,10 +35,10 @@ function researchPrintProjects() {
     },
     {
       id: 'patents',
-      title: `${PATENT_COUNT} patents awarded`,
+      title: `${PATENT_COUNT} patents awarded, ${PATENT_PENDING} pending`,
       years: '',
       bullets: [
-        `${PATENT_COUNT} granted US patents (family-once) — ${deepLink(PATENT_LIST_URL, 'Google Patents inventor list')}`
+        `${PATENT_COUNT} granted US patents (HP and Red Hat, virtualization and confidential computing), ${PATENT_PENDING} pending applications including split host/tenant cluster credentials — ${deepLink(PATENT_LIST_URL, 'Google Patents (de Dinechin / Dupont de Dinechin)')}`
       ]
     },
     {
