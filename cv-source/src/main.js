@@ -182,6 +182,10 @@ const TOPICS_BY_ID = Object.fromEntries(topicsRegistry.map((t) => [t.id, t]));
 const CLUSTER_BY_SLUG = Object.fromEntries(
   Object.entries(THEME_CLUSTER_SLUGS).map(([theme, slug]) => [slug, theme])
 );
+/** Type-to-search: query string while the Searching… HUD is open. */
+let searchQuery = '';
+let searchActive = false;
+const searchMatchIds = new Set(); // project ids that match the current query
 let softWhiteDisc;
 const softThemeDiscs = {};
 const clock = new THREE.Clock();
@@ -931,6 +935,72 @@ function projectMatchesTopic(project, topicId = activeTopicId) {
   return (project?.topics || []).includes(topicId);
 }
 
+/** Case- and accent-insensitive fold (Réunifions ↔ reunifions). */
+function foldText(s) {
+  return String(s || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function projectSearchBlob(project) {
+  if (!project) return '';
+  const parts = [
+    project.title,
+    project.id,
+    project.theme,
+    THEME_CLUSTER_SLUGS[project.theme],
+    ...(project.bullets || []).map((b) => (typeof b === 'string' ? b : b.text)),
+    String(project.content || '').replace(/<[^>]+>/g, ' ')
+  ];
+  for (const tid of project.topics || []) {
+    const t = TOPICS_BY_ID[tid];
+    parts.push(tid, t?.name, t?.description);
+  }
+  return foldText(parts.filter(Boolean).join('\n'));
+}
+
+function scoreProjectSearch(project, qFold) {
+  if (!project || !qFold) return 0;
+  const title = foldText(project.title);
+  const theme = foldText(project.theme);
+  const slug = foldText(THEME_CLUSTER_SLUGS[project.theme] || '');
+  if (title === qFold) return 100;
+  if (title.startsWith(qFold)) return 92;
+  if (title.includes(qFold)) return 80;
+  if (theme.includes(qFold) || slug.includes(qFold)) return 58;
+  for (const tid of project.topics || []) {
+    const t = TOPICS_BY_ID[tid];
+    if (foldText(tid).includes(qFold) || foldText(t?.name).includes(qFold)) return 52;
+  }
+  if (projectSearchBlob(project).includes(qFold)) return 28;
+  return 0;
+}
+
+function recomputeSearchMatches() {
+  searchMatchIds.clear();
+  const q = foldText(searchQuery.trim());
+  if (!searchActive || !q) return;
+  projects.forEach((p) => {
+    if (scoreProjectSearch(p, q) > 0) searchMatchIds.add(p.id);
+  });
+}
+
+function bestSearchMatch() {
+  const q = foldText(searchQuery.trim());
+  if (!q) return null;
+  let best = null;
+  let bestScore = 0;
+  projects.forEach((p) => {
+    const s = scoreProjectSearch(p, q);
+    if (s > bestScore) {
+      bestScore = s;
+      best = p;
+    }
+  });
+  return best;
+}
+
 function refreshEdgeOpacities() {
   const focusId = currentStar?.project?.id || null;
   lineageLines.forEach((line) => {
@@ -945,9 +1015,16 @@ function refreshEdgeOpacities() {
       else if (am || bm) op = 0.42;
       else op = 0.05;
     }
+    if (searchActive && foldText(searchQuery.trim())) {
+      const aMatch = searchMatchIds.has(line.userData.fromId);
+      const bMatch = searchMatchIds.has(line.userData.toId);
+      if (aMatch && bMatch) op = Math.max(op, 0.7);
+      else if (aMatch || bMatch) op = Math.max(op * 0.85, 0.28);
+      else op = Math.min(op, 0.06);
+    }
     if (focusId) {
       const onFocus = line.userData.fromId === focusId || line.userData.toId === focusId;
-      op = onFocus ? Math.max(op, 0.8) : Math.min(op, activeTopicId ? op : 0.08);
+      op = onFocus ? Math.max(op, 0.8) : Math.min(op, (activeTopicId || searchActive) ? op : 0.08);
     }
     line.material.opacity = op;
   });
@@ -957,21 +1034,43 @@ function highlightConnectedEdges(_projectId) {
   refreshEdgeOpacities();
 }
 
+function starVisibilityMul(star) {
+  let mul = 1;
+  const topicOk = projectMatchesTopic(star.project);
+  if (activeTopicId) mul *= topicOk ? 1.05 : 0.42;
+  if (searchActive && foldText(searchQuery.trim())) {
+    const hit = searchMatchIds.has(star.project.id);
+    mul *= hit ? 1.08 : 0.32;
+  }
+  if (viewLevel >= 3) mul *= 0.7;
+  return mul;
+}
+
 function applyTopicFilter() {
+  refreshStarVisibility();
+  updateTopicIndicator();
+}
+
+function refreshStarVisibility() {
+  recomputeSearchMatches();
   stars.forEach((s) => {
-    const match = projectMatchesTopic(s.project);
-    const mul = !activeTopicId ? 1 : (match ? 1.05 : 0.42);
+    const topicOk = projectMatchesTopic(s.project);
+    const searchHit = !searchActive || !foldText(searchQuery.trim()) || searchMatchIds.has(s.project.id);
+    const mul = starVisibilityMul(s);
     if (s.halo?.material) {
-      const base = s.userDataHaloOp ?? s.halo.material.opacity ?? 0.92;
-      if (s.userDataHaloOp == null) s.userDataHaloOp = base;
-      s.halo.material.opacity = s.userDataHaloOp * mul * (viewLevel >= 3 ? 0.7 : 1);
+      const base = s.userDataHaloOp ?? 0.92;
+      s.userDataHaloOp = base;
+      s.halo.material.opacity = base * mul;
     }
     if (s.core?.material) {
-      const base = s.userDataCoreOp ?? s.core.material.opacity ?? 1;
-      if (s.userDataCoreOp == null) s.userDataCoreOp = base;
-      s.core.material.opacity = s.userDataCoreOp * mul;
+      const base = s.userDataCoreOp ?? 1;
+      s.userDataCoreOp = base;
+      s.core.material.opacity = base * mul;
     }
-    if (s.mesh) s.mesh.userData.topicMatch = match;
+    if (s.mesh) {
+      s.mesh.userData.topicMatch = topicOk;
+      s.mesh.userData.searchMatch = searchHit;
+    }
   });
   labelSprites.forEach((label) => {
     const el = label.userData.el;
@@ -979,13 +1078,161 @@ function applyTopicFilter() {
     const project = label.userData.projectId
       ? projects.find((p) => p.id === label.userData.projectId)
       : null;
-    const match = label.userData.kind === 'theme'
+    const topicMatch = label.userData.kind === 'theme'
       ? (!activeTopicId || projects.some((p) => p.theme === label.userData.theme && projectMatchesTopic(p)))
       : projectMatchesTopic(project);
-    el.classList.toggle('ms-label-dim', !!activeTopicId && !match);
+    el.classList.toggle('ms-label-dim', !!activeTopicId && !topicMatch);
+
+    const qOn = searchActive && !!foldText(searchQuery.trim());
+    let searchMatch = false;
+    if (qOn) {
+      if (label.userData.kind === 'theme') {
+        searchMatch = projects.some(
+          (p) => p.theme === label.userData.theme && searchMatchIds.has(p.id)
+        ) || foldText(label.userData.theme || label.userData.labelTitle || '').includes(foldText(searchQuery.trim()));
+      } else {
+        searchMatch = !!(project && searchMatchIds.has(project.id));
+      }
+    }
+    el.classList.toggle('ms-label-search-match', qOn && searchMatch);
+    el.classList.toggle('ms-label-search-miss', qOn && !searchMatch);
   });
   refreshEdgeOpacities();
-  updateTopicIndicator();
+  updateSearchHud();
+}
+
+function updateSearchPulse(t) {
+  if (!searchActive || !foldText(searchQuery.trim()) || prefersReducedMotion()) return;
+  // ~2s breathing cycle
+  const breath = 0.5 + 0.5 * Math.sin(Math.PI * t);
+  stars.forEach((s) => {
+    if (!s.mesh?.userData.searchMatch) return;
+    if (!searchMatchIds.has(s.project.id)) return;
+    const mul = starVisibilityMul(s);
+    const pulse = 0.72 + 0.28 * breath;
+    if (s.halo?.material) s.halo.material.opacity = (s.userDataHaloOp ?? 0.92) * mul * pulse;
+    if (s.core?.material) s.core.material.opacity = (s.userDataCoreOp ?? 1) * mul * (0.85 + 0.15 * breath);
+  });
+}
+
+function isEditableTarget(el) {
+  if (!el || el === document.body) return false;
+  const tag = (el.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+  if (el.isContentEditable) return true;
+  return false;
+}
+
+function updateSearchHud() {
+  const hud = document.getElementById('search-hud');
+  const typedEl = hud?.querySelector('[data-search-typed]');
+  const meta = hud?.querySelector('[data-search-meta]');
+  const input = document.getElementById('search-input');
+  if (!hud) return;
+  if (!searchActive) {
+    hud.hidden = true;
+    hud.setAttribute('aria-hidden', 'true');
+    return;
+  }
+  hud.hidden = false;
+  hud.setAttribute('aria-hidden', 'false');
+  // Exact live copy: Searching 'typed text here'…
+  if (typedEl) typedEl.textContent = searchQuery;
+  if (input && input !== document.activeElement) input.value = searchQuery;
+  const q = foldText(searchQuery.trim());
+  const n = q ? searchMatchIds.size : 0;
+  if (meta) {
+    meta.textContent = !q
+      ? 'Type to filter the constellation'
+      : (n === 0 ? 'No matches' : `${n} match${n === 1 ? '' : 'es'}`);
+  }
+}
+
+function openSearchHud({ focusInput = false } = {}) {
+  if (document.body.classList.contains('print-preview')) return;
+  searchActive = true;
+  if (autoMode) exitAutoMode();
+  if (idleTimer) clearTimeout(idleTimer);
+  recomputeSearchMatches();
+  refreshStarVisibility();
+  updateSearchHud();
+  if (focusInput) {
+    const input = document.getElementById('search-input');
+    input?.focus({ preventScroll: true });
+  }
+}
+
+function closeSearchHud() {
+  searchActive = false;
+  searchQuery = '';
+  searchMatchIds.clear();
+  const input = document.getElementById('search-input');
+  if (input) {
+    input.value = '';
+    if (document.activeElement === input) input.blur();
+  }
+  refreshStarVisibility();
+  updateSearchHud();
+  noteUserActivity(); // re-arm idle after search
+}
+
+function setSearchQuery(next, { focusInput = false } = {}) {
+  searchQuery = String(next ?? '');
+  if (!searchActive) openSearchHud({ focusInput });
+  else {
+    recomputeSearchMatches();
+    refreshStarVisibility();
+  }
+  updateSearchHud();
+}
+
+function commitSearchBestMatch() {
+  const best = bestSearchMatch();
+  if (!best) return false;
+  const star = firstStarForProject(best.id);
+  closeSearchHud();
+  if (star) openHUD(star);
+  else if (best.theme) enterClusterView(best.theme);
+  return true;
+}
+
+function setupTypeToSearch() {
+  const input = document.getElementById('search-input');
+  const fab = document.getElementById('search-fab');
+  fab?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    noteUserActivity();
+    openSearchHud({ focusInput: true });
+  });
+  input?.addEventListener('input', () => {
+    if (!input.value) {
+      // Keep HUD open on mobile while the field is focused but empty
+      searchQuery = '';
+      searchMatchIds.clear();
+      refreshStarVisibility();
+      updateSearchHud();
+      return;
+    }
+    setSearchQuery(input.value, { focusInput: true });
+  });
+  window.foldText = foldText;
+  window.scoreProjectSearch = scoreProjectSearch;
+  window.setSearchQuery = setSearchQuery;
+  window.closeSearchHud = closeSearchHud;
+  window.commitSearchBestMatch = commitSearchBestMatch;
+  input?.addEventListener('keydown', (e) => {
+    // Handled in bubble phase below too; stop overview/other globals when focused
+    if (e.key === 'Escape' || e.key === 'Delete') {
+      e.preventDefault();
+      e.stopPropagation();
+      closeSearchHud();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      commitSearchBestMatch();
+    }
+  });
 }
 
 function setActiveTopic(topicId, { pushUrl = true } = {}) {
@@ -1731,6 +1978,7 @@ function isHudVideoBusy() {
 
 function enterAutoMode() {
   if (autoMode || document.body.classList.contains('print-preview')) return;
+  if (searchActive) return; // pause autopilot while searching
   if (isHudVideoBusy()) {
     // Stay idle-armed but do not warp while a video HUD is open
     noteUserActivity();
@@ -1758,7 +2006,9 @@ function noteUserActivity() {
   if (autoMode) exitAutoMode();
   if (idleTimer) clearTimeout(idleTimer);
   if (document.body.classList.contains('print-preview')) return;
+  if (searchActive) return; // do not arm idle warp while the search HUD is open
   idleTimer = setTimeout(() => {
+    if (searchActive) return;
     if (isHudVideoBusy()) {
       noteUserActivity();
       return;
@@ -2068,12 +2318,61 @@ function setupInteraction() {
   });
 
   window.addEventListener('keydown', (e) => {
-    noteUserActivity();
+    // Type-to-search: capture printable keys when not in a form field
+    const inEditable = isEditableTarget(e.target);
+    const inSearchInput = e.target?.id === 'search-input';
+
     if (e.key === 'Escape') {
+      noteUserActivity();
       closePrintStyleMenu();
+      if (searchActive) {
+        e.preventDefault();
+        closeSearchHud();
+        return;
+      }
       if (viewLevel >= 3 || currentStar) closeHUD();
       else if (viewLevel === 2) exitClusterView();
-    } else if (e.key === 'o' || e.key === 'O') enterOverviewMode();
+      return;
+    }
+
+    if (!inEditable && !inSearchInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      // Search open: Backspace edits; Delete/Esc clear (Esc handled above).
+      // Search closed (empty buffer): Backspace / Delete → Overview (O is a search letter).
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        noteUserActivity();
+        if (searchActive) {
+          const next = searchQuery.slice(0, -1);
+          if (!next) closeSearchHud();
+          else setSearchQuery(next);
+        } else {
+          enterOverviewMode();
+        }
+        return;
+      }
+      if (e.key === 'Delete') {
+        e.preventDefault();
+        noteUserActivity();
+        if (searchActive) closeSearchHud();
+        else enterOverviewMode();
+        return;
+      }
+      if (e.key === 'Enter' && searchActive) {
+        e.preventDefault();
+        noteUserActivity();
+        commitSearchBestMatch();
+        return;
+      }
+      // No single-letter command shortcuts — printable keys always type-to-search.
+      if (e.key.length === 1 && !/[\u0000-\u001f\u007f]/.test(e.key)) {
+        e.preventDefault();
+        noteUserActivity();
+        setSearchQuery(searchQuery + e.key);
+        return;
+      }
+    }
+
+    noteUserActivity();
   });
 
   window.addEventListener('resize', () => {
@@ -2092,6 +2391,7 @@ function setupInteraction() {
   });
 
   setupTitlePrintMenu();
+  setupTypeToSearch();
   noteUserActivity();
 }
 
@@ -2119,6 +2419,7 @@ function animate() {
   updateLabels(dt);
   updateStarfieldTwinkle(t);
   updateWarpShift(dt);
+  updateSearchPulse(t);
   composer.render();
 }
 
