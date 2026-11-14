@@ -11,7 +11,8 @@
     "build": "npm run process-content && npm run generate-qr && vite build",
     "build:all": "npm run build && npm run generate-pdfs",
     "preview": "vite preview",
-    "test:labels": "node scripts/test-label-clicks.mjs"
+    "test:labels": "node scripts/test-label-clicks.mjs",
+    "check:media": "node scripts/check-topic-media.mjs"
   },
   "dependencies": {
     "@fontsource/orbitron": "^5.3.0",

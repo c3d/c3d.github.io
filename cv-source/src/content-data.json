@@ -97,6 +97,9 @@
         "url": "http://blog.taodyne.com"
       }
     ],
+    "images": [
+      "/cv/media/blogs.png"
+    ],
     "content": "<h2>Technical and personal blogs</h2>\n<ul>\n<li>Grenouille Bouillie — tech frustrations and French politics</li>\n<li>Red Skin Cat — personal technical brain dump</li>\n<li>Taodyne blog — Tao3D tutorials, opinions, and product news</li>\n</ul>\n",
     "bullets": [
       {
@@ -130,6 +133,9 @@
         "url": "http://www.taodyne.com/shop/blog/295-breakout-video-game-in-less-than-300-lines-of-code"
       }
     ],
+    "images": [
+      "/cv/media/breakout-tao3d.png"
+    ],
     "content": "<h2>Demo game under 300 lines of Tao3D</h2>\n<ul>\n<li>Breakout-style demo to show short animated programs to students</li>\n<li>Written in Tao3D to illustrate concise interactive 3D coding</li>\n<li>Not a commercial product — a teaching / demo piece</li>\n</ul>\n",
     "bullets": [
       {
@@ -157,6 +163,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/capavoit.jpg"
+    ],
     "content": "<h2>Subway car capacity planning for Axlog</h2>\n<ul>\n<li>First Mac application, built at Axlog Ingénierie in Paris</li>\n<li>MacDraw-like editor with a built-in numerical solver</li>\n<li>Aimed at capacity planning and rapid prototyping of subway cars</li>\n</ul>\n",
     "bullets": [
       {
@@ -240,7 +249,9 @@
     "years": null,
     "weight": 7,
     "related": [],
-    "videos": [],
+    "videos": [
+      "wmsLBirTPjQ"
+    ],
     "links": [
       {
         "label": "Blog write-up",
@@ -250,6 +261,9 @@
         "label": "VFD driver",
         "url": "http://repo.or.cz/w/de200vfd.git"
       }
+    ],
+    "images": [
+      "/cv/media/de200c.jpg"
     ],
     "content": "<h2>Home entertainment center from an HP Linux appliance</h2>\n<ul>\n<li>HP DE200C digital entertainment appliance (Linux PC in a CD-player shell)</li>\n<li>Converted with MythTV, DVD drive, more RAM, and a TV tuner</li>\n<li>Wrote a client/server driver for the front-panel VFD display</li>\n<li>Linux patches for remote control and front-panel keys</li>\n</ul>\n",
     "bullets": [
@@ -279,14 +293,29 @@
     "weight": 10,
     "print": 3,
     "related": [],
-    "videos": [],
+    "videos": [
+      "k9KXqVCYPoo"
+    ],
+    "videoAspect": "9:16",
     "links": [
       {
         "label": "DxO",
         "url": "https://www.dxo.com/"
       }
     ],
-    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Improving software quality on a highly capable connected camera</li>\n<li>Compact form factor with serious imaging capability</li>\n</ul>\n",
+    "images": [
+      {
+        "src": "/cv/media/dxo-one.jpg",
+        "credit": {
+          "author": "Wilmot Yeh",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "via": "Wikimedia Commons",
+          "viaUrl": "https://commons.wikimedia.org/wiki/File:DxO_ONE_connected_to_iPhone_6.jpg"
+        }
+      }
+    ],
+    "content": "<h2>Software quality for a diminutive connected camera</h2>\n<p>Paris.</p>\n<ul>\n<li>Dual-core ARM + ISP real-time system</li>\n<li>Improving software quality on a highly capable connected camera</li>\n<li>Compact form factor with serious imaging capability</li>\n<li>The unusual viewfinder UI seen in the video was my invention, proposed during my job interview at DxO</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Dual-core ARM + ISP real-time system",
@@ -299,30 +328,261 @@
       {
         "text": "Compact form factor with serious imaging capability",
         "section": "Software quality for a diminutive connected camera"
+      },
+      {
+        "text": "The unusual viewfinder UI seen in the video was my invention, proposed during my job interview at DxO",
+        "section": "Software quality for a diminutive connected camera"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-dontcare",
+    "title": "Marketing needs not care",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/dontcare.jpg"
+    ],
+    "content": "<h2>Marketing needs not care</h2>\n<ul>\n<li>An interesting sales and marketing technique is to know as little about your product as you possibly can...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "An interesting sales and marketing technique is to know as little about your product as you possibly can...",
+        "section": "Marketing needs not care"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-fuses",
+    "title": "Software that blows",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/fuses.jpg"
+    ],
+    "content": "<h2>Software that blows</h2>\n<ul>\n<li>The first time ECUTEST exited without crashing, a bug in its shutdown code closed all relays, causing a massive short-circuit.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "The first time ECUTEST exited without crashing, a bug in its shutdown code closed all relays, causing a massive short-circuit.",
+        "section": "Software that blows"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-injectors",
+    "title": "Customers know best",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/injectors.jpg"
+    ],
+    "content": "<h2>Customers know best</h2>\n<ul>\n<li>This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed of relief.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "This loud clicking noise? Our customer revealed to us it was their gas injectors... during the final acceptance test. And everybody sighed of relief.",
+        "section": "Customers know best"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-itfits",
+    "title": "Tight fit",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/itfits.jpg"
+    ],
+    "content": "<h2>Tight fit</h2>\n<ul>\n<li>Putting all the required hardware in the system required quite a bit of creative thinking on the part of our lead hardware engineer.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Putting all the required hardware in the system required quite a bit of creative thinking on the part of our lead hardware engineer.",
+        "section": "Tight fit"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-notools",
+    "title": "Union worker",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/notools.jpg"
+    ],
+    "content": "<h2>Union worker</h2>\n<ul>\n<li>Demo time at Big Customer. We are not allowed to unpack our system, a &quot;Union Guy&quot; has to do it. He shows up one hour later, only to say he needs to come back with his tools...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Demo time at Big Customer. We are not allowed to unpack our system, a \"Union Guy\" has to do it. He shows up one hour later, only to say he needs to come back with his tools...",
+        "section": "Union worker"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-optimist",
+    "title": "Wild optimism",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/optimist.jpg"
+    ],
+    "content": "<h2>Wild optimism</h2>\n<ul>\n<li>Our sales numbers were not good, yet our sales people always found creative ways to present bad data.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Our sales numbers were not good, yet our sales people always found creative ways to present bad data.",
+        "section": "Wild optimism"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-processes",
+    "title": "Processes",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/processes.jpg"
+    ],
+    "content": "<h2>Processes</h2>\n<ul>\n<li>Our new management forced us to convert all our FrameMaker documents to the very buggy Microsoft Word 6. They learned from our problems, and never migrated to Word themselves.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Our new management forced us to convert all our FrameMaker documents to the very buggy Microsoft Word 6. They learned from our problems, and never migrated to Word themselves.",
+        "section": "Processes"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-venturi",
+    "title": "Yes, it's a bit slow to start",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/Venturi.jpg"
+    ],
+    "content": "<h2>Yes, it&#39;s a bit slow to start</h2>\n<ul>\n<li>We had tried all morning to launch this new software, and nothing happened. We went for lunch, and when we came back, it was finally done starting up...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "We had tried all morning to launch this new software, and nothing happened. We went for lunch, and when we came back, it was finally done starting up...",
+        "section": "Yes, it's a bit slow to start"
+      }
+    ]
+  },
+  {
+    "id": "ecu-cartoon-yesterdays",
+    "title": "Ever changing product structure",
+    "theme": "Art & Culture",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "ecu-cartoons",
+    "related": [
+      "ecu-cartoons",
+      "ecutest"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons/yesterdays.jpg"
+    ],
+    "content": "<h2>Ever changing product structure</h2>\n<ul>\n<li>A problem with prototype hardware is that specifications are not exactly frozen solid. That made the product pricing and options also a moving target.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "A problem with prototype hardware is that specifications are not exactly frozen solid. That made the product pricing and options also a moving target.",
+        "section": "Ever changing product structure"
       }
     ]
   },
   {
     "id": "ecu-cartoons",
-    "title": "ECUTEST & HPVM Cartoons",
+    "title": "ECUTEST Cartoons",
     "theme": "Art & Culture",
     "years": null,
     "weight": 6,
     "related": [
       "ecutest",
-      "hpvm"
+      "ecu-cartoon-dontcare",
+      "ecu-cartoon-fuses",
+      "ecu-cartoon-injectors",
+      "ecu-cartoon-itfits",
+      "ecu-cartoon-notools",
+      "ecu-cartoon-optimist",
+      "ecu-cartoon-processes",
+      "ecu-cartoon-venturi",
+      "ecu-cartoon-yesterdays"
     ],
     "videos": [],
     "links": [],
-    "content": "<h2>Release cartoons for HP products</h2>\n<ul>\n<li>Cartoon series for HP ECUTEST manufacturing release</li>\n<li>Separate cartoon set for HPVM release humor and milestones</li>\n</ul>\n",
+    "images": [
+      "/cv/media/ecu-cartoons.jpg"
+    ],
+    "content": "<h2>Release cartoons for HP ECUTEST</h2>\n<ul>\n<li>Cartoon series for the HP ECUTEST manufacturing release</li>\n<li>Each panel is its own satellite star around this hub</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Cartoon series for HP ECUTEST manufacturing release",
-        "section": "Release cartoons for HP products"
+        "text": "Cartoon series for the HP ECUTEST manufacturing release",
+        "section": "Release cartoons for HP ECUTEST"
       },
       {
-        "text": "Separate cartoon set for HPVM release humor and milestones",
-        "section": "Release cartoons for HP products"
+        "text": "Each panel is its own satellite star around this hub",
+        "section": "Release cartoons for HP ECUTEST"
       }
     ]
   },
@@ -333,9 +593,14 @@
     "years": "1994-1998",
     "weight": 9,
     "print": 4,
-    "related": [],
+    "related": [
+      "ecu-cartoons"
+    ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/ecutest.jpg"
+    ],
     "content": "<h2>Real-time test system for car electronics</h2>\n<p>Lyon.</p>\n<ul>\n<li>Designed HP ECUTEST for engine control unit testing</li>\n<li>Sub-millisecond closed loop (250µs in some configurations)</li>\n<li>Hundreds of analog/digital signals in a typical setup</li>\n<li>Heterogeneous multiprocessing (Windows PC + real-time boards)</li>\n<li>Hardware-agnostic binary translator for per-cycle equations</li>\n</ul>\n",
     "bullets": [
       {
@@ -374,6 +639,9 @@
         "label": "SourceForge",
         "url": "https://sourceforge.net/projects/emacs-on-aqua/"
       }
+    ],
+    "images": [
+      "/cv/media/emacs-aqua.png"
     ],
     "content": "<h2>First graphical Emacs on Mac OS X Aqua</h2>\n<ul>\n<li>Adapted an old NeXT port to Aqua when only Terminal Emacs shipped</li>\n<li>Added macOS niceties such as transparent windows</li>\n<li>Published on SourceForge; later superseded by upstream Cocoa support</li>\n</ul>\n",
     "bullets": [
@@ -441,14 +709,23 @@
     "related": [
       "db48x"
     ],
-    "videos": [],
+    "videos": [
+      "-Cnh_fIN55I"
+    ],
     "links": [
+      {
+        "label": "Video: YouTube (third-party)",
+        "url": "https://www.youtube.com/watch?v=-Cnh_fIN55I"
+      },
       {
         "label": "HPCalc.org",
         "url": "https://www.hpcalc.org/"
       }
     ],
-    "content": "<h2>Viral calculator games and a development system</h2>\n<ul>\n<li>HPDS — HP Development System for HP calculators (from earlier SATAS)</li>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n",
+    "images": [
+      "/cv/media/hp48-games.jpg"
+    ],
+    "content": "<h2>Viral calculator games and a development system</h2>\n<ul>\n<li>HPDS — HP Development System for HP calculators (from earlier SATAS)</li>\n<li>PacMan — first use of HP48 hardware scroll (per Paul Courbis)</li>\n<li>Spread virally via infrared networking</li>\n<li>Tetris demo/tutorial game for HPDS</li>\n<li>Lemmings clone with level editor, pushing memory and CPU limits</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;The first games to use the HP-48 hardware scroll&quot;</em> — P. Courbis</p>\n<p>The HUD video for this topic is a third-party YouTube upload (not the author&#39;s own recording).</p>\n",
     "bullets": [
       {
         "text": "HPDS — HP Development System for HP calculators (from earlier SATAS)",
@@ -487,6 +764,9 @@
         "url": "https://itanium-cxx-abi.github.io/cxx-abi/"
       }
     ],
+    "images": [
+      "/cv/media/hpcpp.jpg"
+    ],
     "content": "<h2>C++ templates, exception handling, and the industry ABI</h2>\n<p>Cupertino, Hewlett-Packard Compiler and Languages Lab.</p>\n<ul>\n<li>Worked on C++ templates and exception handling</li>\n<li>Initiated / contributed to the common C++ ABI for Itanium</li>\n<li>Represented HP at the C++ standards committee for a period</li>\n<li>Built the first native Itanium C and C++ compilers</li>\n<li>Exception-handling approach remains widely used in modern compilers</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;An exceedingly sharp engineer&quot;</em> — Mark Mitchell</p>\n",
     "bullets": [
       {
@@ -512,6 +792,98 @@
     ]
   },
   {
+    "id": "hpvm-cartoon-booted",
+    "title": "First boot, first burp",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/Booted.jpg"
+    ],
+    "content": "<h2>First boot, first burp</h2>\n<ul>\n<li>Todd Kjos successfully dealt simultaneously with the early bring-up of HPVM and the early bring-up of his newborn child...</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Todd Kjos successfully dealt simultaneously with the early bring-up of HPVM and the early bring-up of his newborn child...",
+        "section": "First boot, first burp"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-ogm",
+    "title": "What does OGM stand for?",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/OGM.jpg"
+    ],
+    "content": "<h2>What does OGM stand for?</h2>\n<ul>\n<li>Karen Noel did wonders with on-line guest migration and OpenVMS support, but also cooked amazing turkeys.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Karen Noel did wonders with on-line guest migration and OpenVMS support, but also cooked amazing turkeys.",
+        "section": "What does OGM stand for?"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-stress",
+    "title": "Stress testing",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/Stress.jpg"
+    ],
+    "content": "<h2>Stress testing</h2>\n<ul>\n<li>Lynda Rice was responsible for stress-testing HPVM and pushing it to its limit. But she was pushing herself too.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Lynda Rice was responsible for stress-testing HPVM and pushing it to its limit. But she was pushing herself too.",
+        "section": "Stress testing"
+      }
+    ]
+  },
+  {
+    "id": "hpvm-cartoon-virtualdenise",
+    "title": "High availability management",
+    "theme": "Systems & Virtualization",
+    "years": null,
+    "weight": 3,
+    "satelliteOf": "hpvm",
+    "related": [
+      "hpvm"
+    ],
+    "videos": [],
+    "links": [],
+    "images": [
+      "/cv/media/hpvm-cartoons/VirtualDenise.jpg"
+    ],
+    "content": "<h2>High availability management</h2>\n<ul>\n<li>It was hard to tell that Denise Dumas was overworked, given how many things she managed to juggle successfully.</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "It was hard to tell that Denise Dumas was overworked, given how many things she managed to juggle successfully.",
+        "section": "High availability management"
+      }
+    ]
+  },
+  {
     "id": "hpvm",
     "title": "HPVM - Enterprise Virtualization",
     "theme": "Systems & Virtualization",
@@ -520,7 +892,12 @@
     "print": 1,
     "related": [
       "kata-containers",
-      "spice"
+      "spice",
+      "hpvm-cartoon-booted",
+      "hpvm-cartoon-virtualdenise",
+      "hpvm-cartoon-stress",
+      "hpvm-cartoon-ogm",
+      "ecu-cartoons"
     ],
     "videos": [],
     "links": [
@@ -528,6 +905,9 @@
         "label": "HPVM on Wikipedia",
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
       }
+    ],
+    "images": [
+      "/cv/media/hpvm.jpg"
     ],
     "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the HP Integrity Virtual Machines project in late 2000</li>\n<li>Early bring-up with Todd Kjos and Jonathan Ross (4-way HP-UX guests)</li>\n<li>Contributions across interrupt handling, binary translation, memory, I/O, scheduling</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
     "bullets": [
@@ -567,6 +947,9 @@
         "label": "Amazon FR",
         "url": "https://www.amazon.fr/Informagie-Roman-danticipation-ou-pas/dp/169985081X"
       }
+    ],
+    "images": [
+      "/cv/media/informagie.png"
     ],
     "content": "<h2>Science-fiction novel (French)</h2>\n<ul>\n<li>Started as a student around the same time as Alpha Waves</li>\n<li>Finished after 32 years and published</li>\n<li>Humorous SF autobiography by Antoine Ravelin</li>\n<li>A video game saves humanity with the help of dinosaurs</li>\n<li>English translation tentatively titled &quot;Nin, Binary&quot; (very low priority)</li>\n</ul>\n",
     "bullets": [
@@ -660,6 +1043,9 @@
         "url": "https://katacontainers.io/"
       }
     ],
+    "images": [
+      "/cv/media/kata-containers.png"
+    ],
     "content": "<h2>OpenShift Sandboxed Containers / confidential containers</h2>\n<ul>\n<li>Project owner for OpenShift Sandboxed Containers</li>\n<li>Work on confidential containers</li>\n<li>Responsible for virtualization release quality in RHEL 8 (career systems track)</li>\n<li>Combines Kubernetes/OpenShift orchestration with VM isolation</li>\n</ul>\n",
     "bullets": [
       {
@@ -688,10 +1074,14 @@
     "weight": 8,
     "related": [
       "xl-tao3d",
-      "mozart-moka"
+      "mozart",
+      "moka"
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/lx.png"
+    ],
     "content": "<h2>Precursor to XL</h2>\n<ul>\n<li>Started after an Alsys SA Ada internship in 1988</li>\n<li>Experimental language design spanning roughly a decade</li>\n<li>Early compilers targeted MC68000; later generated C for portability</li>\n<li>Rewritten several times as ideas evolved; led into XL</li>\n</ul>\n",
     "bullets": [
       {
@@ -729,6 +1119,9 @@
         "url": "https://github.com/c3d/make-it-quick"
       }
     ],
+    "images": [
+      "/cv/media/make-it-quick.png"
+    ],
     "content": "<h2>Make-only auto-configuring build system</h2>\n<ul>\n<li>Short readable makefiles without automake/cmake complexity</li>\n<li>Automatic incremental configuration (<code>config.h</code>)</li>\n<li>Colorized progress, tests, install, parallel builds</li>\n<li>Portable across Linux, macOS, Windows</li>\n</ul>\n",
     "bullets": [
       {
@@ -750,12 +1143,50 @@
     ]
   },
   {
-    "id": "mozart-moka",
-    "title": "Mozart & Moka",
+    "id": "moka",
+    "title": "Moka",
+    "theme": "Languages & Compilers",
+    "years": null,
+    "weight": 8,
+    "related": [
+      "mozart",
+      "xl-tao3d",
+      "lx"
+    ],
+    "videos": [],
+    "links": [
+      {
+        "label": "Moka",
+        "url": "http://mozart-dev.sourceforge.net"
+      }
+    ],
+    "images": [
+      "/cv/media/moka.png"
+    ],
+    "content": "<h2>Java-to-Java extensible compiler</h2>\n<ul>\n<li>Built on the Mozart intermediate language</li>\n<li>Java parser/compiler with extensible front-end hooks</li>\n<li>Covered in a Dr. Dobb’s article on concept programming tools</li>\n</ul>\n",
+    "bullets": [
+      {
+        "text": "Built on the Mozart intermediate language",
+        "section": "Java-to-Java extensible compiler"
+      },
+      {
+        "text": "Java parser/compiler with extensible front-end hooks",
+        "section": "Java-to-Java extensible compiler"
+      },
+      {
+        "text": "Covered in a Dr. Dobb’s article on concept programming tools",
+        "section": "Java-to-Java extensible compiler"
+      }
+    ]
+  },
+  {
+    "id": "mozart",
+    "title": "Mozart",
     "theme": "Languages & Compilers",
     "years": null,
     "weight": 9,
     "related": [
+      "moka",
       "lx",
       "xl-tao3d"
     ],
@@ -766,19 +1197,22 @@
         "url": "http://mozart-dev.sourceforge.net"
       }
     ],
-    "content": "<h2>Extensible front-end IL and Java-to-Java compiler</h2>\n<ul>\n<li>Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article</li>\n<li>Experiments that informed later XL / parse-tree design choices</li>\n</ul>\n",
+    "images": [
+      "/cv/media/mozart.png"
+    ],
+    "content": "<h2>Extensible development-tools framework</h2>\n<ul>\n<li>Intermediate language for extensible language front-ends (with Daveed Vandevoorde)</li>\n<li>First framework designed to fully enable concept programming</li>\n<li>Hosted thin tools / compiler plug-ins; informed later XL parse-tree design</li>\n</ul>\n",
     "bullets": [
       {
-        "text": "Mozart — intermediate language for extensible language front-ends (with Daveed Vandevoorde)",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "Intermediate language for extensible language front-ends (with Daveed Vandevoorde)",
+        "section": "Extensible development-tools framework"
       },
       {
-        "text": "Moka — Java parser/compiler built on Mozart; covered in a Dr. Dobb’s article",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "First framework designed to fully enable concept programming",
+        "section": "Extensible development-tools framework"
       },
       {
-        "text": "Experiments that informed later XL / parse-tree design choices",
-        "section": "Extensible front-end IL and Java-to-Java compiler"
+        "text": "Hosted thin tools / compiler plug-ins; informed later XL parse-tree design",
+        "section": "Extensible development-tools framework"
       }
     ]
   },
@@ -793,8 +1227,20 @@
     ],
     "videos": [],
     "links": [],
-    "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
+    "images": [
+      {
+        "src": "/cv/media/musolver.png",
+        "credit": {
+          "caption": "MuSolver adaptait TK!Solver pour Atari ST"
+        }
+      }
+    ],
+    "content": "<h2>Multi-equation numerical solver on Atari ST</h2>\n<ul>\n<li>MuSolver was a quasi-clone of TK!Solver for the Atari ST</li>\n<li>First graphical app — TK!Solver-style system of non-linear equations</li>\n<li>Added complex numbers and stronger graphing vs TK!Solver</li>\n<li>Written in GFA BASIC; interpreter worked, buggy compiler blocked shipping</li>\n</ul>\n",
     "bullets": [
+      {
+        "text": "MuSolver was a quasi-clone of TK!Solver for the Atari ST",
+        "section": "Multi-equation numerical solver on Atari ST"
+      },
       {
         "text": "First graphical app — TK!Solver-style system of non-linear equations",
         "section": "Multi-equation numerical solver on Atari ST"
@@ -825,6 +1271,9 @@
         "label": "Justia inventor page",
         "url": "https://patents.justia.com/inventor/christophe-de-dinechin"
       }
+    ],
+    "images": [
+      "/cv/media/patents.jpg"
     ],
     "content": "<h2>Issued patents (Hewlett-Packard)</h2>\n<ul>\n<li>US 8,694,819 — virtual interval timer adjustment for VMs (with Noel, Ross)</li>\n<li>US 8,505,020 — computer workload migration using processor pooling</li>\n<li>US 8,091,090 — scratch registers for a virtual-machine monitor</li>\n<li>US 7,996,833 — replacing instructions/blocks in guest code</li>\n<li>US 7,765,238 / 7,613,847 / 7,577,944 / 7,478,394 / 7,330,942 / 7,213,125 / 6,895,491 — VM memory, I/O, and instruction virtualization</li>\n</ul>\n",
     "bullets": [
@@ -876,6 +1325,9 @@
         "url": "https://www.youtube.com/playlist?list=PLQQY5qJ7xX-f-3_8-iYzKplcDemASk8NQ"
       }
     ],
+    "images": [
+      "/cv/media/physics-books.jpg"
+    ],
     "content": "<h2>Amateur physics research — unifying GR and QM</h2>\n<ul>\n<li>A Theory of Incomplete Measurements — unifying GR and quantum mechanics</li>\n<li>New relativity principle: do physics with any instrument</li>\n<li>Discrete measurements instead of continuum space-time</li>\n</ul>\n",
     "bullets": [
       {
@@ -908,6 +1360,9 @@
         "label": "GitHub",
         "url": "https://github.com/c3d/recorder"
       }
+    ],
+    "images": [
+      "/cv/media/recorder.png"
     ],
     "content": "<h2>Lock-free flight recorder for C and C++</h2>\n<ul>\n<li>Continuous recording with printf-like statements</li>\n<li>Classify events to keep both old important and recent rapid events</li>\n<li>Dump on demand (signals / debugger)</li>\n<li>Trace categories live; export channels for visualization</li>\n</ul>\n",
     "bullets": [
@@ -946,6 +1401,9 @@
         "url": "https://www.amazon.fr/dp/B0C5GQTWTQ"
       }
     ],
+    "images": [
+      "/cv/media/reunifions.jpg"
+    ],
     "content": "<h2>Shorter French introduction to TIM ideas</h2>\n<ul>\n<li>Gentle French introduction to incomplete-measurement physics</li>\n<li>Companion to A Theory of Incomplete Measurements</li>\n</ul>\n",
     "bullets": [
       {
@@ -968,12 +1426,17 @@
       "taodyne",
       "xl-tao3d"
     ],
-    "videos": [],
+    "videos": [
+      "Ts7uoqeK720"
+    ],
     "links": [
       {
         "label": "Taodyne blog",
         "url": "http://www.taodyne.com/shop/blog/297-creating-a-serious-game-with-tao3d"
       }
+    ],
+    "images": [
+      "/cv/media/sonar-thales.jpg"
     ],
     "content": "<h2>Tao3D serious game for Thales Underwater Systems</h2>\n<ul>\n<li>Interactive presentation of Thales sonar offerings</li>\n<li>Followed by a simulation of sonar operations</li>\n<li>Among the largest applications written with Tao3D</li>\n</ul>\n",
     "bullets": [
@@ -1007,6 +1470,9 @@
         "url": "http://cc3d.free.fr/Relativity/Relat1.html"
       }
     ],
+    "images": [
+      "/cv/media/special-relativity.png"
+    ],
     "content": "<h2>Special relativity as space-time perspective</h2>\n<ul>\n<li>Explains Lorentz transforms as perspective / Wick rotation in space-time</li>\n<li>Written to make relativity intuitive beyond 1905 textbook formulas</li>\n</ul>\n",
     "bullets": [
       {
@@ -1028,6 +1494,9 @@
     "related": [],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/spectrum-plus.png"
+    ],
     "content": "<h2>BASIC extension for the Sinclair ZX Spectrum</h2>\n<ul>\n<li>First published program — graphic BASIC extensions for the ZX Spectrum</li>\n<li>Windows, ellipses, clipping, flood fill (including 8×8 patterns)</li>\n<li>~3.5KB of Z80 assembly; distributed by Valric-Laurene</li>\n<li>Name collided with Sinclair’s own Spectrum+ computer release</li>\n</ul>\n",
     "bullets": [
       {
@@ -1066,6 +1535,9 @@
         "url": "https://www.spice-space.org/"
       }
     ],
+    "images": [
+      "/cv/media/spice.png"
+    ],
     "content": "<h2>Remote visualization for virtualization</h2>\n<ul>\n<li>Part of the Spice team at Red Hat</li>\n<li>Implemented smart streaming in the SPICE remote viewer</li>\n<li>Remote visualization essential to Red Hat&#39;s virtualization offering</li>\n</ul>\n",
     "bullets": [
       {
@@ -1099,6 +1571,9 @@
         "label": "Tao3D",
         "url": "https://tao3d.sourceforge.net/"
       }
+    ],
+    "images": [
+      "/cv/media/taodyne.png"
     ],
     "content": "<h2>Founder and CEO — real-time 3D presentations</h2>\n<p>Sophia-Antipolis.</p>\n<ul>\n<li>Created Tao3D to present in real-time 3D (big data, movies, glasses-free 3D)</li>\n<li>Tao3D Studio / Player for interactive 3D documents</li>\n<li>Commercial features: stereoscopy, auto-stereoscopy, signed/encrypted documents</li>\n<li>Technical success but commercial failure</li>\n<li>Awards: Best elevator pitch and Best technology in TIC (Business Accelerator 06)</li>\n<li>Most innovative product — Tao3D (DEVCOM 2012)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Christophe is a very innovative and open minded entrepreneur&quot;</em> — P. Zucchetta</p>\n",
     "bullets": [
@@ -1136,6 +1611,8 @@
     "weight": 9,
     "print": 3,
     "related": [
+      "mozart",
+      "moka",
       "taodyne",
       "3divart",
       "firefly",
@@ -1155,6 +1632,9 @@
         "label": "ELFE",
         "url": "https://github.com/c3d/elfe"
       }
+    ],
+    "images": [
+      "/cv/media/xl-tao3d.png"
     ],
     "content": "<h2>Extensible languages designed to evolve</h2>\n<ul>\n<li>XL — an extensible language designed to evolve (from earlier LX work)</li>\n<li>Tao3D — XL derivative for interactive 3D graphics and presentations</li>\n<li>ELFE — experiment for single-source programming in the Internet of Things</li>\n<li>Advanced generics and a simplified parse tree across implementations</li>\n<li>XLR / Tao3D lineage for dynamic 3D animations</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;Advanced and revolutionary stuff&quot;</em> — Raphaël Manfredi</p>\n",
     "bullets": [

@@ -5,13 +5,16 @@ theme: Systems & Virtualization
 years: 2017-Present
 weight: 8
 print: 2
-related: [hpvm, kata-containers]
+related:
+  - hpvm
+  - kata-containers
 videos: []
 links:
   - label: SPICE
-    url: https://www.spice-space.org/
+    url: 'https://www.spice-space.org/'
+images:
+  - /cv/media/spice.png
 ---
-
 ## Remote visualization for virtualization
 
 - Part of the Spice team at Red Hat

@@ -2,19 +2,20 @@
 id: blogs
 title: Blogs & Writing
 theme: Art & Culture
-years: 
+years: null
 weight: 6
 related: []
 videos: []
 links:
   - label: Grenouille Bouillie
-    url: http://grenouille-bouillie.blogspot.fr/
+    url: 'http://grenouille-bouillie.blogspot.fr/'
   - label: Red Skin Cat
-    url: https://redskincat.wordpress.com/
+    url: 'https://redskincat.wordpress.com/'
   - label: Taodyne blog
-    url: http://blog.taodyne.com
+    url: 'http://blog.taodyne.com'
+images:
+  - /cv/media/blogs.png
 ---
-
 ## Technical and personal blogs
 
 - Grenouille Bouillie — tech frustrations and French politics

@@ -5,13 +5,15 @@ theme: Systems & Virtualization
 years: 2001-2014
 weight: 9
 print: 5
-related: [hpvm]
+related:
+  - hpvm
 videos: []
 links:
   - label: Justia inventor page
-    url: https://patents.justia.com/inventor/christophe-de-dinechin
+    url: 'https://patents.justia.com/inventor/christophe-de-dinechin'
+images:
+  - /cv/media/patents.jpg
 ---
-
 ## Issued patents (Hewlett-Packard)
 
 - US 8,694,819 — virtual interval timer adjustment for VMs (with Noel, Ross)

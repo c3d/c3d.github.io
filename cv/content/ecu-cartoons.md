@@ -1,15 +1,26 @@
 ---
 id: ecu-cartoons
-title: ECUTEST & HPVM Cartoons
+title: ECUTEST Cartoons
 theme: Art & Culture
-years: 
+years: null
 weight: 6
-related: [ecutest, hpvm]
+related:
+  - ecutest
+  - ecu-cartoon-dontcare
+  - ecu-cartoon-fuses
+  - ecu-cartoon-injectors
+  - ecu-cartoon-itfits
+  - ecu-cartoon-notools
+  - ecu-cartoon-optimist
+  - ecu-cartoon-processes
+  - ecu-cartoon-venturi
+  - ecu-cartoon-yesterdays
 videos: []
 links: []
+images:
+  - /cv/media/ecu-cartoons.jpg
 ---
+## Release cartoons for HP ECUTEST
 
-## Release cartoons for HP products
-
-- Cartoon series for HP ECUTEST manufacturing release
-- Separate cartoon set for HPVM release humor and milestones
+- Cartoon series for the HP ECUTEST manufacturing release
+- Each panel is its own satellite star around this hub

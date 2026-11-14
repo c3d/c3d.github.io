@@ -5,13 +5,18 @@ theme: Games & 3D
 years: 1989-1993
 weight: 9
 print: 2
-related: [db48x]
-videos: []
+related:
+  - db48x
+videos:
+  - '-Cnh_fIN55I'
 links:
+  - label: 'Video: YouTube (third-party)'
+    url: 'https://www.youtube.com/watch?v=-Cnh_fIN55I'
   - label: HPCalc.org
-    url: https://www.hpcalc.org/
+    url: 'https://www.hpcalc.org/'
+images:
+  - /cv/media/hp48-games.jpg
 ---
-
 ## Viral calculator games and a development system
 
 - HPDS — HP Development System for HP calculators (from earlier SATAS)
@@ -21,3 +26,5 @@ links:
 - Lemmings clone with level editor, pushing memory and CPU limits
 
 **Quote:** *"The first games to use the HP-48 hardware scroll"* — P. Courbis
+
+The HUD video for this topic is a third-party YouTube upload (not the author's own recording).

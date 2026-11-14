@@ -2,13 +2,15 @@
 id: capavoit
 title: CapaVoit
 theme: Tools & Apps
-years: 
+years: null
 weight: 7
-related: [musolver]
+related:
+  - musolver
 videos: []
 links: []
+images:
+  - /cv/media/capavoit.jpg
 ---
-
 ## Subway car capacity planning for Axlog
 
 - First Mac application, built at Axlog Ingénierie in Paris

@@ -5,13 +5,21 @@ theme: Systems & Virtualization
 years: 2000-2010
 weight: 10
 print: 1
-related: [kata-containers, spice]
+related:
+  - kata-containers
+  - spice
+  - hpvm-cartoon-booted
+  - hpvm-cartoon-virtualdenise
+  - hpvm-cartoon-stress
+  - hpvm-cartoon-ogm
+  - ecu-cartoons
 videos: []
 links:
   - label: HPVM on Wikipedia
-    url: https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines
+    url: 'https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines'
+images:
+  - /cv/media/hpvm.jpg
 ---
-
 ## Enterprise-grade virtualization for high-end Itanium servers
 
 - Started the HP Integrity Virtual Machines project in late 2000

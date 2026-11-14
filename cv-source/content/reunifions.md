@@ -2,16 +2,18 @@
 id: reunifions
 title: Réunifions la physique
 theme: Physics
-years: 
+years: null
 weight: 8
 print: 2
-related: [physics-books]
+related:
+  - physics-books
 videos: []
 links:
   - label: Amazon FR
-    url: https://www.amazon.fr/dp/B0C5GQTWTQ
+    url: 'https://www.amazon.fr/dp/B0C5GQTWTQ'
+images:
+  - /cv/media/reunifions.jpg
 ---
-
 ## Shorter French introduction to TIM ideas
 
 - Gentle French introduction to incomplete-measurement physics
