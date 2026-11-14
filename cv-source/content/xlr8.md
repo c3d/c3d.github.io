@@ -28,9 +28,9 @@ topics:
 ## Super-fast VM for XL
 
 - XLR8 is a super-fast VM with interpreted and JIT modes
-- In interpreted mode, it runs 40% faster than Lua and 8× faster than Python for similar microbenchmarks
+- Significantly faster than Lua or Python VMs on a sample of micro-benchmarks
 - In JIT mode, it runs within 20% of C/C++ on most tests
 - XLR8 includes its own from-scratch JIT, targeting x86, ARM and RISC-V in 32- and 64-bit modes
 - A full LLVM target generating XLR8 bytecode runs many C and C++ programs
-- XLR8 has a unique feature where bytecode can be evaluated during bytecode evaluation, so that the bytecode runtime is itself extensible
+- Bytecode can be evaluated while bytecode is running, so the runtime itself is extensible
 - XLR8 is intended as the next runtime for XL
