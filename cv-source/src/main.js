@@ -2359,8 +2359,11 @@ function ensureMediaFocusBackdrop() {
 function sizeMediaFocus(mediaEl) {
   const hud = document.getElementById('hud');
   if (!hud || !mediaEl) return;
-  const maxW = window.innerWidth * 0.95;
-  const maxH = window.innerHeight * 0.95;
+  // Decorated HUD panel = 95% of the viewport; media fills ~95% of that panel.
+  const hudW = window.innerWidth * 0.95;
+  const hudH = window.innerHeight * 0.95;
+  const maxW = hudW * 0.95;
+  const maxH = hudH * 0.95;
   let mediaW = maxW;
   let mediaH = maxH;
 
@@ -2390,13 +2393,10 @@ function sizeMediaFocus(mediaEl) {
     }
   }
 
-  // HUD box is exactly the media — no chrome padding.
-  const w = Math.ceil(mediaW);
-  const h = Math.ceil(mediaH);
-  hud.style.setProperty('--hud-focus-w', `${w}px`);
-  hud.style.setProperty('--hud-focus-h', `${h}px`);
-  hud.style.setProperty('--hud-focus-media-w', `${w}px`);
-  hud.style.setProperty('--hud-focus-media-h', `${h}px`);
+  hud.style.setProperty('--hud-focus-w', `${Math.ceil(hudW)}px`);
+  hud.style.setProperty('--hud-focus-h', `${Math.ceil(hudH)}px`);
+  hud.style.setProperty('--hud-focus-media-w', `${Math.ceil(mediaW)}px`);
+  hud.style.setProperty('--hud-focus-media-h', `${Math.ceil(mediaH)}px`);
 }
 
 function enterMediaFocus(mediaEl) {
