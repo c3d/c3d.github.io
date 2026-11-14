@@ -9,6 +9,7 @@ import '@fontsource/source-sans-3/400.css';
 import '@fontsource/source-sans-3/500.css';
 import '@fontsource/source-sans-3/600.css';
 import './print/print-styles.css';
+import { marked } from 'marked';
 import topicsRegistry from './topics.json';
 import {
   PRINT_STYLES,
@@ -1326,6 +1327,17 @@ function updateLabels(_dt) {
     } else {
       if (viewLevel < 2 || (focusTheme && labelTheme !== focusTheme)) wantVisible = false;
       else if (dist < 12) wantVisible = false;
+      // Keep the open node's mini-label hidden while its large HUD is up
+      if (
+        currentStar
+        && label.userData.projectId
+        && label.userData.projectId === currentStar.project?.id
+      ) {
+        wantVisible = false;
+        el.classList.add('ms-label-hud-open');
+      } else {
+        el.classList.remove('ms-label-hud-open');
+      }
     }
 
     _labelNdc.copy(_labelWorld).project(camera);
@@ -1599,6 +1611,151 @@ function flyToPose(pose, onDone) {
   );
 }
 
+/** HUD continuity: FLIP mini-label → title, expand body, teletype description. */
+let hudAnimGen = 0;
+let hudTeletype = null;
+const HUD_FLIP_MS = 420;
+const HUD_EXPAND_MS = 420;
+const HUD_TELETYPE_CPS = 90;
+
+function findProjectLabelEl(projectId) {
+  const label = labelSprites.find(
+    (l) => l.userData.kind === 'project' && l.userData.projectId === projectId
+  );
+  return label?.userData?.el || null;
+}
+
+function removeHudFlyLabel() {
+  document.getElementById('hud-fly-label')?.remove();
+}
+
+function stopHudTeletype({ finish = false } = {}) {
+  if (!hudTeletype) return;
+  const { timer, onSkip, chars, cursor, root } = hudTeletype;
+  if (timer) clearInterval(timer);
+  if (onSkip) {
+    window.removeEventListener('keydown', onSkip, true);
+    window.removeEventListener('pointerdown', onSkip, true);
+  }
+  if (finish && chars) {
+    chars.forEach((span) => {
+      span.classList.remove('hud-tt-fresh');
+      span.style.visibility = 'visible';
+    });
+  }
+  cursor?.remove();
+  if (root) root.classList.remove('hud-tt-active');
+  hudTeletype = null;
+}
+
+function prepareTeletypeChars(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  const chars = [];
+  for (const tn of textNodes) {
+    const text = tn.textContent;
+    if (!text) continue;
+    const frag = document.createDocumentFragment();
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'hud-tt-char';
+      span.textContent = ch;
+      span.style.visibility = 'hidden';
+      frag.appendChild(span);
+      chars.push(span);
+    }
+    tn.parentNode.replaceChild(frag, tn);
+  }
+  return chars;
+}
+
+function startHudTeletype(root, { cps = HUD_TELETYPE_CPS } = {}) {
+  stopHudTeletype();
+  if (!root) return Promise.resolve();
+  if (prefersReducedMotion()) {
+    root.querySelectorAll('.hud-tt-char').forEach((el) => {
+      el.style.visibility = 'visible';
+      el.classList.remove('hud-tt-fresh');
+    });
+    return Promise.resolve();
+  }
+  const chars = prepareTeletypeChars(root);
+  if (!chars.length) return Promise.resolve();
+
+  root.classList.add('hud-tt-active');
+  const cursor = document.createElement('span');
+  cursor.className = 'hud-tt-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  root.appendChild(cursor);
+
+  let i = 0;
+  const interval = Math.max(8, Math.round(1000 / cps));
+  return new Promise((resolve) => {
+    const finish = () => {
+      stopHudTeletype({ finish: true });
+      resolve();
+    };
+    const onSkip = (e) => {
+      if (e.type === 'keydown' && e.key === 'Escape') return; // let ESC close HUD
+      e.stopPropagation();
+      finish();
+    };
+    const timer = setInterval(() => {
+      if (i >= chars.length) {
+        finish();
+        return;
+      }
+      const span = chars[i++];
+      span.style.visibility = 'visible';
+      span.classList.add('hud-tt-fresh');
+      // Phosphor remanence: bright briefly, then decay to normal
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => span.classList.remove('hud-tt-fresh'));
+      });
+      cursor.remove();
+      span.after(cursor);
+    }, interval);
+    hudTeletype = { timer, onSkip, chars, cursor, root };
+    window.addEventListener('keydown', onSkip, true);
+    window.addEventListener('pointerdown', onSkip, true);
+  });
+}
+
+function animateFlipRect(el, from, to, { duration = HUD_FLIP_MS, growTitle = false } = {}) {
+  return new Promise((resolve) => {
+    if (!el || prefersReducedMotion()) {
+      resolve();
+      return;
+    }
+    const dx = from.left - to.left;
+    const dy = from.top - to.top;
+    const sx = from.width / Math.max(to.width, 1);
+    const sy = from.height / Math.max(to.height, 1);
+    el.style.left = `${to.left}px`;
+    el.style.top = `${to.top}px`;
+    el.style.width = `${to.width}px`;
+    el.style.height = `${to.height}px`;
+    el.style.maxWidth = 'none';
+    el.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+    if (growTitle) el.classList.add('hud-fly-as-title');
+    el.style.transition = 'none';
+    void el.offsetWidth;
+    el.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+    el.style.transform = 'translate(0, 0) scale(1, 1)';
+    const done = () => {
+      el.removeEventListener('transitionend', done);
+      resolve();
+    };
+    el.addEventListener('transitionend', done);
+    setTimeout(done, duration + 40);
+  });
+}
+
+function waitMs(ms) {
+  return new Promise((r) => setTimeout(r, prefersReducedMotion() ? 0 : ms));
+}
+
 function populateHUD(star, { allowAutoplay = true } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
@@ -1610,7 +1767,32 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   hud.querySelector('[data-hud="project"]').textContent = project.title || '';
   hud.querySelector('[data-hud="years"]').textContent = project.years || '—';
   hud.querySelector('[data-hud="section"]').textContent = bullet.section || 'DATUM';
-  hud.querySelector('[data-hud="bullet"]').textContent = bullet.text || '';
+  // Prefer full project HTML so teletype walks rendered text nodes (links/formatting survive).
+  // Fall back to the clicked bullet for sparse items.
+  const bulletEl = hud.querySelector('[data-hud="bullet"]');
+  if (project.content) {
+    bulletEl.innerHTML = project.content;
+  } else {
+    const raw = bullet.text || '';
+    bulletEl.innerHTML = raw ? marked.parseInline(raw, { async: false }) : '';
+  }
+
+  const topicsEl = hud.querySelector('[data-hud="topics"]');
+  if (topicsEl) {
+    topicsEl.innerHTML = '';
+    const topics = Array.isArray(project.topics) ? project.topics : [];
+    if (!topics.length) {
+      topicsEl.hidden = true;
+    } else {
+      topicsEl.hidden = false;
+      topics.forEach((tid) => {
+        const chip = document.createElement('span');
+        chip.className = 'hud-topic-chip';
+        chip.textContent = TOPICS_BY_ID[tid]?.name || tid;
+        topicsEl.appendChild(chip);
+      });
+    }
+  }
 
   const idx = stars.indexOf(star);
   hud.querySelector('[data-hud="index"]').textContent =
@@ -1714,14 +1896,120 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   }
 }
 
+async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
+  const gen = ++hudAnimGen;
+  const hud = document.getElementById('hud');
+  const projectId = star.project?.id;
+  const labelEl = findProjectLabelEl(projectId);
+  const titleBar = hud.querySelector('.hud-title-bar');
+
+  stopHudTeletype();
+  removeHudFlyLabel();
+  hud.classList.remove('hud-expanded', 'hud-flying', 'hud-ready');
+
+  populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
+
+  if (prefersReducedMotion() || !labelEl || !titleBar) {
+    hud.classList.add('open', 'hud-expanded', 'hud-ready');
+    hud.setAttribute('aria-hidden', 'false');
+    if (labelEl) labelEl.classList.add('ms-label-hud-open');
+    const bulletEl = hud.querySelector('[data-hud="bullet"]');
+    if (!prefersReducedMotion()) await startHudTeletype(bulletEl);
+    return;
+  }
+
+  const from = labelEl.getBoundingClientRect();
+  labelEl.classList.add('ms-label-hud-open');
+  labelEl.classList.remove('is-visible');
+
+  hud.classList.add('open', 'hud-flying');
+  hud.setAttribute('aria-hidden', 'false');
+  const to = titleBar.getBoundingClientRect();
+
+  const fly = document.createElement('div');
+  fly.id = 'hud-fly-label';
+  fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
+  fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
+  fly.querySelector('.ms-label-text').textContent = star.project?.title || '';
+  document.body.appendChild(fly);
+  fly.style.left = `${from.left}px`;
+  fly.style.top = `${from.top}px`;
+  fly.style.width = `${from.width}px`;
+  fly.style.height = `${from.height}px`;
+
+  await animateFlipRect(fly, from, to, { duration: HUD_FLIP_MS, growTitle: true });
+  if (gen !== hudAnimGen) return;
+
+  removeHudFlyLabel();
+  hud.classList.remove('hud-flying');
+  hud.classList.add('hud-expanded');
+  await waitMs(HUD_EXPAND_MS);
+  if (gen !== hudAnimGen) return;
+
+  hud.classList.add('hud-ready');
+  await startHudTeletype(hud.querySelector('[data-hud="bullet"]'));
+}
+
+async function runHudCloseContinuity() {
+  const gen = ++hudAnimGen;
+  const hud = document.getElementById('hud');
+  const star = currentStar;
+  const projectId = star?.project?.id;
+  const labelEl = projectId ? findProjectLabelEl(projectId) : null;
+  const titleBar = hud?.querySelector('.hud-title-bar');
+
+  stopHudTeletype({ finish: true });
+  removeHudFlyLabel();
+
+  if (!hud || prefersReducedMotion() || !star || !labelEl || !titleBar) {
+    hud?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
+    hud?.setAttribute('aria-hidden', 'true');
+    labelEl?.classList.remove('ms-label-hud-open');
+    return;
+  }
+
+  hud.classList.remove('hud-ready', 'hud-expanded');
+  await waitMs(HUD_EXPAND_MS * 0.85);
+  if (gen !== hudAnimGen) return;
+
+  const to = labelEl.getBoundingClientRect();
+  const from = titleBar.getBoundingClientRect();
+
+  hud.classList.add('hud-flying');
+  const fly = document.createElement('div');
+  fly.id = 'hud-fly-label';
+  fly.classList.add('hud-fly-as-title');
+  fly.style.setProperty('--hud-accent', hud.style.getPropertyValue('--hud-accent') || '#40e0ff');
+  fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
+  fly.querySelector('.ms-label-text').textContent = star.project?.title || '';
+  document.body.appendChild(fly);
+  fly.style.left = `${from.left}px`;
+  fly.style.top = `${from.top}px`;
+  fly.style.width = `${from.width}px`;
+  fly.style.height = `${from.height}px`;
+  fly.style.maxWidth = 'none';
+
+  await animateFlipRect(fly, from, to, { duration: HUD_FLIP_MS });
+  if (gen !== hudAnimGen) return;
+
+  removeHudFlyLabel();
+  hud.classList.remove('open', 'hud-flying', 'hud-expanded', 'hud-ready');
+  hud.setAttribute('aria-hidden', 'true');
+  labelEl.classList.remove('ms-label-hud-open');
+}
+
 function enterClusterView(theme, { fromAuto = false } = {}) {
   if (!THEME_POSITIONS[theme]) return Promise.resolve();
   if (viewLevel === 1 && !overviewPose) overviewPose = captureCameraPose();
-  // Closing HUD without leaving cluster
+  // Closing HUD without leaving cluster (instant — cluster fly owns motion)
   if (currentStar) {
+    hudAnimGen += 1;
+    stopHudTeletype({ finish: true });
+    removeHudFlyLabel();
+    findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
     currentStar = null;
     const hud = document.getElementById('hud');
-    hud?.classList.remove('open');
+    hud?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
     hud?.setAttribute('aria-hidden', 'true');
     if (window.location.hash) {
       history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -1799,18 +2087,23 @@ function openHUD(star, { fromAuto = false } = {}) {
     enterClusterView(theme, { fromAuto }).then(() => openHUD(star, { fromAuto }));
     return;
   }
+  // Switching nodes: snap previous HUD closed without reverse FLIP
+  if (currentStar && currentStar !== star) {
+    hudAnimGen += 1;
+    stopHudTeletype({ finish: true });
+    removeHudFlyLabel();
+    findProjectLabelEl(currentStar.project?.id)?.classList.remove('ms-label-hud-open');
+    document.getElementById('hud')?.classList.remove('open', 'hud-expanded', 'hud-flying', 'hud-ready');
+  }
   if (!clusterPose) clusterPose = captureCameraPose();
   preHudPose = clusterPose;
   currentStar = star;
   viewLevel = 3;
   updateClusterDimming();
-  populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
-  const hud = document.getElementById('hud');
-  hud.classList.add('open');
-  hud.setAttribute('aria-hidden', 'false');
   window.location.hash = star.id;
   highlightConnectedEdges(star.project.id);
   flyToStar(star);
+  runHudOpenContinuity(star, { fromAuto });
   if (fromAuto || autoMode) {
     warpVisited.add(star.project.id);
     lastWarpedProjectId = star.project.id;
@@ -1818,14 +2111,12 @@ function openHUD(star, { fromAuto = false } = {}) {
 }
 
 function closeHUD({ restoreCamera = true } = {}) {
-  if (!currentStar && !document.getElementById('hud')?.classList.contains('open')) {
+  const hud = document.getElementById('hud');
+  if (!currentStar && !hud?.classList.contains('open')) {
     if (!restoreCamera) preHudPose = null;
     return;
   }
-  currentStar = null;
-  const hud = document.getElementById('hud');
-  hud.classList.remove('open');
-  hud.setAttribute('aria-hidden', 'true');
+  const closingStar = currentStar;
   highlightConnectedEdges(null);
   if (window.location.hash) {
     history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -1833,13 +2124,21 @@ function closeHUD({ restoreCamera = true } = {}) {
   // Return to cluster view (L2), not overview
   viewLevel = focusTheme ? 2 : 1;
   updateClusterDimming();
-  if (!restoreCamera) {
-    preHudPose = null;
-    return;
-  }
-  const pose = clusterPose || preHudPose;
-  preHudPose = clusterPose;
-  if (pose) flyToPose(pose);
+
+  const finishClose = () => {
+    currentStar = null;
+    findProjectLabelEl(closingStar?.project?.id)?.classList.remove('ms-label-hud-open');
+    if (!restoreCamera) {
+      preHudPose = null;
+      return;
+    }
+    const pose = clusterPose || preHudPose;
+    preHudPose = clusterPose;
+    if (pose) flyToPose(pose);
+  };
+
+  // Keep currentStar during reverse FLIP so label identity is available
+  runHudCloseContinuity().then(finishClose);
 }
 window.closeHUD = closeHUD;
 window.openHUD = openHUD;

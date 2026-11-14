@@ -492,8 +492,7 @@
       color: #40e0ff;
     }
 
-    /* Sci-fi HUD — right deck on desktop, bottom sheet on mobile.
-       Container never captures clicks; only .hud-panel does, so stars stay pickable. */
+    /* Sci-fi HUD — continuity open: mini-label FLIPs into title (no slide-in dock). */
     #hud {
       --hud-accent: #40e0ff;
       position: fixed;
@@ -503,19 +502,20 @@
       height: 100%;
       z-index: 20;
       pointer-events: none;
-      transform: translateX(105%);
-      /* close = mirrored ease of open */
-      transition: transform 0.45s cubic-bezier(0.64, 0, 0.78, 0);
       padding: 18px;
+      opacity: 0;
+      visibility: hidden;
     }
     #hud.open {
-      transform: translateX(0);
-      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      opacity: 1;
+      visibility: visible;
     }
     .hud-panel {
       position: relative;
+      display: flex;
+      flex-direction: column;
       height: calc(100% - 8px);
-      overflow: auto;
+      overflow: hidden;
       padding: 22px 20px 28px;
       pointer-events: none;
       background-color: rgba(4, 10, 22, 0.38);
@@ -556,22 +556,170 @@
     }
     .hud-panel::before { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
     .hud-panel::after { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+    .hud-above {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #hud.hud-expanded .hud-above { grid-template-rows: 1fr; }
+    .hud-above-inner { overflow: hidden; min-height: 0; }
     .hud-kicker {
       font-family: Orbitron, sans-serif;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--hud-accent);
-      margin-bottom: 6px;
+      margin: 0 0 8px;
+      padding-right: 40px;
+    }
+    .hud-title-bar {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: stretch;
+      margin: 0;
+      border: 1px solid color-mix(in srgb, var(--hud-accent) 55%, transparent);
+      background:
+        linear-gradient(165deg, rgba(14, 32, 58, 0.55), rgba(4, 10, 22, 0.48)),
+        rgba(4, 10, 22, 0.42);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3) inset,
+        0 0 14px color-mix(in srgb, var(--hud-accent) 22%, transparent);
+      opacity: 1;
+    }
+    #hud.hud-flying .hud-title-bar { opacity: 0; }
+    .hud-title-bar::before {
+      content: "";
+      width: 4px;
+      flex-shrink: 0;
+      background: var(--hud-accent);
     }
     .hud-project {
       font-family: Orbitron, sans-serif;
       font-size: 18px;
       font-weight: 700;
       line-height: 1.25;
-      margin: 0 0 10px;
+      margin: 0;
+      padding: 10px 40px 10px 12px;
+      flex: 1;
       color: #f2f7ff;
       text-shadow: 0 1px 8px rgba(0,0,0,0.65);
+    }
+    .hud-below {
+      display: grid;
+      grid-template-rows: 0fr;
+      flex: 1 1 auto;
+      min-height: 0;
+      transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.06s;
+    }
+    #hud.hud-expanded .hud-below { grid-template-rows: 1fr; }
+    .hud-below-inner {
+      overflow: auto;
+      min-height: 0;
+      padding-top: 12px;
+    }
+    .hud-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 14px;
+    }
+    .hud-topics[hidden] { display: none !important; }
+    .hud-topic-chip {
+      font-family: Orbitron, sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border: 1px solid color-mix(in srgb, var(--hud-accent) 45%, transparent);
+      color: color-mix(in srgb, var(--hud-accent) 85%, #e8f4ff);
+      background: color-mix(in srgb, var(--hud-accent) 12%, transparent);
+    }
+    .hud-bullet {
+      min-height: 1.55em;
+    }
+    .hud-bullet a {
+      color: var(--hud-accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .hud-tt-char {
+      color: #e8f0ff;
+      transition: color 0.9s ease, text-shadow 1.1s ease, filter 1.1s ease;
+    }
+    .hud-tt-char.hud-tt-fresh {
+      color: #fffef6;
+      text-shadow:
+        0 0 6px color-mix(in srgb, var(--hud-accent) 90%, white),
+        0 0 14px var(--hud-accent),
+        0 0 28px color-mix(in srgb, var(--hud-accent) 55%, transparent);
+      filter: brightness(1.55);
+    }
+    .hud-tt-cursor {
+      display: inline-block;
+      width: 0.55em;
+      height: 1.05em;
+      margin-left: 1px;
+      vertical-align: text-bottom;
+      background: var(--hud-accent);
+      box-shadow: 0 0 10px var(--hud-accent);
+      animation: hud-tt-blink 0.85s steps(1) infinite;
+    }
+    @keyframes hud-tt-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    #hud-fly-label {
+      position: fixed;
+      z-index: 30;
+      margin: 0;
+      padding: 0;
+      display: inline-flex;
+      align-items: stretch;
+      max-width: min(240px, 42vw);
+      border: 1px solid color-mix(in srgb, var(--hud-accent) 60%, transparent);
+      background:
+        linear-gradient(165deg, rgba(14, 32, 58, 0.55), rgba(4, 10, 22, 0.48)),
+        rgba(4, 10, 22, 0.42);
+      backdrop-filter: blur(12px) saturate(1.25);
+      -webkit-backdrop-filter: blur(12px) saturate(1.25);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.3) inset,
+        0 0 14px color-mix(in srgb, var(--hud-accent) 22%, transparent);
+      color: #f2f7ff;
+      font-family: Orbitron, sans-serif;
+      pointer-events: none;
+      transform-origin: top left;
+      will-change: transform;
+    }
+    #hud-fly-label .ms-label-bar {
+      width: 4px;
+      flex-shrink: 0;
+      background: var(--hud-accent);
+    }
+    #hud-fly-label .ms-label-text {
+      padding: 5px 9px 5px 8px;
+      line-height: 1.25;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    #hud-fly-label.hud-fly-as-title .ms-label-text {
+      font-size: 18px;
+      font-weight: 700;
+      padding: 10px 12px;
+      white-space: normal;
+    }
+    .ms-label.ms-label-hud-open {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hud-above,
+      .hud-below { transition: none !important; }
+      .hud-tt-char { transition: none !important; }
+      .hud-tt-cursor { animation: none !important; opacity: 1; }
     }
     .hud-readouts {
       display: grid;
@@ -762,15 +910,17 @@
         left: 0;
         width: 100%;
         height: min(58vh, 520px);
-        transform: translateY(110%);
         padding: 10px;
       }
-      #hud.open { transform: translateY(0); }
       .hud-panel {
         clip-path: polygon(
           0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px,
           100% 100%, 0 100%
         );
+      }
+      .hud-project {
+        font-size: 16px;
+        padding: 9px 36px 9px 10px;
       }
       #search-fab { display: inline-flex; }
       #search-hud { top: 12%; }
@@ -948,18 +1098,29 @@
   <aside id="hud" aria-hidden="true">
     <div class="hud-panel">
       <button id="hud-close" type="button" aria-label="Close">×</button>
-      <div class="hud-kicker" data-hud="theme">THEME</div>
-      <h2 class="hud-project" data-hud="project">Project</h2>
-      <div class="hud-index" data-hud="index">NODE 000 / 000</div>
-      <div class="hud-readouts">
-        <div class="hud-chip"><span>Section</span><div data-hud="section">—</div></div>
-        <div class="hud-chip"><span>Years</span><div data-hud="years">—</div></div>
+      <div class="hud-above">
+        <div class="hud-above-inner">
+          <div class="hud-kicker" data-hud="theme">THEME</div>
+        </div>
       </div>
-      <p class="hud-bullet" data-hud="bullet"></p>
-      <div data-hud="media"></div>
-      <div class="hud-connected" data-hud="connected" hidden>
-        <h3 class="hud-connected-title">Connected topics</h3>
-        <div class="hud-connected-list" data-hud="connected-list"></div>
+      <div class="hud-title-bar">
+        <h2 class="hud-project" data-hud="project">Project</h2>
+      </div>
+      <div class="hud-below">
+        <div class="hud-below-inner">
+          <div class="hud-index" data-hud="index">NODE 000 / 000</div>
+          <div class="hud-readouts">
+            <div class="hud-chip"><span>Section</span><div data-hud="section">—</div></div>
+            <div class="hud-chip"><span>Years</span><div data-hud="years">—</div></div>
+          </div>
+          <div class="hud-topics" data-hud="topics" hidden></div>
+          <div data-hud="media"></div>
+          <div class="hud-bullet" data-hud="bullet"></div>
+          <div class="hud-connected" data-hud="connected" hidden>
+            <h3 class="hud-connected-title">Connected topics</h3>
+            <div class="hud-connected-list" data-hud="connected-list"></div>
+          </div>
+        </div>
       </div>
     </div>
   </aside>
