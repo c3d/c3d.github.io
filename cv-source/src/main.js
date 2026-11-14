@@ -221,6 +221,69 @@ let controls = {
   lookAt: new THREE.Vector3(0, -8, 0)
 };
 
+/** Keyboard navigation — velocity with accel while held, damp on release. */
+const KEY_NAV = Object.freeze({
+  orbitAccel: 2.4,   // rad/s²
+  orbitMax: 1.35,    // rad/s
+  orbitDamp: 5.5,    // 1/s
+  dollyAccel: 220,   // zoom units/s²
+  dollyMax: 140,
+  dollyDamp: 5.5,
+  hudScrollAccel: 4200, // px/s²
+  hudScrollMax: 1400,
+  hudScrollDamp: 7,
+  hudPageAccel: 5200,
+  hudPageMax: 1800
+});
+const keyNav = {
+  left: false,
+  right: false,
+  up: false,
+  down: false,
+  pageUp: false,
+  pageDown: false,
+  velRotX: 0,
+  velRotY: 0,
+  velZoom: 0,
+  hudVelY: 0,
+  hudVelX: 0
+};
+
+function clearKeyNavHeld() {
+  keyNav.left = keyNav.right = keyNav.up = keyNav.down = false;
+  keyNav.pageUp = keyNav.pageDown = false;
+}
+
+function isHudOpen() {
+  const hud = document.getElementById('hud');
+  return !!(hud?.classList.contains('open') && (viewLevel >= 3 || currentStar));
+}
+
+/** Skip nav when typing or when a YouTube iframe / form control has focus. */
+function isKeyboardNavBlocked(target) {
+  if (isEditableTarget(target)) return true;
+  if (target?.id === 'search-input') return true;
+  const ae = document.activeElement;
+  if (!ae || ae === document.body) return false;
+  const tag = (ae.tagName || '').toLowerCase();
+  if (tag === 'iframe' || tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+  if (ae.isContentEditable) return true;
+  if (ae.closest?.('.hud-video, [data-hud="media"] iframe')) return true;
+  return false;
+}
+
+function approachVel(vel, target, accel, dt) {
+  if (vel < target) return Math.min(target, vel + accel * dt);
+  if (vel > target) return Math.max(target, vel - accel * dt);
+  return vel;
+}
+
+function dampVel(vel, damp, dt) {
+  const f = Math.exp(-damp * dt);
+  const next = vel * f;
+  return Math.abs(next) < 1e-4 ? 0 : next;
+}
+
 const STAR_PICK_RADIUS_PX = 14;
 /** Featured stars (`featured: true` or explicit `scale`) render larger; default 1.5×. */
 const FEATURED_STAR_SCALE = 1.5;
@@ -1843,8 +1906,22 @@ function findProjectLabelEl(projectId) {
   return label?.userData?.el || null;
 }
 
+/** In-flight rAF for the continuous title morph (cancelled on interrupt). */
+let hudMorphRaf = 0;
+/** Open morph clone planted before flyToStar so the in-cloud label never drifts. */
+let hudOpenMorph = null; // { fly, from, projectId }
+
+function cancelHudMorphRaf() {
+  if (hudMorphRaf) {
+    cancelAnimationFrame(hudMorphRaf);
+    hudMorphRaf = 0;
+  }
+}
+
 function removeHudFlyLabel() {
+  cancelHudMorphRaf();
   document.getElementById('hud-fly-label')?.remove();
+  hudOpenMorph = null;
 }
 
 /** Always leave the real HUD title readable — no leftover opacity/transform from morph. */
@@ -1873,6 +1950,130 @@ function makeHudFlyLabel(title, accent) {
   fly.innerHTML = `<span class="ms-label-bar" aria-hidden="true"></span><span class="ms-label-text"></span>`;
   fly.querySelector('.ms-label-text').textContent = title || '';
   return fly;
+}
+
+function copyRect(r) {
+  if (!r) return null;
+  return {
+    left: r.left,
+    top: r.top,
+    width: r.width,
+    height: r.height,
+    right: r.left + r.width,
+    bottom: r.top + r.height
+  };
+}
+
+function applyFlyRect(el, r) {
+  if (!el || !r) return;
+  el.style.left = `${r.left}px`;
+  el.style.top = `${r.top}px`;
+  el.style.width = `${Math.max(0, r.width)}px`;
+  el.style.height = `${Math.max(0, r.height)}px`;
+  el.style.maxWidth = 'none';
+  el.style.transform = '';
+  el.style.transition = 'none';
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+function lerpRect(a, b, t) {
+  return {
+    left: lerp(a.left, b.left, t),
+    top: lerp(a.top, b.top, t),
+    width: lerp(a.width, b.width, t),
+    height: lerp(a.height, b.height, t)
+  };
+}
+
+function easeOutCubic(t) {
+  return 1 - (1 - t) ** 3;
+}
+
+/**
+ * Plant the open morph clone at the in-cloud label BEFORE the camera moves.
+ * Hides the real label in the same frame so only one box is visible.
+ */
+function plantOpenMorphClone(star) {
+  removeHudFlyLabel();
+  if (prefersReducedMotion() || !star) return null;
+  const projectId = star.project?.id;
+  const labelEl = findProjectLabelEl(projectId);
+  if (!labelEl) return null;
+  syncLabelScreenPosition(projectId);
+  void labelEl.offsetWidth;
+  const from = copyRect(labelEl.getBoundingClientRect());
+  if (!from || from.width < 2 || from.height < 2) return null;
+  labelEl.classList.add('ms-label-hud-open');
+  labelEl.classList.remove('is-visible');
+  labelEl.dataset.hudOpenRect = JSON.stringify({
+    left: from.left, top: from.top, width: from.width, height: from.height
+  });
+  const accent = `#${new THREE.Color(star.color).getHexString()}`;
+  const fly = makeHudFlyLabel(star.project?.title || '', accent);
+  document.body.appendChild(fly);
+  applyFlyRect(fly, from);
+  hudOpenMorph = { fly, from, projectId };
+  return hudOpenMorph;
+}
+
+/**
+ * Continuous morph: one box, left/top/width/height lerped each frame toward a
+ * live getToRect() so camera motion cannot leave a stale target.
+ */
+function animateTrackedMorph(fly, startRect, getToRect, {
+  duration = HUD_TIMING.flipMs,
+  gen = hudAnimGen,
+  asTitleStart = false,
+  asTitleEnd = true
+} = {}) {
+  return new Promise((resolve) => {
+    const finish = () => {
+      cancelHudMorphRaf();
+      resolve();
+    };
+    if (!fly || !startRect) {
+      finish();
+      return;
+    }
+    if (asTitleStart) fly.classList.add('hud-fly-as-title');
+    else fly.classList.remove('hud-fly-as-title');
+    applyFlyRect(fly, startRect);
+
+    if (prefersReducedMotion()) {
+      const to = (typeof getToRect === 'function' ? getToRect() : getToRect) || startRect;
+      applyFlyRect(fly, to);
+      if (asTitleEnd) fly.classList.add('hud-fly-as-title');
+      else fly.classList.remove('hud-fly-as-title');
+      finish();
+      return;
+    }
+
+    const t0 = performance.now();
+    const tick = (now) => {
+      if (gen !== hudAnimGen) {
+        finish();
+        return;
+      }
+      const raw = Math.min(1, (now - t0) / Math.max(1, duration));
+      const t = easeOutCubic(raw);
+      const to = (typeof getToRect === 'function' ? getToRect() : getToRect) || startRect;
+      applyFlyRect(fly, lerpRect(startRect, to, t));
+      if (asTitleEnd && !asTitleStart && t >= 0.35) fly.classList.add('hud-fly-as-title');
+      if (asTitleStart && !asTitleEnd && t >= 0.55) fly.classList.remove('hud-fly-as-title');
+      if (raw < 1) {
+        hudMorphRaf = requestAnimationFrame(tick);
+      } else {
+        applyFlyRect(fly, to);
+        if (asTitleEnd) fly.classList.add('hud-fly-as-title');
+        else fly.classList.remove('hud-fly-as-title');
+        finish();
+      }
+    };
+    hudMorphRaf = requestAnimationFrame(tick);
+  });
 }
 
 function applyHudTimingCss(hud) {
@@ -2091,38 +2292,21 @@ async function blinkFadeHudText(roots, gen) {
   await waitMs(HUD_TIMING.fadeMs);
 }
 
-function animateFlipRect(el, from, to, { duration = HUD_TIMING.flipMs, growTitle = false } = {}) {
-  return new Promise((resolve) => {
-    if (!el || prefersReducedMotion()) {
-      resolve();
-      return;
-    }
-    const dx = from.left - to.left;
-    const dy = from.top - to.top;
-    const sx = from.width / Math.max(to.width, 1);
-    const sy = from.height / Math.max(to.height, 1);
-    el.style.left = `${to.left}px`;
-    el.style.top = `${to.top}px`;
-    el.style.width = `${to.width}px`;
-    el.style.height = `${to.height}px`;
-    el.style.maxWidth = 'none';
-    el.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
-    if (growTitle) el.classList.add('hud-fly-as-title');
-    else el.classList.remove('hud-fly-as-title');
-    el.style.transition = 'none';
-    void el.offsetWidth;
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-    el.style.transform = 'translate(0, 0) scale(1, 1)';
-    const done = () => {
-      el.removeEventListener('transitionend', done);
-      // Leave the element at the final box with no residual transform.
-      el.style.transition = 'none';
-      el.style.transform = '';
-      resolve();
-    };
-    el.addEventListener('transitionend', done);
-    setTimeout(done, duration + 40);
-  });
+/** Measure the in-cloud label box (works while ms-label-hud-open hides it). */
+function measureProjectLabelRect(projectId, { pose = null } = {}) {
+  const labelEl = findProjectLabelEl(projectId);
+  if (!labelEl) return null;
+  syncLabelScreenPosition(projectId, { pose });
+  void labelEl.offsetWidth;
+  const r = copyRect(labelEl.getBoundingClientRect());
+  if (r && r.width >= 2 && r.height >= 2) return r;
+  const saved = labelEl.dataset.hudOpenRect;
+  if (saved) {
+    try {
+      return copyRect(JSON.parse(saved));
+    } catch { /* ignore */ }
+  }
+  return r;
 }
 
 function waitMs(ms) {
@@ -2519,7 +2703,10 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   const yearsEl = hud?.querySelector('[data-hud="years"]');
 
   stopHudTeletype();
-  removeHudFlyLabel();
+  // Keep the clone planted by openHUD (before flyToStar); only drop a stale leftover.
+  if (!hudOpenMorph || hudOpenMorph.projectId !== projectId) {
+    removeHudFlyLabel();
+  }
   clearHudStageClasses(hud);
   applyHudTimingCss(hud);
 
@@ -2536,32 +2723,45 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
     }
   };
 
-  // Narrow / bottom-docked layout must still run the FLIP choreography — only
-  // reduced-motion or a missing label/panel legitimately snaps open.
+  // Prefer the clone planted in openHUD before flyToStar (one box, no camera drift).
+  let planted = hudOpenMorph;
+  if (planted && planted.projectId !== projectId) planted = null;
+  // Reduced-motion or a missing label/panel snaps open with the title visible.
   if (prefersReducedMotion() || !labelEl || !titleBar || !panel) {
     await snapOpen();
     return;
   }
 
-  // Ensure the mini-label has a live projected box before measuring (labels may
-  // have been hidden all overview and never laid out at 0×0), then remember it
-  // for close FLIP fallback.
-  syncLabelScreenPosition(projectId);
-  void labelEl.offsetWidth;
-  let from = labelEl.getBoundingClientRect();
-  if (from.width < 2 || from.height < 2) {
-    await waitMs(32);
+  let from = planted?.from || null;
+  let fly = planted?.fly && document.body.contains(planted.fly) ? planted.fly : null;
+  if (!from || !fly) {
+    // Fallback if openHUD could not plant (label not laid out yet).
     syncLabelScreenPosition(projectId);
     void labelEl.offsetWidth;
-    from = labelEl.getBoundingClientRect();
+    from = copyRect(labelEl.getBoundingClientRect());
+    if (!from || from.width < 2 || from.height < 2) {
+      await waitMs(32);
+      syncLabelScreenPosition(projectId);
+      void labelEl.offsetWidth;
+      from = copyRect(labelEl.getBoundingClientRect());
+    }
+    if (!from || from.width < 2 || from.height < 2) {
+      await snapOpen();
+      return;
+    }
+    labelEl.classList.add('ms-label-hud-open');
+    labelEl.classList.remove('is-visible');
+    labelEl.dataset.hudOpenRect = JSON.stringify({
+      left: from.left, top: from.top, width: from.width, height: from.height
+    });
+    removeHudFlyLabel();
+    fly = makeHudFlyLabel(
+      star.project?.title || '',
+      hud.style.getPropertyValue('--hud-accent') || '#40e0ff'
+    );
+    document.body.appendChild(fly);
+    applyFlyRect(fly, from);
   }
-  if (from.width < 2 || from.height < 2) {
-    await snapOpen();
-    return;
-  }
-  labelEl.dataset.hudOpenRect = JSON.stringify({
-    left: from.left, top: from.top, width: from.width, height: from.height
-  });
 
   // Hide teletype targets until their stage; keep labels for chip chrome.
   // Preserve HTML so Section/Years markdown links survive the clear/restore cycle.
@@ -2575,29 +2775,22 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   labelEl.classList.add('ms-label-hud-open');
   labelEl.classList.remove('is-visible');
 
-  // 1) Mini-label morphs into the HUD title slot (clone flies; real title hidden only while clone shows).
+  // 1) Same clone → HUD title (track live title rect; real title hidden only while clone shows).
   hud.classList.add('open', 'hud-clipping', 'hud-stage-title');
   hud.setAttribute('aria-hidden', 'false');
-  // Force layout with above/below collapsed so title rect is stable
   void panel.offsetWidth;
   setPanelClip(panel, panelClipInsets(panel, titleBar, 'title'), { immediate: true, ms: HUD_TIMING.lateralMs });
-
-  const to = titleBar.getBoundingClientRect();
-  const fly = makeHudFlyLabel(
-    star.project?.title || '',
-    hud.style.getPropertyValue('--hud-accent') || '#40e0ff'
-  );
-  document.body.appendChild(fly);
-  fly.style.left = `${from.left}px`;
-  fly.style.top = `${from.top}px`;
-  fly.style.width = `${from.width}px`;
-  fly.style.height = `${from.height}px`;
-  fly.style.maxWidth = 'none';
-  // Hide the real title only after the flying clone is on screen (seamless morph).
+  // Hide the real title only after the flying clone is already on screen.
   hud.classList.add('hud-flying');
 
-  await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs, growTitle: true });
-  // Hand off to the real title even if this open was superseded (node switch / reduced path).
+  const getTitleRect = () => copyRect(titleBar.getBoundingClientRect()) || from;
+  await animateTrackedMorph(fly, from, getTitleRect, {
+    duration: HUD_TIMING.flipMs,
+    gen,
+    asTitleStart: false,
+    asTitleEnd: true
+  });
+  // Same-frame handoff to the real title (even if this open was superseded).
   revealHudProjectTitle(hud);
   if (!stillHudGen(gen)) return;
 
@@ -2715,21 +2908,21 @@ async function runHudCloseContinuity() {
 
   if (!hud || prefersReducedMotion() || !star || !labelEl || !titleBar || !panel) {
     snapClose();
-    return;
+    return { cameraHandled: false };
   }
 
   // Reverse 6: blink+fade teletyped body / chip / theme text
   await blinkFadeHudText([...bodyBits, sectionEl, yearsEl, themeEl], gen);
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
   hud.classList.remove('hud-body-in', 'hud-ready');
 
   // Reverse 5: years then section collapse horizontally
   hud.classList.remove('hud-chip-years');
   await waitMs(Math.max(0, HUD_TIMING.chipMs - HUD_TIMING.chipOverlapMs));
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
   hud.classList.remove('hud-chip-section');
   await waitMs(HUD_TIMING.chipOverlapMs);
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
 
   hud.classList.add('hud-clipping');
   // Keep clip fully open while vertical grids collapse so the title bar is never
@@ -2746,7 +2939,7 @@ async function runHudCloseContinuity() {
     left: 0
   }, { ms: HUD_TIMING.downMs });
   await waitMs(HUD_TIMING.downMs);
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
   band = panelClipInsets(panel, titleBar, 'title');
   setPanelClip(panel, {
     top: 0,
@@ -2760,7 +2953,7 @@ async function runHudCloseContinuity() {
   setPanelClip(panel, { top: 0, right: 0, bottom: 0, left: 0 }, { immediate: true, ms: HUD_TIMING.upMs });
   hud.classList.remove('hud-stage-up');
   await waitMs(HUD_TIMING.upMs);
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
   void panel.offsetWidth;
 
   band = panelClipInsets(panel, titleBar, 'title');
@@ -2770,29 +2963,18 @@ async function runHudCloseContinuity() {
   hud.classList.add('hud-stage-title');
   setPanelClip(panel, band, { ms: HUD_TIMING.lateralMs });
   await waitMs(HUD_TIMING.lateralMs);
-  if (!stillHudGen(gen)) return;
+  if (!stillHudGen(gen)) return { cameraHandled: false };
 
-  // Reverse 1: FLIP to the mini-HUD at its cluster-view screen position
-  // (detail camera would project the label onto the HUD itself).
+  // Reverse 1: one clone from HUD title → live in-cloud label while the camera returns.
   const returnPose = clusterPose || preHudPose;
-  syncLabelScreenPosition(projectId, { pose: returnPose });
-  void labelEl.offsetWidth;
-  let to = labelEl.getBoundingClientRect();
-  // Prefer the rect captured at open time if pose projection still degenerates.
-  const saved = labelEl.dataset.hudOpenRect;
-  if ((to.width < 2 || to.height < 2) && saved) {
-    try {
-      const r = JSON.parse(saved);
-      to = { left: r.left, top: r.top, width: r.width, height: r.height, right: r.left + r.width, bottom: r.top + r.height };
-    } catch { /* ignore */ }
-  }
-  const from = titleBar.getBoundingClientRect();
-  if (to.width < 2 || to.height < 2) {
+  const from = copyRect(titleBar.getBoundingClientRect());
+  const preview = measureProjectLabelRect(projectId, { pose: returnPose })
+    || measureProjectLabelRect(projectId);
+  if (!from || from.width < 2 || !preview || preview.width < 2) {
     snapClose();
-    return;
+    return { cameraHandled: false };
   }
 
-  // Morph: place clone on the title, then hide the real title while it flies to the mini-label.
   const miniText = labelEl.querySelector('.ms-label-text')?.textContent || star.project?.title || '';
   const fly = makeHudFlyLabel(
     miniText,
@@ -2800,30 +2982,43 @@ async function runHudCloseContinuity() {
   );
   fly.classList.add('hud-fly-as-title');
   document.body.appendChild(fly);
-  fly.style.left = `${from.left}px`;
-  fly.style.top = `${from.top}px`;
-  fly.style.width = `${from.width}px`;
-  fly.style.height = `${from.height}px`;
-  fly.style.maxWidth = 'none';
+  applyFlyRect(fly, from);
+  // Same frame: clone owns the box; real HUD title hidden.
   hud.classList.add('hud-flying');
 
-  await animateFlipRect(fly, from, to, { duration: HUD_TIMING.flipMs });
-  if (!stillHudGen(gen)) {
-    removeHudFlyLabel();
-    // Keep title styles clean if a new open superseded this close.
-    revealHudProjectTitle(hud);
-    return;
+  // Camera returns during the morph so the projected target moves continuously —
+  // never animate to a stale rect then reveal the label elsewhere.
+  let cameraHandled = false;
+  if (returnPose) {
+    flyToPose(returnPose);
+    cameraHandled = true;
   }
 
-  removeHudFlyLabel();
-  // Reveal the real mini-label in its normal projected slot (no leftover inline)
+  const morphMs = Math.max(HUD_TIMING.flipMs, Math.round(FLY_DURATION_MS * 0.9));
+  const getLabelRect = () => measureProjectLabelRect(projectId) || preview;
+  await animateTrackedMorph(fly, from, getLabelRect, {
+    duration: morphMs,
+    gen,
+    asTitleStart: true,
+    asTitleEnd: false
+  });
+  if (!stillHudGen(gen)) {
+    removeHudFlyLabel();
+    revealHudProjectTitle(hud);
+    return { cameraHandled };
+  }
+
+  // Same-frame handoff: show in-cloud label at the clone's final spot, drop clone.
+  const finalRect = getLabelRect();
+  if (finalRect) applyFlyRect(fly, finalRect);
+  syncLabelScreenPosition(projectId);
   labelEl.classList.remove('ms-label-hud-open');
   labelEl.style.opacity = '';
   labelEl.style.visibility = '';
   delete labelEl.dataset.hudOpenRect;
-  // Re-sync with live camera after fly so the label matches normal updateLabels.
-  syncLabelScreenPosition(projectId);
+  removeHudFlyLabel();
   snapClose();
+  return { cameraHandled };
 }
 
 function enterClusterView(theme, { fromAuto = false, fromDeepLink = false } = {}) {
@@ -2946,6 +3141,9 @@ function openHUD(star, { fromAuto = false } = {}) {
   updateClusterDimming();
   window.location.hash = star.id;
   highlightConnectedEdges(star.project.id);
+  // Plant morph clone + hide in-cloud label BEFORE the camera moves so the
+  // original box cannot fly off-screen independently of the HUD title.
+  plantOpenMorphClone(star);
   flyToStar(star);
   runHudOpenContinuity(star, { fromAuto });
   if (fromAuto || autoMode) {
@@ -2972,7 +3170,10 @@ function closeHUD({ restoreCamera = true } = {}) {
   viewLevel = focusTheme ? 2 : 1;
   updateClusterDimming();
 
-  const finishClose = () => {
+  // Keep currentStar during reverse morph so label identity is available.
+  // Camera return is started inside the title→label morph when possible so the
+  // clone can track the live projected label (one box, no jump at the end).
+  runHudCloseContinuity().then((result) => {
     currentStar = null;
     findProjectLabelEl(closingStar?.project?.id)?.classList.remove('ms-label-hud-open');
     if (!restoreCamera) {
@@ -2981,11 +3182,9 @@ function closeHUD({ restoreCamera = true } = {}) {
     }
     const pose = clusterPose || preHudPose;
     preHudPose = clusterPose;
-    if (pose) flyToPose(pose);
-  };
-
-  // Keep currentStar during reverse FLIP so label identity is available
-  runHudCloseContinuity().then(finishClose);
+    // Morph already started flyToPose when cameraHandled; only snap-path needs it here.
+    if (!result?.cameraHandled && pose) flyToPose(pose);
+  });
 }
 window.closeHUD = closeHUD;
 window.openHUD = openHUD;
@@ -3284,6 +3483,124 @@ function pickStarAt(clientX, clientY) {
   return best;
 }
 
+/** Enter key: open the node whose projection is closest to the viewport center. */
+function pickStarNearestScreenCenter() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const cx = w * 0.5;
+  const cy = h * 0.5;
+  const ndc = new THREE.Vector3();
+  let best = null;
+  let bestScore = Infinity;
+  const maxD = Math.min(w, h) * 0.48;
+
+  stars.forEach((star) => {
+    ndc.copy(star.position).project(camera);
+    if (ndc.z > 1 || ndc.z < -1) return;
+    const sx = (ndc.x * 0.5 + 0.5) * w;
+    const sy = (-ndc.y * 0.5 + 0.5) * h;
+    let score = Math.hypot(sx - cx, sy - cy);
+    if (score > maxD) return;
+    // Prefer the focused cluster when in L2.
+    if (viewLevel === 2 && focusTheme && star.project?.theme !== focusTheme) score += maxD;
+    if (score < bestScore) {
+      bestScore = score;
+      best = star;
+    }
+  });
+  return best;
+}
+
+function zoomOutOneLevel() {
+  if (isHudOpen() || viewLevel >= 3 || currentStar) {
+    closeHUD();
+    return;
+  }
+  if (viewLevel === 2) {
+    clearClusterQueryParam();
+    exitClusterView();
+  }
+  // L1 overview: already zoomed out — no-op.
+}
+
+function updateKeyboardNav(dt) {
+  if (dt <= 0) return;
+  const hudOpen = isHudOpen();
+
+  if (hudOpen) {
+    // Decelerate unused orbit/dolly velocities so release feels clean after close.
+    keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+    keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+    keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+
+    const below = document.querySelector('#hud .hud-below-inner');
+    if (!below) return;
+    const canScrollX = below.scrollWidth > below.clientWidth + 4;
+    // Left/Right: horizontal when content overflows; otherwise same axis as Up/Down
+    // (smooth vertical scroll — documented in the PR).
+    let wantY = (keyNav.down ? 1 : 0) + (keyNav.up ? -1 : 0);
+    let wantX = 0;
+    if (canScrollX) {
+      wantX = (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+    } else {
+      wantY += (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+    }
+    const yMax = canScrollX || !(keyNav.left || keyNav.right)
+      ? KEY_NAV.hudScrollMax
+      : KEY_NAV.hudPageMax;
+    const yAccel = yMax === KEY_NAV.hudPageMax ? KEY_NAV.hudPageAccel : KEY_NAV.hudScrollAccel;
+    if (wantY) keyNav.hudVelY = approachVel(keyNav.hudVelY, wantY * yMax, yAccel, dt);
+    else keyNav.hudVelY = dampVel(keyNav.hudVelY, KEY_NAV.hudScrollDamp, dt);
+    if (wantX) keyNav.hudVelX = approachVel(keyNav.hudVelX, wantX * KEY_NAV.hudScrollMax, KEY_NAV.hudScrollAccel, dt);
+    else keyNav.hudVelX = dampVel(keyNav.hudVelX, KEY_NAV.hudScrollDamp, dt);
+
+    if (keyNav.hudVelY) below.scrollTop += keyNav.hudVelY * dt;
+    if (keyNav.hudVelX) below.scrollLeft += keyNav.hudVelX * dt;
+    return;
+  }
+
+  keyNav.hudVelX = dampVel(keyNav.hudVelX, KEY_NAV.hudScrollDamp, dt);
+  keyNav.hudVelY = dampVel(keyNav.hudVelY, KEY_NAV.hudScrollDamp, dt);
+
+  if (isFlying || autoMode) {
+    keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+    keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+    keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+    return;
+  }
+
+  const wantX = (keyNav.down ? 1 : 0) + (keyNav.up ? -1 : 0);
+  const wantY = (keyNav.right ? 1 : 0) + (keyNav.left ? -1 : 0);
+  // Page Up = dolly in (smaller radius); Page Down = dolly out.
+  const wantZ = (keyNav.pageDown ? 1 : 0) + (keyNav.pageUp ? -1 : 0);
+
+  if (wantX) keyNav.velRotX = approachVel(keyNav.velRotX, wantX * KEY_NAV.orbitMax, KEY_NAV.orbitAccel, dt);
+  else keyNav.velRotX = dampVel(keyNav.velRotX, KEY_NAV.orbitDamp, dt);
+  if (wantY) keyNav.velRotY = approachVel(keyNav.velRotY, wantY * KEY_NAV.orbitMax, KEY_NAV.orbitAccel, dt);
+  else keyNav.velRotY = dampVel(keyNav.velRotY, KEY_NAV.orbitDamp, dt);
+  if (wantZ) keyNav.velZoom = approachVel(keyNav.velZoom, wantZ * KEY_NAV.dollyMax, KEY_NAV.dollyAccel, dt);
+  else keyNav.velZoom = dampVel(keyNav.velZoom, KEY_NAV.dollyDamp, dt);
+
+  if (keyNav.velRotX) {
+    controls.targetRotationX = THREE.MathUtils.clamp(
+      controls.targetRotationX + keyNav.velRotX * dt,
+      -1.1,
+      1.1
+    );
+  }
+  if (keyNav.velRotY) controls.targetRotationY += keyNav.velRotY * dt;
+  if (keyNav.velZoom) {
+    const zMin = viewLevel >= 2 ? 36 : 120;
+    const zMax = viewLevel >= 2 ? 240 : 520;
+    controls.targetZoom = THREE.MathUtils.clamp(
+      controls.targetZoom + keyNav.velZoom * dt,
+      zMin,
+      zMax
+    );
+    if (viewLevel === 2) refreshClusterPoseFromControls();
+  }
+}
+
 /**
  * Scripted check: activate every visible label and assert HUD title matches.
  * Exposed on window for QA / CI scripts.
@@ -3473,33 +3790,66 @@ function setupInteraction() {
     }
   });
 
+  const setArrowHeld = (key, pressed) => {
+    if (key === 'ArrowLeft') keyNav.left = pressed;
+    else if (key === 'ArrowRight') keyNav.right = pressed;
+    else if (key === 'ArrowUp') keyNav.up = pressed;
+    else if (key === 'ArrowDown') keyNav.down = pressed;
+    else if (key === 'PageUp') keyNav.pageUp = pressed;
+    else if (key === 'PageDown') keyNav.pageDown = pressed;
+    else return false;
+    return true;
+  };
+
   window.addEventListener('keydown', (e) => {
-    // Type-to-search: capture printable keys when not in a form field
+    const blocked = isKeyboardNavBlocked(e.target);
     const inEditable = isEditableTarget(e.target);
     const inSearchInput = e.target?.id === 'search-input';
+    const hudOpen = isHudOpen();
+    const navKey = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Enter', 'Backspace', 'Escape'].includes(e.key);
 
     if (e.key === 'Escape') {
+      if (blocked && !searchActive && !hudOpen) return;
       noteUserActivity();
       closePrintStyleMenu();
+      e.preventDefault();
       if (searchActive) {
-        e.preventDefault();
         closeSearchHud();
         return;
       }
-      // Media focus first, then close HUD on a second Esc.
+      // Media focus first; a second Esc (via zoomOutOneLevel) closes the HUD.
       if (isMediaFocus()) {
-        e.preventDefault();
         exitMediaFocus();
         return;
       }
-      if (viewLevel >= 3 || currentStar) closeHUD();
-      else if (viewLevel === 2) exitClusterView();
+      // HUD open → close; else step out of cluster → overview.
+      zoomOutOneLevel();
       return;
+    }
+
+    if (blocked) return;
+
+    if (hudOpen && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (setArrowHeld(e.key, true)) {
+        e.preventDefault();
+        noteUserActivity();
+        return;
+      }
+      if (e.key === 'Enter' || e.key === 'Backspace') {
+        e.preventDefault();
+        noteUserActivity();
+        // While media-focused, leave focus instead of closing the HUD.
+        if (isMediaFocus()) {
+          exitMediaFocus();
+          return;
+        }
+        closeHUD();
+        return;
+      }
     }
 
     if (!inEditable && !inSearchInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
       // Search open: Backspace edits; Delete/Esc clear (Esc handled above).
-      // Search closed (empty buffer): Backspace / Delete → Overview (O is a search letter).
       if (e.key === 'Backspace') {
         e.preventDefault();
         noteUserActivity();
@@ -3508,7 +3858,7 @@ function setupInteraction() {
           if (!next) closeSearchHud();
           else setSearchQuery(next);
         } else {
-          enterOverviewMode();
+          zoomOutOneLevel();
         }
         return;
       }
@@ -3516,13 +3866,23 @@ function setupInteraction() {
         e.preventDefault();
         noteUserActivity();
         if (searchActive) closeSearchHud();
-        else enterOverviewMode();
+        else zoomOutOneLevel();
         return;
       }
-      if (e.key === 'Enter' && searchActive) {
+      if (e.key === 'Enter') {
         e.preventDefault();
         noteUserActivity();
-        commitSearchBestMatch();
+        if (searchActive) {
+          commitSearchBestMatch();
+          return;
+        }
+        const star = pickStarNearestScreenCenter();
+        if (star) openHUD(star);
+        return;
+      }
+      if (setArrowHeld(e.key, true)) {
+        e.preventDefault();
+        noteUserActivity();
         return;
       }
       // No single-letter command shortcuts — printable keys always type-to-search.
@@ -3534,8 +3894,14 @@ function setupInteraction() {
       }
     }
 
+    if (navKey) e.preventDefault();
     noteUserActivity();
   });
+
+  window.addEventListener('keyup', (e) => {
+    if (setArrowHeld(e.key, false)) e.preventDefault();
+  });
+  window.addEventListener('blur', () => clearKeyNavHeld());
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -3585,9 +3951,13 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.getElapsedTime();
 
+  updateKeyboardNav(dt);
+
   // Apply orbit at L1–L3; idle auto-spin only in overview. Never fight fly tweens.
   if (!isFlying && !autoMode) {
-    if (viewLevel === 1 && !controls.mouseDown) {
+    const keyOrbiting = keyNav.left || keyNav.right || keyNav.up || keyNav.down
+      || Math.abs(keyNav.velRotX) > 1e-4 || Math.abs(keyNav.velRotY) > 1e-4;
+    if (viewLevel === 1 && !controls.mouseDown && !keyOrbiting && !isHudOpen()) {
       controls.targetRotationY += 0.00025;
     }
     if (viewLevel >= 1 && viewLevel <= 3) {
