@@ -77,6 +77,14 @@
       pointer-events: auto;
       max-width: 300px;
       backdrop-filter: blur(10px);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    #controls.is-away {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
     }
 
     #controls h3 {
@@ -104,7 +112,7 @@
       position: fixed;
       top: 14px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(0);
       z-index: 14;
       text-align: center;
       pointer-events: none;
@@ -132,7 +140,14 @@
         100% calc(100% - 10px), calc(100% - 10px) 100%,
         10px 100%, 0 calc(100% - 10px)
       );
-      transition: opacity 0.35s ease;
+      opacity: 1;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    /* Zoomed-in / detail: fade + slide up (~350ms). Print link is inert while away. */
+    #title-overlay.is-away {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-14px);
+      pointer-events: none;
     }
     #title-overlay::before,
     #title-overlay::after {
