@@ -50,7 +50,7 @@ I grew this project from initial concept, pre-silicon boot on Ski simulator, A-s
   - MCA (Itanium machine-check architecture)
   - NUMA topologies (core / die / package coherence and performance domains)
   - power-management hints critical to performance
-- Later features including para-virtualized I/O and on-line guest migration
+- Later features included para-virtualized I/O and on-line guest migration
 - Ran on 128-way Superdome servers with 1TB of memory
 - Ran guests up to 16 virtual CPUs, but my testing ran with 64-way Windows guests I used as my primary virtual desktop, eating my own dogfood
 - Ran HP-UX, Linux, Windows and OpenVMS as guests
