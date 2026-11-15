@@ -597,7 +597,8 @@
       opacity: 1;
       visibility: visible;
     }
-    /* Media focus: decorated HUD panel at 95vw×95vh; media fills ~95% of its inner area.
+    /* Media focus: decorated frame sized to the media aspect ratio, max 95vw×95vh.
+       Close is overlaid inside the frame (no reserved chrome strip).
        Chromium darkens iframes under backdrop-filter ancestors — drop blur here and
        force full-opacity media (no filter / blend / overlay).
        The focus scrim is a body-level sibling (z=34). #hud lives inside #bottom-stack
@@ -647,32 +648,42 @@
       max-height: 95vh;
       z-index: 36;
       padding: 14px;
-      gap: 8px;
+      gap: 0;
       pointer-events: none;
       overflow: visible;
     }
     #hud.hud-media-focus.open {
       pointer-events: none;
     }
+    /* Close overlays the frame top-right (above the iframe); no reserved strip. */
     #hud.hud-media-focus .hud-chrome {
-      flex: 0 0 auto;
-      position: relative;
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 34px;
       height: 34px;
-      z-index: 5;
+      z-index: 10;
       pointer-events: none;
+      flex: none;
     }
     #hud.hud-media-focus #hud-close {
       pointer-events: auto;
       opacity: 1;
       visibility: visible;
+      z-index: 10;
+      background: rgba(4, 10, 22, 0.88);
+      border-color: color-mix(in srgb, var(--hud-accent) 55%, transparent);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
     }
     /* Keep the normal sci-fi frame (border, glow, chamfer, corner ticks).
        Use an opaque fill and no backdrop-filter — blur on ancestors makes
        YouTube iframes look washed/dark in Chromium. */
     #hud.hud-media-focus .hud-panel {
+      position: relative;
+      z-index: 1;
       pointer-events: auto;
       flex: 1 1 auto;
-      height: auto;
+      height: 100%;
       min-height: 0;
       width: 100%;
       padding: 18px;
