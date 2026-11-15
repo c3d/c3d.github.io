@@ -132,7 +132,7 @@ body.print-preview #print-view {
   font-style: italic;
   font-weight: 400;
   line-height: 1.22;
-  color: #8a93a0;
+  color: #657890; /* muted slate blue-gray — slightly darker/bluer than #8a93a0 */
   text-align: right;
 }
 .pvc-theme { margin-bottom: 3px; break-inside: avoid; }
@@ -190,12 +190,12 @@ body.print-preview #print-view {
   flex-wrap: wrap;
   gap: 3px 6px;
   margin: 4px 0 2px;
-  font-size: 11px;
+  font-size: 12.5px;
   color: #445;
 }
 .pvc-tech a.pv-deep,
 .pvc-tech span {
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 999px;
   background: #eef2f7;
 }
@@ -262,8 +262,8 @@ a.pv-deep-on-dark {
   line-height: 1.2;
 }
 .pvc-tech a.pv-deep {
-  font-size: 11px;
-  padding: 2px 8px;
+  font-size: 12.5px;
+  padding: 3px 10px;
 }
 .pvo-tags a.pv-deep {
   background: transparent;
