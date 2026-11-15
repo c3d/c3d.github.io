@@ -2222,8 +2222,9 @@ function setPanelClip(panel, insets, { ms, immediate = false } = {}) {
 
 function stopHudTeletype({ finish = false } = {}) {
   if (!hudTeletype) return;
-  const { timer, onSkip, chars, cursor, root, resolve } = hudTeletype;
+  const { timer, onSkip, chars, cursor, root, resolve, cleanupScroll } = hudTeletype;
   if (timer) clearInterval(timer);
+  if (typeof cleanupScroll === 'function') cleanupScroll();
   if (onSkip) {
     window.removeEventListener('keydown', onSkip, true);
     window.removeEventListener('pointerdown', onSkip, true);
@@ -2240,6 +2241,11 @@ function stopHudTeletype({ finish = false } = {}) {
   // Always resolve so a superseded teletype cannot hang open choreography
   // (which used to leave [data-hud=media] at opacity 0 indefinitely).
   if (typeof resolve === 'function') resolve();
+}
+
+/** Scroll parent for HUD body teletype (theme/chips live outside this scroller). */
+function hudTeletypeScroller(root) {
+  return root?.closest?.('.hud-below-inner') || null;
 }
 
 function prepareTeletypeChars(root) {
@@ -2283,6 +2289,81 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
   cursor.setAttribute('aria-hidden', 'true');
   root.appendChild(cursor);
 
+  // Keep the caret near the bottom of .hud-below-inner while typing. Manual
+  // wheel/touch/scrollbar input cancels follow so we never fight the user.
+  const scroller = hudTeletypeScroller(root);
+  let followScroll = !!scroller;
+  let ignoreScrollEvent = false;
+  let scrollRaf = 0;
+  let targetScrollTop = scroller ? scroller.scrollTop : 0;
+  const BOTTOM_PAD_PX = 40;
+
+  const applyScroll = () => {
+    scrollRaf = 0;
+    if (!followScroll || !scroller) return;
+    const cur = scroller.scrollTop;
+    const diff = targetScrollTop - cur;
+    if (Math.abs(diff) < 0.75) {
+      if (diff !== 0) {
+        ignoreScrollEvent = true;
+        scroller.scrollTop = targetScrollTop;
+        requestAnimationFrame(() => {
+          ignoreScrollEvent = false;
+        });
+      }
+      return;
+    }
+    // Fast ease (~2–3 frames to catch up) — smooth without laggy smooth-scroll queues.
+    ignoreScrollEvent = true;
+    scroller.scrollTop = cur + diff * 0.65;
+    requestAnimationFrame(() => {
+      ignoreScrollEvent = false;
+    });
+    scrollRaf = requestAnimationFrame(applyScroll);
+  };
+
+  const keepCursorInView = () => {
+    if (!followScroll || !scroller || !cursor.isConnected) return;
+    const cRect = cursor.getBoundingClientRect();
+    const sRect = scroller.getBoundingClientRect();
+    if (sRect.height < 8) return;
+    const cursorBottomInContent = scroller.scrollTop + (cRect.bottom - sRect.top);
+    targetScrollTop = Math.max(0, cursorBottomInContent - scroller.clientHeight + BOTTOM_PAD_PX);
+    // Also pull up if the caret somehow sits above the visible top.
+    const cursorTopInContent = scroller.scrollTop + (cRect.top - sRect.top);
+    if (cursorTopInContent < scroller.scrollTop + 8) {
+      targetScrollTop = Math.max(0, cursorTopInContent - 8);
+    }
+    if (!scrollRaf) scrollRaf = requestAnimationFrame(applyScroll);
+  };
+
+  const cancelFollow = () => {
+    followScroll = false;
+    if (scrollRaf) {
+      cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+    }
+  };
+  const onScrollerScroll = () => {
+    if (ignoreScrollEvent) return;
+    cancelFollow();
+  };
+  const cleanupScroll = () => {
+    if (scrollRaf) {
+      cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+    }
+    if (!scroller) return;
+    scroller.removeEventListener('scroll', onScrollerScroll);
+    scroller.removeEventListener('wheel', cancelFollow);
+    scroller.removeEventListener('touchstart', cancelFollow);
+  };
+  if (scroller) {
+    scroller.addEventListener('scroll', onScrollerScroll, { passive: true });
+    scroller.addEventListener('wheel', cancelFollow, { passive: true });
+    scroller.addEventListener('touchstart', cancelFollow, { passive: true });
+  }
+
   let i = 0;
   const interval = Math.max(8, Math.round(1000 / cps));
   return new Promise((resolve) => {
@@ -2313,9 +2394,10 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
       setTimeout(() => span.classList.remove('hud-tt-fresh'), HUD_TIMING.remanenceMs);
       cursor.remove();
       span.after(cursor);
+      keepCursorInView();
     }, interval);
     // resolve is invoked by stopHudTeletype (supersede) or finish() above.
-    hudTeletype = { timer, onSkip, chars, cursor, root, resolve: settle };
+    hudTeletype = { timer, onSkip, chars, cursor, root, resolve: settle, cleanupScroll };
     window.addEventListener('keydown', onSkip, true);
     window.addEventListener('pointerdown', onSkip, true);
   });
