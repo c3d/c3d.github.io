@@ -125,7 +125,7 @@ body.print-preview #print-view {
 .pvc-about {
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 46%;
+  max-width: 52%;
   margin: 0 0 0 auto;
   padding-left: 10px;
   font-size: 14px;
@@ -188,6 +188,7 @@ body.print-preview #print-view {
 .pvc-tech {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 3px 6px;
   margin: 4px 0 2px;
   font-size: 12.5px;
