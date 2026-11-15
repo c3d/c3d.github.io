@@ -13,7 +13,8 @@ related:
   - 3divart
   - firefly
   - alpha-waves
-videos: []
+videos:
+  - TbMKCN2-GPk
 links:
   - label: Tao3D
     url: 'http://tao3d.sf.net'
