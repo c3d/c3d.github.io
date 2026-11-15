@@ -144,6 +144,7 @@ const PRINT_COPY = {
     ]
   },
   taodyne: {
+    title: 'Taodyne: Founder and CEO',
     bullets: [
       'A company selling Tao3D and high-end interactive 3D presentations, stereoscopy, glasses-free 3D'
     ]
