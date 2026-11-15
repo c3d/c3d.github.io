@@ -1255,6 +1255,19 @@
     .hud-bullet li {
       margin: 0 0 0.35em;
     }
+    /* Bullet-star focus: which NODE bullet this star stands for. */
+    .hud-bullet .hud-li-focus {
+      background: color-mix(in srgb, var(--hud-accent, #40e0ff) 14%, transparent);
+      box-shadow: inset 3px 0 0 var(--hud-accent, #40e0ff);
+      border-radius: 0 4px 4px 0;
+      padding: 0.15em 0.45em 0.15em 0.55em;
+      margin-left: -0.55em;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hud-bullet .hud-li-focus {
+        transition: none;
+      }
+    }
     /* Nested sub-bullets (e.g. HPVM emulated firmware list):
        distinctive marker + tight indent — space is limited in the HUD. */
     .hud-bullet ul ul {
