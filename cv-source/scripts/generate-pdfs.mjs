@@ -109,10 +109,22 @@ async function main() {
             img.onload = img.onerror = res;
           }))));
         });
+        // Belt-and-suspenders for single-page A4:
+        // - theme break-inside:avoid ejected Communications entirely (#99)
+        // - space-between packed the last bullet to the edge so link text
+        //   fragmented onto discarded page 2 (last-line fix)
+        await page.addStyleTag({
+          content: `
+            .pvc-theme,.pvn-theme,.pvo-theme{break-inside:auto!important;page-break-inside:auto!important;}
+            .pvn-main,.pvo-main{justify-content:flex-start!important;}
+            .pvn-project li,.pvo-project li,.pvc-project li,a.pv-deep{break-inside:avoid!important;page-break-inside:avoid!important;}
+          `
+        });
         await new Promise((r) => setTimeout(r, 500));
         const metrics = await page.evaluate(() => {
           const el = document.getElementById('print-view');
-          const h = el?.scrollHeight || 0;
+          const pageRoot = el?.querySelector('.pv-classic, .pv-nebula, .pv-orbit');
+          const h = pageRoot?.scrollHeight || el?.scrollHeight || 0;
           return { heightPx: h, approxPages: h / 1123 };
         });
         // If content spills slightly past one A4, scale the print root to fit
