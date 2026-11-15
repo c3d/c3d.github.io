@@ -597,8 +597,9 @@
       opacity: 1;
       visibility: visible;
     }
-    /* Media focus: decorated frame sized to the media aspect ratio, max 95vw×95vh.
-       Close is overlaid inside the frame (no reserved chrome strip).
+    /* Media focus: decorated frame sized to the media aspect ratio, max 98vw×98vh.
+       Close is overlaid inside the frame (no reserved chrome strip). Minimal outer
+       and inner padding so the media fills nearly the whole viewport.
        Chromium darkens iframes under backdrop-filter ancestors — drop blur here and
        force full-opacity media (no filter / blend / overlay).
        The focus scrim is a body-level sibling (z=34). #hud lives inside #bottom-stack
@@ -642,12 +643,12 @@
       right: auto !important;
       bottom: auto !important;
       transform: translate(-50%, -50%);
-      width: min(var(--hud-focus-w, 95vw), 95vw) !important;
-      height: min(var(--hud-focus-h, 95vh), 95vh) !important;
-      max-width: 95vw;
-      max-height: 95vh;
+      width: min(var(--hud-focus-w, 98vw), 98vw) !important;
+      height: min(var(--hud-focus-h, 98vh), 98vh) !important;
+      max-width: 98vw;
+      max-height: 98vh;
       z-index: 36;
-      padding: 14px;
+      padding: 8px;
       gap: 0;
       pointer-events: none;
       overflow: visible;
@@ -658,8 +659,8 @@
     /* Close overlays the frame top-right (above the iframe); no reserved strip. */
     #hud.hud-media-focus .hud-chrome {
       position: absolute;
-      top: 22px;
-      right: 22px;
+      top: 12px;
+      right: 12px;
       width: 34px;
       height: 34px;
       z-index: 10;
@@ -686,7 +687,7 @@
       height: 100%;
       min-height: 0;
       width: 100%;
-      padding: 18px;
+      padding: 8px;
       background-color: rgba(4, 10, 22, 0.96);
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;

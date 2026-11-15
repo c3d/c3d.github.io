@@ -2403,12 +2403,12 @@ function sizeMediaFocus(mediaEl) {
   const hud = document.getElementById('hud');
   if (!hud || !mediaEl) return;
   // Fit the decorated frame to the media aspect ratio, as large as possible
-  // within 95vw×95vh. Close is overlaid inside the frame — no chrome strip.
-  const HUD_PAD = 14;
-  const PANEL_PAD = 18;
+  // within 98vw×98vh. Close is overlaid inside the frame — no chrome strip.
+  const HUD_PAD = 8;
+  const PANEL_PAD = 8;
   const inset = HUD_PAD + PANEL_PAD;
-  const maxOuterW = window.innerWidth * 0.95;
-  const maxOuterH = window.innerHeight * 0.95;
+  const maxOuterW = window.innerWidth * 0.98;
+  const maxOuterH = window.innerHeight * 0.98;
   const maxW = Math.max(160, maxOuterW - inset * 2);
   const maxH = Math.max(90, maxOuterH - inset * 2);
   let mediaW = maxW;
