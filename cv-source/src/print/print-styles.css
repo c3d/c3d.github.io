@@ -154,7 +154,7 @@ body.print-preview #print-view {
 .pvc-body { min-width: 0; }
 .pvc-line {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 12.8px; /* ~0.5pt / ~5% smaller than former 13.5px bullets */
   font-weight: 500;
   line-height: 1.28;
 }
