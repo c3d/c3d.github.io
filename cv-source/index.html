@@ -1218,14 +1218,25 @@
     .hud-bullet li {
       margin: 0 0 0.35em;
     }
-    /* Nested sub-bullets (e.g. HPVM emulated firmware list) */
+    /* Nested sub-bullets (e.g. HPVM emulated firmware list):
+       distinctive marker + tight indent — space is limited in the HUD. */
     .hud-bullet ul ul {
-      margin: 0.2em 0 0.45em;
-      padding-left: 1.2em;
-      list-style-type: circle;
+      margin: 0.15em 0 0.35em;
+      padding-left: 0.7em;
+      list-style: none;
     }
     .hud-bullet ul ul li {
-      margin: 0 0 0.2em;
+      position: relative;
+      margin: 0 0 0.15em;
+      padding-left: 0.75em;
+    }
+    .hud-bullet ul ul li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--hud-accent, #40e0ff);
+      opacity: 0.9;
+      font-weight: 500;
     }
     .hud-index {
       font-family: Orbitron, sans-serif;
