@@ -204,9 +204,10 @@ let warpDeadline = 0;
 let warpVisited = new Set();
 let lastWarpedProjectId = null;
 let warpJumpInProgress = false;
-/** Warp tour timing — configure both in one place. */
-const IDLE_MS = 30000;           // idle delay before entering warp tour
-const WARP_INTERVAL_MS = 10000;  // seconds between jumps (countdown + progress bar)
+/** Warp tour timing — configure idle delays and jump interval in one place. */
+const IDLE_MS_OVERVIEW = 30_000;       // fully zoomed-out overview: short idle → warp
+const IDLE_MS_ENGAGED = 5 * 60_000;    // after opening/zooming into content: 5 min
+const WARP_INTERVAL_MS = 10_000;       // seconds between jumps (countdown + progress bar)
 
 let controls = {
   mouseDown: false,
@@ -2477,10 +2478,18 @@ function enterMediaFocus(mediaEl) {
   // Pin media into view
   const below = hud.querySelector('.hud-below-inner');
   if (below) below.scrollTop = 0;
+
+  // Full-screen media focus: kill auto-warp entirely (paused or playing).
+  if (autoMode) exitAutoMode();
+  if (idleTimer) {
+    clearTimeout(idleTimer);
+    idleTimer = null;
+  }
 }
 
 function exitMediaFocus() {
   const hud = document.getElementById('hud');
+  const wasFocus = hud?.classList.contains('hud-media-focus');
   mediaFocusEl = null;
   hud?.classList.remove('hud-media-focus');
   hud?.querySelectorAll('.hud-media-focus-active').forEach((el) => {
@@ -2498,6 +2507,8 @@ function exitMediaFocus() {
     backdrop.hidden = true;
     backdrop.setAttribute('aria-hidden', 'true');
   }
+  // Resume normal idle delay (5 min while HUD still open, 30s at overview).
+  if (wasFocus) noteUserActivity();
 }
 
 function setupMediaFocusInteractions() {
@@ -3123,6 +3134,8 @@ function enterClusterView(theme, { fromAuto = false, fromDeepLink = false } = {}
   viewLevel = 2;
   labelResolveAt = 0; // force project labels to resolve for this cluster
   updateClusterDimming();
+  // User zoomed into a cluster → switch idle warp delay to the engaged (5 min) timer.
+  if (!fromAuto) noteUserActivity();
   const pose = clusterFocusPose(theme);
   clusterPose = pose;
   preHudPose = pose; // L3 close returns here
@@ -3177,6 +3190,8 @@ function exitClusterView({ animate = true } = {}) {
   clusterPose = null;
   preHudPose = null;
   updateClusterDimming();
+  // Back at top-level overview → restore the short (30s) idle warp delay.
+  noteUserActivity();
   const pose = overviewPose;
   overviewPose = null;
   if (!animate) {
@@ -3248,6 +3263,8 @@ function openHUD(star, { fromAuto = false } = {}) {
     warpVisited.add(star.project.id);
     lastWarpedProjectId = star.project.id;
   }
+  // User opened a node → arm the engaged (5 min) idle delay.
+  if (!fromAuto) noteUserActivity();
 }
 
 function closeHUD({ restoreCamera = true } = {}) {
@@ -3277,6 +3294,8 @@ function closeHUD({ restoreCamera = true } = {}) {
     // title overlay stays at opacity 0 forever (see syncTitleOverlayVisibility).
     updateClusterDimming();
     findProjectLabelEl(closingStar?.project?.id)?.classList.remove('ms-label-hud-open');
+    // Re-arm idle: L2 keeps the engaged delay; L1 overview returns to 30s.
+    noteUserActivity();
     if (!restoreCamera) {
       preHudPose = null;
       return;
@@ -3423,6 +3442,11 @@ function scheduleNextWarp() {
 
 function doWarpJump() {
   if (!autoMode) return;
+  // Never jump while full-screen media focus is open (paused or playing).
+  if (isMediaFocus()) {
+    exitAutoMode();
+    return;
+  }
   if (isHudVideoBusy()) {
     exitAutoMode();
     noteUserActivity();
@@ -3461,12 +3485,25 @@ function doWarpJump() {
 function isHudVideoBusy() {
   const hud = document.getElementById('hud');
   if (!hud?.classList.contains('open')) return false;
-  return !!hud.querySelector('.hud-video iframe');
+  // Full-screen media focus is always treated as watching.
+  if (isMediaFocus()) return true;
+  return !!hud.querySelector('.hud-video iframe, .hud-video video, video');
+}
+
+/** Top-level overview: fully zoomed out, no cluster/HUD/node selected. */
+function isOverviewIdleContext() {
+  return viewLevel === 1 && !focusTheme && !currentStar && !isHudOpen() && !isMediaFocus();
+}
+
+function idleDelayMs() {
+  return isOverviewIdleContext() ? IDLE_MS_OVERVIEW : IDLE_MS_ENGAGED;
 }
 
 function enterAutoMode() {
   if (autoMode || document.body.classList.contains('print-preview')) return;
   if (searchActive) return; // pause autopilot while searching
+  // Full-screen media focus: auto-warp stays completely off.
+  if (isMediaFocus()) return;
   if (isHudVideoBusy()) {
     // Stay idle-armed but do not warp while a video HUD is open
     noteUserActivity();
@@ -3501,16 +3538,22 @@ window.doWarpJump = doWarpJump;
 function noteUserActivity() {
   if (autoMode) exitAutoMode();
   if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = null;
   if (document.body.classList.contains('print-preview')) return;
   if (searchActive) return; // do not arm idle warp while the search HUD is open
+  // Full-screen media focus: do not arm idle at all (warp fully disabled).
+  if (isMediaFocus()) return;
+  const delay = idleDelayMs();
   idleTimer = setTimeout(() => {
     if (searchActive) return;
+    if (isMediaFocus()) return; // still in media focus — stay fully off
     if (isHudVideoBusy()) {
+      // Keep the timer alive with the engaged delay — never interrupt a video.
       noteUserActivity();
       return;
     }
     enterAutoMode();
-  }, IDLE_MS);
+  }, delay);
 }
 
 function firstStarForProject(projectId) {
