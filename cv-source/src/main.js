@@ -3171,7 +3171,7 @@ function openHUD(star, { fromAuto = false } = {}) {
   plantOpenMorphClone(star);
   flyToStar(star);
   runHudOpenContinuity(star, { fromAuto });
-  // Any open (click, Enter, Ctrl-N, warp) counts as visited for the warp tour.
+  // Any open (click, Enter, ] next-node, warp) counts as visited for the warp tour.
   if (star.project?.id) {
     warpVisited.add(star.project.id);
     lastWarpedProjectId = star.project.id;
@@ -3238,7 +3238,7 @@ function projectStarRepresentatives() {
 
 /**
  * Stable review order = the `stars` array (same index as NODE xxx / yyy).
- * delta +1 = next (Ctrl-N), -1 = previous (Ctrl-P); wraps at ends.
+ * delta +1 = next (]), -1 = previous ([); wraps at ends.
  */
 function reviewNeighborStar(delta) {
   if (!stars.length) return null;
@@ -3876,17 +3876,14 @@ function setupInteraction() {
     const hudOpen = isHudOpen();
     const navKey = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Enter', 'Backspace', 'Escape'].includes(e.key);
 
-    // Ctrl/Cmd-P / Ctrl/Cmd-N — sequential review of every NODE (stars[] order).
-    // preventDefault so Ctrl-P does not open the browser print dialog.
-    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
-      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-      if (k === 'p' || k === 'n') {
-        if (inEditable || inSearchInput || blocked) return;
-        e.preventDefault();
-        noteUserActivity();
-        goReviewStar(k === 'n' ? 1 : -1);
-        return;
-      }
+    // [ / ] — sequential review of every NODE (stars[] order).
+    // No Ctrl/Cmd-P/N handlers so browser print / new-window shortcuts work.
+    if (!e.ctrlKey && !e.metaKey && !e.altKey && (e.key === '[' || e.key === ']')) {
+      if (inEditable || inSearchInput || blocked) return;
+      e.preventDefault();
+      noteUserActivity();
+      goReviewStar(e.key === ']' ? 1 : -1);
+      return;
     }
 
     if (e.key === 'Escape') {
