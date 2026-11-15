@@ -74,13 +74,16 @@
   .ms-label {
     display: none !important;
   }
+  /* body.print-preview #print-view { margin: 18px auto } is for screen only —
+   * beat that specificity so Chromium PDF has no top gap / shifted header. */
+  body.print-preview #print-view,
   #print-view {
     width: 210mm;
     height: 297mm;
     min-height: 0;
     max-height: 297mm;
     max-width: none;
-    margin: 0;
+    margin: 0 !important;
     box-shadow: none !important;
     overflow: hidden;
   }
@@ -293,6 +296,15 @@ a.pv-deep-on-dark {
 .pvn-header { position: relative; height: 22mm; flex-shrink: 0; background: #050b18; color: #fff; overflow: hidden; }
 .pvn-space { position: absolute; inset: 0; }
 .pvn-starfield { width: 100%; height: 100%; display: block; }
+/* Rasterized header decor (see rasterize-decor.js) — keep ink exact in PDF. */
+.pvn-space img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
 .pvn-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3mm; height: 100%; padding: 0 4.5mm; }
 .pvn-logo { width: 12mm; height: 12mm; object-fit: contain; flex-shrink: 0; }
 .pvn-header-text { flex: 1; min-width: 0; }
@@ -507,6 +519,14 @@ a.pvo-qr:hover { color: inherit; }
 .pvo-header { position: relative; height: 22mm; flex-shrink: 0; background: var(--orbit-navy); overflow: hidden; }
 .pvo-header-wave { position: absolute; inset: 0; }
 .pvo-header-wave svg { width: 100%; height: 100%; display: block; }
+.pvo-header-wave img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
 .pvo-header-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 3mm; height: 100%; padding: 0 5mm; }
 .pvo-logo { width: 13mm; height: 13mm; object-fit: contain; }
 .pvo-header-inner h1 { font-family: Orbitron, sans-serif; font-size: 14.5pt; margin: 0; color: #fff; text-align: left; }

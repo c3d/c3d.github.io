@@ -18,7 +18,14 @@ import {
   resolvePrintStyleId,
   buildModelForStyles
 } from './print/registry.js';
+import { rasterizePrintDecor } from './print/rasterize-decor.js';
 import { THEME_CLUSTER_SLUGS } from './print/icons.js';
+
+/** Resolves when Nebula/Orbit header SVG decor has been baked to PNG for print/PDF. */
+let printDecorReady = Promise.resolve();
+if (typeof window !== 'undefined') {
+  window.__printDecorReady = () => printDecorReady;
+}
 
 /** Injected by vite.config.js — used to cache-bust content-data.json fetches.
  *  Falls back to 'dev' when the define is absent (e.g. non-Vite tooling). */
@@ -4449,6 +4456,13 @@ function applyPrintStyle(styleId, { persist = true, updateUrl = false } = {}) {
   printView.querySelectorAll('[data-print-style]').forEach((btn) => {
     btn.addEventListener('click', () => applyPrintStyle(btn.dataset.printStyle, { updateUrl: true }));
   });
+  // Bake SVG header backgrounds to PNG so Chromium PDF matches the web print view.
+  printDecorReady = (async () => {
+    await document.fonts.ready.catch(() => {});
+    // Layout must settle so getBoundingClientRect matches A4 print width.
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await rasterizePrintDecor(printView);
+  })();
 }
 
 function generatePrintView(data) {
