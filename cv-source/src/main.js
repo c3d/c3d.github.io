@@ -1657,15 +1657,54 @@ async function assertLabelStability({ settleMs = 1200, sampleMs = 2000, maxStd =
 window.assertLabelStability = assertLabelStability;
 window.assertLabelClicks = assertLabelClicks;
 
+/**
+ * Top title (name + print link) and help panel: show when zoomed out, hide when
+ * zoomed in. Driven by camera distance every frame (wheel / keys / warp / flights),
+ * with hysteresis so it does not flicker near the threshold.
+ *
+ * Regression note: continuous HUD title morph (#61) keeps `currentStar` set until
+ * the close morph finishes, while updateClusterDimming treated `!!currentStar` as
+ * focused and set opacity 0 — then never ran again after currentStar cleared, so
+ * the title stayed invisible after zooming back out. Distance + class sync below
+ * replaces that one-shot inline opacity write.
+ */
+// Absolute distances must sit below the narrowest overview fit (~180) so a
+// fully zoomed-out view always clears the show threshold.
+const TITLE_HIDE_ZOOM = 145; // hide when distance drops below this
+const TITLE_SHOW_ZOOM = 170; // show again only after zooming out past this
+let titleOverlayShown = true;
+
+function syncTitleOverlayVisibility() {
+  const title = document.getElementById('title-overlay');
+  const help = document.getElementById('controls');
+  const zoom = controls.currentZoom;
+  const detailOpen = viewLevel >= 3 || !!currentStar || isHudOpen();
+
+  if (titleOverlayShown) {
+    if (detailOpen || viewLevel >= 2 || zoom < TITLE_HIDE_ZOOM) {
+      titleOverlayShown = false;
+    }
+  } else if (!detailOpen && viewLevel === 1 && zoom >= TITLE_SHOW_ZOOM) {
+    titleOverlayShown = true;
+  }
+
+  if (title) {
+    title.classList.toggle('is-away', !titleOverlayShown);
+    title.style.opacity = '';
+    title.setAttribute('aria-hidden', titleOverlayShown ? 'false' : 'true');
+  }
+  if (help) {
+    help.classList.toggle('is-away', !titleOverlayShown);
+    help.style.opacity = '';
+  }
+}
+
 function updateClusterDimming() {
   const focused = viewLevel >= 3 || !!currentStar;
   bloomPass.strength = focused ? 0.28 : (viewLevel === 2 ? 0.5 : 0.62);
   renderer.toneMappingExposure = focused ? 0.68 : (viewLevel === 2 ? 1.22 : 1.34);
   labelResolveAt = 0;
-  const title = document.getElementById('title-overlay');
-  if (title) title.style.opacity = focused ? '0' : (viewLevel === 2 ? '0.35' : '1');
-  const controlsEl = document.getElementById('controls');
-  if (controlsEl) controlsEl.style.opacity = focused ? '0' : (viewLevel === 2 ? '0.4' : '1');
+  syncTitleOverlayVisibility();
   nebulaGroups.forEach(({ group, theme }) => {
     group.traverse((obj) => {
       if (obj.isSprite && !obj.userData.isLabel) {
@@ -1805,6 +1844,10 @@ function flyCameraPath(fromPos, toPos, fromLook, toLook, duration, onDone) {
     camera.position.lerpVectors(fromPos, toPos, e);
     look.lerpVectors(fromLook, toLook, e);
     camera.lookAt(look);
+    // Keep zoom metric live during flights so the title overlay can track distance.
+    const liveDist = camera.position.distanceTo(look);
+    controls.currentZoom = liveDist;
+    controls.targetZoom = liveDist;
     if (t < 1) requestAnimationFrame(step);
     else if (gen === flyGeneration) {
       camera.position.copy(toPos);
@@ -3099,7 +3142,27 @@ function enterClusterView(theme, { fromAuto = false, fromDeepLink = false } = {}
 }
 
 function exitClusterView({ animate = true } = {}) {
-  if (currentStar) closeHUD({ restoreCamera: false });
+  // Snap-close any in-flight HUD/morph synchronously. Calling closeHUD() here was
+  // racy: a prior Escape may still be morphing (currentStar set, .open still on),
+  // and starting a second async close left the panel stuck while the camera left.
+  const hud = document.getElementById('hud');
+  if (currentStar || hud?.classList.contains('open')) {
+    hudAnimGen += 1;
+    stopHudTeletype({ finish: true });
+    stopHudVideos();
+    exitMediaFocus();
+    removeHudFlyLabel();
+    findProjectLabelEl(currentStar?.project?.id)?.classList.remove('ms-label-hud-open');
+    currentStar = null;
+    clearHudStageClasses(hud);
+    revealHudProjectTitle(hud);
+    hud?.classList.remove('open');
+    hud?.setAttribute('aria-hidden', 'true');
+    highlightConnectedEdges(null);
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
   focusTheme = null;
   viewLevel = 1;
   clusterPose = null;
@@ -3201,6 +3264,9 @@ function closeHUD({ restoreCamera = true } = {}) {
   // clone can track the live projected label (one box, no jump at the end).
   runHudCloseContinuity().then((result) => {
     currentStar = null;
+    // Re-run dimming/title sync now that currentStar is cleared — otherwise the
+    // title overlay stays at opacity 0 forever (see syncTitleOverlayVisibility).
+    updateClusterDimming();
     findProjectLabelEl(closingStar?.project?.id)?.classList.remove('ms-label-hud-open');
     if (!restoreCamera) {
       preHudPose = null;
@@ -3580,13 +3646,17 @@ function pickStarNearestScreenCenter() {
 }
 
 function zoomOutOneLevel() {
-  if (isHudOpen() || viewLevel >= 3 || currentStar) {
+  // viewLevel is authoritative. closeHUD drops it to 2/1 immediately but keeps
+  // currentStar (and often the .open class) until the title morph finishes —
+  // so isHudOpen()/currentStar must not block the next Escape from leaving L2.
+  if (viewLevel >= 3) {
     closeHUD();
     return;
   }
   if (viewLevel === 2) {
     clearClusterQueryParam();
     exitClusterView();
+    return;
   }
   // L1 overview: already zoomed out — no-op.
 }
@@ -4030,6 +4100,8 @@ function animate() {
   const t = clock.getElapsedTime();
 
   updateKeyboardNav(dt);
+  // Title overlay tracks camera distance every frame (wheel, keys, flights, warp).
+  syncTitleOverlayVisibility();
 
   // Apply orbit at L1–L3; idle auto-spin only in overview. Never fight fly tweens.
   if (!isFlying && !autoMode) {
