@@ -98,12 +98,17 @@ async function main() {
         await page.emulateMediaType('print');
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
         await page.waitForSelector('#print-view', { timeout: 15000 });
-        // Wait for fonts + images (logo, QR); hide screen-only chrome
+        // Wait for fonts + images (logo, QR); hide screen-only chrome.
+        // Also wait for header SVG→PNG bake (Chromium PDF washes SVG stop-opacity /
+        // rgba strokes; rasterize-decor.js matches the web print view).
         await page.evaluate(async () => {
           document.querySelectorAll('.no-print, .pv-style-bar').forEach((el) => {
             el.style.display = 'none';
           });
           await document.fonts.ready;
+          if (typeof window.__printDecorReady === 'function') {
+            await window.__printDecorReady();
+          }
           const imgs = [...document.images];
           await Promise.all(imgs.map((img) => (img.complete ? Promise.resolve() : new Promise((res) => {
             img.onload = img.onerror = res;
@@ -121,15 +126,80 @@ async function main() {
           `
         });
         await new Promise((r) => setTimeout(r, 500));
-        const metrics = await page.evaluate(() => {
-          const el = document.getElementById('print-view');
-          const pageRoot = el?.querySelector('.pv-classic, .pv-nebula, .pv-orbit');
-          const h = pageRoot?.scrollHeight || el?.scrollHeight || 0;
-          return { heightPx: h, approxPages: h / 1123 };
+        // If bake did not run (older bundle), screenshot decorative layers here.
+        await page.evaluate(async () => {
+          async function bake(sel, bg) {
+            const space = document.querySelector(sel);
+            if (!space || space.dataset.rasterized === '1') return;
+            const svg = space.querySelector('svg');
+            if (!svg) return;
+            const rect = space.getBoundingClientRect();
+            const cssW = Math.max(1, rect.width || 1);
+            const cssH = Math.max(1, rect.height || 1);
+            const scale = Math.min(3, Math.max(2, window.devicePixelRatio || 2));
+            const clone = svg.cloneNode(true);
+            clone.setAttribute('width', String(cssW));
+            clone.setAttribute('height', String(cssH));
+            if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(new XMLSerializer().serializeToString(clone))}`;
+            const img = new Image();
+            await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(cssW * scale);
+            canvas.height = Math.round(cssH * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            space.innerHTML = `<img alt="" aria-hidden="true" src="${canvas.toDataURL('image/png')}" style="width:100%;height:100%;display:block;object-fit:cover">`;
+            space.dataset.rasterized = '1';
+          }
+          await bake('.pvn-space', '#050b18');
+          await bake('.pvo-header-wave', '#0a1628');
         });
-        // If content spills slightly past one A4, scale the print root to fit
-        if (metrics.heightPx > 1120) {
-          const scale = Math.min(0.98, 1100 / metrics.heightPx);
+        // Measure intrinsic content height (unconstrained), not the fixed 297mm box.
+        const metrics = await page.evaluate(() => {
+          const pageRoot = document.querySelector('.pv-classic, .pv-nebula, .pv-orbit');
+          if (!pageRoot) return { heightPx: 0, pageH: 0, sparePx: 0 };
+          const pageH = pageRoot.getBoundingClientRect().height;
+          const main = pageRoot.querySelector('.pvn-main, .pvo-main');
+          const saved = {
+            h: pageRoot.style.height,
+            mh: pageRoot.style.maxHeight,
+            mn: pageRoot.style.minHeight,
+            o: pageRoot.style.overflow,
+            mj: main?.style.justifyContent,
+            mf: main?.style.flex
+          };
+          pageRoot.style.height = 'auto';
+          pageRoot.style.maxHeight = 'none';
+          pageRoot.style.minHeight = '0';
+          pageRoot.style.overflow = 'visible';
+          if (main) {
+            main.style.justifyContent = 'flex-start';
+            main.style.flex = '0 0 auto';
+          }
+          const contentH = Math.max(pageRoot.getBoundingClientRect().height, pageRoot.scrollHeight);
+          Object.assign(pageRoot.style, {
+            height: saved.h,
+            maxHeight: saved.mh,
+            minHeight: saved.mn,
+            overflow: saved.o
+          });
+          if (main) {
+            main.style.justifyContent = saved.mj || '';
+            main.style.flex = saved.mf || '';
+          }
+          return {
+            heightPx: contentH,
+            pageH,
+            sparePx: pageH - contentH,
+            approxPages: contentH / 1123
+          };
+        });
+        // Scale only on real overflow (spare negative) — not when box is merely min-height:297mm.
+        if (metrics.sparePx < -1) {
+          const scale = Math.min(0.98, (metrics.pageH - 8) / metrics.heightPx);
           await page.addStyleTag({
             content: `#print-view{transform:scale(${scale});transform-origin:top left;width:${100 / scale}% !important;}`
           });
