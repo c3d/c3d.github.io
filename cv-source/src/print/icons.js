@@ -17,32 +17,43 @@ export const TECH_TAGS = [
   'RPL', 'XL', 'Tao3D', 'ELFE', 'SPICE', 'Make'
 ];
 
-/** Map print tech-tag labels → topic ids for ?topic= deep links. */
-export const TECH_TAG_TOPIC_IDS = {
-  C: 'cpp',
-  'C++': 'cpp',
-  Asm: 'asm',
-  FOSS: 'opensource',
-  AI: 'ai',
-  ARM: 'arm',
-  Firmware: 'firmware',
-  Virtualization: 'virtualization',
-  Kernel: 'linux',
-  'Real-time': 'realtime',
-  '3D': 'graphics3d',
-  Embedded: 'soc',
-  Validation: 'validation',
-  Performance: 'performance',
-  Linux: 'linux',
-  macOS: 'macos',
-  OpenShift: 'containers',
-  RPL: 'lisp',
-  XL: 'compilers',
-  Tao3D: 'graphics3d',
-  ELFE: 'compilers',
-  SPICE: 'networking',
-  Make: 'build-systems'
+/**
+ * Map print tech-tag labels → constellation deep links.
+ * Tags that name a specific project/node open that entry (`#id`).
+ * Skill-area tags open the matching `?topic=` filter.
+ */
+export const TECH_TAG_LINKS = {
+  C: { kind: 'topic', id: 'cpp' },
+  'C++': { kind: 'topic', id: 'cpp' },
+  Asm: { kind: 'topic', id: 'asm' },
+  FOSS: { kind: 'topic', id: 'opensource' },
+  AI: { kind: 'entry', id: 'ai' },
+  ARM: { kind: 'topic', id: 'arm' },
+  Firmware: { kind: 'topic', id: 'firmware' },
+  Virtualization: { kind: 'topic', id: 'virtualization' },
+  Kernel: { kind: 'topic', id: 'linux' },
+  'Real-time': { kind: 'topic', id: 'realtime' },
+  '3D': { kind: 'topic', id: 'graphics3d' },
+  Embedded: { kind: 'topic', id: 'embedded' },
+  Validation: { kind: 'topic', id: 'validation' },
+  Performance: { kind: 'topic', id: 'performance' },
+  Linux: { kind: 'topic', id: 'linux' },
+  macOS: { kind: 'topic', id: 'macos' },
+  OpenShift: { kind: 'entry', id: 'kata-containers' },
+  RPL: { kind: 'entry', id: 'db48x' },
+  XL: { kind: 'entry', id: 'xl' },
+  Tao3D: { kind: 'entry', id: 'tao3d' },
+  ELFE: { kind: 'entry', id: 'elfe' },
+  SPICE: { kind: 'entry', id: 'spice' },
+  Make: { kind: 'entry', id: 'make-it-quick' }
 };
+
+/** @deprecated Prefer TECH_TAG_LINKS; kept for any leftover topic-id lookups. */
+export const TECH_TAG_TOPIC_IDS = Object.fromEntries(
+  Object.entries(TECH_TAG_LINKS)
+    .filter(([, v]) => v.kind === 'topic')
+    .map(([k, v]) => [k, v.id])
+);
 
 export const THEME_CLUSTER_SLUGS = {
   'Languages & Compilers': 'languages',
@@ -53,18 +64,37 @@ export const THEME_CLUSTER_SLUGS = {
   Communications: 'communication'
 };
 
+const CV_ORIGIN = 'https://c3d.github.io/cv/';
+
+/** Always open constellation links in a new tab so the print page never hash-scrolls. */
+const DEEP_ATTRS = 'target="_blank" rel="noopener noreferrer"';
+
 export function topicHref(topicId) {
-  return `https://c3d.github.io/cv/?topic=${encodeURIComponent(topicId)}`;
+  return `${CV_ORIGIN}?topic=${encodeURIComponent(topicId)}`;
 }
 
 export function clusterHref(themeName) {
   const slug = THEME_CLUSTER_SLUGS[themeName] || themeName;
-  return `https://c3d.github.io/cv/?cluster=${encodeURIComponent(slug)}`;
+  return `${CV_ORIGIN}?cluster=${encodeURIComponent(slug)}`;
 }
 
 /** Deep link that opens a constellation entry HUD (`#<projectId>`). */
 export function entryHref(projectId) {
-  return `https://c3d.github.io/cv/#${encodeURIComponent(projectId)}`;
+  return `${CV_ORIGIN}#${encodeURIComponent(projectId)}`;
+}
+
+export function techTagHref(tag) {
+  const link = TECH_TAG_LINKS[tag];
+  if (!link) return null;
+  return link.kind === 'entry' ? entryHref(link.id) : topicHref(link.id);
+}
+
+/** Anchor for a Technologies pill (entry node or topic filter). */
+export function techTagLink(tag, { onDark = false } = {}) {
+  const href = techTagHref(tag);
+  if (!href) return `<span>${tag}</span>`;
+  const cls = onDark ? 'pv-deep pv-deep-on-dark' : 'pv-deep';
+  return `<a class="${cls}" href="${href}" ${DEEP_ATTRS}>${tag}</a>`;
 }
 
 /**
@@ -73,8 +103,14 @@ export function entryHref(projectId) {
  */
 export function entryTitleLink(projectId, title, { href } = {}) {
   if (href) {
-    return `<a class="pv-deep" href="${href}" target="_blank" rel="noopener noreferrer">${title}</a>`;
+    return `<a class="pv-deep" href="${href}" ${DEEP_ATTRS}>${title}</a>`;
   }
   if (!projectId) return title;
-  return `<a class="pv-deep" href="${entryHref(projectId)}">${title}</a>`;
+  return `<a class="pv-deep" href="${entryHref(projectId)}" ${DEEP_ATTRS}>${title}</a>`;
+}
+
+/** Cluster heading / skills-list deep link. */
+export function clusterTitleLink(themeName, { onDark = false } = {}) {
+  const cls = onDark ? 'pv-deep pv-deep-on-dark' : 'pv-deep';
+  return `<a class="${cls}" href="${clusterHref(themeName)}" ${DEEP_ATTRS}>${themeName}</a>`;
 }

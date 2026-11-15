@@ -1,4 +1,4 @@
-import { THEME_ICONS, TECH_TAGS, TECH_TAG_TOPIC_IDS, topicHref, clusterHref, entryTitleLink } from '../icons.js';
+import { THEME_ICONS, TECH_TAGS, techTagLink, clusterTitleLink, entryTitleLink } from '../icons.js';
 
 /** Nebula: colorful theme bars, light sidebar cards, deep-space header. */
 export const nebulaStyle = {
@@ -64,7 +64,7 @@ export const nebulaStyle = {
             <ul class="pvn-skills">${model.skills.map((t) => {
               const theme = model.themes.find((x) => x.name === t);
               const c = theme?.color || '#1f5fd0';
-              return `<li><span class="pvn-check" style="background:${c}">✓</span><a class="pv-deep" href="${clusterHref(t)}">${t}</a></li>`;
+              return `<li><span class="pvn-check" style="background:${c}">✓</span>${clusterTitleLink(t)}</li>`;
             }).join('')}</ul>
           </section>
           <section class="pvn-card"><h2>Info</h2>
@@ -76,12 +76,7 @@ export const nebulaStyle = {
             </ul>
           </section>
           <section class="pvn-card"><h2>Technologies</h2>
-            <div class="pvn-tags">${TECH_TAGS.map((t) => {
-              const tid = TECH_TAG_TOPIC_IDS[t];
-              return tid
-                ? `<a class="pv-deep" href="${topicHref(tid)}">${t}</a>`
-                : `<span>${t}</span>`;
-            }).join('')}</div>
+            <div class="pvn-tags">${TECH_TAGS.map((t) => techTagLink(t)).join('')}</div>
           </section>
           <a class="pvn-card pvn-qr" href="${model.qrUrl}" target="_blank" rel="noopener">
             <img src="${model.qrSrc}" alt="QR to interactive CV" width="72" height="72">
@@ -93,7 +88,7 @@ export const nebulaStyle = {
     model.themes.forEach((theme) => {
       const icon = THEME_ICONS[theme.name] || '';
       html += `<section class="pvn-theme" style="--theme-color:${theme.color}">
-        <div class="pvn-bar"><span class="pvn-ico">${icon}</span><h2><a class="pv-deep pv-deep-on-dark" href="${clusterHref(theme.name)}">${theme.name}</a></h2></div>
+        <div class="pvn-bar"><span class="pvn-ico">${icon}</span><h2>${clusterTitleLink(theme.name, { onDark: true })}</h2></div>
         <div class="pvn-theme-body">
           <div class="pvn-timeline">`;
       theme.projects.forEach((p) => {
