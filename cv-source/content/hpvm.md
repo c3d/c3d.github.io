@@ -39,7 +39,17 @@ I grew this project from initial concept, pre-silicon boot on Ski simulator, A-s
 - Centerpiece of the HP Virtual Server Environment ecosystem, hundreds of engineers
 - Responsibilities included: binary translator, assembly language interrupt handlers, I/O emulation, low-level memory management, context switching.
 - Several patents for this work ([Justia](https://patents.justia.com/inventor/christophe-de-dinechin): US 8,694,819, US 8,505,020, US 8,091,090, US 7,996,833, US 7,765,238, US 7,613,847, US 7,577,944, US 7,478,394, US 7,330,942, US 7,213,125, US 6,895,491)
-- Emulated firmware and platform: UEFI (born on Itanium) running inside the VM, ACPI tables, simulated boot loader and guest boot loaders such as GRUB, PCI/PCIe configuration space, MMIO, DMA, a virtual BMC, MCA (Itanium machine-check architecture), NUMA topologies (core / die / package coherence and performance domains), power-management hints critical to performance
+- Emulated firmware and platform:
+  - UEFI (born on Itanium) running inside the VM
+  - ACPI tables
+  - simulated boot loader and guest boot loaders such as GRUB
+  - PCI/PCIe configuration space
+  - MMIO
+  - DMA
+  - a virtual BMC
+  - MCA (Itanium machine-check architecture)
+  - NUMA topologies (core / die / package coherence and performance domains)
+  - power-management hints critical to performance
 - Later features including para-virtualized I/O and on-line guest migration
 - Ran on 128-way Superdome servers with 1TB of memory
 - Ran guests up to 16 virtual CPUs, but my testing ran with 64-way Windows guests I used as my primary virtual desktop, eating my own dogfood
