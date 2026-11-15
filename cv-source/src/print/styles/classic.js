@@ -21,14 +21,13 @@ export const classicStyle = {
       html += `<section class="pvc-theme" style="--theme-color:${theme.color}">
         <h2>${clusterTitleLink(theme.name, { onDark: true })}</h2>`;
       theme.projects.forEach((p) => {
-        html += `<div class="pvc-project"><h3>${entryTitleLink(p.id, p.title, p.titleHref ? { href: p.titleHref } : {})}</h3>`;
-        if (p.years) html += `<span class="pvc-years">${p.years}</span>`;
-        if (p.bullets.length) {
-          html += '<ul>';
-          p.bullets.forEach((b) => { html += `<li>${b}</li>`; });
-          html += '</ul>';
-        }
-        html += '</div>';
+        html += `<div class="pvc-project">
+          <div class="pvc-meta">
+            <h3>${entryTitleLink(p.id, p.title, p.titleHref ? { href: p.titleHref } : {})}</h3>`;
+        if (p.years) html += `<div class="pvc-years">${p.years}</div>`;
+        html += `</div><div class="pvc-body">`;
+        p.bullets.forEach((b) => { html += `<p class="pvc-line">${b}</p>`; });
+        html += '</div></div>';
       });
       html += '</section>';
     });
