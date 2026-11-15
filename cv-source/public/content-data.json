@@ -871,6 +871,9 @@
     ],
     "videos": [],
     "links": [],
+    "images": [
+      "/cv/media/ecu-cartoons.jpg"
+    ],
     "topics": [
       "writing"
     ],
@@ -2483,7 +2486,9 @@
       "firefly",
       "alpha-waves"
     ],
-    "videos": [],
+    "videos": [
+      "TbMKCN2-GPk"
+    ],
     "links": [
       {
         "label": "Tao3D",

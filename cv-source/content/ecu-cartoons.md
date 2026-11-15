@@ -17,6 +17,8 @@ related:
   - ecu-cartoon-yesterdays
 videos: []
 links: []
+images:
+  - /cv/media/ecu-cartoons.jpg
 topics:
   - writing
 ---
