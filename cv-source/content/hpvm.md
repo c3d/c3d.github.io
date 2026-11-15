@@ -56,4 +56,8 @@ I grew this project from initial concept, pre-silicon boot on Ski simulator, A-s
 - Ran HP-UX, Linux, Windows and OpenVMS as guests
 - Longest single professional project (~10 years)
 
+## April Fools
+
+I implemented several key features as April Fools commits. In particular, `hpvmtunes` was a pun on iTunes, advertising music playback. In reality, it was an entire performance monitoring infrastructure, one of the possible outputs being audio. That let me do performance tuning by ear, literally listening to HPVM running.
+
 **Quote:** *"At HP he was sought after as one of the top strategic visionaries"* — Dale Morris
