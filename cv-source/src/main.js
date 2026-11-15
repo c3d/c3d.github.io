@@ -1354,7 +1354,7 @@ function commitSearchBestMatch() {
   if (!best) return false;
   const star = firstStarForProject(best.id);
   closeSearchHud();
-  if (star) openHUD(star);
+  if (star) openHUD(star, { focusBullet: false });
   else if (best.theme) enterClusterView(best.theme);
   return true;
 }
@@ -2270,7 +2270,71 @@ function prepareTeletypeChars(root) {
   return chars;
 }
 
-function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
+/** Strip markup / collapse whitespace for matching star.bullet → HUD <li>. */
+function normalizeHudBulletText(s) {
+  return String(s || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+/** Top-level list items only (not nested under another <li>). */
+function hudTopLevelListItems(root) {
+  if (!root) return [];
+  return [...root.querySelectorAll('li')].filter((li) => {
+    const list = li.parentElement;
+    if (!list || (list.tagName !== 'UL' && list.tagName !== 'OL')) return false;
+    return !list.parentElement?.closest?.('li');
+  });
+}
+
+/**
+ * Mark the HUD body list item this bullet-star stands for.
+ * Returns the focused element or null (project-level opens skip this).
+ */
+function applyHudBulletFocus(bulletRoot, star, { focusBullet = false } = {}) {
+  if (!bulletRoot) return null;
+  bulletRoot.querySelectorAll('.hud-li-focus').forEach((el) => {
+    el.classList.remove('hud-li-focus');
+  });
+  if (!focusBullet || !star?.bullet) return null;
+  const target = normalizeHudBulletText(star.bullet.text);
+  const items = hudTopLevelListItems(bulletRoot);
+  if (!items.length) return null;
+  let focusEl = null;
+  if (target) {
+    focusEl = items.find((li) => {
+      const t = normalizeHudBulletText(li.textContent);
+      return t === target || t.startsWith(target) || target.startsWith(t.slice(0, Math.min(48, t.length)));
+    }) || null;
+  }
+  if (!focusEl) {
+    const bullets = star.project?.bullets || [];
+    let bi = bullets.indexOf(star.bullet);
+    if (bi < 0 && star.id) {
+      const m = String(star.id).match(/__(\d+)$/);
+      if (m) bi = Number(m[1]);
+    }
+    if (bi >= 0 && bi < items.length) focusEl = items[bi];
+  }
+  if (focusEl) focusEl.classList.add('hud-li-focus');
+  return focusEl;
+}
+
+function scrollHudFocusIntoView(focusEl, scroller) {
+  if (!focusEl || !scroller) return;
+  const cRect = focusEl.getBoundingClientRect();
+  const sRect = scroller.getBoundingClientRect();
+  if (sRect.height < 8) return;
+  // Place the focused bullet in the upper-middle of the scroller (readable context above + below).
+  const focusMid = scroller.scrollTop + (cRect.top - sRect.top) + cRect.height * 0.35;
+  const target = Math.max(0, focusMid - sRect.height * 0.28);
+  scroller.scrollTop = target;
+}
+
+function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps, focusEl = null } = {}) {
   stopHudTeletype();
   if (!root) return Promise.resolve();
   if (prefersReducedMotion()) {
@@ -2278,6 +2342,8 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
       el.style.visibility = 'visible';
       el.classList.remove('hud-tt-fresh');
     });
+    const scroller = hudTeletypeScroller(root);
+    if (focusEl) scrollHudFocusIntoView(focusEl, scroller);
     return Promise.resolve();
   }
   const chars = prepareTeletypeChars(root);
@@ -2297,6 +2363,25 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
   let scrollRaf = 0;
   let targetScrollTop = scroller ? scroller.scrollTop : 0;
   const BOTTOM_PAD_PX = 40;
+
+  // Bullet-star opens: reveal everything before the focused bullet instantly,
+  // park the caret there, and scroll it into view before normal typing resumes.
+  let i = 0;
+  if (focusEl) {
+    const focusStart = chars.findIndex((span) => focusEl.contains(span));
+    if (focusStart > 0) {
+      for (let j = 0; j < focusStart; j++) {
+        chars[j].style.visibility = 'visible';
+      }
+      i = focusStart;
+    }
+    if (focusStart >= 0 && chars[i]) {
+      cursor.remove();
+      chars[i].before(cursor);
+    }
+    scrollHudFocusIntoView(focusEl, scroller);
+    targetScrollTop = scroller ? scroller.scrollTop : 0;
+  }
 
   const applyScroll = () => {
     scrollRaf = 0;
@@ -2364,7 +2449,6 @@ function startHudTeletype(root, { cps = HUD_TIMING.bodyTeletypeCps } = {}) {
     scroller.addEventListener('touchstart', cancelFollow, { passive: true });
   }
 
-  let i = 0;
   const interval = Math.max(8, Math.round(1000 / cps));
   return new Promise((resolve) => {
     let settled = false;
@@ -2682,7 +2766,7 @@ function collapseSingletonListsHtml(html) {
   return wrap.innerHTML;
 }
 
-function populateHUD(star, { allowAutoplay = true } = {}) {
+function populateHUD(star, { allowAutoplay = true, focusBullet = false } = {}) {
   const hud = document.getElementById('hud');
   const project = star.project;
   const bullet = star.bullet;
@@ -2720,6 +2804,8 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
     const raw = bullet.text || '';
     bulletEl.innerHTML = raw ? marked.parseInline(raw, { async: false }) : '';
   }
+  const focusEl = applyHudBulletFocus(bulletEl, star, { focusBullet });
+  hud._hudFocusEl = focusEl || null;
 
   const topicsEl = hud.querySelector('[data-hud="topics"]');
   if (topicsEl) {
@@ -2864,7 +2950,7 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
           e.stopPropagation();
           noteUserActivity();
           const target = firstStarForProject(p.id);
-          if (target) openHUD(target);
+          if (target) openHUD(target, { focusBullet: false });
         });
         connectedList.appendChild(btn);
       });
@@ -2872,7 +2958,7 @@ function populateHUD(star, { allowAutoplay = true } = {}) {
   }
 }
 
-async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
+async function runHudOpenContinuity(star, { fromAuto = false, focusBullet = true } = {}) {
   const gen = ++hudAnimGen;
   const hud = document.getElementById('hud');
   const panel = hud?.querySelector('.hud-panel');
@@ -2891,7 +2977,13 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   clearHudStageClasses(hud);
   applyHudTimingCss(hud);
 
-  populateHUD(star, { allowAutoplay: !fromAuto && !autoMode });
+  populateHUD(star, { allowAutoplay: !fromAuto && !autoMode, focusBullet });
+  const bodyFocusEl = hud._hudFocusEl || null;
+
+  const startBodyTeletype = () => startHudTeletype(hud.querySelector('[data-hud="bullet"]'), {
+    cps: HUD_TIMING.bodyTeletypeCps,
+    focusEl: bodyFocusEl
+  });
 
   const snapOpen = async () => {
     clearHudStageClasses(hud);
@@ -2899,8 +2991,11 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
     hud.classList.add('open', 'hud-expanded', 'hud-chip-section', 'hud-chip-years', 'hud-body-in', 'hud-ready');
     hud.setAttribute('aria-hidden', 'false');
     if (labelEl) labelEl.classList.add('ms-label-hud-open');
-    if (!prefersReducedMotion()) {
-      await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
+    if (prefersReducedMotion()) {
+      const scroller = hud.querySelector('.hud-below-inner');
+      if (bodyFocusEl) scrollHudFocusIntoView(bodyFocusEl, scroller);
+    } else {
+      await startBodyTeletype();
     }
   };
 
@@ -3041,7 +3136,7 @@ async function runHudOpenContinuity(star, { fromAuto = false } = {}) {
   await startHudTeletype(yearsEl, { cps: HUD_TIMING.chipTeletypeCps });
   if (!stillHudGen(gen)) return;
 
-  await startHudTeletype(hud.querySelector('[data-hud="bullet"]'), { cps: HUD_TIMING.bodyTeletypeCps });
+  await startBodyTeletype();
 }
 
 async function runHudCloseContinuity() {
@@ -3313,13 +3408,13 @@ function exitClusterView({ animate = true } = {}) {
   });
 }
 
-function openHUD(star, { fromAuto = false } = {}) {
+function openHUD(star, { fromAuto = false, focusBullet = true } = {}) {
   // Selecting a node always clears sticky ?cluster= so it cannot re-force focus.
   if (!fromAuto) clearClusterQueryParam();
   // Ensure we are in the star's cluster before opening detail
   const theme = star.project?.theme;
   if (theme && (viewLevel < 2 || focusTheme !== theme)) {
-    enterClusterView(theme, { fromAuto }).then(() => openHUD(star, { fromAuto }));
+    enterClusterView(theme, { fromAuto }).then(() => openHUD(star, { fromAuto, focusBullet }));
     return;
   }
   // Switching nodes: abort in-flight choreography and snap previous HUD closed
@@ -3358,7 +3453,7 @@ function openHUD(star, { fromAuto = false } = {}) {
   // original box cannot fly off-screen independently of the HUD title.
   plantOpenMorphClone(star);
   flyToStar(star);
-  runHudOpenContinuity(star, { fromAuto });
+  runHudOpenContinuity(star, { fromAuto, focusBullet });
   // Any open (click, Enter, ] next-node, warp) counts as visited for the warp tour.
   if (star.project?.id) {
     warpVisited.add(star.project.id);
@@ -3686,7 +3781,7 @@ function openFromLabel(label) {
     }
     const star = firstStarForProject(label.userData.projectId);
     if (!star) return false;
-    openHUD(star);
+    openHUD(star, { focusBullet: false });
     return true;
   }
   return false;
@@ -4545,19 +4640,23 @@ async function init() {
   setTimeout(refit, 400);
 
   function openFromHash({ delayMs = 0 } = {}) {
-    const star = entryStarFromHash();
+    const raw = window.location.hash.slice(1);
+    if (!raw || raw === 'print') return false;
+    const id = decodeURIComponent(raw);
+    // Exact `#project__N` = bullet-star focus; bare `#project` = project-level (no focus).
+    const exact = stars.find((s) => s.id === id) || null;
+    const star = exact || firstStarForProject(id) || null;
     if (!star) return false;
-    // Already showing this node (warp/openHUD just set the hash) — do not re-open
-    // as a user navigation (that would arm IDLE_MS_ENGAGED and stop auto-warp).
-    if (
-      currentStar
-      && (currentStar.id === star.id || currentStar.project?.id === star.project?.id)
-    ) {
+    // Already showing this exact node (warp/openHUD just set the hash) — do not
+    // re-open as a user navigation (that would arm IDLE_MS_ENGAGED and stop auto-warp).
+    // Same project, different bullet star must still open so focus can move.
+    if (currentStar && currentStar.id === star.id) {
       return true;
     }
     // Entry deep links clear sticky cluster focus.
     clearClusterQueryParam();
-    const go = () => openHUD(star, { fromAuto: autoMode });
+    const focusBullet = !!exact;
+    const go = () => openHUD(star, { fromAuto: autoMode, focusBullet });
     if (delayMs > 0) setTimeout(go, delayMs);
     else go();
     return true;
