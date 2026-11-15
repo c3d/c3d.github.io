@@ -109,10 +109,16 @@ async function main() {
             img.onload = img.onerror = res;
           }))));
         });
+        // Belt-and-suspenders: theme break-inside:avoid + pageRanges:1 dropped
+        // the Communications section from Nebula/Orbit PDFs.
+        await page.addStyleTag({
+          content: `.pvc-theme,.pvn-theme,.pvo-theme{break-inside:auto!important;page-break-inside:auto!important;}`
+        });
         await new Promise((r) => setTimeout(r, 500));
         const metrics = await page.evaluate(() => {
           const el = document.getElementById('print-view');
-          const h = el?.scrollHeight || 0;
+          const pageRoot = el?.querySelector('.pv-classic, .pv-nebula, .pv-orbit');
+          const h = pageRoot?.scrollHeight || el?.scrollHeight || 0;
           return { heightPx: h, approxPages: h / 1123 };
         });
         // If content spills slightly past one A4, scale the print root to fit
