@@ -16,7 +16,8 @@
     "preview": "vite preview",
     "test:labels": "node scripts/test-label-clicks.mjs",
     "check:media": "node scripts/check-topic-media.mjs",
-    "verify:print-links": "node scripts/verify-print-links.mjs"
+    "verify:print-links": "node scripts/verify-print-links.mjs",
+    "verify:autowarp": "node scripts/verify-autowarp-chain.mjs"
   },
   "dependencies": {
     "@fontsource/orbitron": "^5.3.0",
