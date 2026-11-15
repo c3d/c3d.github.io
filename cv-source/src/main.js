@@ -205,9 +205,20 @@ let warpVisited = new Set();
 let lastWarpedProjectId = null;
 let warpJumpInProgress = false;
 /** Warp tour timing — configure idle delays and jump interval in one place. */
-const IDLE_MS_OVERVIEW = 30_000;       // fully zoomed-out overview: short idle → warp
-const IDLE_MS_ENGAGED = 5 * 60_000;    // after opening/zooming into content: 5 min
-const WARP_INTERVAL_MS = 10_000;       // seconds between jumps (countdown + progress bar)
+const IDLE_MS_OVERVIEW_DEFAULT = 30_000;       // fully zoomed-out overview: short idle → warp
+const IDLE_MS_ENGAGED_DEFAULT = 5 * 60_000;    // after real user engagement: 5 min
+const WARP_INTERVAL_MS_DEFAULT = 10_000;       // seconds between jumps (countdown + progress bar)
+/** Optional test overrides: `{ overviewMs, engagedMs, intervalMs }`. */
+let warpTimingOverrides = null;
+function idleOverviewMs() {
+  return warpTimingOverrides?.overviewMs ?? IDLE_MS_OVERVIEW_DEFAULT;
+}
+function idleEngagedMs() {
+  return warpTimingOverrides?.engagedMs ?? IDLE_MS_ENGAGED_DEFAULT;
+}
+function warpIntervalMs() {
+  return warpTimingOverrides?.intervalMs ?? WARP_INTERVAL_MS_DEFAULT;
+}
 
 let controls = {
   mouseDown: false,
@@ -3191,7 +3202,8 @@ function exitClusterView({ animate = true } = {}) {
   preHudPose = null;
   updateClusterDimming();
   // Back at top-level overview → restore the short (30s) idle warp delay.
-  noteUserActivity();
+  // Skip while auto-warp is driving navigation (only real input engages).
+  if (!autoMode) noteUserActivity();
   const pose = overviewPose;
   overviewPose = null;
   if (!animate) {
@@ -3251,7 +3263,14 @@ function openHUD(star, { fromAuto = false } = {}) {
   currentStar = star;
   viewLevel = 3;
   updateClusterDimming();
-  window.location.hash = star.id;
+  // Auto-warp: replaceState so hashchange does not re-enter openHUD without fromAuto
+  // (that path called noteUserActivity and killed the tour after the first jump).
+  if (fromAuto) {
+    const url = `${location.pathname}${location.search}#${encodeURIComponent(star.id)}`;
+    history.replaceState(null, '', url);
+  } else {
+    window.location.hash = star.id;
+  }
   highlightConnectedEdges(star.project.id);
   // Plant morph clone + hide in-cloud label BEFORE the camera moves so the
   // original box cannot fly off-screen independently of the HUD title.
@@ -3295,7 +3314,8 @@ function closeHUD({ restoreCamera = true } = {}) {
     updateClusterDimming();
     findProjectLabelEl(closingStar?.project?.id)?.classList.remove('ms-label-hud-open');
     // Re-arm idle: L2 keeps the engaged delay; L1 overview returns to 30s.
-    noteUserActivity();
+    // Skip while auto-warp owns the camera/HUD (real input already called noteUserActivity).
+    if (!autoMode) noteUserActivity();
     if (!restoreCamera) {
       preHudPose = null;
       return;
@@ -3350,26 +3370,28 @@ function goReviewStar(delta) {
   openHUD(target);
 }
 
-/** Among `pool`, pick the star whose 3D position is nearest to `from`. */
-function nearestStarInPool(from, pool) {
+/** Uniform random index in `[0, n)` via crypto when available (no fixed seed). */
+function randomIndex(n) {
+  if (n <= 0) return 0;
+  if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    const buf = new Uint32Array(1);
+    crypto.getRandomValues(buf);
+    return buf[0] % n;
+  }
+  return Math.floor(Math.random() * n);
+}
+
+/** Pick one entry uniformly at random from `pool` (empty → null). */
+function pickRandomFrom(pool) {
   if (!pool.length) return null;
-  if (!from?.position || pool.length === 1) return pool[0];
-  let best = pool[0];
-  let bestD = Infinity;
-  pool.forEach((s) => {
-    const d = from.position.distanceToSquared(s.position);
-    if (d < bestD) {
-      bestD = d;
-      best = s;
-    }
-  });
-  return best;
+  return pool[randomIndex(pool.length)];
 }
 
 /**
- * Next idle-warp target. Never revisits a project until every project has been
- * seen: unvisited related → unvisited same-theme → nearest unvisited in 3D.
- * Only when all are visited: clear the set (keep current marked) and continue.
+ * Next idle-warp target. Uniform random among not-yet-visited project reps
+ * (Math.random / crypto — not seeded, not a fixed order). No repeats until
+ * every project has been seen; then clear the set, keep the current node
+ * marked so the new round never starts on the node just visited.
  */
 function pickWarpTarget() {
   const reps = projectStarRepresentatives();
@@ -3379,25 +3401,14 @@ function pickWarpTarget() {
 
   const unvisited = reps.filter((s) => !warpVisited.has(s.project.id));
   if (unvisited.length) {
-    const relatedIds = new Set(current?.project?.related || []);
-    const unvisitedRelated = unvisited.filter(
-      (s) => relatedIds.has(s.project.id) && s.project.id !== currentId
-    );
-    if (unvisitedRelated.length) return unvisitedRelated[0];
-
-    const unvisitedTheme = unvisited.filter(
-      (s) => s.project.theme === current?.project?.theme && s.project.id !== currentId
-    );
-    if (unvisitedTheme.length) return nearestStarInPool(current, unvisitedTheme) || unvisitedTheme[0];
-
-    return nearestStarInPool(current, unvisited) || unvisited[0];
+    return pickRandomFrom(unvisited);
   }
 
   // All projects visited — start a new pass, keep the current one marked.
   warpVisited.clear();
   if (currentId) warpVisited.add(currentId);
   const pool = reps.filter((s) => s.project.id !== currentId);
-  return nearestStarInPool(current, pool) || pool[0] || reps[0];
+  return pickRandomFrom(pool) || reps[0];
 }
 
 function updateWarpBar() {
@@ -3413,7 +3424,7 @@ function updateWarpBar() {
   const left = Math.max(0, Math.ceil((warpDeadline - performance.now()) / 1000));
   const fill = bar.querySelector('[data-warp-fill]');
   const label = bar.querySelector('[data-warp-label]');
-  const total = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+  const total = prefersReducedMotion() ? warpIntervalMs() * 1.5 : warpIntervalMs();
   const remain = Math.max(0, warpDeadline - performance.now());
   if (fill) fill.style.transform = `scaleX(${remain / total})`;
   if (label) label.textContent = `NEXT WARP JUMP IN ${left} SECOND${left === 1 ? '' : 'S'}`;
@@ -3428,7 +3439,7 @@ function clearWarpCountdown() {
 
 function scheduleNextWarp() {
   clearWarpCountdown();
-  const interval = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+  const interval = prefersReducedMotion() ? warpIntervalMs() * 1.5 : warpIntervalMs();
   warpDeadline = performance.now() + interval;
   updateWarpBar();
   warpCountdownTimer = setInterval(() => {
@@ -3443,13 +3454,10 @@ function scheduleNextWarp() {
 function doWarpJump() {
   if (!autoMode) return;
   // Never jump while full-screen media focus is open (paused or playing).
+  // Embedded HUD videos must NOT stop the tour — warp inserts muted iframes and
+  // used to treat them as "user watching", which armed IDLE_MS_ENGAGED and stalled.
   if (isMediaFocus()) {
     exitAutoMode();
-    return;
-  }
-  if (isHudVideoBusy()) {
-    exitAutoMode();
-    noteUserActivity();
     return;
   }
   const target = pickWarpTarget();
@@ -3461,7 +3469,7 @@ function doWarpJump() {
   const theme = target.project.theme;
   const flyMs = prefersReducedMotion() ? FLY_DURATION_MS * 1.6 : FLY_DURATION_MS;
   const dwellMs = prefersReducedMotion() ? 2200 : 1400;
-  // Level 2 first, then level 3 item HUD
+  // Level 2 first, then level 3 item HUD (fromAuto: skip noteUserActivity)
   enterClusterView(theme, { fromAuto: true }).then(() => {
     if (!autoMode) {
       warpJumpInProgress = false;
@@ -3481,22 +3489,9 @@ function doWarpJump() {
   });
 }
 
-/** HUD with an embedded video counts as busy (user may be watching without pointer events). */
-function isHudVideoBusy() {
-  const hud = document.getElementById('hud');
-  if (!hud?.classList.contains('open')) return false;
-  // Full-screen media focus is always treated as watching.
-  if (isMediaFocus()) return true;
-  return !!hud.querySelector('.hud-video iframe, .hud-video video, video');
-}
-
 /** Top-level overview: fully zoomed out, no cluster/HUD/node selected. */
 function isOverviewIdleContext() {
   return viewLevel === 1 && !focusTheme && !currentStar && !isHudOpen() && !isMediaFocus();
-}
-
-function idleDelayMs() {
-  return isOverviewIdleContext() ? IDLE_MS_OVERVIEW : IDLE_MS_ENGAGED;
 }
 
 function enterAutoMode() {
@@ -3504,11 +3499,6 @@ function enterAutoMode() {
   if (searchActive) return; // pause autopilot while searching
   // Full-screen media focus: auto-warp stays completely off.
   if (isMediaFocus()) return;
-  if (isHudVideoBusy()) {
-    // Stay idle-armed but do not warp while a video HUD is open
-    noteUserActivity();
-    return;
-  }
   autoMode = true;
   document.body.classList.add('auto-warp');
   warpVisited = new Set(currentStar ? [currentStar.project.id] : []);
@@ -3516,7 +3506,7 @@ function enterAutoMode() {
   if (!currentStar) {
     // Reveal the warp counter immediately (stacks above the topic filter)
     // while the first jump flies; the post-jump path re-arms the timer.
-    const interval = prefersReducedMotion() ? WARP_INTERVAL_MS * 1.5 : WARP_INTERVAL_MS;
+    const interval = prefersReducedMotion() ? warpIntervalMs() * 1.5 : warpIntervalMs();
     warpDeadline = performance.now() + interval;
     updateWarpBar();
     doWarpJump();
@@ -3535,6 +3525,14 @@ window.enterAutoMode = enterAutoMode;
 window.exitAutoMode = exitAutoMode;
 window.doWarpJump = doWarpJump;
 
+function idleDelayMs() {
+  return isOverviewIdleContext() ? idleOverviewMs() : idleEngagedMs();
+}
+
+/**
+ * Real user input only. Auto-warp navigation must not call this — it exits the
+ * tour and arms the engaged (5 min) delay whenever a HUD/cluster is open.
+ */
 function noteUserActivity() {
   if (autoMode) exitAutoMode();
   if (idleTimer) clearTimeout(idleTimer);
@@ -3547,14 +3545,26 @@ function noteUserActivity() {
   idleTimer = setTimeout(() => {
     if (searchActive) return;
     if (isMediaFocus()) return; // still in media focus — stay fully off
-    if (isHudVideoBusy()) {
-      // Keep the timer alive with the engaged delay — never interrupt a video.
-      noteUserActivity();
-      return;
-    }
     enterAutoMode();
   }, delay);
 }
+
+/** Test/QA hooks — shorten timers without touching production defaults. */
+window.__warpTiming = {
+  get overviewMs() { return idleOverviewMs(); },
+  get engagedMs() { return idleEngagedMs(); },
+  get intervalMs() { return warpIntervalMs(); },
+  setForTest({ overviewMs, engagedMs, intervalMs } = {}) {
+    warpTimingOverrides = {
+      overviewMs: overviewMs ?? IDLE_MS_OVERVIEW_DEFAULT,
+      engagedMs: engagedMs ?? IDLE_MS_ENGAGED_DEFAULT,
+      intervalMs: intervalMs ?? WARP_INTERVAL_MS_DEFAULT
+    };
+  },
+  clearTest() {
+    warpTimingOverrides = null;
+  }
+};
 
 function firstStarForProject(projectId) {
   return stars.find((s) => s.project.id === projectId) || null;
@@ -4455,9 +4465,17 @@ async function init() {
   function openFromHash({ delayMs = 0 } = {}) {
     const star = entryStarFromHash();
     if (!star) return false;
+    // Already showing this node (warp/openHUD just set the hash) — do not re-open
+    // as a user navigation (that would arm IDLE_MS_ENGAGED and stop auto-warp).
+    if (
+      currentStar
+      && (currentStar.id === star.id || currentStar.project?.id === star.project?.id)
+    ) {
+      return true;
+    }
     // Entry deep links clear sticky cluster focus.
     clearClusterQueryParam();
-    const go = () => openHUD(star);
+    const go = () => openHUD(star, { fromAuto: autoMode });
     if (delayMs > 0) setTimeout(go, delayMs);
     else go();
     return true;
