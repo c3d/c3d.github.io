@@ -7,6 +7,8 @@
  * Optional PRINT_COPY overrides title/bullets for the print one-pager only.
  */
 
+import { topicHref } from './icons.js';
+
 const PATENT_COUNT = 12; // unique US grants (11 HP + 1 Red Hat); family-once
 const PATENT_PENDING = 3; // Red Hat US applications (not counting continuations of the grant)
 /** Both inventor name forms; verified not to match other Dinechin inventors. */
@@ -29,6 +31,7 @@ const FOSDEM_2024_COCO_URL =
   'https://archive.fosdem.org/2024/schedule/event/fosdem-2024-1991-proving-that-cloud-sysadmins-cannot-read-your-data-/';
 
 function deepLink(href, label) {
+  // Always target=_blank so print-page clicks never become in-document hash scrolls.
   return `<a class="pv-deep" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
 }
 
@@ -174,6 +177,7 @@ function researchPrintProjects() {
     {
       id: 'physics-books',
       title: 'Physics research',
+      titleHref: topicHref('physics'),
       years: '',
       bullets: [
         `A Theory of Incomplete Measurements — unifying GR and QM (${deepLink(TIM_URL, 'TIM')}, ${deepLink(REUNIFIONS_URL, 'Réunifions la physique')})`
@@ -188,6 +192,8 @@ function communicationPrintProjects() {
     {
       id: null,
       title: 'Free and Open Source Software (FOSS)',
+      // Title names the FOSS topic — open that filter, not a missing project id.
+      titleHref: topicHref('opensource'),
       years: '',
       bullets: [
         `Publishing free software since 1999. Linux user since 1998 (MkLinux). ${deepLink('https://github.com/c3d', '222 repositories in GitHub')}`
@@ -204,6 +210,8 @@ function communicationPrintProjects() {
     {
       id: 'informagie',
       title: 'Wrote 4 books',
+      // Card names the books topic (four works), not only the Informagie node.
+      titleHref: topicHref('books'),
       years: '',
       bullets: [
         `${deepLink(INFORMAGIE_URL, 'Informagie')}, ${deepLink(TIM_AMAZON_URL, 'A Theory of Incomplete Measurements')}, ${deepLink(REUNIFIONS_URL, 'Reunifions la Physique')}, ${deepLink('https://c3d.github.io/cv/#une-intelligence', 'Une intelligence à vos côtés')}`
@@ -212,6 +220,8 @@ function communicationPrintProjects() {
     {
       id: 'fosdem-db48x',
       title: 'Conferences and papers',
+      // Card names the conferences topic, not only the DB48x FOSDEM node.
+      titleHref: topicHref('conferences'),
       years: '',
       bullets: [
         `Sample: ${deepLink(WIESS_URL, 'WIESS 2000')} (C++ Exceptions); ${deepLink(DEVCONF_CZ_2019_SPICE_URL, 'DevConf.CZ')} (SPICE 2019, ${deepLink(DEVCONF_CZ_2020_KATA_URL, 'Kata 2020')}); ${deepLink(FOSDEM_2023_URL, 'FOSDEM')} (DB48x, ${deepLink(FOSDEM_2024_COCO_URL, 'CoCo 2024')})`

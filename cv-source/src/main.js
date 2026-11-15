@@ -4318,6 +4318,21 @@ async function initPrintOnly(contentData) {
     layer.setAttribute('aria-hidden', 'true');
   }
   generatePrintView(contentData);
+  // Belt-and-suspenders: never let constellation deep links become in-page
+  // hash scrolls on the print document (that reads as a "zoom" of the page).
+  document.getElementById('print-view')?.addEventListener('click', (e) => {
+    const a = e.target?.closest?.('a[href]');
+    if (!a || a.target === '_blank') return;
+    let url;
+    try { url = new URL(a.getAttribute('href') || '', location.href); } catch { return; }
+    const path = url.pathname.replace(/\/+$/, '');
+    if (!path.endsWith('/cv')) return;
+    const deep = url.searchParams.has('topic') || url.searchParams.has('cluster')
+      || (url.hash && url.hash !== '#print');
+    if (!deep) return;
+    e.preventDefault();
+    window.open(url.href, '_blank', 'noopener,noreferrer');
+  });
   document.getElementById('loading')?.classList.add('hidden');
 }
 

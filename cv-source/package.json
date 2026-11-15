@@ -15,7 +15,8 @@
     "build:all": "npm run build && npm run generate-pdfs",
     "preview": "vite preview",
     "test:labels": "node scripts/test-label-clicks.mjs",
-    "check:media": "node scripts/check-topic-media.mjs"
+    "check:media": "node scripts/check-topic-media.mjs",
+    "verify:print-links": "node scripts/verify-print-links.mjs"
   },
   "dependencies": {
     "@fontsource/orbitron": "^5.3.0",
