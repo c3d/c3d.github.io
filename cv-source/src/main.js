@@ -2402,11 +2402,15 @@ function ensureMediaFocusBackdrop() {
 function sizeMediaFocus(mediaEl) {
   const hud = document.getElementById('hud');
   if (!hud || !mediaEl) return;
-  // Decorated HUD panel = 95% of the viewport; media fills ~95% of that panel.
-  const hudW = window.innerWidth * 0.95;
-  const hudH = window.innerHeight * 0.95;
-  const maxW = hudW * 0.95;
-  const maxH = hudH * 0.95;
+  // Fit the decorated frame to the media aspect ratio, as large as possible
+  // within 95vw×95vh. Close is overlaid inside the frame — no chrome strip.
+  const HUD_PAD = 14;
+  const PANEL_PAD = 18;
+  const inset = HUD_PAD + PANEL_PAD;
+  const maxOuterW = window.innerWidth * 0.95;
+  const maxOuterH = window.innerHeight * 0.95;
+  const maxW = Math.max(160, maxOuterW - inset * 2);
+  const maxH = Math.max(90, maxOuterH - inset * 2);
   let mediaW = maxW;
   let mediaH = maxH;
 
@@ -2436,6 +2440,8 @@ function sizeMediaFocus(mediaEl) {
     }
   }
 
+  const hudW = Math.min(maxOuterW, mediaW + inset * 2);
+  const hudH = Math.min(maxOuterH, mediaH + inset * 2);
   hud.style.setProperty('--hud-focus-w', `${Math.ceil(hudW)}px`);
   hud.style.setProperty('--hud-focus-h', `${Math.ceil(hudH)}px`);
   hud.style.setProperty('--hud-focus-media-w', `${Math.ceil(mediaW)}px`);
