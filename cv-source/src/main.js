@@ -1382,6 +1382,9 @@ function setupTypeToSearch() {
       e.preventDefault();
       e.stopPropagation();
       commitSearchBestMatch();
+    } else if (e.key === 'Backspace') {
+      // Native delete only — never let constellation/HUD nav see Backspace while typing.
+      e.stopPropagation();
     }
   });
 }
@@ -3981,6 +3984,35 @@ function setupInteraction() {
       return;
     }
 
+    // Inputs / contenteditable: never navigate on Backspace (leave native editing alone).
+    if ((inEditable || inSearchInput) && e.key === 'Backspace') return;
+
+    // Type-to-search / search HUD open (even if the input is not focused): Backspace
+    // only edits the query — never zoom-out, cluster exit, or HUD close.
+    // Must run before the hudOpen branch, which otherwise steals Backspace.
+    if (searchActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        noteUserActivity();
+        const next = searchQuery.slice(0, -1);
+        if (!next) closeSearchHud();
+        else setSearchQuery(next);
+        return;
+      }
+      if (e.key === 'Delete') {
+        e.preventDefault();
+        noteUserActivity();
+        closeSearchHud();
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        noteUserActivity();
+        commitSearchBestMatch();
+        return;
+      }
+    }
+
     if (blocked) return;
 
     if (hudOpen && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -3989,6 +4021,7 @@ function setupInteraction() {
         noteUserActivity();
         return;
       }
+      // Backspace / Enter close the panel (or leave media focus) — never zoomOutOneLevel.
       if (e.key === 'Enter' || e.key === 'Backspace') {
         e.preventDefault();
         noteUserActivity();
@@ -4003,33 +4036,16 @@ function setupInteraction() {
     }
 
     if (!inEditable && !inSearchInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      // Search open: Backspace edits; Delete/Esc clear (Esc handled above).
-      if (e.key === 'Backspace') {
+      // Overview / cluster: Backspace / Delete step out one level (search handled above).
+      if (e.key === 'Backspace' || e.key === 'Delete') {
         e.preventDefault();
         noteUserActivity();
-        if (searchActive) {
-          const next = searchQuery.slice(0, -1);
-          if (!next) closeSearchHud();
-          else setSearchQuery(next);
-        } else {
-          zoomOutOneLevel();
-        }
-        return;
-      }
-      if (e.key === 'Delete') {
-        e.preventDefault();
-        noteUserActivity();
-        if (searchActive) closeSearchHud();
-        else zoomOutOneLevel();
+        zoomOutOneLevel();
         return;
       }
       if (e.key === 'Enter') {
         e.preventDefault();
         noteUserActivity();
-        if (searchActive) {
-          commitSearchBestMatch();
-          return;
-        }
         const star = pickStarNearestScreenCenter();
         if (star) openHUD(star);
         return;
@@ -4048,7 +4064,7 @@ function setupInteraction() {
       }
     }
 
-    if (navKey) e.preventDefault();
+    if (navKey && !inEditable && !inSearchInput) e.preventDefault();
     noteUserActivity();
   });
 
