@@ -12,7 +12,8 @@ related:
   - lx
   - mozart
   - moka
-videos: []
+videos:
+  - CPvJCDVxZbE
 links:
   - label: XL
     url: 'https://github.com/c3d/xl'
