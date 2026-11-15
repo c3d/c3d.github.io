@@ -17,6 +17,7 @@
     "test:labels": "node scripts/test-label-clicks.mjs",
     "check:media": "node scripts/check-topic-media.mjs",
     "verify:print-links": "node scripts/verify-print-links.mjs",
+    "verify:print-fit": "node scripts/verify-print-fit.mjs",
     "verify:autowarp": "node scripts/verify-autowarp-chain.mjs"
   },
   "dependencies": {
