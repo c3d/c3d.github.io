@@ -3370,26 +3370,28 @@ function goReviewStar(delta) {
   openHUD(target);
 }
 
-/** Among `pool`, pick the star whose 3D position is nearest to `from`. */
-function nearestStarInPool(from, pool) {
+/** Uniform random index in `[0, n)` via crypto when available (no fixed seed). */
+function randomIndex(n) {
+  if (n <= 0) return 0;
+  if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    const buf = new Uint32Array(1);
+    crypto.getRandomValues(buf);
+    return buf[0] % n;
+  }
+  return Math.floor(Math.random() * n);
+}
+
+/** Pick one entry uniformly at random from `pool` (empty → null). */
+function pickRandomFrom(pool) {
   if (!pool.length) return null;
-  if (!from?.position || pool.length === 1) return pool[0];
-  let best = pool[0];
-  let bestD = Infinity;
-  pool.forEach((s) => {
-    const d = from.position.distanceToSquared(s.position);
-    if (d < bestD) {
-      bestD = d;
-      best = s;
-    }
-  });
-  return best;
+  return pool[randomIndex(pool.length)];
 }
 
 /**
- * Next idle-warp target. Never revisits a project until every project has been
- * seen: unvisited related → unvisited same-theme → nearest unvisited in 3D.
- * Only when all are visited: clear the set (keep current marked) and continue.
+ * Next idle-warp target. Uniform random among not-yet-visited project reps
+ * (Math.random / crypto — not seeded, not a fixed order). No repeats until
+ * every project has been seen; then clear the set, keep the current node
+ * marked so the new round never starts on the node just visited.
  */
 function pickWarpTarget() {
   const reps = projectStarRepresentatives();
@@ -3399,25 +3401,14 @@ function pickWarpTarget() {
 
   const unvisited = reps.filter((s) => !warpVisited.has(s.project.id));
   if (unvisited.length) {
-    const relatedIds = new Set(current?.project?.related || []);
-    const unvisitedRelated = unvisited.filter(
-      (s) => relatedIds.has(s.project.id) && s.project.id !== currentId
-    );
-    if (unvisitedRelated.length) return unvisitedRelated[0];
-
-    const unvisitedTheme = unvisited.filter(
-      (s) => s.project.theme === current?.project?.theme && s.project.id !== currentId
-    );
-    if (unvisitedTheme.length) return nearestStarInPool(current, unvisitedTheme) || unvisitedTheme[0];
-
-    return nearestStarInPool(current, unvisited) || unvisited[0];
+    return pickRandomFrom(unvisited);
   }
 
   // All projects visited — start a new pass, keep the current one marked.
   warpVisited.clear();
   if (currentId) warpVisited.add(currentId);
   const pool = reps.filter((s) => s.project.id !== currentId);
-  return nearestStarInPool(current, pool) || pool[0] || reps[0];
+  return pickRandomFrom(pool) || reps[0];
 }
 
 function updateWarpBar() {
