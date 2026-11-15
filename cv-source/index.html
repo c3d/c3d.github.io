@@ -584,7 +584,11 @@
     }
     /* Media focus: decorated HUD panel at 95vw×95vh; media fills ~95% of its inner area.
        Chromium darkens iframes under backdrop-filter ancestors — drop blur here and
-       force full-opacity media (no filter / blend / overlay). */
+       force full-opacity media (no filter / blend / overlay).
+       The focus scrim is a body-level sibling (z=34). #hud lives inside #bottom-stack
+       (z=25), so its own z-index:36 cannot escape that stacking context — without
+       promoting the stack, the semi-transparent scrim paints ON TOP of the iframe
+       and dims the video. Lift the stack above the scrim while focused. */
     #hud-media-focus-backdrop {
       position: fixed;
       inset: 0;
@@ -599,6 +603,9 @@
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
+    }
+    #bottom-stack:has(#hud.hud-media-focus) {
+      z-index: 36;
     }
     #hud {
       transition:
