@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Christophe de Dinechin - Interactive CV</title>
   <meta name="description" content="An interactive 3D constellation of Christophe de Dinechin's career in software development">
   <link rel="icon" type="image/png" href="/cv/logo.png">
@@ -13,11 +13,20 @@
       box-sizing: border-box;
     }
 
+    html {
+      height: 100%;
+      height: 100svh;
+      height: 100dvh;
+    }
+
     body {
       font-family: "Source Sans 3", "Segoe UI", sans-serif;
       overflow: hidden;
       background: #000;
       color: #fff;
+      min-height: 100%;
+      min-height: 100svh;
+      min-height: 100dvh;
     }
 
     #canvas-container {
@@ -26,6 +35,8 @@
       left: 0;
       width: 100%;
       height: 100%;
+      height: 100svh;
+      height: 100dvh;
       z-index: 1;
     }
 
@@ -35,6 +46,8 @@
       left: 0;
       width: 100%;
       height: 100%;
+      height: 100svh;
+      height: 100dvh;
       pointer-events: none;
       z-index: 2;
     }
@@ -68,8 +81,8 @@
 
     #controls {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      left: calc(20px + env(safe-area-inset-left, 0px));
       background: rgba(0, 0, 0, 0.8);
       padding: 15px;
       border-radius: 8px;
@@ -110,13 +123,13 @@
     #title-overlay {
       --hud-accent: #40e0ff;
       position: fixed;
-      top: 14px;
+      top: calc(14px + env(safe-area-inset-top, 0px));
       left: 50%;
       transform: translateX(-50%) translateY(0);
       z-index: 14;
       text-align: center;
       pointer-events: none;
-      max-width: min(520px, calc(100vw - 24px));
+      max-width: min(520px, calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
       padding: 12px 18px 14px;
       background-color: rgba(4, 10, 22, 0.42);
       background-image:
@@ -436,7 +449,12 @@
       flex-direction: column-reverse;
       align-items: center;
       gap: var(--bottom-stack-gap);
-      padding: 0 max(12px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      /* Lift above home indicator + browser chrome; desktop stays 14px/12px when insets are 0. */
+      padding:
+        0
+        calc(12px + env(safe-area-inset-right, 0px))
+        calc(14px + env(safe-area-inset-bottom, 0px))
+        calc(12px + env(safe-area-inset-left, 0px));
       pointer-events: none;
       box-sizing: border-box;
     }
@@ -476,11 +494,13 @@
     #search-fab {
       display: none;
       position: fixed;
-      right: max(14px, env(safe-area-inset-right));
-      bottom: max(18px, env(safe-area-inset-bottom));
+      right: calc(14px + env(safe-area-inset-right, 0px));
+      bottom: calc(18px + env(safe-area-inset-bottom, 0px));
       z-index: 26;
       width: 46px;
       height: 46px;
+      min-width: 44px;
+      min-height: 44px;
       border: 1px solid rgba(64, 224, 255, 0.55);
       background: rgba(8, 18, 36, 0.82);
       color: #9eecff;
@@ -562,6 +582,8 @@
       color: #f2f7ff;
       width: 28px;
       height: 28px;
+      min-width: 28px;
+      min-height: 28px;
       font-size: 18px;
       line-height: 1;
       cursor: pointer;
@@ -583,9 +605,14 @@
       right: 0;
       width: min(420px, 42vw);
       height: 100%;
+      height: 100dvh;
       z-index: 20;
       pointer-events: none;
-      padding: 14px 14px 18px;
+      padding:
+        calc(14px + env(safe-area-inset-top, 0px))
+        calc(14px + env(safe-area-inset-right, 0px))
+        calc(18px + env(safe-area-inset-bottom, 0px))
+        14px;
       opacity: 0;
       visibility: hidden;
       display: flex;
@@ -597,7 +624,7 @@
       opacity: 1;
       visibility: visible;
     }
-    /* Media focus: decorated frame sized to the media aspect ratio, max 98vw×98vh.
+    /* Media focus: decorated frame sized to the media aspect ratio, max 98vw×98dvh.
        Close is overlaid inside the frame (no reserved chrome strip). Minimal outer
        and inner padding so the media fills nearly the whole viewport.
        Chromium darkens iframes under backdrop-filter ancestors — drop blur here and
@@ -645,8 +672,10 @@
       transform: translate(-50%, -50%);
       width: min(var(--hud-focus-w, 98vw), 98vw) !important;
       height: min(var(--hud-focus-h, 98vh), 98vh) !important;
+      height: min(var(--hud-focus-h, 98dvh), 98dvh) !important;
       max-width: 98vw;
       max-height: 98vh;
+      max-height: 98dvh;
       z-index: 36;
       padding: 8px;
       gap: 0;
@@ -822,8 +851,8 @@
       }
       #bottom-stack:has(#hud.open) {
         padding-right: max(
-          12px,
-          calc(min(420px, 42vw) + 28px + env(safe-area-inset-right))
+          calc(12px + env(safe-area-inset-right, 0px)),
+          calc(min(420px, 42vw) + 28px + env(safe-area-inset-right, 0px))
         );
       }
     }
@@ -1270,6 +1299,7 @@
       height: auto;
       max-width: 100%;
       max-height: min(42vh, 320px);
+      max-height: min(42dvh, 320px);
       object-fit: contain;
       object-position: top center;
       vertical-align: top;
@@ -1309,6 +1339,7 @@
       /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
       width: min(100%, 220px);
       max-height: min(390px, 52vh);
+      max-height: min(390px, 52dvh);
       margin-left: auto;
       margin-right: auto;
       padding-bottom: 0;
@@ -1389,16 +1420,20 @@
 
     @media (max-width: 768px) {
       #title-overlay {
-        top: 10px;
+        top: calc(10px + env(safe-area-inset-top, 0px));
         padding: 10px 14px 11px;
-        max-width: calc(100vw - 16px);
+        max-width: calc(100vw - 16px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
       }
       #controls {
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        left: calc(10px + env(safe-area-inset-left, 0px));
+        right: calc(10px + env(safe-area-inset-right, 0px));
         max-width: none;
         font-size: 12px;
+      }
+      #bottom-stack {
+        /* Extra lift for Safari toolbar + home indicator; keeps taps clear. */
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       }
       #hud {
         position: relative;
@@ -1408,27 +1443,82 @@
         left: auto;
         width: 100%;
         height: min(62vh, 560px);
+        height: min(62dvh, 560px);
         max-height: min(62vh, 560px);
+        max-height: min(62svh, 560px);
         padding: 8px 10px 10px;
         gap: 6px;
         z-index: auto;
       }
       .hud-chrome {
-        height: 32px;
+        height: 44px;
       }
       #bss-hud {
         width: min(960px, 100%);
       }
       #search-fab {
         /* Sit above the bottom stack so it never covers topic/warp chrome. */
-        bottom: max(72px, calc(env(safe-area-inset-bottom) + 64px));
+        bottom: max(72px, calc(64px + env(safe-area-inset-bottom, 0px)));
+        width: 48px;
+        height: 48px;
       }
       #hud-close {
         top: 0;
         right: 0;
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
       }
+      .topic-filter-clear {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .topic-filter-panel {
+        padding: 12px 14px;
+        gap: 10px 12px;
+      }
+    }
+
+    /* Touch devices (incl. iPhone landscape >768px): keep ≥44px tap targets. */
+    @media (pointer: coarse) {
+      #hud-close {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .hud-chrome {
+        height: max(44px, 34px);
+      }
+      .topic-filter-clear {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      #search-fab {
+        width: 48px;
+        height: 48px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      #title-overlay {
+        /* Landscape status bar can sit above a 0 top inset — keep a touch-friendly floor. */
+        top: max(20px, calc(10px + env(safe-area-inset-top, 0px)));
+      }
+      #bottom-stack {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      }
+      #controls {
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        left: calc(10px + env(safe-area-inset-left, 0px));
+      }
+    }
+
+    @media (max-width: 768px) {
       .hud-panel {
         padding: 14px 14px 18px;
         /* Stronger glass so constellation labels cannot show through titles/media. */
@@ -1527,6 +1617,7 @@
         height: auto;
         max-width: 100%;
         max-height: min(42vh, 320px);
+        max-height: min(42dvh, 320px);
         object-fit: contain;
         object-position: top center;
         background: transparent;
@@ -1542,6 +1633,7 @@
         height: auto;
         max-width: 100%;
         max-height: min(32vh, 240px);
+        max-height: min(32dvh, 240px);
         margin: 0 auto;
         padding-bottom: 0;
         aspect-ratio: 16 / 9;
@@ -1552,6 +1644,7 @@
         height: auto;
         max-width: min(100%, 160px);
         max-height: min(32vh, 240px);
+        max-height: min(32dvh, 240px);
         aspect-ratio: 9 / 16;
         margin: 0 auto;
       }
@@ -1569,7 +1662,7 @@
         justify-content: center;
       }
       #search-fab { display: inline-flex; }
-      #search-hud { top: 12%; }
+      #search-hud { top: max(12%, calc(env(safe-area-inset-top, 0px) + 48px)); }
       .search-hud-input {
         position: static;
         width: 100%;
@@ -1592,9 +1685,11 @@
     @media (max-width: 430px) {
       [data-hud="media"] .hud-image img {
         max-height: min(38vh, 280px);
+        max-height: min(38dvh, 280px);
       }
       [data-hud="media"] .hud-video {
         max-height: min(32vh, 240px);
+        max-height: min(32dvh, 240px);
       }
     }
 
