@@ -70,6 +70,7 @@ Your project description in Markdown format.
 - **Drag** to orbit around the constellation
 - **Scroll** to zoom in/out
 - **O key** - Enter overview mode (camera pulls back)
+- **[ / ]** - Previous / next node (NODE order)
 - **ESC key** - Close the current card
 - **Touch** - Full mobile support with touch orbit and tap
 
