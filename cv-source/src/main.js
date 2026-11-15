@@ -2478,10 +2478,18 @@ function enterMediaFocus(mediaEl) {
   // Pin media into view
   const below = hud.querySelector('.hud-below-inner');
   if (below) below.scrollTop = 0;
+
+  // Full-screen media focus: kill auto-warp entirely (paused or playing).
+  if (autoMode) exitAutoMode();
+  if (idleTimer) {
+    clearTimeout(idleTimer);
+    idleTimer = null;
+  }
 }
 
 function exitMediaFocus() {
   const hud = document.getElementById('hud');
+  const wasFocus = hud?.classList.contains('hud-media-focus');
   mediaFocusEl = null;
   hud?.classList.remove('hud-media-focus');
   hud?.querySelectorAll('.hud-media-focus-active').forEach((el) => {
@@ -2499,6 +2507,8 @@ function exitMediaFocus() {
     backdrop.hidden = true;
     backdrop.setAttribute('aria-hidden', 'true');
   }
+  // Resume normal idle delay (5 min while HUD still open, 30s at overview).
+  if (wasFocus) noteUserActivity();
 }
 
 function setupMediaFocusInteractions() {
@@ -3432,6 +3442,11 @@ function scheduleNextWarp() {
 
 function doWarpJump() {
   if (!autoMode) return;
+  // Never jump while full-screen media focus is open (paused or playing).
+  if (isMediaFocus()) {
+    exitAutoMode();
+    return;
+  }
   if (isHudVideoBusy()) {
     exitAutoMode();
     noteUserActivity();
@@ -3487,6 +3502,8 @@ function idleDelayMs() {
 function enterAutoMode() {
   if (autoMode || document.body.classList.contains('print-preview')) return;
   if (searchActive) return; // pause autopilot while searching
+  // Full-screen media focus: auto-warp stays completely off.
+  if (isMediaFocus()) return;
   if (isHudVideoBusy()) {
     // Stay idle-armed but do not warp while a video HUD is open
     noteUserActivity();
@@ -3521,11 +3538,15 @@ window.doWarpJump = doWarpJump;
 function noteUserActivity() {
   if (autoMode) exitAutoMode();
   if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = null;
   if (document.body.classList.contains('print-preview')) return;
   if (searchActive) return; // do not arm idle warp while the search HUD is open
+  // Full-screen media focus: do not arm idle at all (warp fully disabled).
+  if (isMediaFocus()) return;
   const delay = idleDelayMs();
   idleTimer = setTimeout(() => {
     if (searchActive) return;
+    if (isMediaFocus()) return; // still in media focus — stay fully off
     if (isHudVideoBusy()) {
       // Keep the timer alive with the engaged delay — never interrupt a video.
       noteUserActivity();
