@@ -1541,10 +1541,15 @@
       "kata-containers",
       "confidential-containers",
       "hpvm-presilicon",
-      "hardware-firmware"
+      "hardware-firmware",
+      "patents"
     ],
     "videos": [],
     "links": [
+      {
+        "label": "Video (YouTube)",
+        "url": "https://www.youtube.com/watch?v=Yi8P56ACNOI"
+      },
       {
         "label": "HPVM on Wikipedia",
         "url": "https://en.wikipedia.org/wiki/HP_Integrity_Virtual_Machines"
@@ -1564,22 +1569,30 @@
       "pre-silicon",
       "asm"
     ],
-    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<ul>\n<li>Started the project; pre-silicon boot on <a href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\">Ski</a>, then A-step silicon bring-up, through production (7-digit quarterly revenue)</li>\n<li>Firmware-level VMM for Integrity servers</li>\n<li>Booted 4-way with a team of 3; asked for 15 kernel engineers to productize, got handed “the keys” to the Tru64 kernel team, eventually leading about 60 kernel engineers</li>\n<li>Program grew to hundreds of engineers</li>\n<li>Emulated firmware and platform: UEFI (born on Itanium) running inside the VM, ACPI tables, simulated boot loader and guest boot loaders such as GRUB, PCI/PCIe configuration space, MMIO, DMA, a virtual BMC, MCA (Itanium machine-check architecture), NUMA topologies (core / die / package coherence and performance domains), power-management hints critical to performance</li>\n<li>Features including para-virtualized I/O and on-line guest migration</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
+    "content": "<h2>Enterprise-grade virtualization for high-end Itanium servers</h2>\n<p>I grew this project from initial concept, pre-silicon boot on Ski simulator, A-step silicon bring-up, all the way through production and multiple releases bringing 7-digit quarterly revenue.</p>\n<ul>\n<li>Initial design, business plan and prototyping</li>\n<li>With two other engineers, booted 4-way HP-UX and Linux guests.</li>\n<li>Asked for 15 kernel engineers, got the best of the Tru64 kernel team, leading about 60 engineers over time</li>\n<li>Centerpiece of the HP Virtual Server Environment ecosystem, hundreds of engineers</li>\n<li>Responsibilities included: binary translator, assembly language interrupt handlers, I/O emulation, low-level memory management, context switching.</li>\n<li>Several patents for this work (<a href=\"https://patents.justia.com/inventor/christophe-de-dinechin\">Justia</a>: US 8,694,819, US 8,505,020, US 8,091,090, US 7,996,833, US 7,765,238, US 7,613,847, US 7,577,944, US 7,478,394, US 7,330,942, US 7,213,125, US 6,895,491)</li>\n<li>Emulated firmware and platform: UEFI (born on Itanium) running inside the VM, ACPI tables, simulated boot loader and guest boot loaders such as GRUB, PCI/PCIe configuration space, MMIO, DMA, a virtual BMC, MCA (Itanium machine-check architecture), NUMA topologies (core / die / package coherence and performance domains), power-management hints critical to performance</li>\n<li>Later features including para-virtualized I/O and on-line guest migration</li>\n<li>Ran on 128-way Superdome servers with 1TB of memory</li>\n<li>Ran guests up to 16 virtual CPUs, but my testing ran with 64-way Windows guests I used as my primary virtual desktop, eating my own dogfood</li>\n<li>Ran HP-UX, Linux, Windows and OpenVMS as guests</li>\n<li>Longest single professional project (~10 years)</li>\n</ul>\n<p><strong>Quote:</strong> <em>&quot;At HP he was sought after as one of the top strategic visionaries&quot;</em> — Dale Morris</p>\n",
     "bullets": [
       {
-        "text": "Started the project; pre-silicon boot on <a class=\"pv-deep\" href=\"https://github.com/linux-ia64/ski/tree/hp-sim-for-linux\" target=\"_blank\" rel=\"noopener noreferrer\">Ski</a>, then A-step silicon bring-up, through production (7-digit quarterly revenue)",
+        "text": "Initial design, business plan and prototyping",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Firmware-level VMM for Integrity servers",
+        "text": "With two other engineers, booted 4-way HP-UX and Linux guests.",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Booted 4-way with a team of 3; asked for 15 kernel engineers to productize, got handed “the keys” to the Tru64 kernel team, eventually leading about 60 kernel engineers",
+        "text": "Asked for 15 kernel engineers, got the best of the Tru64 kernel team, leading about 60 engineers over time",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Program grew to hundreds of engineers",
+        "text": "Centerpiece of the HP Virtual Server Environment ecosystem, hundreds of engineers",
+        "section": "Enterprise-grade virtualization for high-end Itanium servers"
+      },
+      {
+        "text": "Responsibilities included: binary translator, assembly language interrupt handlers, I/O emulation, low-level memory management, context switching.",
+        "section": "Enterprise-grade virtualization for high-end Itanium servers"
+      },
+      {
+        "text": "Several patents for this work (<a class=\"pv-deep\" href=\"https://patents.justia.com/inventor/christophe-de-dinechin\" target=\"_blank\" rel=\"noopener noreferrer\">Justia</a>: US 8,694,819, US 8,505,020, US 8,091,090, US 7,996,833, US 7,765,238, US 7,613,847, US 7,577,944, US 7,478,394, US 7,330,942, US 7,213,125, US 6,895,491)",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
@@ -1587,7 +1600,19 @@
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
-        "text": "Features including para-virtualized I/O and on-line guest migration",
+        "text": "Later features including para-virtualized I/O and on-line guest migration",
+        "section": "Enterprise-grade virtualization for high-end Itanium servers"
+      },
+      {
+        "text": "Ran on 128-way Superdome servers with 1TB of memory",
+        "section": "Enterprise-grade virtualization for high-end Itanium servers"
+      },
+      {
+        "text": "Ran guests up to 16 virtual CPUs, but my testing ran with 64-way Windows guests I used as my primary virtual desktop, eating my own dogfood",
+        "section": "Enterprise-grade virtualization for high-end Itanium servers"
+      },
+      {
+        "text": "Ran HP-UX, Linux, Windows and OpenVMS as guests",
         "section": "Enterprise-grade virtualization for high-end Itanium servers"
       },
       {
