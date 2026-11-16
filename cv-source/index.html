@@ -288,6 +288,8 @@
       overflow: hidden;
       /* Empty label-layer space must not trigger browser pinch-zoom either. */
       touch-action: none;
+      /* Damped camera-dolly text scale (JS syncLabelZoomTextScale). HUD never inherits. */
+      --ms-zoom-text: 1;
     }
     .ms-label {
       --ms-accent: #40e0ff;
@@ -298,7 +300,7 @@
       display: inline-flex;
       align-items: stretch;
       /* Grow to fit full names; soft cap only so extreme titles wrap to 2 lines */
-      max-width: min(calc(520px * var(--cv-ui-scale, 1)), 92vw);
+      max-width: min(calc(520px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1)), 92vw);
       width: max-content;
       margin: 0;
       padding: 0;
@@ -326,16 +328,16 @@
       visibility: visible;
     }
     .ms-label-bar {
-      width: calc(4px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
+      width: calc(4px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
       flex-shrink: 0;
       background: var(--ms-accent);
     }
     .ms-label-text {
       padding:
-        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
       line-height: 1.25;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
       white-space: normal;
@@ -348,38 +350,38 @@
       overflow: hidden;
     }
     .ms-label-theme .ms-label-text {
-      font-size: calc(12px * var(--cv-ui-scale, 1));
+      font-size: calc(12px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       padding:
-        calc(7px * var(--cv-ui-scale, 1))
-        calc(11px * var(--cv-ui-scale, 1))
-        calc(7px * var(--cv-ui-scale, 1))
-        calc(10px * var(--cv-ui-scale, 1));
+        calc(7px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(11px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(7px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(10px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
     }
     /* Very narrow portrait: keep the hex ring, shrink theme chrome so long
        names (Languages / Systems) stay inside the viewport. */
     @media (max-width: 430px) {
       .ms-label-theme {
-        max-width: min(168px, 44vw);
+        max-width: min(calc(168px * var(--ms-zoom-text, 1)), 44vw);
       }
       .ms-label-theme .ms-label-text {
-        font-size: calc(9px * var(--cv-ui-scale, 1));
+        font-size: calc(9px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
         letter-spacing: 0.04em;
         padding:
-          calc(5px * var(--cv-ui-scale, 1))
-          calc(7px * var(--cv-ui-scale, 1))
-          calc(5px * var(--cv-ui-scale, 1))
-          calc(6px * var(--cv-ui-scale, 1));
+          calc(5px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+          calc(7px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+          calc(5px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+          calc(6px * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
       }
       .ms-label-project {
-        max-width: min(280px, 86vw);
+        max-width: min(calc(280px * var(--ms-zoom-text, 1)), 86vw);
       }
       /* Featured project plates still grow with --ms-label-scale, but cap the
          plate width so long titles wrap instead of spilling off-screen. */
       .ms-label-project {
-        max-width: min(280px, 86vw);
+        max-width: min(calc(280px * var(--ms-zoom-text, 1)), 86vw);
       }
     }
     /* Project mini-HUD size tracks content `featured` / `scale` (world stars
@@ -388,14 +390,14 @@
       --ms-label-scale: 1;
     }
     .ms-label-project .ms-label-text {
-      font-size: calc(10px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
+      font-size: calc(10px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
       font-weight: 600;
       letter-spacing: 0.03em;
       padding:
-        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
-        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1))
+        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1) * var(--ms-zoom-text, 1));
     }
     .ms-label:hover,
     .ms-label:focus-visible {

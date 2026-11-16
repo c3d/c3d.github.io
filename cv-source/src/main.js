@@ -315,10 +315,22 @@ const UI_SCALE_MIN = 1;
 const UI_SCALE_MAX = 1.85;
 
 /**
+ * Constellation label text vs camera dolly: textScale = (overviewFitZoom / zoom)^k,
+ * clamped. Sub-linear so pinch feels like text adjusts without matching zoom amplitude.
+ * Composes with `--cv-ui-scale` (#106) and `--ms-label-scale` (#105); HUD is unaffected.
+ */
+const LABEL_ZOOM_TEXT_EXP = 0.3;
+const LABEL_ZOOM_TEXT_MIN = 0.8;
+const LABEL_ZOOM_TEXT_MAX = 1.6;
+
+/**
  * True after the user dollies the overview camera manually. Resize skips auto-fit
  * while pinned; returning to overview / an explicit fit clears it.
  */
 let overviewZoomUserPinned = false;
+/** Camera distance written by the last overview auto-fit (baseline for label zoom text). */
+let overviewFitZoom = 220;
+let lastLabelZoomTextScale = 1;
 
 /** Per-entry visual scale from content front-matter (`scale` or `featured`). */
 function projectVisualScale(project) {
@@ -348,6 +360,30 @@ function applyUiScale() {
   const scale = computeUiScale();
   document.documentElement.style.setProperty('--cv-ui-scale', String(Number(scale.toFixed(3))));
   return scale;
+}
+
+/** Damped label text scale from camera distance vs overview auto-fit zoom. */
+function computeLabelZoomTextScale() {
+  const base = Math.max(overviewFitZoom, 1);
+  const zoom = Math.max(controls?.currentZoom || base, 1);
+  const ratio = base / zoom;
+  const scale = Math.pow(ratio, LABEL_ZOOM_TEXT_EXP);
+  return THREE.MathUtils.clamp(scale, LABEL_ZOOM_TEXT_MIN, LABEL_ZOOM_TEXT_MAX);
+}
+
+/**
+ * Push `--ms-zoom-text` onto #label-layer only (never the HUD). Skips the DOM
+ * write when the rounded value is unchanged so pinch/wheel stay smooth.
+ */
+function syncLabelZoomTextScale() {
+  const scale = computeLabelZoomTextScale();
+  const rounded = Number(scale.toFixed(3));
+  if (Math.abs(rounded - lastLabelZoomTextScale) < 0.001) return rounded;
+  lastLabelZoomTextScale = rounded;
+  const layer = getLabelLayer();
+  if (layer) layer.style.setProperty('--ms-zoom-text', String(rounded));
+  else document.documentElement.style.setProperty('--ms-zoom-text', String(rounded));
+  return rounded;
 }
 
 /**
@@ -825,6 +861,9 @@ function fitOverviewToClusters() {
 
   if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(0.7 / dist, 0.0012, 0.0036);
   overviewZoomUserPinned = false;
+  overviewFitZoom = dist;
+  lastLabelZoomTextScale = -1;
+  syncLabelZoomTextScale();
 }
 
 function createSoftSprite(hex, scale, opacity) {
@@ -1196,6 +1235,12 @@ function createStarsFromBullets(projectList) {
   window.composer = composer;
   window.fitOverviewToClusters = fitOverviewToClusters;
   window.applyUiScale = applyUiScale;
+  window.syncLabelZoomTextScale = syncLabelZoomTextScale;
+  window.computeLabelZoomTextScale = computeLabelZoomTextScale;
+  Object.defineProperty(window, 'overviewFitZoom', {
+    get: () => overviewFitZoom,
+    configurable: true
+  });
   window.computeUiScale = computeUiScale;
   Object.defineProperty(window, 'viewLevel', { get: () => viewLevel, configurable: true });
   Object.defineProperty(window, 'focusTheme', { get: () => focusTheme, configurable: true });
@@ -4664,6 +4709,8 @@ function animate() {
   updateKeyboardNav(dt);
   // Title overlay tracks camera distance every frame (wheel, keys, flights, warp).
   syncTitleOverlayVisibility();
+  // Damped constellation label text vs dolly (pinch / wheel / keys).
+  syncLabelZoomTextScale();
 
   // Apply orbit at L1–L3; idle auto-spin only in overview. Never fight fly tweens.
   if (!isFlying && !autoMode) {
