@@ -648,23 +648,62 @@ function fitOverviewToClusters() {
   updateCameraFromControls();
   camera.lookAt(controls.lookAt);
 
-  // Screen-space guard: zoom out until every theme (+ bloom + real DOM label)
-  // is inset, and no theme label sits under the title HUD.
-  const edgeFrac = (1 - fill) * 0.5;
+  // Refine distance in screen space — camera pitch/yaw and lookAt offset make the
+  // pure FOV estimate undershoot the target fill.
+  const ringPad = padX;
+  const measureRingFill = () => {
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    const ndcRing = new THREE.Vector3();
+    Object.values(THEME_POSITIONS).forEach((p) => {
+      for (const dx of [-ringPad, ringPad]) {
+        for (const dy of [-ringPad, ringPad]) {
+          ndcRing.set(p.x + dx, p.y + dy, p.z).project(camera);
+          const sx = (ndcRing.x * 0.5 + 0.5) * w;
+          const sy = (-ndcRing.y * 0.5 + 0.5) * h;
+          minX = Math.min(minX, sx);
+          maxX = Math.max(maxX, sx);
+          minY = Math.min(minY, sy);
+          maxY = Math.max(maxY, sy);
+        }
+      }
+    });
+    const fracW = (maxX - minX) / Math.max(w, 1);
+    const fracH = (maxY - minY) / Math.max(h, 1);
+    return Math.max(fracW, fracH);
+  };
+  const distCap = veryNarrow ? 720 : narrow ? 620 : 560;
+  const distFloor = narrow ? 160 : 150;
+  for (let iter = 0; iter < 10; iter++) {
+    const limiting = measureRingFill();
+    if (!Number.isFinite(limiting) || limiting <= 0.05) break;
+    if (Math.abs(limiting - fill) < 0.025) break;
+    dist = THREE.MathUtils.clamp(dist * (limiting / fill), distFloor, distCap);
+    controls.targetZoom = dist;
+    controls.currentZoom = dist;
+    updateCameraFromControls();
+    camera.lookAt(controls.lookAt);
+  }
+
+  // Screen-space guard: catch title collisions / extreme aspects. Primary sizing
+  // is the FOV fill above — keep edge insets light so we do not double-count the
+  // ~10% margin already implied by an 80% fill target.
   const marginX = veryNarrow
     ? Math.max(4, w * 0.02)
     : narrow
-      ? Math.max(10, w * Math.max(0.03, edgeFrac * 0.6))
-      : Math.max(36, w * edgeFrac);
+      ? Math.max(8, w * 0.025)
+      : Math.max(12, w * 0.03);
   const marginYBottom = narrow
     ? Math.max(56, h * 0.1)
-    : Math.max(52, h * Math.max(0.08, edgeFrac));
-  const marginYTop = Math.max(marginYBottom, titleOverlayBottomPx());
+    : Math.max(36, h * 0.05);
+  const marginYTop = Math.max(marginYBottom * 0.35, titleOverlayBottomPx());
   const bloomPad = veryNarrow
-    ? 14
+    ? 12
     : narrow
-      ? Math.max(20, Math.min(w, h) * 0.04)
-      : Math.max(36, Math.min(w, h) * 0.045);
+      ? Math.max(14, Math.min(w, h) * 0.028)
+      : Math.max(20, Math.min(w, h) * 0.022);
   const ndc = new THREE.Vector3();
   const themeLabels = () => labelSprites.filter((l) => l.userData.kind === 'theme' && l.userData.el);
 
@@ -694,9 +733,10 @@ function fitOverviewToClusters() {
         needsZoom = true;
       }
     });
-    // Measure actual theme mini-HUD boxes. Long names ("Languages & Compilers",
-    // "Systems & Virtualization") grow with --cv-ui-scale — if the DOM box is
-    // still unset/pre-font, assume a conservative half-width.
+    // Theme labels may sit in the ~10% margin band — only require they stay
+    // on-screen and clear the title box (do not push the 80% cluster fit out).
+    const labelInsetX = veryNarrow ? 2 : 6;
+    const labelInsetBottom = narrow ? 8 : 10;
     projectThemeLabelEls();
     const themeEls = themeLabels();
     if (themeEls.length) {
@@ -709,13 +749,12 @@ function fitOverviewToClusters() {
         const halfLabelH = Math.max(r.height > 2 ? r.height * 0.5 : 14 * uiScale, 1);
         const cx = r.width > 4 ? r.left + r.width * 0.5 : null;
         const cy = r.height > 2 ? r.top + r.height * 0.5 : null;
-        // Prefer live box; fall back to projected center ± assumed size.
         if (cx != null && cy != null) {
           if (
-            cx - halfLabelW < marginX
-            || cx + halfLabelW > w - marginX
+            cx - halfLabelW < labelInsetX
+            || cx + halfLabelW > w - labelInsetX
             || cy - halfLabelH < marginYTop
-            || cy + halfLabelH > h - marginYBottom * 0.35
+            || cy + halfLabelH > h - labelInsetBottom
           ) {
             needsZoom = true;
           }
@@ -731,8 +770,8 @@ function fitOverviewToClusters() {
         const lsy = (-ndc.y * 0.5 + 0.5) * h;
         const halfLabelW = (veryNarrow ? 120 : 80) * uiScale;
         if (
-          lsx - halfLabelW < marginX || lsx + halfLabelW > w - marginX
-          || lsy - 14 * uiScale < marginYTop || lsy + 14 * uiScale > h - marginYBottom * 0.35
+          lsx - halfLabelW < labelInsetX || lsx + halfLabelW > w - labelInsetX
+          || lsy - 14 * uiScale < marginYTop || lsy + 14 * uiScale > h - labelInsetBottom
         ) {
           needsZoom = true;
         }
