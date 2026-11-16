@@ -23,18 +23,18 @@
       "graphics3d",
       "opensource"
     ],
-    "content": "<h2>3D interactive visual art</h2>\n<ul>\n<li>Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D</li>\n<li>Synthetic 3D art you can see without glasses on suitable displays</li>\n<li>Pieces derived from ShaderToy and some original work</li>\n</ul>\n",
+    "content": "<h2>3D interactive visual art</h2>\n<ul>\n<li>Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D</li>\n<li>Synthetic 3D art you can see without glasses on suitable displays from <a href=\"https://www.alioscopy.com\">Alioscopy</a> or <a href=\"https://dimenco.com\">Dimenco</a></li>\n<li>Pieces derived from <a href=\"https://www.shadertoy.com/\">ShaderToy</a> and some original work</li>\n</ul>\n",
     "bullets": [
       {
         "text": "Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D",
         "section": "3D interactive visual art"
       },
       {
-        "text": "Synthetic 3D art you can see without glasses on suitable displays",
+        "text": "Synthetic 3D art you can see without glasses on suitable displays from <a class=\"pv-deep\" href=\"https://www.alioscopy.com\" target=\"_blank\" rel=\"noopener noreferrer\">Alioscopy</a> or <a class=\"pv-deep\" href=\"https://dimenco.com\" target=\"_blank\" rel=\"noopener noreferrer\">Dimenco</a>",
         "section": "3D interactive visual art"
       },
       {
-        "text": "Pieces derived from ShaderToy and some original work",
+        "text": "Pieces derived from <a class=\"pv-deep\" href=\"https://www.shadertoy.com/\" target=\"_blank\" rel=\"noopener noreferrer\">ShaderToy</a> and some original work",
         "section": "3D interactive visual art"
       }
     ]
