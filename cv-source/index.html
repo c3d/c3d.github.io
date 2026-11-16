@@ -17,6 +17,8 @@
       height: 100%;
       height: 100svh;
       height: 100dvh;
+      /* Viewport UI scale — set by applyUiScale(); floor 1 keeps phones readable. */
+      --cv-ui-scale: 1;
     }
 
     body {
@@ -84,11 +86,11 @@
       bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       left: calc(20px + env(safe-area-inset-left, 0px));
       background: rgba(0, 0, 0, 0.8);
-      padding: 15px;
+      padding: calc(15px * var(--cv-ui-scale, 1));
       border-radius: 8px;
-      font-size: 14px;
+      font-size: calc(14px * var(--cv-ui-scale, 1));
       pointer-events: auto;
-      max-width: 300px;
+      max-width: calc(300px * var(--cv-ui-scale, 1));
       backdrop-filter: blur(10px);
       opacity: 1;
       transform: translateY(0);
@@ -101,13 +103,13 @@
     }
 
     #controls h3 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
+      margin: 0 0 calc(10px * var(--cv-ui-scale, 1)) 0;
+      font-size: calc(16px * var(--cv-ui-scale, 1));
       font-weight: 600;
     }
 
     #controls p {
-      margin: 5px 0;
+      margin: calc(5px * var(--cv-ui-scale, 1)) 0;
       line-height: 1.4;
     }
 
@@ -117,7 +119,7 @@
       padding: 2px 6px;
       border-radius: 3px;
       font-family: monospace;
-      font-size: 12px;
+      font-size: calc(12px * var(--cv-ui-scale, 1));
     }
 
     #title-overlay {
@@ -129,8 +131,14 @@
       z-index: 14;
       text-align: center;
       pointer-events: none;
-      max-width: min(520px, calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
-      padding: 12px 18px 14px;
+      max-width: min(
+        calc(520px * var(--cv-ui-scale, 1)),
+        calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))
+      );
+      padding:
+        calc(12px * var(--cv-ui-scale, 1))
+        calc(18px * var(--cv-ui-scale, 1))
+        calc(14px * var(--cv-ui-scale, 1));
       background-color: rgba(4, 10, 22, 0.42);
       background-image:
         linear-gradient(165deg, rgba(14, 32, 58, 0.36), rgba(4, 10, 22, 0.3)),
@@ -216,7 +224,11 @@
 
     #title-overlay h1 {
       font-family: Orbitron, sans-serif;
-      font-size: clamp(16px, 3.6vw, 24px);
+      font-size: clamp(
+        16px,
+        calc(3.6vw * var(--cv-ui-scale, 1)),
+        calc(24px * var(--cv-ui-scale, 1))
+      );
       font-weight: 700;
       letter-spacing: 0.05em;
       margin: 0;
@@ -246,10 +258,14 @@
 
     #title-overlay p {
       font-family: "Source Sans 3", sans-serif;
-      font-size: clamp(12px, 2.4vw, 14px);
+      font-size: clamp(
+        12px,
+        calc(2.4vw * var(--cv-ui-scale, 1)),
+        calc(14px * var(--cv-ui-scale, 1))
+      );
       font-weight: 500;
       letter-spacing: 0.04em;
-      margin: 6px 0 0;
+      margin: calc(6px * var(--cv-ui-scale, 1)) 0 0;
       color: color-mix(in srgb, var(--hud-accent) 75%, #e8f4ff);
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
     }
@@ -264,13 +280,14 @@
     }
     .ms-label {
       --ms-accent: #40e0ff;
+      --ms-label-scale: 1;
       position: absolute;
       left: 0;
       top: 0;
       display: inline-flex;
       align-items: stretch;
       /* Grow to fit full names; soft cap only so extreme titles wrap to 2 lines */
-      max-width: min(520px, 92vw);
+      max-width: min(calc(520px * var(--cv-ui-scale, 1)), 92vw);
       width: max-content;
       margin: 0;
       padding: 0;
@@ -298,12 +315,16 @@
       visibility: visible;
     }
     .ms-label-bar {
-      width: calc(4px * var(--ms-label-scale, 1));
+      width: calc(4px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
       flex-shrink: 0;
       background: var(--ms-accent);
     }
     .ms-label-text {
-      padding: 5px 9px 5px 8px;
+      padding:
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
       line-height: 1.25;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
       white-space: normal;
@@ -316,11 +337,15 @@
       overflow: hidden;
     }
     .ms-label-theme .ms-label-text {
-      font-size: 12px;
+      font-size: calc(12px * var(--cv-ui-scale, 1));
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 7px 11px 7px 10px;
+      padding:
+        calc(7px * var(--cv-ui-scale, 1))
+        calc(11px * var(--cv-ui-scale, 1))
+        calc(7px * var(--cv-ui-scale, 1))
+        calc(10px * var(--cv-ui-scale, 1));
     }
     /* Very narrow portrait: keep the hex ring, shrink theme chrome so long
        names (Languages / Systems) stay inside the viewport. */
@@ -329,9 +354,16 @@
         max-width: min(168px, 44vw);
       }
       .ms-label-theme .ms-label-text {
-        font-size: 9px;
+        font-size: calc(9px * var(--cv-ui-scale, 1));
         letter-spacing: 0.04em;
-        padding: 5px 7px 5px 6px;
+        padding:
+          calc(5px * var(--cv-ui-scale, 1))
+          calc(7px * var(--cv-ui-scale, 1))
+          calc(5px * var(--cv-ui-scale, 1))
+          calc(6px * var(--cv-ui-scale, 1));
+      }
+      .ms-label-project {
+        max-width: min(280px, 86vw);
       }
       /* Featured project plates still grow with --ms-label-scale, but cap the
          plate width so long titles wrap instead of spilling off-screen. */
@@ -345,14 +377,14 @@
       --ms-label-scale: 1;
     }
     .ms-label-project .ms-label-text {
-      font-size: calc(10px * var(--ms-label-scale, 1));
+      font-size: calc(10px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
       font-weight: 600;
       letter-spacing: 0.03em;
       padding:
-        calc(5px * var(--ms-label-scale, 1))
-        calc(9px * var(--ms-label-scale, 1))
-        calc(5px * var(--ms-label-scale, 1))
-        calc(8px * var(--ms-label-scale, 1));
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
     }
     .ms-label:hover,
     .ms-label:focus-visible {
@@ -1007,11 +1039,15 @@
     /* Static title — no JS font-fit / fade. Fixed band height; clamp size; ellipsis. */
     .hud-project {
       font-family: Orbitron, sans-serif;
-      font-size: clamp(13px, 2.2vw, 18px);
+      font-size: clamp(
+        13px,
+        calc(2.2vw * var(--cv-ui-scale, 1)),
+        calc(18px * var(--cv-ui-scale, 1))
+      );
       font-weight: 700;
       line-height: 1.25;
       margin: 0;
-      padding: 10px 12px;
+      padding: calc(10px * var(--cv-ui-scale, 1)) calc(12px * var(--cv-ui-scale, 1));
       flex: 1;
       min-width: 0;
       max-height: calc(1.25em * 2 + 20px);
@@ -1168,14 +1204,18 @@
       overflow: hidden;
     }
     #hud-fly-label .ms-label-bar {
-      width: 4px;
+      width: calc(4px * var(--cv-ui-scale, 1));
       flex-shrink: 0;
       background: var(--hud-accent);
     }
     #hud-fly-label .ms-label-text {
-      padding: 5px 9px 5px 8px;
+      padding:
+        calc(5px * var(--cv-ui-scale, 1))
+        calc(9px * var(--cv-ui-scale, 1))
+        calc(5px * var(--cv-ui-scale, 1))
+        calc(8px * var(--cv-ui-scale, 1));
       line-height: 1.25;
-      font-size: 10px;
+      font-size: calc(10px * var(--cv-ui-scale, 1));
       font-weight: 600;
       letter-spacing: 0.03em;
       white-space: nowrap;
@@ -1186,9 +1226,13 @@
       align-items: center;
     }
     #hud-fly-label.hud-fly-as-title .ms-label-text {
-      font-size: clamp(13px, 2.2vw, 18px);
+      font-size: clamp(
+        13px,
+        calc(2.2vw * var(--cv-ui-scale, 1)),
+        calc(18px * var(--cv-ui-scale, 1))
+      );
       font-weight: 700;
-      padding: 10px 12px;
+      padding: calc(10px * var(--cv-ui-scale, 1)) calc(12px * var(--cv-ui-scale, 1));
       min-width: 0;
       white-space: nowrap;
       overflow: hidden;
@@ -1237,11 +1281,11 @@
       display: inline;
     }
     .hud-bullet {
-      font-size: 16px;
+      font-size: calc(16px * var(--cv-ui-scale, 1));
       line-height: 1.55;
       color: #e8f0ff;
-      margin: 0 0 18px;
-      padding: 12px 0;
+      margin: 0 0 calc(18px * var(--cv-ui-scale, 1));
+      padding: calc(12px * var(--cv-ui-scale, 1)) 0;
       border-top: 1px solid rgba(255,255,255,0.14);
       border-bottom: 1px solid rgba(255,255,255,0.14);
       text-shadow: 0 1px 6px rgba(0,0,0,0.55);
@@ -1249,10 +1293,10 @@
     .hud-bullet h2,
     .hud-bullet h3 {
       font-family: Orbitron, sans-serif;
-      font-size: 15px;
+      font-size: calc(15px * var(--cv-ui-scale, 1));
       font-weight: 600;
       line-height: 1.35;
-      margin: 0 0 8px;
+      margin: 0 0 calc(8px * var(--cv-ui-scale, 1));
       color: #f2f7ff;
     }
     .hud-bullet code {
@@ -1305,10 +1349,10 @@
     }
     .hud-index {
       font-family: Orbitron, sans-serif;
-      font-size: 10px;
+      font-size: calc(10px * var(--cv-ui-scale, 1));
       letter-spacing: 0.16em;
       color: rgba(160,200,255,0.7);
-      margin-bottom: 14px;
+      margin-bottom: calc(14px * var(--cv-ui-scale, 1));
     }
     .hud-image {
       margin: 0 0 12px;

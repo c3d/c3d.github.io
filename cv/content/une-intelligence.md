@@ -18,7 +18,7 @@ topics:
 ---
 ## L'IA : un serviteur puissant pour éclairer vos décisions et résoudre vos problèmes
 
-Book in French on how writers can use AI, written in collarboration with Pierre Wouters and at his initiative.
+Book in French on how writers can use AI.
 
 - Authors: Pierre Wouters and Christophe de Dinechin, assisted by Harold Wouters and AI
-- This is part of a more general interest in using [Artificial Intelligence](#ai)
+- Companion entry: [Artificial Intelligence](#ai)

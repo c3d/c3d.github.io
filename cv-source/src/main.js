@@ -307,6 +307,19 @@ const STAR_PICK_RADIUS_PX = 14;
 /** Featured stars (`featured: true` or explicit `scale`) render larger; default 1.5×. */
 const FEATURED_STAR_SCALE = 1.5;
 
+/** Overview auto-fit: constellation bounding extent ≈ this fraction of the viewport. */
+const OVERVIEW_FILL_TARGET = 0.8;
+/** CSS short-side (px) at which `--cv-ui-scale` is 1. */
+const UI_SCALE_REF_PX = 900;
+const UI_SCALE_MIN = 1;
+const UI_SCALE_MAX = 1.85;
+
+/**
+ * True after the user dollies the overview camera manually. Resize skips auto-fit
+ * while pinned; returning to overview / an explicit fit clears it.
+ */
+let overviewZoomUserPinned = false;
+
 /** Per-entry visual scale from content front-matter (`scale` or `featured`). */
 function projectVisualScale(project) {
   const raw = project?.scale;
@@ -315,6 +328,30 @@ function projectVisualScale(project) {
   }
   if (project?.featured) return FEATURED_STAR_SCALE;
   return 1;
+}
+
+/** Viewport UI scale for labels / HUD / title (CSS px + mild DPR boost on large screens). */
+function computeUiScale() {
+  const w = window.innerWidth || UI_SCALE_REF_PX;
+  const h = window.innerHeight || UI_SCALE_REF_PX;
+  const shortSide = Math.min(w, h);
+  let scale = shortSide / UI_SCALE_REF_PX;
+  const dpr = window.devicePixelRatio || 1;
+  // Large CSS viewports with dense backing stores (4K-class) get a mild extra boost.
+  if (shortSide >= 1100 && dpr >= 1.25) {
+    scale *= 1 + Math.min(0.15, (dpr - 1) * 0.08);
+  }
+  return THREE.MathUtils.clamp(scale, UI_SCALE_MIN, UI_SCALE_MAX);
+}
+
+function applyUiScale() {
+  const scale = computeUiScale();
+  document.documentElement.style.setProperty('--cv-ui-scale', String(Number(scale.toFixed(3))));
+  return scale;
+}
+
+function markOverviewZoomPinned() {
+  if (viewLevel === 1) overviewZoomUserPinned = true;
 }
 
 // ============================================================================
@@ -559,12 +596,14 @@ function titleOverlayBottomPx() {
 }
 
 /**
- * Fit overview so all six ring clusters + theme labels sit fully inside the
- * viewport. Narrow/portrait: zoom/fit the same ring (never switch to columns).
- * Top margin always clears the title HUD height.
+ * Fit overview so the six ring clusters + theme labels fill ~80% of the
+ * viewport (limiting dimension). Narrow/portrait: same ring, slightly lower
+ * fill so the title box and bottom controls stay clear. Top margin always
+ * clears the title HUD height.
  */
 function fitOverviewToClusters() {
   applyThemeLayout();
+  const uiScale = applyUiScale();
 
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -589,14 +628,15 @@ function fitOverviewToClusters() {
   const vFov = THREE.MathUtils.degToRad(camera.fov);
   const aspect = Math.max(camera.aspect, 0.35);
   const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
-  // Narrow: leave more fill headroom so the ring scales down instead of clipping
-  const fill = veryNarrow ? 0.42 : narrow ? 0.50 : 0.58;
+  // Phones keep a bit more chrome headroom; desktop targets ~80% fill.
+  const fill = veryNarrow ? 0.68 : narrow ? 0.74 : OVERVIEW_FILL_TARGET;
   const halfH = Math.max(size.y, size.z * 0.55) * 0.5;
   const halfW = Math.max(size.x, size.z * 0.45) * 0.5;
   const distV = halfH / Math.tan((vFov * fill) / 2);
   const distH = halfW / Math.tan((hFov * fill) / 2);
   let dist = Math.max(distV, distH);
-  dist = THREE.MathUtils.clamp(dist, narrow ? 180 : 190, veryNarrow ? 640 : narrow ? 560 : 480);
+  // Allow closer framing on large screens so 80% fill is reachable.
+  dist = THREE.MathUtils.clamp(dist, narrow ? 160 : 150, veryNarrow ? 720 : narrow ? 620 : 560);
 
   controls.targetZoom = dist;
   controls.currentZoom = dist;
@@ -608,12 +648,62 @@ function fitOverviewToClusters() {
   updateCameraFromControls();
   camera.lookAt(controls.lookAt);
 
-  // Screen-space guard: zoom out until every theme (+ bloom + real DOM label)
-  // is inset, and no theme label sits under the title HUD.
-  const marginX = veryNarrow ? 4 : narrow ? Math.max(10, w * 0.025) : Math.max(48, w * 0.06);
-  const marginYBottom = narrow ? Math.max(24, h * 0.05) : Math.max(52, h * 0.08);
-  const marginYTop = Math.max(marginYBottom, titleOverlayBottomPx());
-  const bloomPad = veryNarrow ? 14 : narrow ? Math.max(20, Math.min(w, h) * 0.04) : Math.max(42, Math.min(w, h) * 0.055);
+  // Refine distance in screen space — camera pitch/yaw and lookAt offset make the
+  // pure FOV estimate undershoot the target fill.
+  const ringPad = padX;
+  const measureRingFill = () => {
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    const ndcRing = new THREE.Vector3();
+    Object.values(THEME_POSITIONS).forEach((p) => {
+      for (const dx of [-ringPad, ringPad]) {
+        for (const dy of [-ringPad, ringPad]) {
+          ndcRing.set(p.x + dx, p.y + dy, p.z).project(camera);
+          const sx = (ndcRing.x * 0.5 + 0.5) * w;
+          const sy = (-ndcRing.y * 0.5 + 0.5) * h;
+          minX = Math.min(minX, sx);
+          maxX = Math.max(maxX, sx);
+          minY = Math.min(minY, sy);
+          maxY = Math.max(maxY, sy);
+        }
+      }
+    });
+    const fracW = (maxX - minX) / Math.max(w, 1);
+    const fracH = (maxY - minY) / Math.max(h, 1);
+    return Math.max(fracW, fracH);
+  };
+  const distCap = veryNarrow ? 720 : narrow ? 620 : 560;
+  const distFloor = narrow ? 160 : 150;
+  for (let iter = 0; iter < 10; iter++) {
+    const limiting = measureRingFill();
+    if (!Number.isFinite(limiting) || limiting <= 0.05) break;
+    if (Math.abs(limiting - fill) < 0.025) break;
+    dist = THREE.MathUtils.clamp(dist * (limiting / fill), distFloor, distCap);
+    controls.targetZoom = dist;
+    controls.currentZoom = dist;
+    updateCameraFromControls();
+    camera.lookAt(controls.lookAt);
+  }
+
+  // Screen-space guard: catch title collisions / extreme aspects. Primary sizing
+  // is the FOV fill above — keep edge insets light so we do not double-count the
+  // ~10% margin already implied by an 80% fill target.
+  const marginX = veryNarrow
+    ? Math.max(4, w * 0.02)
+    : narrow
+      ? Math.max(8, w * 0.025)
+      : Math.max(12, w * 0.03);
+  const marginYBottom = narrow
+    ? Math.max(56, h * 0.1)
+    : Math.max(36, h * 0.05);
+  const marginYTop = Math.max(marginYBottom * 0.35, titleOverlayBottomPx());
+  const bloomPad = veryNarrow
+    ? 12
+    : narrow
+      ? Math.max(14, Math.min(w, h) * 0.028)
+      : Math.max(20, Math.min(w, h) * 0.022);
   const ndc = new THREE.Vector3();
   const themeLabels = () => labelSprites.filter((l) => l.userData.kind === 'theme' && l.userData.el);
 
@@ -643,25 +733,28 @@ function fitOverviewToClusters() {
         needsZoom = true;
       }
     });
-    // Measure actual theme mini-HUD boxes. Long names ("Languages & Compilers",
-    // "Systems & Virtualization") are ~220–250px once Orbitron loads — if the
-    // DOM box is still unset/pre-font, assume a conservative half-width.
+    // Theme labels may sit in the ~10% margin band — only require they stay
+    // on-screen and clear the title box (do not push the 80% cluster fit out).
+    const labelInsetX = veryNarrow ? 2 : 6;
+    const labelInsetBottom = narrow ? 8 : 10;
     projectThemeLabelEls();
     const themeEls = themeLabels();
     if (themeEls.length) {
       themeEls.forEach((label) => {
         const r = label.userData.el.getBoundingClientRect();
-        const halfW = Math.max(r.width > 4 ? r.width * 0.5 : (veryNarrow ? 120 : 70), 1);
-        const halfH = Math.max(r.height > 2 ? r.height * 0.5 : 14, 1);
+        const halfLabelW = Math.max(
+          r.width > 4 ? r.width * 0.5 : (veryNarrow ? 120 : 70) * uiScale,
+          1
+        );
+        const halfLabelH = Math.max(r.height > 2 ? r.height * 0.5 : 14 * uiScale, 1);
         const cx = r.width > 4 ? r.left + r.width * 0.5 : null;
         const cy = r.height > 2 ? r.top + r.height * 0.5 : null;
-        // Prefer live box; fall back to projected center ± assumed size.
         if (cx != null && cy != null) {
           if (
-            cx - halfW < marginX
-            || cx + halfW > w - marginX
-            || cy - halfH < marginYTop
-            || cy + halfH > h - marginYBottom * 0.35
+            cx - halfLabelW < labelInsetX
+            || cx + halfLabelW > w - labelInsetX
+            || cy - halfLabelH < marginYTop
+            || cy + halfLabelH > h - labelInsetBottom
           ) {
             needsZoom = true;
           }
@@ -675,10 +768,10 @@ function fitOverviewToClusters() {
         ndc.set(p.x, p.y + 26, p.z).project(camera);
         const lsx = (ndc.x * 0.5 + 0.5) * w;
         const lsy = (-ndc.y * 0.5 + 0.5) * h;
-        const halfW = veryNarrow ? 120 : 80;
+        const halfLabelW = (veryNarrow ? 120 : 80) * uiScale;
         if (
-          lsx - halfW < marginX || lsx + halfW > w - marginX
-          || lsy - 14 < marginYTop || lsy + 14 > h - marginYBottom * 0.35
+          lsx - halfLabelW < labelInsetX || lsx + halfLabelW > w - labelInsetX
+          || lsy - 14 * uiScale < marginYTop || lsy + 14 * uiScale > h - labelInsetBottom
         ) {
           needsZoom = true;
         }
@@ -686,7 +779,7 @@ function fitOverviewToClusters() {
     }
     if (!needsZoom) break;
     dist *= 1.07;
-    dist = Math.min(dist, veryNarrow ? 1100 : narrow ? 720 : 520);
+    dist = Math.min(dist, veryNarrow ? 1100 : narrow ? 800 : 640);
     controls.targetZoom = dist;
     controls.currentZoom = dist;
     updateCameraFromControls();
@@ -694,6 +787,7 @@ function fitOverviewToClusters() {
   }
 
   if (scene.fog) scene.fog.density = THREE.MathUtils.clamp(0.7 / dist, 0.0012, 0.0036);
+  overviewZoomUserPinned = false;
 }
 
 function createSoftSprite(hex, scale, opacity) {
@@ -1064,8 +1158,14 @@ function createStarsFromBullets(projectList) {
   window.controls = controls;
   window.composer = composer;
   window.fitOverviewToClusters = fitOverviewToClusters;
+  window.applyUiScale = applyUiScale;
+  window.computeUiScale = computeUiScale;
   Object.defineProperty(window, 'viewLevel', { get: () => viewLevel, configurable: true });
   Object.defineProperty(window, 'focusTheme', { get: () => focusTheme, configurable: true });
+  Object.defineProperty(window, 'overviewZoomUserPinned', {
+    get: () => overviewZoomUserPinned,
+    configurable: true
+  });
   console.log(`Created ${stars.length} bullet-stars from ${projects.length} projects`);
 }
 
@@ -3981,12 +4081,13 @@ function updateKeyboardNav(dt) {
   if (keyNav.velRotY) controls.targetRotationY += keyNav.velRotY * dt;
   if (keyNav.velZoom) {
     const zMin = viewLevel >= 2 ? 36 : 120;
-    const zMax = viewLevel >= 2 ? 240 : 520;
+    const zMax = viewLevel >= 2 ? 240 : 560;
     controls.targetZoom = THREE.MathUtils.clamp(
       controls.targetZoom + keyNav.velZoom * dt,
       zMin,
       zMax
     );
+    if (viewLevel === 1) markOverviewZoomPinned();
     if (viewLevel === 2) refreshClusterPoseFromControls();
   }
 }
@@ -4135,8 +4236,9 @@ function setupInteraction() {
     noteUserActivity();
     e.preventDefault();
     const zMin = viewLevel >= 2 ? 36 : 120;
-    const zMax = viewLevel >= 2 ? 240 : 520;
+    const zMax = viewLevel >= 2 ? 240 : 560;
     controls.targetZoom = Math.max(zMin, Math.min(zMax, controls.targetZoom + e.deltaY * 0.1));
+    if (viewLevel === 1) markOverviewZoomPinned();
     if (viewLevel === 2) refreshClusterPoseFromControls();
   }, { passive: false });
   window.addEventListener('scroll', () => noteUserActivity(), { passive: true });
@@ -4322,7 +4424,11 @@ function setupInteraction() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
     if (warpShiftPass) warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-    if (viewLevel === 1 && !currentStar && !isFlying) fitOverviewToClusters();
+    applyUiScale();
+    // Re-fit overview on resize/orientation unless the user has dollied manually.
+    if (viewLevel === 1 && !currentStar && !isFlying && !overviewZoomUserPinned) {
+      fitOverviewToClusters();
+    }
   });
 
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
@@ -4643,6 +4749,7 @@ async function init() {
   initScene();
   console.log(`Loaded ${contentData.length} projects (build ${BUILD_ID})`);
   createStarsFromBullets(contentData);
+  applyUiScale();
   fitOverviewToClusters();
   setupInteraction();
   generatePrintView(contentData);
@@ -4652,7 +4759,9 @@ async function init() {
 
   // Orbitron load expands theme mini-HUD boxes — refit so long names stay on-screen.
   const refit = () => {
-    if (viewLevel === 1 && !currentStar && !isFlying) fitOverviewToClusters();
+    if (viewLevel === 1 && !currentStar && !isFlying && !overviewZoomUserPinned) {
+      fitOverviewToClusters();
+    }
   };
   if (document.fonts?.ready) {
     document.fonts.ready.then(refit).catch(() => {});
