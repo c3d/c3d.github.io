@@ -1422,10 +1422,14 @@
       isolation: isolate;
     }
     .hud-video.hud-video-vertical {
-      /* YouTube Shorts / 9:16 — narrow column so HUD stays usable */
-      width: min(100%, 220px);
-      max-height: min(390px, 52vh);
-      max-height: min(390px, 52dvh);
+      /* YouTube Shorts / 9:16 — narrow column so HUD stays usable.
+         Width must be definite: the iframe is position:absolute and contributes
+         no intrinsic size, so width:auto collapses the plate to ~0 on mobile. */
+      --hud-vert-max-h: min(390px, 52vh);
+      --hud-vert-max-h: min(390px, 52dvh);
+      width: min(100%, 220px, calc(var(--hud-vert-max-h) * 9 / 16));
+      max-width: min(100%, 220px);
+      max-height: var(--hud-vert-max-h);
       margin-left: auto;
       margin-right: auto;
       padding-bottom: 0;
@@ -1841,11 +1845,13 @@
         background: rgba(0, 0, 0, 0.35);
       }
       [data-hud="media"] .hud-video.hud-video-vertical {
-        width: auto;
+        /* Keep a definite width (not auto) so 9:16 Shorts do not collapse. */
+        --hud-vert-max-h: min(32vh, 240px);
+        --hud-vert-max-h: min(32dvh, 240px);
+        width: min(100%, 160px, calc(var(--hud-vert-max-h) * 9 / 16));
         height: auto;
         max-width: min(100%, 160px);
-        max-height: min(32vh, 240px);
-        max-height: min(32dvh, 240px);
+        max-height: var(--hud-vert-max-h);
         aspect-ratio: 9 / 16;
         margin: 0 auto;
       }
@@ -1878,6 +1884,22 @@
         font-size: 16px;
         letter-spacing: 0.04em;
         caret-color: #40e0ff;
+      }
+    }
+
+    /* Phone landscape / short HUD: give 9:16 Shorts more of the tall HUD
+       so they stay watchable (32dvh of ~375px was only ~120px tall). */
+    @media (pointer: coarse) and (max-height: 500px) {
+      [data-hud="media"] .hud-video.hud-video-vertical {
+        --hud-vert-max-h: min(72vh, 300px);
+        --hud-vert-max-h: min(72dvh, 300px);
+        width: min(100%, 140px, calc(var(--hud-vert-max-h) * 9 / 16));
+        max-width: min(100%, 140px);
+        max-height: var(--hud-vert-max-h);
+      }
+      [data-hud="media"] .hud-video:not(.hud-video-vertical) {
+        max-height: min(42vh, 220px);
+        max-height: min(42dvh, 220px);
       }
     }
 
