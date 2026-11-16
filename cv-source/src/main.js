@@ -350,6 +350,43 @@ function applyUiScale() {
   return scale;
 }
 
+/**
+ * Keep CSS --app-height / --vv-* in sync with the *visible* viewport.
+ * iOS Safari's 100vh / late orientationchange reports are taller than what the
+ * user can see; visualViewport is the reliable measure (with deferred retries).
+ */
+function syncVisibleViewport() {
+  const vv = window.visualViewport;
+  const height = Math.max(1, vv?.height || window.innerHeight || 1);
+  const width = Math.max(1, vv?.width || window.innerWidth || 1);
+  const offsetTop = vv?.offsetTop || 0;
+  const offsetLeft = vv?.offsetLeft || 0;
+  // How far the layout viewport bottom sits below the visible bottom (often 0).
+  const bottomGap = Math.max(0, window.innerHeight - offsetTop - height);
+  const root = document.documentElement;
+  root.style.setProperty('--app-height', `${height}px`);
+  root.style.setProperty('--app-width', `${width}px`);
+  root.style.setProperty('--vv-top', `${offsetTop}px`);
+  root.style.setProperty('--vv-left', `${offsetLeft}px`);
+  root.style.setProperty('--vv-bottom-gap', `${bottomGap}px`);
+  return { width, height, offsetTop, offsetLeft, bottomGap };
+}
+
+/** iOS reports new sizes late after rotate — re-measure a few times. */
+function scheduleViewportSync() {
+  syncVisibleViewport();
+  applyUiScale();
+  if (isMediaFocus() && mediaFocusEl) sizeMediaFocus(mediaFocusEl);
+  const delays = [50, 150, 350, 600];
+  delays.forEach((ms) => {
+    setTimeout(() => {
+      syncVisibleViewport();
+      applyUiScale();
+      if (isMediaFocus() && mediaFocusEl) sizeMediaFocus(mediaFocusEl);
+    }, ms);
+  });
+}
+
 function markOverviewZoomPinned() {
   if (viewLevel === 1) overviewZoomUserPinned = true;
 }
@@ -2697,12 +2734,15 @@ function sizeMediaFocus(mediaEl) {
   const hud = document.getElementById('hud');
   if (!hud || !mediaEl) return;
   // Fit the decorated frame to the media aspect ratio, as large as possible
-  // within 98vw×98vh. Close is overlaid inside the frame — no chrome strip.
+  // within 98% of the *visible* viewport. Close is overlaid inside the frame.
   const HUD_PAD = 8;
   const PANEL_PAD = 8;
   const inset = HUD_PAD + PANEL_PAD;
-  const maxOuterW = window.innerWidth * 0.98;
-  const maxOuterH = window.innerHeight * 0.98;
+  const vv = window.visualViewport;
+  const viewW = vv?.width || window.innerWidth;
+  const viewH = vv?.height || window.innerHeight;
+  const maxOuterW = viewW * 0.98;
+  const maxOuterH = viewH * 0.98;
   const maxW = Math.max(160, maxOuterW - inset * 2);
   const maxH = Math.max(90, maxOuterH - inset * 2);
   let mediaW = maxW;
@@ -4552,18 +4592,35 @@ function setupInteraction() {
   });
   window.addEventListener('blur', () => clearKeyNavHeld());
 
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+  const onViewportChange = () => {
+    const { width, height } = syncVisibleViewport();
+    camera.aspect = width / Math.max(height, 1);
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
-    if (warpShiftPass) warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
+    if (warpShiftPass) {
+      warpShiftPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
+    }
     applyUiScale();
+    if (isMediaFocus() && mediaFocusEl) sizeMediaFocus(mediaFocusEl);
     // Re-fit overview on resize/orientation unless the user has dollied manually.
     if (viewLevel === 1 && !currentStar && !isFlying && !overviewZoomUserPinned) {
       fitOverviewToClusters();
     }
+  };
+
+  window.addEventListener('resize', () => {
+    onViewportChange();
+    // iOS Safari often reports the pre-rotation size first.
+    scheduleViewportSync();
   });
+  window.addEventListener('orientationchange', scheduleViewportSync);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', onViewportChange);
+    window.visualViewport.addEventListener('scroll', () => {
+      syncVisibleViewport();
+    });
+  }
 
   document.getElementById('hud-close')?.addEventListener('click', (e) => {
     noteUserActivity();
@@ -4880,6 +4937,7 @@ async function init() {
     await initPrintOnly(contentData);
     return;
   }
+  syncVisibleViewport();
   initScene();
   console.log(`Loaded ${contentData.length} projects (build ${BUILD_ID})`);
   createStarsFromBullets(contentData);
@@ -4890,6 +4948,8 @@ async function init() {
   applyDeepLinkFromUrl({ pushUrl: false });
   window.addEventListener('popstate', () => applyDeepLinkFromUrl({ pushUrl: false }));
   document.getElementById('loading').classList.add('hidden');
+  // Catch late iOS toolbar / orientation sizes after first paint.
+  scheduleViewportSync();
 
   // Orbitron load expands theme mini-HUD boxes — refit so long names stay on-screen.
   const refit = () => {

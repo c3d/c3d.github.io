@@ -19,6 +19,13 @@
       height: 100dvh;
       /* Viewport UI scale — set by applyUiScale(); floor 1 keeps phones readable. */
       --cv-ui-scale: 1;
+      /* Visible viewport (JS syncVisibleViewport via visualViewport). Fallbacks
+         keep desktop / non-JS paths on dvh. */
+      --app-height: 100dvh;
+      --app-width: 100vw;
+      --vv-top: 0px;
+      --vv-left: 0px;
+      --vv-bottom-gap: 0px;
     }
 
     body {
@@ -492,14 +499,17 @@
     #bottom-stack {
       --bottom-stack-gap: 10px;
       position: fixed;
-      left: 0;
+      left: var(--vv-left, 0px);
       right: 0;
-      bottom: 0;
+      /* Sit on the visible bottom — iOS layout viewport can extend below the
+         toolbar; --vv-bottom-gap / --app-height come from visualViewport. */
+      bottom: var(--vv-bottom-gap, 0px);
       z-index: 25;
       display: flex;
       flex-direction: column-reverse;
       align-items: center;
       gap: var(--bottom-stack-gap);
+      max-height: var(--app-height, 100dvh);
       /* Lift above home indicator + browser chrome; desktop stays 14px/12px when insets are 0. */
       padding:
         0
@@ -722,11 +732,9 @@
       bottom: auto !important;
       transform: translate(-50%, -50%);
       width: min(var(--hud-focus-w, 98vw), 98vw) !important;
-      height: min(var(--hud-focus-h, 98vh), 98vh) !important;
-      height: min(var(--hud-focus-h, 98dvh), 98dvh) !important;
+      height: min(var(--hud-focus-h, calc(var(--app-height, 100dvh) * 0.98)), calc(var(--app-height, 100dvh) * 0.98)) !important;
       max-width: 98vw;
-      max-height: 98vh;
-      max-height: 98dvh;
+      max-height: calc(var(--app-height, 100dvh) * 0.98);
       z-index: 36;
       padding: 8px;
       gap: 0;
@@ -1518,16 +1526,24 @@
         right: auto;
         left: auto;
         width: 100%;
-        height: min(62vh, 560px);
-        height: min(62dvh, 560px);
-        max-height: min(62vh, 560px);
-        max-height: min(62svh, 560px);
+        /* Use the visible viewport height — never bare 62vh (iOS large viewport). */
+        height: min(calc(var(--app-height, 100dvh) * 0.62), 560px);
+        max-height: min(calc(var(--app-height, 100dvh) * 0.62), 560px);
         padding: 8px 10px 10px;
-        gap: 6px;
+        gap: 0;
         z-index: auto;
       }
+      /* Close lives inside the glass on phones so short/landscape HUDs keep a
+         tappable × without eating a chrome strip above the panel. */
       .hud-chrome {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 44px;
         height: 44px;
+        z-index: 10;
+        flex: none;
+        pointer-events: none;
       }
       #bss-hud {
         width: min(960px, 100%);
@@ -1545,6 +1561,13 @@
         height: 44px;
         min-width: 44px;
         min-height: 44px;
+        background: rgba(4, 10, 22, 0.88);
+        border-color: color-mix(in srgb, var(--hud-accent) 55%, transparent);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
+      }
+      .hud-title-bar {
+        /* Keep title text clear of the in-frame close. */
+        padding-right: 48px;
       }
       .topic-filter-clear {
         width: 44px;
@@ -1591,6 +1614,106 @@
       #controls {
         bottom: calc(12px + env(safe-area-inset-bottom, 0px));
         left: calc(10px + env(safe-area-inset-left, 0px));
+      }
+    }
+
+    /*
+      Phone landscape / short viewports: 62% of a ~390px height is unreadable,
+      and iPhone landscape CSS width often exceeds 768px (desktop right rail).
+      Keep the bottom-stack HUD, fill nearly all visible height, tuck chrome
+      (title / topic / warp) so content stays scrollable, close stays inside.
+    */
+    @media (pointer: coarse) and (max-height: 500px) {
+      #title-overlay {
+        top: max(8px, env(safe-area-inset-top, 0px));
+        padding: 6px 12px 7px;
+        max-width: min(420px, calc(100vw - 16px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
+      }
+      #title-overlay h1 {
+        font-size: clamp(13px, 3.2vw, 18px);
+      }
+      #title-overlay p {
+        display: none;
+      }
+      #controls {
+        font-size: 11px;
+        bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+      /* Undo desktop rail — short phones need the full-width stacked HUD. */
+      #bss-hud {
+        position: relative;
+        inset: auto;
+        width: min(960px, 100%);
+        max-width: none;
+        display: grid;
+        grid-template-rows: inherit;
+      }
+      #bss-hud > .bottom-stack-slot-inner {
+        height: auto;
+        overflow: hidden;
+      }
+      #bottom-stack {
+        --bottom-stack-gap: 4px;
+        padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+      }
+      /* Nearly fill the short viewport — title/controls stay usable above/under;
+         topic/warp collapse while the HUD is open (see below). */
+      #hud {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        right: auto;
+        left: auto;
+        width: 100%;
+        height: calc(
+          var(--app-height, 100dvh)
+          - env(safe-area-inset-top, 0px)
+          - env(safe-area-inset-bottom, 0px)
+          - 36px
+        );
+        max-height: calc(var(--app-height, 100dvh) * 0.92);
+        min-height: 0;
+        padding: 4px 6px 6px;
+        gap: 0;
+        z-index: auto;
+      }
+      #bottom-stack:has(#hud.open) {
+        padding-right: calc(12px + env(safe-area-inset-right, 0px));
+      }
+      /* When HUD is open, collapse topic/warp to free height — they remain
+         reachable after close; HUD content is the priority in landscape. */
+      #bottom-stack:has(#hud.open) #bss-topic,
+      #bottom-stack:has(#hud.open) #bss-warp {
+        grid-template-rows: 0fr;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .hud-chrome {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 44px;
+        height: 44px;
+        z-index: 10;
+        flex: none;
+        pointer-events: none;
+      }
+      #hud-close {
+        top: 0;
+        right: 0;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        background: rgba(4, 10, 22, 0.88);
+        border-color: color-mix(in srgb, var(--hud-accent) 55%, transparent);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
+      }
+      .hud-title-bar {
+        padding-right: 48px;
+      }
+      .hud-panel {
+        padding: 12px 12px 14px;
       }
     }
 
