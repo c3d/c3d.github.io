@@ -19,6 +19,8 @@ topics:
 ---
 ## 3D interactive visual art
 
-- Adapt ray-tracing / ray-marching shaders for auto-stereoscopic screens via Tao3D
+An set of interactive and real-time 3D art pieces, shown on glasses-free 3D displays.
+
+- Adapted ray-tracing and ray-marching shaders for auto-stereoscopic screens via Tao3D
 - Synthetic 3D art you can see without glasses on suitable displays from [Alioscopy](https://www.alioscopy.com) or [Dimenco](https://dimenco.com)
 - Pieces derived from [ShaderToy](https://www.shadertoy.com/) and some original work
