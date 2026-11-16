@@ -874,7 +874,11 @@ function addProjectStarCluster({
     pl.userData.satelliteOf = project.satelliteOf || null;
     pl.userData.visualScale = visualScale;
     // HTML labels are fixed-screen (not world-scaled sprites) — drive plate size via CSS.
-    pl.userData.el?.style.setProperty('--ms-label-scale', String(visualScale));
+    if (pl.userData.el) {
+      pl.userData.el.style.setProperty('--ms-label-scale', String(visualScale));
+      // Keep larger featured plates above neighbors when boxes overlap.
+      pl.userData.el.style.zIndex = String(Math.round(10 + visualScale * 20));
+    }
     pl.userData.home = pl.position.clone();
     pl.userData.themeOffset = pl.position.clone().sub(themePos);
     // Nudge featured labels up a few px so they clear the larger glow.
