@@ -40,6 +40,8 @@
       height: 100svh;
       height: 100dvh;
       z-index: 1;
+      /* Keep pinch/pan on the constellation — never browser page zoom. */
+      touch-action: none;
     }
 
     #ui-overlay {
@@ -277,6 +279,8 @@
       z-index: 12;
       pointer-events: none;
       overflow: hidden;
+      /* Empty label-layer space must not trigger browser pinch-zoom either. */
+      touch-action: none;
     }
     .ms-label {
       --ms-accent: #40e0ff;

@@ -4081,7 +4081,7 @@ function updateKeyboardNav(dt) {
   if (keyNav.velRotY) controls.targetRotationY += keyNav.velRotY * dt;
   if (keyNav.velZoom) {
     const zMin = viewLevel >= 2 ? 36 : 120;
-    const zMax = viewLevel >= 2 ? 240 : 560;
+    const zMax = viewLevel >= 2 ? 240 : 1100;
     controls.targetZoom = THREE.MathUtils.clamp(
       controls.targetZoom + keyNav.velZoom * dt,
       zMin,
@@ -4179,6 +4179,12 @@ window.pickLabelAt = pickLabelAt;
 function setupInteraction() {
   const container = document.getElementById('canvas-container');
   let dragDist = 0;
+  /** Two-finger pinch state — dolly zoom around the pinch midpoint. */
+  let pinching = false;
+  let pinchStartDist = 0;
+  let pinchStartZoom = 0;
+  let pinchMidX = 0;
+  let pinchMidY = 0;
 
   stars.forEach((s) => {
     const hit = new THREE.Mesh(
@@ -4188,6 +4194,34 @@ function setupInteraction() {
     s.mesh.add(hit);
     s.hit = hit;
   });
+
+  const zoomLimits = () => ({
+    zMin: viewLevel >= 2 ? 36 : 120,
+    // Overview fit on phones can sit out near ~1100 — keep wheel/pinch in range.
+    zMax: viewLevel >= 2 ? 240 : 1100
+  });
+
+  const touchPairDist = (touches) => {
+    const a = touches[0];
+    const b = touches[1];
+    return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+  };
+  const touchPairMid = (touches) => ({
+    x: (touches[0].clientX + touches[1].clientX) * 0.5,
+    y: (touches[0].clientY + touches[1].clientY) * 0.5
+  });
+
+  const beginPinch = (touches) => {
+    pinching = true;
+    controls.mouseDown = false;
+    pinchStartDist = Math.max(touchPairDist(touches), 1);
+    pinchStartZoom = controls.targetZoom;
+    const mid = touchPairMid(touches);
+    pinchMidX = mid.x;
+    pinchMidY = mid.y;
+    dragDist = 999; // never treat the following touchend as a tap
+    if (viewLevel === 1) markOverviewZoomPinned();
+  };
 
   const onDown = (x, y) => {
     noteUserActivity();
@@ -4219,24 +4253,124 @@ function setupInteraction() {
   container.addEventListener('mouseup', onUp);
   container.addEventListener('mouseleave', onUp);
   container.addEventListener('pointermove', () => noteUserActivity(), { passive: true });
+
+  // Safari legacy gesture events — block page zoom so CSS labels stay on stars.
+  const blockGestureZoom = (e) => {
+    e.preventDefault();
+  };
+  document.addEventListener('gesturestart', blockGestureZoom, { passive: false });
+  document.addEventListener('gesturechange', blockGestureZoom, { passive: false });
+  document.addEventListener('gestureend', blockGestureZoom, { passive: false });
+
+  /** True when a touch is on the constellation surface (not HUD / controls chrome). */
+  const isConstellationTouchTarget = (el) => {
+    if (!el || !el.closest) return true;
+    if (el.closest(
+      '#hud.open, #controls, #bottom-stack, #search-hud, #search-fab, #print-style-menu, #loading'
+    )) {
+      return false;
+    }
+    return true;
+  };
+
+  const applyPinchMove = (touches) => {
+    if (isFlying) return;
+    const dist = Math.max(touchPairDist(touches), 1);
+    // Fingers apart → zoom in (smaller orbit radius), same sense as wheel-up.
+    const ratio = pinchStartDist / dist;
+    const { zMin, zMax } = zoomLimits();
+    controls.targetZoom = Math.max(zMin, Math.min(zMax, pinchStartZoom * ratio));
+    // Keep the view under the pinch midpoint (orbit with mid-point drag).
+    const mid = touchPairMid(touches);
+    const dx = mid.x - pinchMidX;
+    const dy = mid.y - pinchMidY;
+    if (dx || dy) {
+      controls.targetRotationY += dx * 0.004;
+      controls.targetRotationX = Math.max(
+        -1.1,
+        Math.min(1.1, controls.targetRotationX + dy * 0.004)
+      );
+      pinchMidX = mid.x;
+      pinchMidY = mid.y;
+    }
+    if (viewLevel === 2) refreshClusterPoseFromControls();
+  };
+
   container.addEventListener('touchstart', (e) => {
     noteUserActivity();
-    if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY);
+    if (e.touches.length >= 2) {
+      beginPinch(e.touches);
+      return;
+    }
+    if (e.touches.length === 1 && !pinching) {
+      onDown(e.touches[0].clientX, e.touches[0].clientY);
+    }
   }, { passive: true });
+
   container.addEventListener('touchmove', (e) => {
     noteUserActivity();
-    if (e.touches.length === 1) {
+    if (e.touches.length >= 2) {
+      e.preventDefault();
+      if (!pinching) beginPinch(e.touches);
+      applyPinchMove(e.touches);
+      return;
+    }
+    if (e.touches.length === 1 && !pinching) {
       e.preventDefault();
       onMove(e.touches[0].clientX, e.touches[0].clientY);
     }
   }, { passive: false });
-  container.addEventListener('touchend', onUp);
+
+  // Document capture: pinch often starts with a finger on a CSS label (above the
+  // canvas). Still own the gesture, and always prevent browser page zoom.
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length < 2) return;
+    if (![...e.touches].every((t) => isConstellationTouchTarget(t.target))) return;
+    noteUserActivity();
+    beginPinch(e.touches);
+  }, { capture: true, passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length < 2) return;
+    // Block browser pinch-zoom site-wide while two fingers are down on the
+    // constellation (HUD chrome is single-finger scroll only).
+    if (!pinching && ![...e.touches].every((t) => isConstellationTouchTarget(t.target))) {
+      return;
+    }
+    e.preventDefault();
+    noteUserActivity();
+    if (!pinching) beginPinch(e.touches);
+    applyPinchMove(e.touches);
+  }, { capture: true, passive: false });
+
+  const onTouchEnd = (e) => {
+    noteUserActivity();
+    if (e.touches.length >= 2) return;
+    if (e.touches.length === 1) {
+      // Hand remaining finger to single-touch orbit without firing a tap.
+      pinching = false;
+      onDown(e.touches[0].clientX, e.touches[0].clientY);
+      dragDist = 999;
+      return;
+    }
+    pinching = false;
+    onUp();
+  };
+  container.addEventListener('touchend', onTouchEnd);
+  container.addEventListener('touchcancel', onTouchEnd);
+  document.addEventListener('touchend', (e) => {
+    if (!pinching) return;
+    onTouchEnd(e);
+  }, { capture: true });
+  document.addEventListener('touchcancel', (e) => {
+    if (!pinching) return;
+    onTouchEnd(e);
+  }, { capture: true });
 
   container.addEventListener('wheel', (e) => {
     noteUserActivity();
     e.preventDefault();
-    const zMin = viewLevel >= 2 ? 36 : 120;
-    const zMax = viewLevel >= 2 ? 240 : 560;
+    const { zMin, zMax } = zoomLimits();
     controls.targetZoom = Math.max(zMin, Math.min(zMax, controls.targetZoom + e.deltaY * 0.1));
     if (viewLevel === 1) markOverviewZoomPinned();
     if (viewLevel === 2) refreshClusterPoseFromControls();
