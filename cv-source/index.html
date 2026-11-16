@@ -365,11 +365,26 @@
       .ms-label-project {
         max-width: min(280px, 86vw);
       }
+      /* Featured project plates still grow with --ms-label-scale, but cap the
+         plate width so long titles wrap instead of spilling off-screen. */
+      .ms-label-project {
+        max-width: min(280px, 86vw);
+      }
+    }
+    /* Project mini-HUD size tracks content `featured` / `scale` (world stars
+       already use projectVisualScale; HTML labels are screen-fixed otherwise). */
+    .ms-label-project {
+      --ms-label-scale: 1;
     }
     .ms-label-project .ms-label-text {
       font-size: calc(10px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
       font-weight: 600;
       letter-spacing: 0.03em;
+      padding:
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(9px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(5px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1))
+        calc(8px * var(--ms-label-scale, 1) * var(--cv-ui-scale, 1));
     }
     .ms-label:hover,
     .ms-label:focus-visible {
