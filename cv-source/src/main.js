@@ -860,7 +860,7 @@ function addProjectStarCluster({
 }) {
   const visualScale = projectVisualScale(project);
 
-  // Every project gets an L2 mini-HUD label (fixed screen size)
+  // Every project gets an L2 mini-HUD label (screen-fixed plate; size tracks visualScale)
   {
     const pl = createLabelAnchor({ text: project.title, hex: color, kind: 'project', parent: scene });
     const yOff = satellite ? 1.6 : 2.8 + (slot % 2) * 1.1;
@@ -873,6 +873,12 @@ function addProjectStarCluster({
     pl.userData.priority = visualScale > 1 ? basePri + 2 : basePri;
     pl.userData.satelliteOf = project.satelliteOf || null;
     pl.userData.visualScale = visualScale;
+    // HTML labels are fixed-screen (not world-scaled sprites) — drive plate size via CSS.
+    if (pl.userData.el) {
+      pl.userData.el.style.setProperty('--ms-label-scale', String(visualScale));
+      // Keep larger featured plates above neighbors when boxes overlap.
+      pl.userData.el.style.zIndex = String(Math.round(10 + visualScale * 20));
+    }
     pl.userData.home = pl.position.clone();
     pl.userData.themeOffset = pl.position.clone().sub(themePos);
     // Nudge featured labels up a few px so they clear the larger glow.

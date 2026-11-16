@@ -298,7 +298,7 @@
       visibility: visible;
     }
     .ms-label-bar {
-      width: 4px;
+      width: calc(4px * var(--ms-label-scale, 1));
       flex-shrink: 0;
       background: var(--ms-accent);
     }
@@ -333,11 +333,26 @@
         letter-spacing: 0.04em;
         padding: 5px 7px 5px 6px;
       }
+      /* Featured project plates still grow with --ms-label-scale, but cap the
+         plate width so long titles wrap instead of spilling off-screen. */
+      .ms-label-project {
+        max-width: min(280px, 86vw);
+      }
+    }
+    /* Project mini-HUD size tracks content `featured` / `scale` (world stars
+       already use projectVisualScale; HTML labels are screen-fixed otherwise). */
+    .ms-label-project {
+      --ms-label-scale: 1;
     }
     .ms-label-project .ms-label-text {
-      font-size: 10px;
+      font-size: calc(10px * var(--ms-label-scale, 1));
       font-weight: 600;
       letter-spacing: 0.03em;
+      padding:
+        calc(5px * var(--ms-label-scale, 1))
+        calc(9px * var(--ms-label-scale, 1))
+        calc(5px * var(--ms-label-scale, 1))
+        calc(8px * var(--ms-label-scale, 1));
     }
     .ms-label:hover,
     .ms-label:focus-visible {
