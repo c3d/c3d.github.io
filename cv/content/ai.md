@@ -16,5 +16,5 @@ topics:
 
 Daily practice as a user of modern AI assistants and agent tooling.
 
-- Claude, Cursor, OpenCode, OpenRouter, Grok, and Grok Bot
-- See also [Une intelligence à vos côtés](#une-intelligence)
+- Claude, Cursor, OpenCode, OpenRouter, Grok, Grok Bot, ...
+- At the initiative of Pierre Wouters, co-wrote a book, [Une intelligence à vos côtés](#une-intelligence), to explore the use of AI tools for writers.
