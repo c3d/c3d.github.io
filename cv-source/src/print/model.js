@@ -265,7 +265,7 @@ export function buildPrintModel(data, {
   const about = data.find((d) => d.role === 'about' || d.id === 'intro');
   const aboutLines = (about?.bullets || []).map((b) => b.text);
   const aboutPara = (about?.content || '').match(/<p>([\s\S]*?)<\/p>/)?.[1]?.replace(/<[^>]+>/g, '')
-    || 'Pushing the boundaries by writing highly original software and turning it into successful products by leading great teams.';
+    || 'Pushing boundaries by writing highly original software and turning it into successful products by leading great teams.';
   const email = aboutLines.find((t) => t.includes('@')) || 'christophe@dinechin.org';
   // Avoid matching incidental "ms " (e.g. "forms of art") — require real education cues.
   const isEducation = (t) => /École|Mines|MS Computer/i.test(t);

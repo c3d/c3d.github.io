@@ -3,7 +3,7 @@ id: intro
 title: Christophe de Dinechin
 theme: About
 role: about
-years: 
+years:
 weight: 10
 related: []
 videos: []
@@ -18,7 +18,7 @@ links:
 
 ## Software as a Passion
 
-Pushing the boundaries by writing highly original software and turning it into successful products by leading great teams.
+Pushing boundaries by writing highly original software and turning it into successful products by leading great teams.
 
 - French software developer — operating systems, languages, games
 - Amateur physics researcher and tinkerer in strange forms of art
